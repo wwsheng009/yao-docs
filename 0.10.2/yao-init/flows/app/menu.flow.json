@@ -1,0 +1,64 @@
+{
+  "name": "APP Menu",
+  "nodes": [],
+  "output": [
+    {
+      "id": 1,
+      "blocks": 0,
+      "icon": "icon-activity",
+      "name": "图表",
+      "parent": null,
+      "path": "/x/Chart/dashboard",
+      "visible_menu": 0
+    },
+    {
+      "id": 2,
+      "blocks": 0,
+      "icon": "icon-book",
+      "name": "表格",
+      "parent": null,
+      "path": "/x/Table/pet",
+      "visible_menu": 1,
+      "children": [
+        {
+          "blocks": 0,
+          "icon": "icon-book",
+          "name": "宠物列表",
+          "id": 2010,
+          "parent": 2,
+          "path": "/x/Table/pet",
+          "visible_menu": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "blocks": 0,
+      "icon": "icon-clipboard",
+      "name": "表单",
+      "parent": null,
+      "path": "/x/Form/pet/1/edit",
+      "visible_menu": 1,
+      "children": [
+        {
+          "blocks": 0,
+          "icon": "icon-clipboard",
+          "name": "编辑模式",
+          "id": 2010,
+          "parent": 2,
+          "path": "/x/Form/pet/1/edit",
+          "visible_menu": 1
+        },
+        {
+          "blocks": 0,
+          "icon": "icon-clipboard",
+          "name": "查看模式",
+          "id": 2010,
+          "parent": 2,
+          "path": "/x/Form/pet/1/view",
+          "visible_menu": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "label": "APP Menu",
+  "nodes": [],
+  "output": {
+    "items": [
+      {
+        "id": 1,
+        "blocks": 0,
+        "icon": "icon-activity",
+        "name": "图表",
+        "parent": null,
+        "path": "/x/Chart/dashboard",
+        "visible_menu": 0
+      },
+      {
+        "id": 2,
+        "blocks": 0,
+        "icon": "icon-book",
+        "name": "表格",
+        "parent": null,
+        "path": "/x/Table/pet",
+        "visible_menu": 1,
+        "children": [
+          {
+            "blocks": 0,
+            "icon": "icon-book",
+            "name": "宠物列表",
+            "id": 2010,
+            "parent": 2,
+            "path": "/x/Table/pet",
+            "visible_menu": 1
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "blocks": 0,
+        "icon": "icon-clipboard",
+        "name": "表单",
+        "parent": null,
+        "path": "/x/Form/pet/0/edit",
+        "visible_menu": 1,
+        "children": [
+          {
+            "blocks": 0,
+            "icon": "icon-clipboard",
+            "name": "创建宠物",
+            "id": 2010,
+            "parent": 2,
+            "path": "/x/Form/pet/0/edit",
+            "visible_menu": 1
+          }
+        ]
+      }
+    ],
+    "setting": [
+      {
+        "icon": "icon-settings",
+        "id": 999999,
+        "name": "设置",
+        "path": "/setting",
+        "children": [
+          {
+            "id": 10002,
+            "name": "系统设置",
+            "path": "/setting"
+          }
+        ]
+      }
+    ]
+  }
+}
