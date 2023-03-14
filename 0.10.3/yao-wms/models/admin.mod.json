@@ -1,0 +1,8 @@
+{
+  "name": "管理员",
+  "table": {
+    "name": "admin",
+    "comment": "管理员"
+  },
+  "columns": [{ "label": "ID", "name": "id", "type": "ID" }]
+}

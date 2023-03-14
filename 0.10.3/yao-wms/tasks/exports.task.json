@@ -1,0 +1,16 @@
+{
+  "name": "导出数据",
+  "worker_nums": 1,
+  "attempts": 3,
+  "attempt_after": 200,
+  "timeout": 2,
+  "size": 1000,
+  "process": "scripts.utils.TaskHandle",
+  "event": {
+    "next": "",
+    "add": "",
+    "success": "",
+    "error": "",
+    "progress": ""
+  }
+}

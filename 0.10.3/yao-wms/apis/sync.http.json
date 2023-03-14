@@ -1,0 +1,16 @@
+{
+  "name": "数据同步接口（废弃）",
+  "version": "1.0.0",
+  "description": "数据同步接口",
+  "group": "sync",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/event",
+      "method": "POST",
+      "process": "scripts.sync.Event",
+      "in": [":payload"],
+      "out": { "status": 200, "type": "application/json" }
+    }
+  ]
+}

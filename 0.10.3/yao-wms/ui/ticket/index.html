@@ -1,0 +1,157 @@
+{{^outdoor}}
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+  "
+>
+  <h1 style="text-align: center">点收单(材料费)</h1>
+  <div class="ticket-head">
+    <span>存放地点：{{warehouse.name}}</span>
+    <span>年月日： {{uptime}}</span>
+    <span>分类：{{type}} </span>
+  </div>
+
+  <div class="ticket-head">
+    <span>供料单位：{{supplier.name}}</span>
+    <span>进场类别：{{type}}</span>
+    <span>来料凭证：{{invoice}} </span>
+    <span>单号：{{ticket_sn}}</span>
+  </div>
+
+  <table border="1" style="border-collapse: collapse" class="ticket-table">
+    <tr>
+      <th>序号</th>
+      <th>物资名称</th>
+      <th>规格型号</th>
+      <th>单位</th>
+      <th>数量</th>
+      <th>税率</th>
+      <th>含税单价</th>
+      <th>含税金额</th>
+      <th>无税单价</th>
+      <th>无税金额</th>
+      <th>税额</th>
+      <th>列账单价</th>
+      <th>列账金额</th>
+      <th>厂家及技证号</th>
+    </tr>
+
+    {{#records}}
+    <tr>
+      <td>{{index}}</td>
+      <td>{{material.name}}</td>
+      <td>{{specs}}</td>
+      <td>{{sku.unit}}</td>
+      <td>{{amount}}</td>
+      <td>{{sku.tax_rate}}</td>
+      <td>{{sku.tax_price}}</td>
+      <td>{{sku.tax_total}}</td>
+      <td>{{sku.price}}</td>
+      <td>{{sku.total}}</td>
+      <td>{{sku.tax}}</td>
+      <td>{{sku.fin_price}}</td>
+      <td>{{sku.fin_total}}</td>
+      <td>{{supplier.short}} {{supplier.sn}}</td>
+    </tr>
+    {{/records}}
+
+    <tr>
+      <td rowspan="2" style="text-align: center">备注</td>
+      <td rowspan="2" colspan="3" style="text-align: center">{{remark}}</td>
+      <td style="text-align: center">本页小计</td>
+      <td colspan="3" style="text-align: end">{{tax_total}}</td>
+      <td colspan="2" style="text-align: end">{{total}}</td>
+      <td colspan="1" style="text-align: end">{{tax}}</td>
+      <td colspan="2" style="text-align: end">{{fin_total}}</td>
+      <td rowspan="2"></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">总合计</td>
+      <td colspan="3" style="text-align: end">{{tax_total}}</td>
+      <td colspan="2" style="text-align: end">{{total}}</td>
+      <td colspan="1" style="text-align: end">{{tax}}</td>
+      <td colspan="2" style="text-align: end">{{fin_total}}</td>
+    </tr>
+  </table>
+  <div class="ticket-head" style="margin: 10px 0">
+    <span>项目部：{{warehouse.dept}}</span>
+    <span>主管：{{manager}}</span>
+    <span>收料：{{receive}}</span>
+  </div>
+</div>
+{{/outdoor}} {{#outdoor}}
+<!--发料单-->
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+  "
+>
+  <h1 style="text-align: center">发料单</h1>
+  <div class="ticket-head">
+    <span>存放地点：{{warehouse.name}}</span>
+    <span>工号： {{uno}}</span>
+    <span>分类：{{type}} </span>
+  </div>
+
+  <div class="ticket-head">
+    <span>领料单位：{{supplier.name}}</span>
+    <span>单号：{{ticket_sn}}</span>
+  </div>
+
+  <table border="1" style="border-collapse: collapse" class="ticket-table">
+    <tr>
+      <th>序号</th>
+      <th>物资名称</th>
+      <th>规格型号</th>
+      <th>单位</th>
+      <th>数量</th>
+
+      <th>结算单价</th>
+      <th>结算金额</th>
+      <th>列账单价</th>
+      <th>列账金额</th>
+      <th>厂家及技证号</th>
+    </tr>
+
+    {{#records}}
+    <tr>
+      <td>{{index}}</td>
+      <td>{{material.name}}</td>
+      <td>{{specs}}</td>
+      <td>{{sku.unit}}</td>
+      <td>{{amount}}</td>
+      <td>{{sku.price}}</td>
+      <td>{{sku.total}}</td>
+      <td>{{sku.fin_price}}</td>
+      <td>{{sku.fin_total}}</td>
+      <td>{{supplier.short}} {{supplier.sn}}</td>
+    </tr>
+    {{/records}}
+
+    <tr>
+      <td rowspan="2" style="text-align: center">备注</td>
+      <td rowspan="2" colspan="3" style="text-align: center">{{remark}}</td>
+      <td style="text-align: center">本页小计</td>
+      <td colspan="2" style="text-align: end">{{total}}</td>
+      <td colspan="2" style="text-align: end">{{fin_total}}</td>
+      <td rowspan="2"></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">总合计</td>
+      <td colspan="2" style="text-align: end">{{total}}</td>
+      <td colspan="2" style="text-align: end">{{fin_total}}</td>
+    </tr>
+  </table>
+  <div class="ticket-head" style="margin: 10px 0">
+    <span>项目部：{{warehouse.dept}}</span>
+    <span>收料人：{{receive}}</span>
+    <span>发料人：{{send}}</span>
+  </div>
+</div>
+{{/outdoor}}

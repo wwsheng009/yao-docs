@@ -1,0 +1,30 @@
+{
+  "label": "单品列表",
+  "version": "1.0.0",
+  "description": "单品列表",
+  "nodes": [
+    {
+      "name": "单品列表",
+      "engine": "xiang",
+      "query": {
+        "select": ["sku.id as value", "material.name as name", "specs$"],
+        "from": "$material.sku",
+        "joins": [
+          {
+            "left": true,
+            "from": "material",
+            "key": "material.id",
+            "foreign": "sku.material_id"
+          }
+        ],
+        "limit": 1000
+      }
+    },
+    {
+      "name": "specs",
+      "process": "scripts.sku.WithFullName",
+      "args": ["{{$res.单品列表}}", "name"]
+    }
+  ],
+  "output": "{{$res.specs}}"
+}

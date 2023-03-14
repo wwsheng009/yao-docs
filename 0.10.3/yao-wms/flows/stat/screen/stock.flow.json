@@ -1,0 +1,110 @@
+{
+  "label": "库存大屏呈现",
+  "version": "1.0.0",
+  "description": "库存大屏呈现",
+  "nodes": [
+    {
+      "name": "日期",
+      "process": "scripts.time.RangeYesterday",
+      "args": ["{{$in.0}}"]
+    },
+    {
+      "name": "预警",
+      "engine": "xiang",
+      "query": {
+        "debug": false,
+        "select": [
+          ":DATE_FORMAT(day, '%Y年%m月%d日') as day",
+          ":COUNT(id) as 数量"
+        ],
+        "wheres": [
+          { ":day": "日期", ">=": "?:$res.日期.from" },
+          { ":day": "日期", "<=": "?:$res.日期.to" },
+          { ":stock": "库存", "<": "{stock_alert}" }
+        ],
+        "from": "stat_sku",
+        "groups": ["day"]
+      }
+    },
+    {
+      "name": "正常",
+      "engine": "xiang",
+      "query": {
+        "debug": false,
+        "select": [
+          ":DATE_FORMAT(day, '%Y年%m月%d日') as day",
+          ":COUNT(id) as 数量"
+        ],
+        "wheres": [
+          { ":day": "日期", ">=": "?:$res.日期.from" },
+          { ":day": "日期", "<=": "?:$res.日期.to" },
+          { ":stock": "库存", ">": "{stock_alert}" }
+        ],
+        "from": "stat_sku",
+        "groups": ["day"]
+      }
+    },
+    {
+      "name": "总数",
+      "engine": "xiang",
+      "query": {
+        "debug": false,
+        "select": [
+          ":DATE_FORMAT(day, '%Y年%m月%d日') as day",
+          ":COUNT(id) as 数量"
+        ],
+        "wheres": [
+          { ":day": "日期", ">=": "?:$res.日期.from" },
+          { ":day": "日期", "<=": "?:$res.日期.to" }
+        ],
+        "from": "stat_sku",
+        "groups": ["day"]
+      }
+    },
+    {
+      "name": "预警库存",
+      "process": "scripts.time.Defaults",
+      "args": ["{{$res.日期}}", "{{$res.预警}}", { "数量": 0 }]
+    },
+    {
+      "name": "正常库存",
+      "process": "scripts.time.Defaults",
+      "args": ["{{$res.日期}}", "{{$res.正常}}", { "数量": 0 }]
+    },
+    {
+      "name": "总数库存",
+      "process": "scripts.time.Defaults",
+      "args": ["{{$res.日期}}", "{{$res.总数}}", { "数量": 0 }]
+    },
+    {
+      "name": "合并结果",
+      "process": "xiang.helper.ArrayPluck",
+      "args": [
+        ["day", "正常", "预警", "总数"],
+        {
+          "正常": {
+            "key": "day",
+            "value": "数量",
+            "items": "{{$res.正常库存}}"
+          },
+          "预警": {
+            "key": "day",
+            "value": "数量",
+            "items": "{{$res.预警库存}}"
+          },
+          "总数": {
+            "key": "day",
+            "value": "数量",
+            "items": "{{$res.总数库存}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "结果",
+      "process": "scripts.time.Defaults",
+      "args": ["{{$res.日期}}", "{{$res.合并结果}}", { "正常": 0, "预警": 0 }]
+    }
+  ],
+  "output": "{{$res.结果}}"
+}

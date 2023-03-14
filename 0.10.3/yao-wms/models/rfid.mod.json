@@ -1,0 +1,44 @@
+{
+  "name": "标签",
+  "table": {
+    "name": "rfid",
+    "comment": "标签管理"
+  },
+  "columns": [
+    { "label": "ID", "name": "id", "type": "ID" },
+    {
+      "label": "标签",
+      "name": "sn",
+      "type": "string",
+      "length": 64,
+      "unique": true,
+      "comment": "标签: 类目(4)-SKU(6)-计划(6)-Item(6)"
+    },
+    {
+      "label": "仓库",
+      "name": "node_id",
+      "type": "string",
+      "index": true,
+      "nullable": true,
+      "comment": "仓库节点ID"
+    },
+    {
+      "label": "状态",
+      "name": "status",
+      "type": "enum",
+      "default": "空闲",
+      "option": ["空闲", "入库", "异常"],
+      "index": true,
+      "comment": "状态: 空闲, 入库, 异常"
+    },
+    {
+      "label": "扫描码",
+      "name": "s_code",
+      "type": "string",
+      "length": 64,
+      "comment": "扫描码,与sn绑定用于扫码枪"
+    }
+  ],
+  "relations": {},
+  "option": { "timestamps": true, "soft_deletes": true }
+}

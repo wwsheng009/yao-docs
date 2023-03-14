@@ -1,0 +1,22 @@
+{
+  "label": "计算单品库存",
+  "version": "1.0.0",
+  "description": "计算单品库存",
+  "nodes": [
+    {
+      "name": "查询单品库存",
+      "engine": "xiang",
+      "query": {
+        "select": [":COUNT(id) as stock", "sku_id", "sku_sn"],
+        "from": "$record",
+        "wheres": [
+          { ":sku_id": "单品ID", "=": "?:$in.0" },
+          { ":status": "状态", "=": "生效" },
+          { ":type": "类型", "=": "入库" }
+        ],
+        "first": 1
+      }
+    }
+  ],
+  "output": "{{$res.查询单品库存.stock}}"
+}

@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0",
+  "label": "APP Menu",
+  "nodes": [
+    {
+      "name": "data",
+      "script": "items"
+    }
+  ],
+  "output": {
+    "items": "{{$res.data}}",
+    "setting": [
+      {
+        "icon": "icon-settings",
+        "id": 999999,
+        "name": "设置",
+        "path": "/setting",
+        "children": [
+          {
+            "id": 10002,
+            "name": "系统设置",
+            "path": "/setting"
+          }
+        ]
+      }
+    ]
+  }
+}

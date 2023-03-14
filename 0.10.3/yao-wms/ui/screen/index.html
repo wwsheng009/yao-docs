@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>智慧仓库</title>
+    <link rel="stylesheet" href="css/shipei.css" />
+    <link rel="stylesheet" href="css/screen.css" />
+
+    <script src="js/vue.js"></script>
+    <script src="js/datav.map.vue.js"></script>
+    <script src="js/jwmeyy.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/wow.js"></script>
+    <script type="text/javascript" src="webrtc/adapter.min.js"></script>
+    <script type="text/javascript" src="webrtc/streamer.js"></script>
+    <script type="text/javascript" src="js/yao.js"></script>
+    <script type="text/javascript" src="js/live.js"></script>
+    <script type="text/javascript" src="../event/message.js"></script>
+    <script>
+      new WOW().init();
+    </script>
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+    <script src="js/axios.min.js"></script>
+
+    <script>
+      // 关闭页面 断开监控
+      window.onbeforeunload = function () {
+        try {
+          camera1.disconnect();
+        } catch (e) {}
+        try {
+          camera2.disconnect();
+        } catch (e) {}
+        try {
+          camera3.disconnect();
+        } catch (e) {}
+      };
+
+      // WebSocket 数据更新
+      $(function () {
+        Start(
+          null,
+          function onEnter(data) {
+            SetUser(data);
+          },
+          function onLeave(data) {
+            SetUser(data);
+          },
+          function onIn(data) {
+            SetData(data);
+          },
+          function onOut(data) {
+            SetData(data);
+          }
+        );
+      });
+    </script>
+  </head>
+
+  <body>
+    <!-- webrtc-streamer rtsp://192.168.31.121:554/ch01.264 -->
+    <div id="app" v-block>
+      <div class="container">
+        <div class="top" id="title" style="cursor: pointer">
+          <p id="screen_name">智慧仓库</p>
+        </div>
+        <div class="content">
+          <div class="con_left">
+            <div class="left_box_1">
+              <div class="left_box_1_t">
+                <img class="img" src="images/sanjiao.png" alt="" />
+                <p>人员出入数量</p>
+                <img src="images/sanjiao.png" alt="" />
+              </div>
+              <div class="left_box_1_b">
+                <div id="icharts_1" class="icharts_1"></div>
+              </div>
+            </div>
+
+            <div class="left_box_2">
+              <div class="left_box_2_t">
+                <img class="img" src="images/sanjiao.png" alt="" />
+                <p>近期物资入库情况</p>
+                <img src="images/sanjiao.png" alt="" />
+              </div>
+              <div class="left_box_2_b">
+                <div id="icharts_2" class="icharts_2"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="con_mid">
+            <div class="mid_nav zoomIn"></div>
+            <div class="panel">
+              <div class="video-block" style="display: none">
+                <div class="video-mask">
+                  <video id="camera1" muted="true" width="100%" autoplay />
+                </div>
+                <div class="video-mask">
+                  <video id="camera2" muted="true" width="100%" autoplay />
+                </div>
+                <!-- <div class="video-mask">
+                  <video id="camera3" muted="true" width="100%" autoplay />
+                </div>-->
+              </div>
+
+              <div class="alert-block" style="display: none">
+                <div class="warehouse-mask">
+                  <div class="title">
+                    <img src="images/shebei_1.png" alt="" />
+                    <p id="warehouse_skucnt">-</p>
+                    <img src="images/shebei_1.png" alt="" class="img" />
+                  </div>
+                  <div class="name">
+                    <p id="warehouse_name">-</p>
+                  </div>
+                  <div class="photo">
+                    <img src="images/shebei_4.png" alt="" />
+                  </div>
+                </div>
+                <div class="alert-mask">
+                  <table>
+                    <thead>
+                      <th width="460" style="text-align: left">物资</th>
+                      <th width="100">库存</th>
+                      <th width="100">预警库存</th>
+                    </thead>
+                    <tbody id="alert-list">
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="info-block">
+                <div class="user-mask">
+                  <div id="user_photo" class="photo"></div>
+                  <div class="title">
+                    <div id="user_name" class="name">--</div>
+                    <div>进出人员</div>
+                  </div>
+                </div>
+                <div class="items-mask">
+                  <table>
+                    <thead>
+                      <th width="75">行为</th>
+                      <th width="75">编码</th>
+                      <th width="310">物资</th>
+                      <th width="200">计划</th>
+                    </thead>
+                    <tbody id="items-list">
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="last-td"></td>
+                        <td class="last-td"></td>
+                        <td class="last-td"></td>
+                        <td class="last-td"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="mid_con zoomIn">
+              <div class="mid_con_4 zoomIn">
+                <img src="images/shipeibg.png" alt="" />
+              </div>
+              <div class="mid_con_7"></div>
+              <div class="bottom_circle">
+                <div class="bottom_circle1"></div>
+                <div class="bottom_circle2"></div>
+                <div class="bottom_circle3"></div>
+                <div class="bottom_circle4"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="con_right">
+            <div class="right_box_1">
+              <div class="right_box_1_t">
+                <img class="img" src="images/sanjiao.png" alt="" />
+                <p>库存预警</p>
+                <img src="images/sanjiao.png" alt="" />
+              </div>
+              <div class="biaoji">
+                <div class="biaoji_1">
+                  <img src="images/s_2.png" alt="" />
+                  <p>SKU总数</p>
+                </div>
+                <div class="biaoji_1">
+                  <img src="images/s_1.png" alt="" />
+                  <p>预警库存</p>
+                </div>
+              </div>
+              <div class="right_box_1_b">
+                <div id="icharts_5" class="icharts_5"></div>
+              </div>
+            </div>
+
+            <div class="right_box_2">
+              <div class="right_box_2_t">
+                <img class="img" src="images/sanjiao.png" alt="" />
+                <p>采购计划</p>
+                <img src="images/sanjiao.png" alt="" />
+              </div>
+              <div class="right_box_2_b">
+                <div id="icharts_3" class="icharts_3"></div>
+              </div>
+
+              <div class="newbiaoji">
+                <ul>
+                  <li v-for="(item,index) in 计划.数据">
+                    <p>{{item.value}}</p>
+                    <i></i>
+                    <p>{{item.name}}</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="js/screen.js"></script>
+    <script>
+      // 数据初始化
+
+      $(document).ready(() => {
+        Setting().then((setting) => {
+          console.log(`setting`, setting);
+          UpdateWarehouse();
+          app.人员出入数据();
+          app.物资进出数据();
+          app.库存预警数据();
+          app.采购计划数据();
+        });
+      });
+
+      // 60分钟刷新一次
+      setInterval(() => {
+        app.人员出入数据();
+        app.物资进出数据();
+        app.库存预警数据();
+        app.采购计划数据();
+      }, 3600 * 1000); // 3600 * 1000
+
+      // 10分钟刷新一次 token
+      setInterval(() => {
+        yao
+          .Post("/user/token/refresh")
+          .then((data) => {
+            if (data.token) {
+              yao.SetToken(data.token);
+              return;
+            }
+            console.log("data:", data);
+          })
+          .catch((err) => {});
+      }, 10 * 60 * 1000);
+
+      var goFS = document.getElementById("title");
+      goFS.addEventListener(
+        "click",
+        function () {
+          toggleFullScreen();
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

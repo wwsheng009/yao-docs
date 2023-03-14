@@ -1,0 +1,125 @@
+[v-block] {
+  display: none;
+}
+
+.panel {
+  height: 60%;
+  font-size: 20px;
+}
+
+.video-block,
+.info-block,
+.alert-block {
+  display: flex;
+  justify-content: space-around;
+}
+
+.video-mask {
+  border-radius: 10px;
+  overflow: hidden;
+  /* width: 30%; */
+  width: 45%;
+  height: 210px;
+  /* border: 1px solid red; */
+}
+
+.info-block {
+  margin-top: 40px;
+  background: transparent;
+}
+
+.alert-mask {
+  margin-top: 0px;
+  height: 260px;
+}
+
+.warehouse-mask .title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 80px 12px 80px;
+  margin-top: 36px;
+}
+.warehouse-mask .title p {
+  font-size: 0.8em;
+  background: linear-gradient(to bottom, #fff, #9accff);
+  color: transparent;
+  font-family: mySecondFont;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.warehouse-mask .title img {
+  width: 1em;
+}
+.warehouse-mask .title .img {
+  transform: rotate(180deg);
+}
+
+.warehouse-mask .title .photo {
+  margin-top: 0.15em;
+}
+.warehouse-mask .name {
+  font-size: 1.2em;
+  text-align: center;
+  background: linear-gradient(to bottom, #fff, #9accff);
+  color: transparent;
+  font-family: myFirstFont;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+#alert-list td:first-child {
+  text-align: left !important;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 0;
+  background: transparent;
+}
+
+th {
+  height: 60px;
+  font-size: 16px;
+  color: #cccccc;
+}
+
+td {
+  border-top: 2px solid rgb(41, 62, 126);
+  text-align: center;
+  padding: 0.5em;
+  height: 40px;
+}
+
+.last-td {
+  border-bottom: 2px solid rgb(41, 62, 126);
+}
+
+.user-mask {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  height: 400px;
+  background-color: transparent;
+}
+
+.user-mask .name {
+  font-size: 18px;
+  line-height: 1.6;
+}
+.user-mask .photo {
+  margin-bottom: 15px;
+}
+.user-mask .photo {
+  border: 2px solid rgb(64, 101, 211, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 260px;
+  height: 350px;
+}
+.user-mask .photo img {
+  width: 260px;
+  border-radius: 10px;
+}

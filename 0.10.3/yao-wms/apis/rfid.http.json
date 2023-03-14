@@ -1,0 +1,34 @@
+{
+  "name": "标签接口",
+  "version": "1.0.0",
+  "description": "标签接口",
+  "group": "rfid",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/category",
+      "method": "GET",
+      "process": "flows.rfid.category",
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/sku",
+      "method": "GET",
+      "process": "flows.rfid.sku",
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/plan",
+      "method": "GET",
+      "process": "flows.rfid.plan",
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/:id/sku",
+      "method": "GET",
+      "process": "scripts.sku.GetByRFID",
+      "in": ["$param.id"],
+      "out": { "status": 200, "type": "application/json" }
+    }
+  ]
+}

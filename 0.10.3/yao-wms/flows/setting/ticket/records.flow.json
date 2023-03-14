@@ -1,0 +1,32 @@
+{
+  "label": "记录清单配置",
+  "version": "1.0.0",
+  "description": "记录清单配置",
+  "nodes": [],
+  "output": {
+    "name": "记录清单动态表",
+    "columns": {
+      "关联记录": {
+        "label": "关联记录",
+        "edit": {
+          "type": "cascader",
+          "props": {
+            "value": ":name",
+            "showSearch": true,
+            "multiple": false,
+            "remote": {
+              "api": "/api/ticket/record/select",
+              "query": { "select": ["name", "id"] }
+            }
+          }
+        }
+      }
+    },
+    "list": {
+      "primary": "id",
+      "layout": {
+        "columns": [{ "name": "关联记录", "width": 24 }]
+      }
+    }
+  }
+}

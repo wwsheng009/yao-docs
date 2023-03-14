@@ -1,0 +1,18 @@
+{
+  "label": "类目测试数据",
+  "version": "1.0.0",
+  "description": "测试数据初始化",
+  "nodes": [
+    {
+      "name": "类目",
+      "process": "models.material.category.EachSave",
+      "args": [
+        [
+          { "name": "二三项料", "category_sn": "100001" },
+          { "name": "五金", "category_sn": "200001" }
+        ]
+      ]
+    }
+  ],
+  "output": "{{$res.类目}}"
+}

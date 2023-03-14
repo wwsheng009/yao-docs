@@ -1,0 +1,21 @@
+{
+  "label": "类目标签",
+  "version": "1.0.0",
+  "description": "类目标签",
+  "nodes": [
+    {
+      "name": "标签列表",
+      "engine": "xiang",
+      "query": {
+        "select": [
+          ":SUBSTRING(sn, 1, 6) as value",
+          ":SUBSTRING(sn, 1, 6) as name"
+        ],
+        "from": "$rfid",
+        "groups": "value",
+        "limit": 2000
+      }
+    }
+  ],
+  "output": "{{$res.标签列表}}"
+}

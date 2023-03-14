@@ -1,0 +1,16 @@
+{
+  "name": "数据",
+  "action": {
+    "bind": {
+      "model": "material",
+      "form": "blank"
+    }
+  },
+  "layout": {
+    "primary": "id",
+    "header": { "preset": {}, "actions": [] }
+  },
+  "fields": {
+    "table": {}
+  }
+}

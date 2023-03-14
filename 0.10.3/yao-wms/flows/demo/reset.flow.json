@@ -1,0 +1,7 @@
+{
+  "label": "测试数据",
+  "version": "1.0.0",
+  "description": "测试数据初始化",
+  "nodes": [{ "name": "仓库", "process": "flows.demo.warehouse" }],
+  "output": "DONE"
+}

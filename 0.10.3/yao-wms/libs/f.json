@@ -1,0 +1,28 @@
+{
+  "关键词": {
+    "__comment": "{ '@': 'f.关键词', 'in': ['where.name.match']}",
+    "label": "关键词",
+    "bind": "{{$in.0}}",
+    "input": {
+      "type": "input",
+      "props": {
+        "placeholder": "请输入关键词"
+      }
+    }
+  },
+  "库存状态": {
+    "label": "状态",
+    "bind": "where.status.eq",
+    "input": {
+      "type": "select",
+      "props": {
+        "placeholder": "状态",
+        "options": [
+          { "label": "全部", "value": "全部" },
+          { "label": "正常", "value": "正常" },
+          { "label": "不足", "value": "不足" }
+        ]
+      }
+    }
+  }
+}

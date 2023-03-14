@@ -1,0 +1,73 @@
+{
+  "label": "物品清单动态列表配置",
+  "version": "1.0.0",
+  "description": "物品清单动态列表配置",
+  "nodes": [],
+  "output": {
+    "name": "物品清单动态表",
+    "columns": {
+      "单品": {
+        "label": "单品",
+        "edit": {
+          "type": "select",
+          "props": {
+            "value": ":sku_id",
+            "searchable": true,
+            "remote": {
+              "api": "/api/sku/select",
+              "query": {
+                "select": ["id", "unit"],
+                "keyword": "where_name_like"
+              }
+            }
+          }
+        }
+      },
+
+      "计划": {
+        "label": "计划",
+        "edit": { "type": "label", "props": { "value": "计划:" } }
+      },
+      "计划数量": {
+        "label": "计划数量",
+        "edit": {
+          "type": "input",
+          "props": {
+            "value": ":amount_plan",
+            "type": "number",
+            "placeholder": "计划数量"
+          }
+        }
+      },
+
+      "完成": {
+        "label": "完成",
+        "edit": { "type": "label", "props": { "value": "完成:" } }
+      },
+      "完成数量": {
+        "label": "完成数量",
+        "edit": {
+          "type": "input",
+          "props": {
+            "value": ":amount",
+            "type": "number",
+            "disabled": true,
+            "placeholder": "完成数量"
+          }
+        }
+      }
+    },
+    "list": {
+      "primary": "id",
+      "layout": {
+        "columns": [
+          { "name": "单品", "width": 12 },
+          { "name": "计划", "width": 3 },
+          { "name": "计划数量", "width": 3 },
+          { "name": "完成", "width": 3 },
+          { "name": "完成数量", "width": 3 }
+        ]
+      }
+    }
+  }
+}

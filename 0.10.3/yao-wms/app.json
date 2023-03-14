@@ -1,0 +1,13 @@
+{
+  "xgen": "1.0",
+  "name": "智慧仓库管理平台",
+  "short": "智慧仓库",
+  "version": "0.10.3",
+  "description": "智慧仓库管理平台",
+  "adminRoot": "admin",
+  "optional": { "hideNotification": true, "hideSetting": false },
+  "menu": {
+    "process": "flows.app.menu",
+    "args": []
+  }
+}

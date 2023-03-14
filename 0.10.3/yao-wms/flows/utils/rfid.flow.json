@@ -1,0 +1,23 @@
+{
+  "label": "下载单品RFID标签",
+  "version": "1.0.0",
+  "description": "下载单品RFID标签",
+  "nodes": [
+    {
+      "name": "文件",
+      "process": "xiang.table.Export",
+      "args": [
+        "material.sku.rfid",
+        { "wheres": [{ "column": "id", "value": "{{$in.0}}" }] },
+        1,
+        100
+      ]
+    },
+    {
+      "name": "数据",
+      "process": "xiang.fs.ReadFile",
+      "args": ["{{$res.文件}}", false]
+    }
+  ],
+  "output": "{{$res.数据.content}}"
+}

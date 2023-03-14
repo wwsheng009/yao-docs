@@ -1,0 +1,30 @@
+{
+  "label": "系统菜单",
+  "version": "1.0.0",
+  "description": "系统菜单初始化",
+  "nodes": [
+    {
+      "name": "菜单项",
+      "engine": "xiang",
+      "script": "items"
+    },
+    {
+      "name": "清理数据",
+      "engine": "xiang",
+      "query": {
+        "sql": { "stmt": "delete from `xiang_menu`" }
+      }
+    },
+    {
+      "name": "菜单",
+      "process": "xiang.helper.ArraySplit",
+      "args": ["{{$res.菜单项}}"]
+    },
+    {
+      "name": "插入数据",
+      "process": "models.xiang.menu.Insert",
+      "args": ["{{$res.菜单.columns}}", "{{$res.菜单.values}}"]
+    }
+  ],
+  "output": "success"
+}

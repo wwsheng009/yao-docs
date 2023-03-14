@@ -1,0 +1,58 @@
+{
+  "title": "导入单品",
+  "process": "scripts.imports.run.SKU",
+  "columns": [
+    {
+      "label": "物资名称",
+      "name": "name",
+      "match": ["物资名称", "物资", "名称", "material", "name"],
+      "rules": [
+        "scripts.imports.validate.Require",
+        "scripts.imports.getter.Len"
+      ]
+    },
+    {
+      "label": "规格型号",
+      "name": "specs",
+      "match": ["规格型号", "规格", "型号", "specs"],
+      "rules": ["scripts.imports.getter.Specs"]
+    },
+    {
+      "label": "预警库存",
+      "name": "stock",
+      "match": ["预警库存", "库存预警", "stock"],
+      "rules": [
+        "scripts.imports.validate.Require",
+        "scripts.imports.validate.Int"
+      ]
+    },
+    {
+      "label": "类目",
+      "name": "category",
+      "match": ["类目", "category", "类型"],
+      "rules": [
+        "scripts.imports.validate.Require",
+        "scripts.imports.validate.Len"
+      ]
+    },
+    {
+      "label": "单位",
+      "name": "unit",
+      "match": ["单位", "包装", "unit"],
+      "rules": ["scripts.imports.validate.Require"]
+    }
+  ],
+  "option": {
+    "autoMatching": true,
+    "chunkSize": 200,
+    "logging": "error",
+    "mappingPreview": "auto",
+    "dataPreview": "auto"
+  },
+  "rules": {
+    "scripts.imports.validate.Require": "必填项验证",
+    "scripts.imports.getter.Len": "长度校验",
+    "scripts.imports.getter.Int": "数字校验",
+    "scripts.imports.getter.Specs": "规格校验"
+  }
+}

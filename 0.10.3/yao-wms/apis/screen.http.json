@@ -1,0 +1,51 @@
+{
+  "name": "大屏接口",
+  "version": "1.0.0",
+  "description": "配置接口",
+  "group": "screen",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/user",
+      "method": "GET",
+      "process": "flows.stat.screen.user",
+      "in": ["$query.days"],
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/record",
+      "method": "GET",
+      "process": "flows.stat.screen.record",
+      "in": ["$query.days"],
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/stock",
+      "method": "GET",
+      "process": "flows.stat.screen.stock",
+      "in": ["$query.days"],
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/warehouse",
+      "method": "GET",
+      "process": "flows.stat.screen.warehouse",
+      "in": [],
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/setting",
+      "method": "GET",
+      "process": "flows.stat.screen.setting",
+      "in": [],
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/plan",
+      "method": "GET",
+      "process": "flows.stat.screen.plan",
+      "in": ["$query.days"],
+      "out": { "status": 200, "type": "application/json" }
+    }
+  ]
+}

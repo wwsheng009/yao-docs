@@ -1,0 +1,60 @@
+{
+  "label": "单品测试数据",
+  "version": "1.0.0",
+  "description": "单品测试数据",
+  "nodes": [
+    {
+      "name": "单品",
+      "process": "models.material.sku.EachSave",
+      "args": [
+        [
+          {
+            "N": "胶带",
+            "material_id": 1,
+            "sku_sn": "10000001",
+            "unit": "件",
+            "price": 95.0,
+            "tax_rate": 0.05,
+            "tax_price": 100.0,
+            "fin_price": 100.0,
+            "specs": { "高度": 450 }
+          },
+          {
+            "N": "螺丝",
+            "material_id": 2,
+            "sku_sn": "20000001",
+            "unit": "件",
+            "price": 95.0,
+            "tax_rate": 0.05,
+            "tax_price": 100.0,
+            "fin_price": 100.0,
+            "specs": { "高度": 250 }
+          },
+          {
+            "N": "螺丝",
+            "material_id": 2,
+            "sku_sn": "20000002",
+            "unit": "件",
+            "price": 95.0,
+            "tax_rate": 0.05,
+            "tax_price": 100.0,
+            "fin_price": 100.0,
+            "specs": { "高度": 350 }
+          },
+          {
+            "N": "螺丝",
+            "material_id": 2,
+            "sku_sn": "20000003",
+            "unit": "件",
+            "price": 95.0,
+            "tax_rate": 0.05,
+            "tax_price": 100.0,
+            "fin_price": 100.0,
+            "specs": { "高度": 450 }
+          }
+        ]
+      ]
+    }
+  ],
+  "output": "{{$res.单品}}"
+}

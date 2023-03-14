@@ -1,0 +1,20 @@
+{
+  "label": "测试数据",
+  "version": "1.0.0",
+  "description": "测试数据初始化",
+  "nodes": [
+    { "name": "类目", "process": "flows.demo.material.category" },
+    { "name": "厂商", "process": "flows.demo.supplier" },
+    { "name": "物资", "process": "flows.demo.material" },
+    { "name": "仓库", "process": "flows.demo.warehouse" },
+    { "name": "用户", "process": "flows.demo.user" },
+    { "name": "计划", "process": "flows.demo.plan" },
+    { "name": "标签", "process": "flows.demo.rfid" },
+    { "name": "记录", "process": "flows.demo.record" },
+    { "name": "凭据", "process": "flows.demo.ticket" },
+    { "name": "库存", "process": "scripts.cron.stock.Repair" },
+    { "name": "库存统计", "process": "scripts.cron.stat.Stock" },
+    { "name": "用户统计", "process": "scripts.cron.stat.User" }
+  ],
+  "output": "DONE"
+}

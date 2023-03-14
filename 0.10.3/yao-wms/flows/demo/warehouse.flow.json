@@ -1,0 +1,24 @@
+{
+  "label": "仓库测试数据",
+  "version": "1.0.0",
+  "description": "仓库测试数据初始化",
+  "nodes": [
+    {
+      "name": "仓库",
+      "process": "models.warehouse.EachSave",
+      "args": [
+        [
+          {
+            "node_id": "default",
+            "name": "仓库",
+            "location": "未设置",
+            "dept": "未设置",
+            "secret": "B4EXE1jzohg67sGd0h8zsoIgtUYEprzoCum3DKDQKS",
+            "status": "在线"
+          }
+        ]
+      ]
+    }
+  ],
+  "output": "{{$res.仓库}}"
+}

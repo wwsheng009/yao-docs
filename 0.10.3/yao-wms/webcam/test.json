@@ -1,0 +1,31 @@
+{
+  "urls": {
+    "cam01": {
+      "video": "rtsp://stream.strba.sk:1935/strba/VYHLAD_JAZERO.stream"
+    },
+    "cam02": {
+      "video": "rtsp://stream.strba.sk:1935/strba/VYHLAD_JAZERO.stream"
+    },
+    "cam03": {
+      "video": "rtsp://stream.strba.sk:1935/strba/VYHLAD_JAZERO.stream"
+    },
+    "cam01-inner": {
+      "video": "rtsp://stream.strba.sk:1935/strba/VYHLAD_JAZERO.stream"
+    },
+    "cam02-inner": {
+      "video": "rtsp://stream.strba.sk:1935/strba/VYHLAD_JAZERO.stream"
+    },
+    "cam03-inner": {
+      "video": "rtsp://stream.strba.sk:1935/strba/VYHLAD_JAZERO.stream"
+    },
+    "cam01-debug": {
+      "video": "rtsp://stream.strba.sk:1935/strba/VYHLAD_JAZERO.stream"
+    },
+    "cam02-debug": {
+      "video": "rtsp://stream.strba.sk:1935/strba/VYHLAD_JAZERO.stream"
+    },
+    "cam03-debug": {
+      "video": "rtsp://stream.strba.sk:1935/strba/VYHLAD_JAZERO.stream"
+    }
+  }
+}

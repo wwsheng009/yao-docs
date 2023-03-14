@@ -1,0 +1,15 @@
+{
+  "name": "供应商接口",
+  "version": "1.0.0",
+  "description": "供应商接口",
+  "group": "supplier",
+  "paths": [
+    {
+      "path": "/select",
+      "method": "GET",
+      "process": "flows.supplier.select",
+      "in": [],
+      "out": { "status": 200, "type": "application/json" }
+    }
+  ]
+}

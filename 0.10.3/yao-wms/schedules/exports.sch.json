@@ -1,0 +1,6 @@
+{
+  "name": "每分钟导出",
+  "schedule": "*/5 * * * *",
+  "task": "exports",
+  "args": []
+}

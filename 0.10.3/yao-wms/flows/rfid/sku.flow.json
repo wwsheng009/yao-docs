@@ -1,0 +1,21 @@
+{
+  "label": "单品标签",
+  "version": "1.0.0",
+  "description": "单品标签选取",
+  "nodes": [
+    {
+      "name": "标签列表",
+      "engine": "xiang",
+      "query": {
+        "select": [
+          ":SUBSTRING(sn, 7, 8) as value",
+          ":SUBSTRING(sn, 7, 8) as name"
+        ],
+        "from": "$rfid",
+        "groups": "value",
+        "limit": 2000
+      }
+    }
+  ],
+  "output": "{{$res.标签列表}}"
+}

@@ -1,0 +1,29 @@
+{
+  "label": "物资测试数据",
+  "version": "1.0.0",
+  "description": "测试数据初始化",
+  "nodes": [
+    {
+      "name": "物资",
+      "process": "models.material.EachSave",
+      "args": [
+        [
+          { "supplier_id": 1, "category_id": 2, "name": "梯子", "N": 1 },
+          { "supplier_id": 1, "category_id": 1, "name": "胶带", "N": 2 }
+        ]
+      ]
+    },
+    {
+      "name": "规格",
+      "process": "models.material.spec.EachSave",
+      "args": [
+        [
+          { "material_id": 1, "name": "高度", "type": "数字", "N": "梯子" },
+          { "material_id": 2, "name": "高度", "type": "数字", "N": "梯子" }
+        ]
+      ]
+    },
+    { "name": "单品", "process": "flows.demo.material.sku" }
+  ],
+  "output": "{{$res.物资}}"
+}

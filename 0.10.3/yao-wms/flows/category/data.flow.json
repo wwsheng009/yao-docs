@@ -1,0 +1,37 @@
+{
+  "label": "类目列表",
+  "version": "1.0.0",
+  "description": "类目列表",
+  "nodes": [
+    {
+      "name": "类目",
+      "engine": "xiang",
+      "query": {
+        "debug": true,
+        "select": [
+          "category.id",
+          "category.name",
+          "category.parent_id",
+          "category.category_sn",
+          "parent.name as parent_name"
+        ],
+        "from": "category",
+        "joins": [
+          {
+            "left": true,
+            "from": "category as parent",
+            "key": "parent.id",
+            "foreign": "category.parent_id"
+          }
+        ],
+        "limit": 1000
+      }
+    },
+    {
+      "name": "类目树",
+      "process": "xiang.helper.ArrayTree",
+      "args": ["{{$res.类目}}", { "parent": "parent_id", "empty": null }]
+    }
+  ],
+  "output": { "data": "{{$res.类目树}}" }
+}

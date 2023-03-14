@@ -1,0 +1,70 @@
+{
+  "label": "计划测试数据",
+  "version": "1.0.0",
+  "description": "计划数据初始化",
+  "nodes": [
+    {
+      "name": "计划",
+      "process": "models.plan.EachSave",
+      "args": [
+        [
+          {
+            "name": "2021年12月物资采购",
+            "start": "2021-12-01 00:00:00",
+            "end": "2021-12-31 00:00:00",
+            "plan_sn": null,
+            "status": "已完成"
+          },
+          {
+            "name": "2022年1月物资采购",
+            "start": "2022-01-01 00:00:00",
+            "end": "2022-01-31 00:00:00",
+            "plan_sn": "000000",
+            "status": "进行中"
+          },
+          {
+            "name": "2022年2月物资采购",
+            "start": "2022-02-01 00:00:00",
+            "end": "2022-02-28 00:00:00",
+            "plan_sn": null,
+            "status": "进行中"
+          },
+          {
+            "name": "2022年3月物资采购",
+            "start": "2022-03-01 00:00:00",
+            "end": "2022-03-31 00:00:00",
+            "plan_sn": null,
+            "status": "已完成"
+          },
+          {
+            "name": "2022年4月物资采购",
+            "start": "2022-04-01 00:00:00",
+            "end": "2022-04-30 00:00:00",
+            "plan_sn": null,
+            "status": "进行中"
+          },
+          {
+            "name": "2022年5月物资采购",
+            "start": "2022-05-01 00:00:00",
+            "end": "2022-05-30 00:00:00",
+            "plan_sn": null,
+            "status": "草稿"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "物料清单",
+      "process": "models.plan.item.EachSave",
+      "args": [
+        [
+          { "plan_id": 1, "sku_id": 1, "amount": 1, "amount_plan": 1 },
+          { "plan_id": 2, "sku_id": 1, "amount": 0, "amount_plan": 2 },
+          { "plan_id": 2, "sku_id": 2, "amount": 0, "amount_plan": 4 },
+          { "plan_id": 2, "sku_id": 3, "amount": 0, "amount_plan": 2 }
+        ]
+      ]
+    }
+  ],
+  "output": "{{$res.计划}}"
+}

@@ -1,0 +1,419 @@
+{
+  "Label": {
+    "__comment": "{ '@': 'c.Label', 'in': ['更新时间',':updated_at']}",
+    "label": "{{$in.0}}",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": "{{$in.1}}"
+      }
+    }
+  },
+  "Tag": {
+    "__comment": "{ '@': 'c.Tag', 'in': ['更新时间',':updated_at']}",
+    "label": "{{$in.0}}",
+    "view": {
+      "name": "tag",
+      "props": {
+        "value": "{{$in.1}}"
+      }
+    }
+  },
+  "TextArea": {
+    "__comment": "{ '@': 'c.TextArea', 'in':['介绍', ':desc', 4]}",
+    "label": "{{$in.0}}",
+    "view": {
+      "type": "label",
+      "props": {
+        "value": "{{$in.1}}"
+      }
+    },
+    "edit": {
+      "type": "textArea",
+      "props": {
+        "value": "{{$in.1}}",
+        "rows": "{{$in.2}}"
+      }
+    }
+  },
+  "Number": {
+    "__comment": "{ '@': 'c.Number', 'in':['介绍', ':desc']}",
+    "label": "{{$in.0}}",
+    "view": {
+      "type": "label",
+      "props": { "value": "{{$in.1}}" }
+    },
+    "edit": {
+      "type": "input",
+      "props": { "value": "{{$in.1}}", "type": "number" }
+    }
+  },
+  "Images": {
+    "__comment": "{ '@': 'c.Images', 'in': ['图片', 'images', 1, false] }",
+    "label": "{{$in.0}}",
+    "view": {
+      "type": "image",
+      "props": {
+        "value": "{{$in.1}}",
+        "width": 40,
+        "height": 40
+      }
+    },
+    "edit": {
+      "type": "upload",
+      "props": {
+        "value": "{{$in.1}}",
+        "filetype": "image",
+        "maxCount": "{{$in.2}}",
+        "multiple": "{{$in.3}}"
+      }
+    }
+  },
+  "DateTime": {
+    "__comment": "{ '@': 'c.DateTime', 'in': ['更新时间',':updated_at', 'YYYY年MM月DD日 @hh:mm:ss'] }",
+    "label": "{{$in.0}}",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": "{{$in.1}}",
+        "format": "{{$in.2}}"
+      }
+    }
+  },
+  "DatePicker": {
+    "__comment": "{ '@': 'c.DatePicker', 'in': ['更新时间',':updated_at', 'YYYY年MM月DD日 @hh:mm:ss', true]}",
+    "label": "{{$in.0}}",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": "{{$in.1}}",
+        "format": "{{$in.2}}"
+      }
+    },
+    "edit": {
+      "type": "datePicker",
+      "props": {
+        "value": "{{$in.1}}",
+        "format": "{{$in.2}}",
+        "showTime": "{{$in.3}}"
+      }
+    }
+  },
+  "所属类目": {
+    "__comment": "{ '@': 'c.所属类目'}",
+    "label": "类目",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": ":category.name"
+      }
+    },
+    "edit": {
+      "type": "treeSelect",
+      "props": {
+        "value": ":category_id",
+        "allowClear": true,
+        "remote": {
+          "api": "/api/category/select",
+          "query": { "select": ["id", "name"] }
+        }
+      }
+    }
+  },
+  "上级类目": {
+    "__comment": "{ '@': 'c.上级类目'}",
+    "label": "上级类目",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": ":parent_name"
+      }
+    },
+    "edit": {
+      "type": "treeSelect",
+      "props": {
+        "value": ":parent_id",
+        "allowClear": true,
+        "remote": {
+          "api": "/api/category/select",
+          "query": { "select": ["id", "name"] }
+        }
+      }
+    }
+  },
+  "所属单位": {
+    "__comment": "{ '@': 'c.所属单位'}",
+    "label": "单位",
+    "view": {
+      "name": "label",
+      "props": { "value": ":supplier.short" }
+    },
+    "edit": {
+      "type": "select",
+      "props": {
+        "value": ":supplier_id",
+        "allowClear": true,
+        "showSearch": true,
+        "remote": {
+          "api": "/api/supplier/select",
+          "query": {
+            "select": ["id", "name", "short"],
+            "limit": 3000,
+            "name": "short"
+          }
+        }
+      }
+    }
+  },
+  "所属物资": {
+    "__comment": "{ '@': 'c.所属物资'}",
+    "label": "物资",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": ":material.name"
+      }
+    },
+    "edit": {
+      "type": "select",
+      "props": {
+        "value": ":material_id",
+        "allowClear": true,
+        "showSearch": true,
+        "remote": {
+          "api": "/api/xiang/table/material/select",
+          "query": {
+            "select": ["id", "name"],
+            "limit": 3000
+          }
+        }
+      }
+    }
+  },
+  "单品弹窗": {
+    "__comment": "{ '@': 'c.单品弹窗'}",
+    "label": "单品",
+    "view": {
+      "type": "formModal",
+      "props": {
+        "type": "view",
+        "value": ":sku_name",
+        "formId": ":sku.id",
+        "formName": "material.sku"
+      }
+    }
+  },
+  "计划弹窗": {
+    "__comment": "{ '@': 'c.计划弹窗'}",
+    "label": "计划",
+    "view": {
+      "type": "formModal",
+      "props": {
+        "type": "view",
+        "value": ":plan.name",
+        "formId": ":plan.id",
+        "formName": "plan"
+      }
+    }
+  },
+  "用户弹窗": {
+    "__comment": "{ '@': 'c.用户弹窗'}",
+    "label": "用户",
+    "view": {
+      "type": "formModal",
+      "props": {
+        "type": "view",
+        "value": ":user.name",
+        "formId": ":user.id",
+        "formName": "user"
+      }
+    }
+  },
+  "仓库弹窗": {
+    "__comment": "{ '@': 'c.仓库弹窗'}",
+    "label": "仓库",
+    "view": {
+      "type": "formModal",
+      "props": {
+        "type": "view",
+        "value": ":warehouse.name",
+        "formId": ":warehouse_id",
+        "formName": "warehouse"
+      }
+    }
+  },
+  "凭据弹窗": {
+    "__comment": "{ '@': 'c.凭据弹窗'}",
+    "label": "凭据",
+    "view": {
+      "type": "formModal",
+      "props": {
+        "type": "view",
+        "value": ":ticket.name",
+        "formId": ":ticket_id",
+        "formName": "ticket"
+      }
+    }
+  },
+  "所属单品": {
+    "__comment": "{ '@': 'c.所属单品'}",
+    "label": "单品",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": ":material.name"
+      }
+    },
+    "edit": {
+      "type": "select",
+      "props": {
+        "value": ":sku_id",
+        "allowClear": true,
+        "showSearch": true,
+        "remote": {
+          "api": "/api/sku/select",
+          "query": {
+            "select": ["id", "unit"],
+            "limit": 3000,
+            "name": "unit"
+          }
+        }
+      }
+    }
+  },
+  "所属用户": {
+    "__comment": "{ '@': 'c.所属用户'}",
+    "label": "用户",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": ":user.name"
+      }
+    },
+    "edit": {
+      "type": "select",
+      "props": {
+        "value": ":user_id",
+        "allowClear": true,
+        "showSearch": true,
+        "remote": {
+          "api": "/api/user/select",
+          "query": { "select": ["id", "name"], "limit": 3000 }
+        }
+      }
+    }
+  },
+  "所属计划": {
+    "__comment": "{ '@': 'c.所属计划'}",
+    "label": "计划",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": ":plan.name"
+      }
+    },
+    "edit": {
+      "type": "select",
+      "props": {
+        "value": ":plan_id",
+        "allowClear": true,
+        "showSearch": true,
+        "remote": {
+          "api": "/api/xiang/table/plan/select",
+          "query": {
+            "select": ["id", "name"],
+            "limit": 3000
+          }
+        }
+      }
+    }
+  },
+  "所在仓库": {
+    "__comment": "{ '@': 'c.所在仓库'}",
+    "label": "仓库",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": ":warehouse.name"
+      }
+    },
+    "edit": {
+      "type": "select",
+      "props": {
+        "value": ":warehouse_id",
+        "allowClear": true,
+        "remote": {
+          "api": "/api/xiang/table/warehouse/select",
+          "query": {
+            "select": ["id", "name"],
+            "limit": 3000
+          }
+        }
+      }
+    }
+  },
+  "所属凭据": {
+    "__comment": "{ '@': 'c.所属凭据'}",
+    "label": "凭据",
+    "view": {
+      "name": "label",
+      "props": {
+        "value": ":ticket.name"
+      }
+    },
+    "edit": {
+      "type": "select",
+      "props": {
+        "value": ":ticket_id",
+        "allowClear": true,
+        "showSearch": true,
+        "remote": {
+          "api": "/api/xiang/table/warehouse/select",
+          "query": {
+            "select": ["id", "name"],
+            "limit": 3000
+          }
+        }
+      }
+    }
+  },
+  "类目标签": {
+    "__comment": "{ '@': 'c.类目标签'}",
+    "label": "标签",
+    "view": { "name": "label", "props": { "value": ":category_sn" } },
+    "edit": {
+      "type": "input",
+      "props": {
+        "value": ":category_sn",
+        "placeholder": "类目标签将自动生成",
+        "disabled": true
+      }
+    }
+  },
+  "单品标签": {
+    "__comment": "{ '@': 'c.单品标签'}",
+    "label": "标签",
+    "view": { "name": "label", "props": { "value": ":sku_sn" } },
+    "edit": {
+      "type": "input",
+      "props": {
+        "value": ":sku_sn",
+        "placeholder": "单品标签将自动生成",
+        "disabled": true
+      }
+    }
+  },
+  "计划标签": {
+    "__comment": "{ '@': 'c.计划标签'}",
+    "label": "标签",
+    "view": { "name": "label", "props": { "value": ":plan_sn" } },
+    "edit": {
+      "type": "input",
+      "props": {
+        "value": ":plan_sn",
+        "placeholder": "计划标签将自动生成",
+        "disabled": true
+      }
+    }
+  }
+}

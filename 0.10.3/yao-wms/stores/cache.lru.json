@@ -1,0 +1,6 @@
+{
+  "name": "LRU Cache",
+  "description": "LRU缓存",
+  "type": "lru",
+  "option": { "size": 102400 }
+}

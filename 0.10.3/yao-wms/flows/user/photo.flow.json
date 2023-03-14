@@ -1,0 +1,13 @@
+{
+  "label": "用户照片",
+  "version": "1.0.0",
+  "description": "用户照片",
+  "nodes": [
+    {
+      "name": "image",
+      "process": "xiang.fs.ReadFile",
+      "args": ["{{$in.0}}", 0]
+    }
+  ],
+  "output": "{{$res.image.content}}"
+}

@@ -1,0 +1,13 @@
+[[tls.certificates]]
+  certFile = "/data/certs/star.iqka.com.cert"
+  keyFile = "/data/certs/star.iqka.com.key"
+
+[http.routers.warehouse]
+  tls = true
+  rule = "Host(`warehouse.iqka.com`)"
+  service = "warehouse@file"
+
+[http.services]
+  [http.services.warehouse.loadBalancer]
+    [[http.services.warehouse.loadBalancer.servers]]
+      url = "http://172.17.0.1:4018/"

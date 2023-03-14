@@ -1,0 +1,15 @@
+{
+  "name": "设备接口",
+  "version": "1.0.0",
+  "description": "设备接口",
+  "group": "device",
+  "guard": "bearer-jwt",
+  "paths": [
+    {
+      "path": "/status",
+      "method": "GET",
+      "process": "scripts.device.Status",
+      "out": { "status": 200, "type": "application/json" }
+    }
+  ]
+}

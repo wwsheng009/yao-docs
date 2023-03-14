@@ -1,0 +1,34 @@
+{
+  "name": "入库记录",
+  "version": "1.0.0",
+  "decription": "入库记录管理表格",
+  "bind": { "model": "record", "withs": {} },
+  "hooks": {},
+  "apis": {},
+  "columns": {},
+  "filters": {},
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [{ "name": "ID", "width": 80 }],
+      "filters": []
+    },
+    "actions": {
+      "create": {
+        "type": "button",
+        "props": { "label": "添加", "icon": "fas fa-plus" }
+      },
+      "pagination": {}
+    },
+    "option": {}
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [{ "columns": [{ "name": "ID", "width": 24 }] }]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": {} }
+  },
+  "insert": {},
+  "view": {}
+}

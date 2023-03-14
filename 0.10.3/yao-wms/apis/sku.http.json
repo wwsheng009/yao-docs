@@ -1,0 +1,26 @@
+{
+  "name": "单品接口",
+  "version": "1.0.0",
+  "description": "单品接口",
+  "group": "sku",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/select",
+      "method": "GET",
+      "process": "flows.sku.select",
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    },
+    {
+      "path": "/:id/rfid/next",
+      "guard": "bearer-jwt",
+      "method": "GET",
+      "process": "scripts.sku.NextRFID",
+      "in": ["$param.id"],
+      "out": { "status": 200, "type": "application/json" }
+    }
+  ]
+}

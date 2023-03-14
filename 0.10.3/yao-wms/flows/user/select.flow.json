@@ -1,0 +1,30 @@
+{
+  "label": "用户列表",
+  "version": "1.0.0",
+  "description": "用户照片",
+  "nodes": [
+    {
+      "name": "users",
+      "engine": "xiang",
+      "debug": true,
+      "query": {
+        "select": [
+          "user.id",
+          "supplier.type",
+          ":CONCAT_WS( '', supplier.type, ': ', supplier.short, '-', user.name) as name"
+        ],
+        "from": "$user",
+        "joins": [
+          {
+            "from": "supplier",
+            "key": "user.id",
+            "foreign": "supplier.id",
+            "left": true
+          }
+        ],
+        "limit": 3000
+      }
+    }
+  ],
+  "output": "{{$res.users}}"
+}

@@ -1,0 +1,48 @@
+{
+  "name": "单品标签下载",
+  "version": "1.0.0",
+  "decription": "单品标签下载",
+  "bind": {
+    "model": "material.sku",
+    "withs": {
+      "material": {
+        "query": { "withs": { "category": {}, "supplier": {} } }
+      }
+    }
+  },
+  "hooks": {
+    "after:search": "scripts.sku.RFID"
+  },
+  "columns": {
+    "RFID": { "@": "c.Label", "in": ["RFID", "rfid"] },
+    "标签": { "@": "c.Label", "in": ["标签", "item"] },
+    "类目": { "@": "c.Label", "in": ["类目", "category"] },
+    "单品": { "@": "c.Label", "in": ["单品", "sku"] },
+    "计划": { "@": "c.Label", "in": ["计划", "plan"] },
+    "仓库": { "@": "c.Label", "in": ["仓库", "node_id"] },
+    "状态": { "@": "c.Label", "in": ["状态", "status"] }
+  },
+  "filters": {
+    "关键词": { "@": "f.关键词", "in": ["where.id.eq"] }
+  },
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [
+        { "name": "RFID" },
+        { "name": "标签" },
+        { "name": "类目" },
+        { "name": "单品" },
+        { "name": "计划" },
+        { "name": "仓库" },
+        { "name": "状态" }
+      ],
+      "filters": [{ "name": "ID" }]
+    },
+    "actions": { "pagination": {} },
+    "option": { "operation": { "unfold": true, "hideView": true } }
+  },
+  "edit": {},
+  "insert": {},
+  "view": {}
+}

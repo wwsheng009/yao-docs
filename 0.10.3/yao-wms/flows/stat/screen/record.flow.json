@@ -1,0 +1,83 @@
+{
+  "label": "物资进出大屏呈现",
+  "version": "1.0.0",
+  "description": "物资进出大屏呈现",
+  "nodes": [
+    {
+      "name": "日期",
+      "process": "scripts.time.RangeYesterdayTime",
+      "args": ["{{$in.0}}"]
+    },
+    {
+      "name": "入库",
+      "engine": "xiang",
+      "query": {
+        "debug": true,
+        "select": [
+          ":DATE_FORMAT(uptime, '%Y年%m月%d日') as day",
+          ":COUNT(id) as 数量"
+        ],
+        "wheres": [
+          { ":uptime": "日期", ">=": "?:$res.日期.from" },
+          { ":uptime": "日期", "<=": "?:$res.日期.to" },
+          { ":type": "类型", "<=": "入库" }
+        ],
+        "from": "record",
+        "groups": ["day"]
+      }
+    },
+    {
+      "name": "出库",
+      "engine": "xiang",
+      "query": {
+        "debug": true,
+        "select": [
+          ":DATE_FORMAT(uptime, '%Y年%m月%d日') as day",
+          ":COUNT(id) as 数量"
+        ],
+        "wheres": [
+          { ":uptime": "日期", ">=": "?:$res.日期.from" },
+          { ":uptime": "日期", "<=": "?:$res.日期.to" },
+          { ":type": "类型", "<=": "出库" }
+        ],
+        "from": "record",
+        "groups": ["day"]
+      }
+    },
+    {
+      "name": "入库结果",
+      "process": "scripts.time.Defaults",
+      "args": ["{{$res.日期}}", "{{$res.入库}}", { "数量": 0 }]
+    },
+    {
+      "name": "出库结果",
+      "process": "scripts.time.Defaults",
+      "args": ["{{$res.日期}}", "{{$res.出库}}", { "数量": 0 }]
+    },
+    {
+      "name": "合并结果",
+      "process": "xiang.helper.ArrayPluck",
+      "args": [
+        ["day", "入库", "出库"],
+        {
+          "入库": {
+            "key": "day",
+            "value": "数量",
+            "items": "{{$res.入库结果}}"
+          },
+          "出库": {
+            "key": "day",
+            "value": "数量",
+            "items": "{{$res.出库结果}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "结果",
+      "process": "scripts.time.Defaults",
+      "args": ["{{$res.日期}}", "{{$res.合并结果}}", { "正常": 0, "预警": 0 }]
+    }
+  ],
+  "output": "{{$res.结果}}"
+}

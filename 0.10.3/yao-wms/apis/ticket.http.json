@@ -1,0 +1,16 @@
+{
+  "name": "凭据接口",
+  "version": "1.0.0",
+  "description": "标签接口",
+  "group": "ticket",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/record/select",
+      "method": "GET",
+      "process": "scripts.ticket.Select",
+      "in": [],
+      "out": { "status": 200, "type": "application/json" }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+.ticket-table,
+.ticket-head {
+  font-size: 12px;
+}
+
+.ticket-head {
+  margin-bottom: 12px;
+  display: flex;
+  font-size: 12px;
+  width: 700px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ticket-table {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 700px;
+}
+
+.ticket-table td {
+  text-align: center;
+}

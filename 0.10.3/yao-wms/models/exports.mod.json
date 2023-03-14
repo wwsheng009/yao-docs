@@ -1,0 +1,42 @@
+{
+  "name": "导出",
+  "table": {
+    "name": "exports",
+    "comment": "导出"
+  },
+  "columns": [
+    { "label": "ID", "name": "id", "type": "ID" },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string",
+      "nullable": true,
+      "comment": "导出模块的名称"
+    },
+    {
+      "label": "表格名称",
+      "name": "table_name",
+      "type": "string",
+      "nullable": true,
+      "comment": "表格名称"
+    },
+    {
+      "label": "下载地址",
+      "name": "url",
+      "type": "string",
+      "nullable": true,
+      "comment": "下载地址"
+    },
+
+    {
+      "label": "状态",
+      "name": "status",
+      "type": "enum",
+      "default": "未完成",
+      "option": ["", "未完成", "已完成", "导出错误"],
+      "comment": "类型: 未完成, 已完成,导出错误"
+    }
+  ],
+  "relations": {},
+  "option": { "timestamps": true, "soft_deletes": true }
+}

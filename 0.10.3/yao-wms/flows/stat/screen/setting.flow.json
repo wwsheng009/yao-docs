@@ -1,0 +1,9 @@
+{
+  "label": "数据大屏配置",
+  "version": "1.0.0",
+  "description": "数据大屏配置",
+  "nodes": [
+    { "name": "名称", "process": "xiang.env.Get", "args": ["SCREEN_NAME"] },
+    { "name": "监控", "process": "xiang.env.Get", "args": ["SCREEN_WEBCAM"] }
+  ]
+}

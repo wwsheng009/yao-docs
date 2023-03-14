@@ -1,0 +1,18 @@
+# This is the network config written by 'subiquity'
+# /etc/netplan/00-installer-config.yaml
+# sudo netplan apply
+network:
+  ethernets:
+    enp1s0:
+      addresses: [192.168.31.99/24]
+      gateway4: 192.168.31.1
+      dhcp4: false
+      nameservers:
+        addresses: [192.168.31.1]
+    enp2s0:
+      addresses: [192.168.1.99/24]
+      gateway4: 192.168.1.1
+      dhcp4: false
+      nameservers:
+        addresses: [192.168.1.1]
+  version: 2

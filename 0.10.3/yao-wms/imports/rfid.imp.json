@@ -1,0 +1,43 @@
+{
+  "title": "导入RFID标签",
+  "process": "scripts.imports.run.RFID",
+  "columns": [
+    {
+      "label": "标签",
+      "name": "sn",
+      "match": ["标签", "RFID", "ID", "SN", "sn", "id"],
+      "rules": [
+        "scripts.imports.validate.Require",
+        "scripts.imports.getter.RFID"
+      ]
+    },
+    {
+      "label": "仓库",
+      "name": "node_id",
+      "match": ["仓库", "节点", "node_id", "node", "node_id"],
+      "rules": ["scripts.imports.getter.Node"]
+    },
+    {
+      "label": "状态",
+      "name": "status",
+      "match": ["状态", "status", "STATUS"],
+      "rules": [
+        "scripts.imports.validate.Require",
+        "scripts.imports.validate.StatusRFID"
+      ]
+    }
+  ],
+  "option": {
+    "autoMatching": true,
+    "chunkSize": 20,
+    "logging": "error",
+    "mappingPreview": "auto",
+    "dataPreview": "auto",
+    "templateLink": "/somelinke/download/xxx"
+  },
+  "rules": {
+    "scripts.imports.validate.Require": "必填项验证",
+    "scripts.imports.getter.RFID": "输入标签转换",
+    "scripts.imports.getter.Node": "解析仓库"
+  }
+}

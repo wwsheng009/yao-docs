@@ -1,0 +1,19 @@
+{
+  "label": "按单品聚合查询",
+  "version": "1.0.0",
+  "description": "按单品聚合查询",
+  "nodes": [
+    {
+      "name": "记录清单",
+      "engine": "xiang",
+      "query": {
+        "debug": true,
+        "select": [":COUNT(id) as cnt", "sku_id"],
+        "from": "$record",
+        "wheres": [{ ":type": "类型", "=": "?:$type" }],
+        "groups": "sku_id"
+      }
+    }
+  ],
+  "output": "{{$res.记录清单}}"
+}

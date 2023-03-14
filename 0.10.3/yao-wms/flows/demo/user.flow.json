@@ -1,0 +1,56 @@
+{
+  "label": "用户测试数据",
+  "version": "1.0.0",
+  "description": "用户测试数据初始化",
+  "nodes": [
+    {
+      "name": "用户",
+      "process": "models.user.EachSave",
+      "args": [
+        [
+          {
+            "supplier_id": 1,
+            "user_sn": "1001",
+            "name": "李铭",
+            "idcard": "441821198508067017",
+            "mobile": "14659556287",
+            "type": "供应商"
+          },
+          {
+            "supplier_id": 1,
+            "user_sn": "SP000002",
+            "name": "殷郡",
+            "idcard": "43042420001023111X",
+            "mobile": "15976337391",
+            "type": "供应商"
+          },
+          {
+            "supplier_id": 2,
+            "user_sn": "SP000003",
+            "name": "朱贤鑫",
+            "idcard": "411327198703027518",
+            "mobile": "19776668407",
+            "type": "供应商"
+          },
+          {
+            "supplier_id": 3,
+            "user_sn": "SP000004",
+            "name": "荣清",
+            "idcard": "44532219750220711X",
+            "mobile": "13181654502",
+            "type": "供应商"
+          },
+          {
+            "supplier_id": null,
+            "user_sn": "DL000001",
+            "name": "尹一民",
+            "idcard": "140430199809035112",
+            "mobile": "16989469199",
+            "type": "内部员工"
+          }
+        ]
+      ]
+    }
+  ],
+  "output": "{{$res.用户}}"
+}

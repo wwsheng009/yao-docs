@@ -1,0 +1,215 @@
+{
+  "label": "指挥中心",
+  "version": "1.0.0",
+  "description": "指挥中心",
+  "nodes": [
+    {
+      "name": "库存",
+      "process": "flows.stat.screen.stock",
+      "args": [7]
+    },
+    {
+      "name": "记录",
+      "process": "flows.stat.screen.record",
+      "args": [7]
+    },
+    {
+      "name": "用户",
+      "process": "flows.stat.screen.user",
+      "args": [7]
+    },
+    {
+      "name": "计划",
+      "process": "flows.stat.screen.plan",
+      "args": [60]
+    },
+    {
+      "name": "最新",
+      "process": "xiang.table.Search",
+      "args": ["record.total", {}, 1, 10]
+    }
+  ],
+  "output": {
+    "data": {
+      "库存预警": "{{$res.库存}}",
+      "物资进出": "{{$res.记录}}",
+      "人员出入": "{{$res.用户}}",
+      "采购计划": "{{$res.计划}}",
+      "最新动态": "{{$res.最新.data}}"
+    },
+    "query": "{{$in}}"
+  },
+  "apis": {},
+  "page": {
+    "option": {
+      "screen": "/screen/index.html"
+    },
+    "primary": "name",
+    "layout": {
+      "filters": [],
+      "charts": [
+        {
+          "name": "库存预警",
+          "width": 12,
+          "type": "lineBar",
+          "props": {
+            "height": 240,
+            "x_key": "day",
+            "axisLabel": {
+              "interval": 0,
+              "rotate": 45,
+              "textStyle": { "fontSize": 10 }
+            },
+            "tooltip": {
+              "textStyle": { "color": "#a2a5b9", "fontSize": 12 },
+              "backgroundColor": "#232326",
+              "borderRadius": 6
+            },
+            "series": [
+              {
+                "name": "总数",
+                "type": "bar",
+                "colorBy": "data",
+                "splitLine": { "show": false },
+                "label": { "show": true, "position": "top" },
+                "axisLabel": { "show": true }
+              },
+              {
+                "name": "预警",
+                "type": "line",
+                "colorBy": "data",
+                "splitLine": { "show": false },
+                "label": { "show": true, "position": "top" },
+                "axisLabel": { "show": true }
+              }
+            ]
+          }
+        },
+        {
+          "name": "采购计划",
+          "width": 12,
+          "type": "pie",
+          "props": {
+            "height": 240,
+            "x_key": "name",
+            "tooltip": {
+              "textStyle": { "color": "#a2a5b9", "fontSize": 12 },
+              "backgroundColor": "#232326",
+              "borderRadius": 6
+            },
+            "series": [
+              {
+                "name": "数量",
+                "type": "pie",
+                "roseType": "area",
+                "radius": [10, 100],
+                "center": ["60%", "50%"],
+                "itemStyle": { "borderRadius": 3 }
+              }
+            ]
+          }
+        },
+        {
+          "name": "物资进出",
+          "width": 12,
+          "type": "line",
+          "props": {
+            "height": 240,
+            "x_key": "day",
+            "axisLabel": {
+              "interval": 0,
+              "rotate": 45,
+              "textStyle": { "fontSize": 10 }
+            },
+            "tooltip": {
+              "textStyle": { "color": "#a2a5b9", "fontSize": 12 },
+              "backgroundColor": "#232326",
+              "borderRadius": 6
+            },
+            "series": [
+              {
+                "name": "入库",
+                "type": "line",
+                "colorBy": "data",
+                "splitLine": { "show": false },
+                "label": { "show": true, "position": "top" },
+                "axisLabel": { "show": true }
+              },
+              {
+                "name": "出库",
+                "type": "line",
+                "colorBy": "data",
+                "splitLine": { "show": false },
+                "label": { "show": true, "position": "top" },
+                "axisLabel": { "show": true }
+              }
+            ]
+          }
+        },
+        {
+          "name": "人员出入",
+          "width": 12,
+          "type": "line",
+          "props": {
+            "height": 240,
+            "x_key": "day",
+            "axisLabel": {
+              "interval": 0,
+              "rotate": 45,
+              "textStyle": { "fontSize": 10 }
+            },
+            "tooltip": {
+              "textStyle": { "color": "#a2a5b9", "fontSize": 12 },
+              "backgroundColor": "#232326",
+              "borderRadius": 6
+            },
+            "series": [
+              {
+                "name": "进入",
+                "type": "line",
+                "colorBy": "data",
+                "splitLine": { "show": false },
+                "label": { "show": true, "position": "top" },
+                "axisLabel": { "show": true }
+              },
+              {
+                "name": "离开",
+                "type": "line",
+                "colorBy": "data",
+                "splitLine": { "show": false },
+                "label": { "show": true, "position": "top" },
+                "axisLabel": { "show": true }
+              }
+            ]
+          }
+        },
+        {
+          "name": "最新动态",
+          "width": 24,
+          "type": "table",
+          "props": {
+            "height": 320,
+            "columns": [
+              {
+                "title": "日期",
+                "dataIndex": "day"
+              },
+              {
+                "title": "行为",
+                "dataIndex": "type"
+              },
+              {
+                "title": "人员",
+                "dataIndex": "user_name"
+              },
+              {
+                "title": "物料",
+                "dataIndex": "sku_name"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

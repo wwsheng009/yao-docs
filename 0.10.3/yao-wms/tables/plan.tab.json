@@ -1,0 +1,81 @@
+{
+  "name": "计划",
+  "version": "1.0.0",
+  "decription": "计划表格",
+  "bind": {
+    "model": "plan",
+    "withs": {
+      "items": {
+        "query": { "select": ["id", "sku_id", "amount", "amount_plan"] }
+      }
+    }
+  },
+  "hooks": {
+    "after:save": "scripts.plan.AfterSave"
+  },
+  "apis": { "search": { "default": [null, null, 10] } },
+  "columns": {
+    "开始时间": {
+      "@": "c.DatePicker",
+      "in": ["开始时间", ":start", "YYYY年MM月DD日 @hh:mm:ss", true]
+    },
+    "结束时间": {
+      "@": "c.DatePicker",
+      "in": ["结束时间", ":end", "YYYY年MM月DD日 @hh:mm:ss", true]
+    },
+    "物资清单": {
+      "label": "物资清单",
+      "edit": {
+        "type": "dynamicList",
+        "props": {
+          "setting": "plan.items",
+          "value": ":items",
+          "query": { "sort": "$index" }
+        }
+      }
+    },
+    "标签": { "@": "c.计划标签" }
+  },
+  "filters": { "关键词": { "@": "f.关键词", "in": ["where.name.match"] } },
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [
+        { "name": "标签", "width": 100 },
+        { "name": "名称", "width": 240 },
+        { "name": "开始时间", "width": 260 },
+        { "name": "结束时间", "width": 260 },
+        { "name": "状态" }
+      ],
+      "filters": [{ "name": "关键词" }]
+    },
+    "actions": {
+      "create": {
+        "type": "button",
+        "props": { "label": "新建计划", "icon": "fas fa-plus" }
+      },
+      "pagination": {}
+    },
+    "option": { "operation": { "unfold": true, "hideView": true } }
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [
+        {
+          "columns": [
+            { "name": "标签", "width": 8 },
+            { "name": "名称", "width": 8 },
+            { "name": "状态", "width": 8 },
+            { "name": "开始时间", "width": 8 },
+            { "name": "结束时间", "width": 8 },
+            { "name": "物资清单", "width": 24 }
+          ]
+        }
+      ]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": { "type": "button" } }
+  },
+  "insert": {},
+  "view": {}
+}

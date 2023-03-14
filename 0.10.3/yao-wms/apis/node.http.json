@@ -1,0 +1,23 @@
+{
+  "name": "接收边缘节点事件",
+  "version": "1.0.0",
+  "description": "接收边缘节点事件",
+  "group": "node",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/on/:event",
+      "method": "POST",
+      "process": "scripts.node.HttpMessage",
+      "in": ["$param.event", ":payload"],
+      "out": { "status": 200 }
+    },
+    {
+      "path": "/test",
+      "method": "GET",
+      "process": "scripts.node.test",
+      "in": ["$query.cmd"],
+      "out": { "status": 200 }
+    }
+  ]
+}

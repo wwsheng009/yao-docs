@@ -1,0 +1,60 @@
+{
+  "label": "库存统计",
+  "version": "1.0.0",
+  "description": "库存统计",
+  "nodes": [
+    {
+      "name": "日期",
+      "process": "scripts.time.Nextday",
+      "args": ["{{$in.0}}"]
+    },
+    {
+      "name": "入库",
+      "engine": "xiang",
+      "query": {
+        "select": [
+          "sku_id",
+          "sku.stock as 预警",
+          "type",
+          "uptime",
+          ":COUNT(record.id) as 数量",
+          ":DATE_FORMAT(uptime, '%Y-%m-%d') as day",
+          ":DATE_FORMAT(uptime, '%Y年%m月%d日') as 日期"
+        ],
+        "wheres": [
+          { ":type": "类型", "=": "入库" },
+          { ":uptime": "时刻", "<": "?:$res.日期" }
+        ],
+        "from": "$record",
+        "joins": [
+          { "left": true, "from": "sku", "key": "sku_id", "foreign": "sku.id" }
+        ],
+        "groups": ["sku_id"]
+      }
+    },
+    {
+      "name": "出库",
+      "engine": "xiang",
+      "query": {
+        "select": [
+          "sku_id",
+          "sku.stock as 预警",
+          "type",
+          ":COUNT(record.id) as 数量",
+          ":DATE_FORMAT(uptime, '%Y-%m-%d') as day",
+          ":DATE_FORMAT(uptime, '%Y年%m月%d日') as 日期"
+        ],
+        "wheres": [
+          { ":type": "类型", "=": "出库" },
+          { ":uptime": "时刻", "<=": "?:$res.日期" }
+        ],
+        "from": "$record",
+        "joins": [
+          { "left": true, "from": "sku", "key": "sku_id", "foreign": "sku.id" }
+        ],
+        "groups": ["sku_id"]
+      }
+    }
+  ],
+  "output": { "入库": "{{$res.入库}}", "出库": "{{$res.出库}}" }
+}

@@ -1,0 +1,115 @@
+{
+  "name": "记录",
+  "version": "1.0.0",
+  "decription": "记录管理表格",
+  "bind": {
+    "model": "record",
+    "withs": {
+      "user": { "query": { "select": ["id", "name", "photo"] } },
+      "plan": { "query": { "select": ["id", "name"] } },
+      "warehouse": { "query": { "select": ["id", "name"] } },
+      "sku": {
+        "query": {
+          "select": ["id", "specs"],
+          "withs": {
+            "material": { "query": { "select": ["name", "id"] } }
+          }
+        }
+      }
+    }
+  },
+  "hooks": {
+    "after:search": "scripts.sku.WithsAfterSearch",
+    "before:save": "scripts.record.BeforeSave",
+    "after:save": "scripts.record.AfterSave"
+  },
+  "apis": {
+    "search": {
+      "default": [
+        {
+          "withs": {
+            "user": { "query": { "select": ["id", "name", "photo"] } },
+            "plan": { "query": { "select": ["id", "name"] } },
+            "warehouse": { "query": { "select": ["id", "name"] } },
+            "sku": {
+              "query": {
+                "select": ["id", "specs"],
+                "withs": {
+                  "material": { "query": { "select": ["name", "id"] } }
+                }
+              }
+            }
+          },
+          "orders": [{ "column": "uptime", "option": "desc" }]
+        },
+        null,
+        10
+      ]
+    }
+  },
+  "columns": {
+    "ID": { "@": "c.Label", "in": ["ID", ":id"] },
+    "发生时刻": {
+      "@": "c.DatePicker",
+      "in": ["发生时刻", ":uptime", "YYYY年MM月DD日 HH:mm:ss", true]
+    },
+    "备注": { "@": "c.TextArea", "in": ["备注", ":remark", 6] },
+    "单品": { "@": "c.单品弹窗" },
+    "计划": { "@": "c.计划弹窗" },
+    "用户": { "@": "c.用户弹窗" },
+    "仓库": { "@": "c.仓库弹窗" },
+    "编辑单品": { "@": "c.所属单品" },
+    "编辑用户": { "@": "c.所属用户" },
+    "编辑计划": { "@": "c.所属计划" },
+    "编辑仓库": { "@": "c.所在仓库" }
+  },
+  "filters": { "关键词": { "@": "f.关键词", "in": ["where.sn.match"] } },
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [
+        { "name": "发生时刻", "width": 240 },
+        { "name": "仓库", "width": 160 },
+        { "name": "类型", "width": 80 },
+        { "name": "用户", "width": 100 },
+        { "name": "单品", "width": 240 },
+        { "name": "状态", "width": 80 },
+        { "name": "编码", "width": 300 },
+        { "name": "计划", "width": 160 }
+      ],
+      "filters": [{ "name": "关键词" }]
+    },
+    "actions": {
+      "create": {
+        "type": "button",
+        "props": { "label": "补录记录", "icon": "fas fa-plus" }
+      },
+      "pagination": { "props": { "showTotal": true } }
+    },
+    "option": { "operation": { "unfold": true, "scroll": { "x": 80 } } }
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [
+        {
+          "columns": [
+            { "name": "编辑仓库", "width": 8 },
+            { "name": "类型", "width": 8 },
+            { "name": "编辑计划", "width": 8 },
+            { "name": "编码", "width": 8 },
+            { "name": "发生时刻", "width": 8 },
+            { "name": "状态", "width": 8 },
+            { "name": "编辑单品", "width": 8 },
+            { "name": "编辑用户", "width": 8 },
+            { "name": "备注", "width": 24 }
+          ]
+        }
+      ]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": { "type": "button" } },
+    "option": { "dev": true }
+  },
+  "insert": {},
+  "view": {}
+}

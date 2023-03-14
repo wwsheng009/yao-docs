@@ -1,0 +1,59 @@
+{
+  "name": "类目接口",
+  "version": "1.0.0",
+  "description": "类目接口",
+  "group": "utils",
+  "guard": "-",
+  "paths": [
+    {
+      "common": "之前的先注释",
+      "path": "test11111111111/export/:name",
+      "method": "GET",
+      "process": "flows.utils.export",
+      "in": ["$param.name"],
+
+      "out": {
+        "status": 200,
+        "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "headers": {
+          "Content-Disposition": "attachment;filename=导出数据.xlsx"
+        }
+      }
+    },
+    {
+      "common": "改版的",
+      "path": "/export/:name",
+      "method": "GET",
+      "process": "scripts.utils.exports",
+      "in": ["$param.name"],
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "common": "改版的",
+      "path": "/download",
+      "method": "GET",
+      "process": "flows.utils.download",
+      "in": ["$query.id"],
+      "out": {
+        "status": 200,
+        "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "headers": {
+          "Content-Disposition": "attachment;filename=导出数据.xlsx"
+        }
+      }
+    },
+    {
+      "path": "/rfid/sku",
+      "method": "GET",
+      "process": "flows.utils.rfid",
+      "in": ["$query.id"],
+      "out": {
+        "status": 200,
+        "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "headers": {
+          "Content-Disposition": "attachment;filename=单品标签.xlsx"
+        }
+      }
+    }
+  ]
+}

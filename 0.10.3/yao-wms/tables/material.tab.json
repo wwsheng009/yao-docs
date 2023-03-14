@@ -1,0 +1,71 @@
+{
+  "name": "物资",
+  "version": "1.0.0",
+  "decription": "物资管理表格",
+  "bind": {
+    "model": "material",
+    "withs": { "category": {}, "supplier": {} }
+  },
+  "hooks": {},
+  "apis": {
+    "search": {
+      "default": [{ "withs": { "category": {}, "supplier": {} } }, null, 10]
+    }
+  },
+  "columns": {
+    "ID": { "@": "c.Label", "in": ["ID", ":id"] },
+    "图标": { "@": "c.Images", "in": ["图标", ":icon", 1, false] },
+    "图集": { "@": "c.Images", "in": ["图集", ":images", 9, true] },
+    "介绍": { "@": "c.TextArea", "in": ["介绍", ":detail", 10] },
+    "类目": { "@": "c.所属类目" },
+    "单位": { "@": "c.所属单位" }
+  },
+  "filters": {
+    "关键词": { "@": "f.关键词", "in": ["where.name.match"] }
+  },
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [
+        { "name": "ID", "width": 80 },
+        { "name": "图标", "width": 80 },
+        { "name": "名称", "width": 200 },
+        { "name": "单位", "width": 100 },
+        { "name": "类目" }
+      ],
+      "filters": [{ "name": "关键词" }]
+    },
+    "actions": {
+      "create": {
+        "type": "button",
+        "props": { "label": "新增物资", "icon": "fas fa-plus" }
+      },
+      "pagination": { "props": { "showTotal": true } }
+    },
+    "option": { "operation": { "unfold": true, "hideView": true } }
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [
+        {
+          "columns": [
+            { "name": "名称", "width": 12 },
+            { "name": "类目", "width": 6 },
+            { "name": "单位", "width": 6 }
+          ]
+        },
+        {
+          "columns": [
+            { "name": "图标", "width": 24 },
+            { "name": "图集", "width": 24 },
+            { "name": "介绍", "width": 24 }
+          ]
+        }
+      ]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": { "type": "button" } }
+  },
+  "insert": {},
+  "view": {}
+}

@@ -1,0 +1,29 @@
+{
+  "label": "类目列表",
+  "version": "1.0.0",
+  "description": "类目列表",
+  "nodes": [
+    {
+      "name": "类目",
+      "engine": "xiang",
+      "query": {
+        "select": [
+          "id",
+          "name",
+          "category_sn",
+          "name as label",
+          "id as value",
+          "parent_id"
+        ],
+        "from": "$material.category",
+        "limit": 1000
+      }
+    },
+    {
+      "name": "类目树",
+      "process": "xiang.helper.ArrayTree",
+      "args": ["{{$res.类目}}", { "parent": "parent_id" }]
+    }
+  ],
+  "output": "{{$res.类目树}}"
+}

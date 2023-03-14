@@ -1,0 +1,27 @@
+{
+  "name": "配置接口",
+  "version": "1.0.0",
+  "description": "配置接口",
+  "group": "xiang/setting",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/material.specs",
+      "method": "GET",
+      "process": "flows.setting.material.specs",
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/plan.items",
+      "method": "GET",
+      "process": "flows.setting.plan.items",
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/ticket.records",
+      "method": "GET",
+      "process": "flows.setting.ticket.records",
+      "out": { "status": 200, "type": "application/json" }
+    }
+  ]
+}

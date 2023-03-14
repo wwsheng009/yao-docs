@@ -1,0 +1,11 @@
+{
+  "name": "边缘节点消息通道",
+  "description": "边缘节点消息通道",
+  "version": "0.10.1",
+  "protocols": ["yao-node-v1"],
+  "guard": "-",
+  "buffer": { "read": 4096, "write": 4096 },
+  "limit": { "read-wait": 300, "pong-wait": 300, "max-message": 104857 },
+  "timeout": 5,
+  "process": "scripts.node.Message"
+}

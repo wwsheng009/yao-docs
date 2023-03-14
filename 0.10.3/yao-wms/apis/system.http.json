@@ -1,0 +1,22 @@
+{
+  "name": "系统接口",
+  "version": "1.0.0",
+  "description": "系统接口",
+  "group": "system",
+  "guard": "bearer-jwt",
+  "paths": [
+    {
+      "path": "/info",
+      "method": "GET",
+      "guard": "-",
+      "process": "scripts.system.Info",
+      "out": { "status": 200, "type": "application/json" }
+    },
+    {
+      "path": "/reset",
+      "method": "POST",
+      "process": "scripts.system.Reset",
+      "out": { "status": 200, "type": "application/json" }
+    }
+  ]
+}
