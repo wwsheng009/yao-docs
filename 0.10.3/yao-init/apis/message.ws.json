@@ -1,0 +1,20 @@
+{
+    "name": "聊天服务",
+    "description": "聊天服务",
+    "version": "0.10.3",
+    "protocols": [
+        "yao-message-01"
+    ],
+    "guard": "bearer-jwt",
+    "buffer": {
+        "read": 4096,
+        "write": 4096
+    },
+    "limit": {
+        "read-wait": 300,
+        "pong-wait": 300,
+        "max-message": 104857
+    },
+    "timeout": 5,
+    "process": "scripts.message.Message"
+}

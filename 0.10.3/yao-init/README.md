@@ -12,9 +12,13 @@ The application created by the yao installer
 
 Linux:
 https://github.com/YaoApp/yao/actions/workflows/release-linux.yml
+示例:
+https://github.com/YaoApp/yao/actions/runs/4321507316
 
 MacOS:
 https://github.com/YaoApp/yao/actions/workflows/release-macos.yml
+示例：
+https://github.com/YaoApp/yao/actions/runs/4321507798
 
 ## 启动 yao
 
