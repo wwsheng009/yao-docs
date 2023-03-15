@@ -1,0 +1,54 @@
+{
+  "$schema": "/data/projects/yao/demos-v1.0/yao-node-projects/packages/yao-app-ts-types/json-schemas/0.10.3/list.json",
+  "action": {
+    "bind": {
+      "model": "plan.item"
+    }
+  },
+  "layout": {
+    "list": {
+      "columns": [
+        { "name": "id", "width": 4 },
+        { "name": "单品", "width": 4 },
+        { "name": "计划数量", "width": 8 },
+        { "name": "实际数量", "width": 8 }
+      ]
+    }
+  },
+  "fields": {
+    "list": {
+      "id": {
+        "bind": "id",
+        "edit": {
+          "props": { "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "单品": {
+        "bind": "sku_id",
+        "edit": {
+          "props": { "placeholder": "请输入 单品" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "实际数量": {
+        "bind": "amount",
+        "edit": {
+          "props": { "placeholder": "请输入 实际数量" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "计划数量": {
+        "bind": "amount_plan",
+        "edit": {
+          "props": { "placeholder": "请输入 计划数量" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      }
+    }
+  }
+}

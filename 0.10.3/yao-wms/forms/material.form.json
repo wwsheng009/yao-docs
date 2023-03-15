@@ -1,6 +1,6 @@
 {
-  "name": "数据管理表格",
   "action": { "bind": { "model": "material" } },
+
   "layout": {
     "actions": [
       {
@@ -57,6 +57,26 @@
         "style": "danger",
         "title": "Delete"
       }
-    ]
+    ],
+    "form": {
+      "sections": [
+        {
+          "title": "Section 1",
+          "columns": [
+            { "name": "名称", "width": 12 },
+            { "name": "厂商", "width": 6 },
+            { "name": "类目", "width": 6 }
+          ]
+        },
+        {
+          "title": "Section 2",
+          "columns": [
+            { "name": "图表", "width": 24 },
+            { "name": "图片", "width": 24 },
+            { "name": "介绍", "width": 24 }
+          ]
+        }
+      ]
+    }
   }
 }
