@@ -1,0 +1,103 @@
+{
+  "name": "RFID导入规则列表",
+  "action": {
+    "bind": {}
+  },
+  "layout": {
+    "primary": "id",
+    "header": {
+      "preset": {}
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "名称",
+          "width": 4
+        }
+      ]
+    },
+    "table": {
+      "columns": [
+        {
+          "name": "名称"
+        },
+        {
+          "name": "字段"
+        },
+        {
+          "name": "坐标"
+        },
+        {
+          "name": "标签"
+        },
+        {
+          "name": "规则"
+        }
+      ],
+      "operation": {
+        "fold": false,
+        "width": 60,
+        "actions": []
+      }
+    }
+  },
+  "fields": {
+    "table": {
+      "名称": {
+        "bind": "name",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "字段": {
+        "bind": "field",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "坐标": {
+        "bind": "axis",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "标签": {
+        "bind": "label",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "规则": {
+        "bind": "rules",
+        "view": {
+          "type": "Tag",
+          "props": {}
+        },
+        "edit": {
+          "type": "Select",
+          "props": {}
+        }
+      }
+    }
+  }
+}

@@ -57,7 +57,7 @@ Yao.prototype.Download = async function (path, params, savefile, headers) {
     anchor.click();
     window.URL.revokeObjectURL(objectUrl);
   } catch (err) {
-    alert("成功创建导出任务!");
+    alert("创建导出任务失败!", err);
   }
 };
 

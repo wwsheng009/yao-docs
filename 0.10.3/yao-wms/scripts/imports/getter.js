@@ -18,6 +18,7 @@ function Node(value, row) {
       });
 
       if (warehouses.length == 0) {
+        console.log("无法找到仓库:", value);
         return null;
       }
       return warehouses[0].id;
@@ -49,51 +50,4 @@ function RFID(value, row) {
   }
 
   return false;
-}
-
-/**
- * 校验传入参数长度
- * @param {*} value
- * @param {*} row
- */
-function Len(value, row) {
-  if (value && value.length < 2) {
-    return false;
-  }
-  return row;
-}
-
-/**
- * 校验传入参数数值
- * @param {*} value
- * @param {*} row
- */
-function Int(value, row) {
-  if (parseInt(value) > 0) {
-    return row;
-  }
-  return false;
-}
-
-/**
- * 规格型号校验
- * @param {*} value
- * @param {*} row
- */
-function Specs(value, row) {
-  return row;
-  row[1] = {};
-  if (value) {
-    value = value.replaceAll("，", ",").replaceAll("：", ":");
-    var specsMap = [];
-    var specs = value.split(",");
-    specs.forEach((spec) => {
-      const arrs = spec.split(":");
-      const name = arrs[0].trim();
-      const value = arrs.length > 1 ? arrs[1].trim() : "";
-      specsMap[name] = value;
-    });
-    row[1] = specsMap; // specs 规格型号
-  }
-  return row;
 }

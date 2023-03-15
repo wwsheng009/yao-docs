@@ -1,28 +1,41 @@
+function OutputRFID(data) {
+  // todo 处理导入后的逻辑，导入后会自动调用这个函数："output": "scripts.imports.ticket.Output",
+  return data;
+}
+
 // RFID数据导入
 function RFID(columns, data) {
+  // console.log("导入栏位:", columns);
+  // console.log("导入数据:", data);
   var ignore = 0;
   var failure = 0;
   var last = columns.length - 1;
+  //最后一列替换成扫描码
   columns.pop();
+  columns.push("s_code");
 
   //   逐条导入
   for (var i in data) {
     var row = data[i] || [];
+    // console.log("row:", row);
     // 无效数据检查 __effected
     if (!row[last]) {
+      console.log("无效数据");
       ignore++;
       continue;
     }
-    columns.push("s_code");
-
+    //最后一列替换成扫描码
     row.pop();
     var times = String(Date.now());
 
     var t = times.substring(3);
     row.push(t);
 
+    // console.log("导入栏位:", columns);
+    // console.log("导入数据:", row);
     var res = Process("models.rfid.Insert", columns, [row]);
-    if (res != null) {
+    if (res.code) {
+      log.Error("[Import] Failed to Insert rfid: %s", res.message);
       failure++;
     }
   }
@@ -30,6 +43,10 @@ function RFID(columns, data) {
   return [failure, ignore];
 }
 
+function SKUOUTPUT(data) {
+  // todo 处理导入后的逻辑，导入后会自动调用这个函数："output": "scripts.imports.ticket.Output",
+  return data;
+}
 /**
  * 导入单品数据
  * @param {*} columns
@@ -53,7 +70,6 @@ function SKU(columns, rows) {
     const material_id = GetSetMaterial(row[0], category_id);
     id = GetSetSku(material_id, row[1], row[2], row[4]);
     if (id === false) {
-      console.log(`failure: sku_id: ${id}`, id);
       failure = failure + 1;
     }
   }
@@ -83,6 +99,7 @@ function GetSetSku(material_id, specs, stock, unit) {
   });
 
   if (res.code && res.message) {
+    log.Error("[Import] Failed to Get material.sku: %s", res.message);
     return false;
   }
 
@@ -96,6 +113,7 @@ function GetSetSku(material_id, specs, stock, unit) {
     });
 
     if (id && id.code) {
+      console.log(id);
       return false;
     }
     return res[0].id;
@@ -109,7 +127,8 @@ function GetSetSku(material_id, specs, stock, unit) {
     specs_list: specs_list,
   });
 
-  if (id && id.code) {
+  if (id.code) {
+    log.Error("[Import] Failed to Save material.sku: %s", id.message);
     return false;
   }
 
@@ -153,6 +172,7 @@ function GetSetCategory(name) {
   });
 
   if (res.code && res.message) {
+    log.Error("[Import] Failed to Get category: %s", res.message);
     return false;
   }
 
@@ -164,6 +184,7 @@ function GetSetCategory(name) {
   // 新建分类
   id = Process("xiang.table.save", "material.category", { name: name });
   if (id.code) {
+    log.Error("[Import] Failed to Save material.category: %s", id.message);
     return false;
   }
 
@@ -189,6 +210,7 @@ function GetSetMaterial(name, category_id) {
   });
 
   if (res.code && res.message) {
+    log.Error("[Import] Failed to Get material: %s", res.message);
     return false;
   }
 
@@ -203,6 +225,7 @@ function GetSetMaterial(name, category_id) {
     category_id: category_id,
   });
   if (id.code) {
+    log.Error("[Import] Failed to Save material: %s", id.message);
     return false;
   }
 

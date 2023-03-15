@@ -3,8 +3,7 @@ table 与 form 常用 action 配置
 table 创建按钮
 
 注意替换<FORMID>
-xpath:layout.filter.actions
-不要使用 layout.header.actions,配置了也没效
+xpath:layout.filter.actions,不要使用 layout.header.actions,配置了也没效
 
 ```json
 "actions": [
@@ -66,6 +65,14 @@ xpath:layout.table.operation.actions
    },
    {
      "action": [
+      {
+        "name": "Confirm",
+        "type": "Common.confirm",
+        "payload": {
+          "title": "确认删除",
+          "content": "删除后不可撤销！"
+        }
+      },
        {
          "name": "Delete",
          "payload": {
@@ -74,10 +81,6 @@ xpath:layout.table.operation.actions
          "type": "Table.delete"
        }
      ],
-     "confirm": {
-       "desc": "请确认删除，删除后数据无法恢复",
-       "title": "确认"
-     },
      "icon": "icon-trash-2",
      "style": "danger",
      "title": "Delete"
@@ -126,7 +129,18 @@ xpath:layout.actions
     ]
   },
   {
+    "icon": "icon-trash-2",
+    "style": "danger",
+    "title": "Delete",
     "action": [
+      {
+        "name": "Confirm",
+        "type": "Common.confirm",
+        "payload": {
+          "title": "确认删除",
+          "content": "删除后不可撤销！"
+        }
+      },
       {
         "name": "Delete",
         "payload": {
@@ -139,14 +153,7 @@ xpath:layout.actions
           "type": "Common.closeModal",
           "payload": {}
       }
-    ],
-    "confirm": {
-      "desc": "请确认删除，删除后数据无法恢复",
-      "title": "确认"
-    },
-    "icon": "icon-trash-2",
-    "style": "danger",
-    "title": "Delete"
+    ]
   }
 ]
 ```

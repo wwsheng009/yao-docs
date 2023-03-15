@@ -1,21 +1,20 @@
 {
   "name": "单品",
-  "version": "1.0.0",
-  "decription": "单品管理表格",
-  "bind": {
-    "model": "material.sku",
-    "withs": {
-      "material": {
-        "query": { "withs": { "category": {}, "supplier": {} } }
+  "action": {
+    "bind": {
+      "model": "material.sku",
+      "option": {
+        "form": "material.sku",
+        "withs": {
+          "material": {
+            "query": { "withs": { "category": {}, "supplier": {} } }
+          }
+        }
       }
-    }
-  },
-  "hooks": {
+    },
     "after:search": "scripts.sku.AfterSearch",
     "after:find": "scripts.sku.AfterFind",
-    "after:save": "scripts.sku.AfterSave"
-  },
-  "apis": {
+    "after:save": "scripts.sku.AfterSave",
     "search": {
       "default": [
         {
@@ -30,115 +29,275 @@
       ]
     }
   },
-  "columns": {
-    "ID": { "@": "c.Label", "in": ["ID", ":id"] },
-    "规格型号": { "@": "c.Tag", "in": ["规格型号", ":spec_tags"] },
-    "物资名称": { "@": "c.Label", "in": ["物资名称", ":material.name"] },
-    "物资图标": {
-      "@": "c.Images",
-      "in": ["物资图标", ":material.icon", 1, false]
-    },
-    "图集": { "@": "c.Images", "in": ["图集", ":images", 9, true] },
-    "介绍": { "@": "c.TextArea", "in": ["介绍", ":detail", 10] },
-    "所属物资": { "@": "c.所属物资" },
-    "类目": { "@": "c.所属类目" },
-    "规格清单": {
-      "label": "规格清单",
-      "edit": {
-        "type": "dynamicList",
-        "props": {
-          "setting": "material.specs",
-          "value": ":specs_list",
-          "query": { "sort": "$index" }
-        }
-      }
-    },
-    "标签": { "@": "c.单品标签" },
-    "预警库存": { "@": "c.Number", "in": ["预警库存", ":stock"] }
-  },
-  "filters": {
-    "关键词": { "@": "f.关键词", "in": ["where.material.name.match"] }
-  },
-  "list": {
-    "primary": "id",
-    "layout": {
-      "columns": [
-        { "name": "ID", "width": 80 },
-        { "name": "标签", "width": 100 },
-        { "name": "物资图标", "width": 80 },
-        { "name": "物资名称", "width": 200 },
-        { "name": "规格型号", "width": 300 },
-        { "name": "预警库存", "width": 100 },
-        { "name": "类目", "width": 100 },
-        { "name": "单位" }
-      ],
-      "filters": [{ "name": "关键词" }]
-    },
-    "actions": {
-      "create": {
-        "type": "button",
-        "props": { "label": "添加单品", "icon": "fas fa-plus" }
-      },
-      "import": {
-        "props": {
-          "api": {
-            "setting": "/api/xiang/import/sku/setting",
-            "mapping": "/api/xiang/import/sku/mapping",
-            "mapping_setting": "/api/xiang/import/sku/mapping/setting",
-            "preview": "/api/xiang/import/sku/data",
-            "preview_setting": "/api/xiang/import/sku/data/setting",
-            "import": "/api/xiang/import/sku"
-          },
-          "operation": [
+  "layout": {
+    "filter": {
+      "columns": [{ "name": "关键词" }],
+      "actions": [
+        {
+          "action": [
             {
-              "title": "下载模板",
-              "icon": "icon-link-2",
-              "link": "/xlsx/sku.xlsx"
+              "name": "HistoryPush",
+              "payload": {
+                "pathname": "/x/Form/material.sku/0/edit"
+              },
+              "type": "Common.historyPush"
+            }
+          ],
+          "icon": "icon-plus",
+          "title": "::Create",
+          "width": 3
+        }
+      ]
+    },
+    "header": {
+      "actions": [],
+      "preset": {
+        "import": {
+          "name": "sku",
+          "actions": [
+            {
+              "title": "导入",
+              "icon": "icon-import"
             }
           ]
         }
-      },
-      "pagination": { "props": { "showTotal": true } }
+      }
     },
-    "option": { "operation": { "unfold": true } }
-  },
-  "edit": {
     "primary": "id",
-    "layout": {
-      "fieldset": [
-        {
-          "columns": [
-            { "name": "标签", "width": 6 },
-            { "name": "所属物资", "width": 10 },
-            { "name": "单位", "width": 4 },
-            { "name": "预警库存", "width": 4 },
-            { "name": "规格清单", "width": 24 }
-          ]
-        },
-        {
-          "columns": [
-            { "name": "单价", "width": 12 },
-            { "name": "税率", "width": 12 },
-            { "name": "含税单价", "width": 12 },
-            { "name": "列账单价", "width": 12 },
-            { "name": "图集", "width": 24 },
-            { "name": "介绍", "width": 24 }
-          ]
-        }
-      ]
-    },
-    "actions": { "cancel": {}, "save": {}, "delete": { "type": "button" } },
-    "option": {
-      "operation": [
-        {
-          "title": "标签下载",
-          "icon": "icon-download",
-          "link": "/api/utils/rfid/sku",
-          "data": { "id": ":id" }
-        }
-      ]
+    "table": {
+      "columns": [
+        { "name": "ID", "width": 100 },
+        { "name": "规格型号", "width": 100 },
+        { "name": "物资名称", "width": 100 },
+        { "name": "物资图标", "width": 100 },
+        { "name": "标签", "width": 160 },
+        { "name": "单位", "width": 160 },
+        { "name": "单价", "width": 160 },
+        { "name": "税率", "width": 160 },
+        { "name": "含税单价", "width": 160 },
+        { "name": "列账单价", "width": 160 },
+        { "name": "规格", "width": 160 },
+        { "name": "预警库存", "width": 100 },
+        { "name": "图集", "width": 160 },
+        { "name": "介绍", "width": 160 },
+        { "name": "状态", "width": 160 }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "material.sku",
+                    "type": "view"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "material.sku",
+                    "type": "edit"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Confirm",
+                "type": "Common.confirm",
+                "payload": {
+                  "title": "确认删除",
+                  "content": "删除后不可撤销！"
+                }
+              },
+              {
+                "name": "Delete",
+                "payload": {
+                  "model": "material.sku"
+                },
+                "type": "Table.delete"
+              }
+            ],
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ]
+      }
     }
   },
-  "insert": {},
-  "view": {}
+  "fields": {
+    "filter": {
+      "关键词": {
+        "bind": "where.material.name.match",
+        "edit": {
+          "props": { "placeholder": "请输入 关键词" },
+          "type": "Input"
+        }
+      }
+    },
+    "table": {
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": { "disabled": true, "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "规格型号": {
+        "bind": "spec_tags",
+        "edit": {
+          "props": { "placeholder": "请输入 税率" },
+          "type": "Input"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "物资名称": {
+        "bind": "material.name",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "物资图标": {
+        "bind": "material.icon",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "介绍": {
+        "bind": "detail",
+        "view": { "props": { "title": "介绍" }, "type": "Tooltip" }
+      },
+      "列账单价": {
+        "bind": "fin_price",
+        "edit": {
+          "props": { "placeholder": "请输入 列账单价" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        },
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "单价": {
+        "bind": "price",
+        "edit": {
+          "props": { "placeholder": "请输入 单价" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "单位": {
+        "bind": "unit",
+        "edit": { "props": { "placeholder": "请输入 单位" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "含税单价": {
+        "bind": "tax_price",
+        "edit": {
+          "props": { "placeholder": "请输入 含税单价" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "图集": {
+        "bind": "images",
+        "view": {
+          "type": "Image",
+          "compute": "Download",
+          "props": {
+            "style": {
+              "width": 36,
+              "height": 36,
+              "borderRadius": "50%"
+            }
+          }
+        }
+      },
+      "物资": {
+        "bind": "material_id",
+        "edit": {
+          "props": { "placeholder": "请输入 物资" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "状态": {
+        "bind": "status",
+        "edit": {
+          "props": {
+            "options": [
+              { "label": "在产", "value": "在产" },
+              { "label": "停产", "value": "停产" }
+            ],
+            "placeholder": "请选择 状态"
+          },
+          "type": "Select"
+        },
+        "view": {
+          "props": {
+            "options": [
+              { "label": "在产", "value": "在产" },
+              { "label": "停产", "value": "停产" }
+            ],
+            "placeholder": "请选择 状态"
+          },
+          "type": "Tag"
+        }
+      },
+      "税率": {
+        "bind": "tax_rate",
+        "edit": {
+          "props": { "placeholder": "请输入 税率" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "标签": {
+        "bind": "sku_sn",
+        "edit": { "props": { "placeholder": "请输入 编码" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "规格": {
+        "bind": "specs",
+        "edit": {
+          "props": {
+            "autoSize": { "maxRows": 6, "minRows": 2 },
+            "placeholder": "请输入 规格"
+          },
+          "type": "TextArea"
+        },
+        "view": { "props": { "title": "规格" }, "type": "Tooltip" }
+      },
+      "预警库存": {
+        "bind": "stock",
+        "edit": {
+          "props": { "placeholder": "请输入 预警库存" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      }
+    }
+  }
 }

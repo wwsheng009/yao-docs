@@ -1,5 +1,5 @@
 {
-  "$schema": "/data/projects/yao/demos-v1.0/yao-node-projects/packages/yao-app-ts-types/json-schemas/0.10.3/form.json",
+  "name": "计划",
   "action": {
     "bind": {
       "model": "plan",
@@ -93,7 +93,6 @@
         "edit": {
           "props": {
             "itemProps": {
-              "labelAlign": "right",
               "rules": [{ "required": true }]
             },
             "placeholder": "请输入 名称"

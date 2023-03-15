@@ -1,0 +1,34 @@
+{
+  "name": "同步日志",
+  "version": "1.0.0",
+  "decription": "同步日志表格",
+  "bind": { "model": "synclog", "withs": {} },
+  "hooks": {},
+  "apis": {},
+  "columns": {},
+  "filters": {},
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [{ "name": "ID", "width": 80 }],
+      "filters": []
+    },
+    "actions": {
+      "create": {
+        "type": "button",
+        "props": { "label": "添加", "icon": "fas fa-plus" }
+      },
+      "pagination": {}
+    },
+    "option": {}
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [{ "columns": [{ "name": "ID", "width": 24 }] }]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": { "type": "button" } }
+  },
+  "insert": {},
+  "view": {}
+}

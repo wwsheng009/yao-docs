@@ -1,0 +1,59 @@
+{
+  "name": "仓库",
+  "version": "1.0.0",
+  "decription": "仓库管理表格",
+  "bind": { "model": "warehouse", "withs": {} },
+  "hooks": {},
+  "apis": {
+    "search": { "default": [null, null, 10] }
+  },
+  "columns": {
+    "ID": { "@": "c.Label", "in": ["ID", ":id"] },
+    "状态": { "@": "c.Label", "in": ["状态", ":status"] },
+    "IP地址": { "@": "c.Label", "in": ["IP地址", ":ip"] },
+    "签章": { "@": "c.Images", "in": ["签章", ":photo", 1, false] },
+    "活跃时间": {
+      "@": "c.DateTime",
+      "in": ["活跃时间", ":uptime", "YYYY年MM月DD日 @hh:mm:ss"]
+    }
+  },
+  "filters": { "关键词": { "@": "f.关键词", "in": ["where.name.match"] } },
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [
+        { "name": "ID", "width": 80 },
+        { "name": "节点", "width": 120 },
+        { "name": "名称", "width": 200 },
+        { "name": "IP地址", "width": 200 },
+        { "name": "活跃时间", "width": 200 },
+        { "name": "状态" }
+      ],
+      "filters": [{ "name": "关键词" }]
+    },
+    "actions": {
+      "pagination": {}
+    },
+    "option": { "operation": { "unfold": true, "hideView": true } }
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [
+        {
+          "columns": [
+            { "name": "名称", "width": 24 },
+            { "name": "节点", "width": 12 },
+            { "name": "密钥", "width": 12 },
+            { "name": "位置", "width": 24 },
+            { "name": "项目部", "width": 24 },
+            { "name": "签章", "width": 24 }
+          ]
+        }
+      ]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": {} }
+  },
+  "insert": {},
+  "view": {}
+}

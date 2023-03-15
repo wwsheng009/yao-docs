@@ -1,0 +1,124 @@
+{
+  "name": "导出任务下载",
+  "version": "1.0.0",
+  "decription": "导出任务下载",
+  "bind": { "model": "exports", "withs": {} },
+  "hooks": {},
+  "apis": {
+    "search": { "default": [null, null, 10] }
+  },
+  "columns": {
+    "ID": {
+      "@": "c.Label",
+      "in": ["ID", ":id"]
+    },
+    "状态": {
+      "label": "状态",
+      "view": {
+        "type": "label",
+        "props": {
+          "value": ":status"
+        }
+      },
+      "edit": {
+        "type": "input",
+        "props": {
+          "disabled": true,
+          "value": ":status"
+        }
+      }
+    },
+    "下载地址": {
+      "label": "下载地址",
+      "view": {
+        "type": "label",
+        "props": {
+          "value": ":url"
+        }
+      },
+      "edit": {
+        "type": "input",
+        "props": {
+          "disabled": true,
+          "value": ":url"
+        }
+      }
+    },
+    "名称": {
+      "label": "名称",
+      "view": {
+        "type": "label",
+        "props": {
+          "value": ":name"
+        }
+      },
+
+      "edit": {
+        "type": "input",
+        "props": {
+          "disabled": true,
+          "value": ":name"
+        }
+      }
+    },
+    "创建时间": {
+      "@": "c.DateTime",
+      "in": ["创建时间", ":created_at", "YYYY年MM月DD日 @hh:mm:ss"]
+    }
+  },
+  "filters": { "关键词": { "@": "f.关键词", "in": ["where.name.match"] } },
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [
+        { "name": "ID", "width": 80 },
+        { "name": "状态", "width": 120 },
+        { "name": "下载地址", "width": 200 },
+        { "name": "名称", "width": 200 },
+        { "name": "创建时间", "width": 200 }
+      ],
+      "filters": [{ "name": "关键词" }]
+    },
+    "actions": {
+      "pagination": {}
+    },
+    "option": {
+      "operation": {
+        "unfold": true,
+        "hideView": true,
+        "hideEdit": true,
+        "items": [
+          {
+            "title": "下载",
+            "icon": "icon-link-2",
+            "link": "/api/utils/download",
+            "data": {
+              "id": ":id"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [
+        {
+          "columns": [
+            { "name": "状态", "width": 12 },
+            { "name": "下载地址", "width": 12 },
+            { "name": "名称", "width": 12 }
+          ]
+        }
+      ]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": {} },
+    "option": {
+      "dev": false,
+      "operation": []
+    }
+  },
+  "insert": {},
+  "view": {}
+}

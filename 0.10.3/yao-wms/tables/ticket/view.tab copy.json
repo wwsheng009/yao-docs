@@ -1,0 +1,60 @@
+{
+  "name": "凭据",
+  "version": "1.0.0",
+  "decription": "凭据管理表格",
+  "bind": {
+    "model": "ticket",
+    "withs": {
+      "user": {
+        "query": {
+          "select": ["id", "name", "photo", "supplier_id"],
+          "withs": { "supplier": {} }
+        }
+      },
+      "plan": { "query": { "select": ["id", "name"] } },
+      "warehouse": { "query": { "select": ["id", "name", "dept", "photo"] } },
+      "sku": {
+        "query": {
+          "select": ["id", "specs"],
+          "withs": {
+            "material": { "query": { "select": ["name", "id"] } }
+          }
+        }
+      }
+    }
+  },
+  "hooks": { "after:find": "scripts.ticket.AfterFindView" },
+  "apis": {},
+  "columns": {
+    "扩展内容": {
+      "label": "",
+      "edit": {
+        "type": "extend",
+        "props": { "link": "/ticket", "value": ":name", "max_height": 600 }
+      }
+    }
+  },
+  "filters": {},
+  "list": {},
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [{ "columns": [{ "name": "扩展内容", "width": 24 }] }]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": { "type": "button" } },
+    "option": {
+      "dev": true,
+      "operation": [
+        {
+          "title": "打印",
+          "icon": "icon-printer",
+          "link": "/ticket/print.html",
+          "data": { "id": ":id" }
+        }
+      ]
+    }
+  },
+
+  "insert": {},
+  "view": {}
+}

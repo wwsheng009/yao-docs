@@ -1,0 +1,68 @@
+{
+  "name": "库存",
+  "version": "1.0.0",
+  "decription": "库存管理表格",
+  "bind": { "model": "stock" },
+  "hooks": {},
+  "apis": {
+    "search": { "process": "scripts.stock.Search", "default": [{}, null, 10] }
+  },
+  "columns": {
+    "库存": { "@": "c.Label", "in": ["库存", ":stock"] },
+    "类目": { "@": "c.Label", "in": ["类目", ":category.name"] },
+    "预警库存": { "@": "c.Label", "in": ["预警库存", ":sku.stock"] },
+    "规格": { "@": "c.Tag", "in": ["规格", ":spec_tags"] },
+    "更新时间": {
+      "@": "c.DateTime",
+      "in": ["更新时间", ":uptime", "YYYY年MM月DD日 HH:mm:ss"]
+    },
+    "单品": { "@": "c.单品弹窗" },
+    "仓库": { "@": "c.仓库弹窗" },
+    "状态": {
+      "label": "状态",
+      "view": { "type": "tag", "props": { "value": ":status" } }
+    }
+  },
+  "filters": {
+    "关键词": { "@": "f.关键词", "in": ["where.material.name.match"] },
+    "状态": { "@": "f.库存状态" }
+  },
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [
+        { "name": "仓库", "width": 160 },
+        { "name": "类目", "width": 160 },
+        { "name": "单品", "width": 260 },
+        { "name": "状态", "width": 100 },
+        { "name": "库存", "width": 80 },
+        { "name": "预警库存", "width": 80 },
+        { "name": "更新时间" }
+      ],
+      "filters": [
+        { "name": "关键词", "width": 4 },
+        { "name": "状态", "width": 2 }
+      ]
+    },
+    "actions": {
+      "pagination": { "props": { "showTotal": true } }
+    },
+    "option": {
+      "operation": {
+        "unfold": true,
+        "hideEdit": true,
+        "hideView": true,
+        "width": 0
+      }
+    }
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [{ "columns": [{ "name": "ID", "width": 24 }] }]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": {} }
+  },
+  "insert": {},
+  "view": {}
+}

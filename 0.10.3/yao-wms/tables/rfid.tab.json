@@ -1,88 +1,103 @@
 {
   "name": "标签管理",
-  "version": "1.0.0",
-  "decription": "标签管理表格",
-  "bind": { "model": "rfid", "withs": {} },
-  "hooks": {
+  "action": {
+    "bind": {
+      "model": "rfid",
+      "option": {
+        "form": "rfid",
+        "withs": {}
+      }
+    },
     "after:search": "scripts.rfid.AfterSearch",
     "before:save": "scripts.rfid.BeforeSave"
   },
-  "apis": {},
-  "columns": {
-    "类目": { "@": "c.Label", "in": ["类目", "detail.category"] },
-    "单品": { "@": "c.Label", "in": ["单品", "detail.sku"] },
-    "物品": { "@": "c.Label", "in": ["物品", "detail.item"] },
-    "计划": { "@": "c.Label", "in": ["计划", "detail.plan"] },
-    "扫描码": {
-      "label": "扫描码",
-      "view": {
-        "type": "label",
-        "props": {
-          "value": ":s_code"
-        }
-      },
-      "edit": {
-        "type": "input",
-        "props": {
-          "disabled": true,
-          "value": ":s_code"
-        }
-      }
-    }
-  },
-  "filters": {
-    "关键词": { "@": "f.关键词", "in": ["where.sn.match"] }
-  },
-  "list": {
-    "primary": "id",
-    "layout": {
-      "columns": [
-        { "name": "ID", "width": 80 },
-        { "name": "标签", "width": 300 },
-        { "name": "扫描码", "width": 300 },
-        { "name": "类目" },
-        { "name": "单品" },
-        { "name": "物品" },
-        { "name": "计划" },
-        { "name": "状态" }
-      ],
-      "filters": [{ "name": "关键词" }]
-    },
-    "actions": {
-      "create": {
-        "type": "button",
-        "props": { "label": "添加", "icon": "fas fa-plus" }
-      },
-      "import": {
-        "props": {
-          "api": {
-            "setting": "/api/xiang/import/rfid/setting",
-            "mapping": "/api/xiang/import/rfid/mapping",
-            "mapping_setting": "/api/xiang/import/rfid/mapping/setting",
-            "preview": "/api/xiang/import/rfid/data",
-            "preview_setting": "/api/xiang/import/rfid/data/setting",
-            "import": "/api/xiang/import/rfid"
-          }
-        }
-      },
-      "pagination": {}
-    },
-    "option": { "operation": { "unfold": true, "hideView": true } }
-  },
-  "edit": {
-    "primary": "id",
-    "layout": {
-      "fieldset": [
-        {
-          "columns": [
-            { "name": "标签", "width": 24 },
-            { "name": "扫描码", "width": 24 }
+  "layout": {
+    "header": {
+      "preset": {
+        "import": {
+          "name": "rfid",
+          "actions": [
+            {
+              "title": "导入",
+              "icon": "icon-import"
+            }
           ]
+        },
+        "batch": {}
+      }
+    },
+    "table": {
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "rfid",
+                    "type": "view"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "rfid",
+                    "type": "edit"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Delete",
+                "payload": {
+                  "model": "rfid"
+                },
+                "type": "Table.delete"
+              }
+            ],
+            "confirm": {
+              "desc": "请确认删除，删除后数据无法恢复",
+              "title": "确认"
+            },
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ]
+      },
+      "columns": [
+        {
+          "name": "ID"
+        },
+        {
+          "name": "标签"
+        },
+        {
+          "name": "仓库"
+        },
+        {
+          "name": "状态"
+        },
+        {
+          "name": "扫描码"
         }
       ]
-    },
-    "actions": { "cancel": {}, "save": {}, "delete": { "type": "button" } }
-  },
-  "insert": {},
-  "view": {}
+    }
+  }
 }

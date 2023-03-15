@@ -1,58 +1,143 @@
 {
   "name": "类目",
-  "version": "1.0.0",
-  "decription": "类目管理表格",
-  "bind": { "model": "material.category", "withs": {} },
-  "hooks": {
-    "after:save": "scripts.category.AfterSave"
-  },
-  "apis": {
-    "search": {
-      "process": "flows.category.data"
-    }
-  },
-  "columns": {
-    "上级类目": { "@": "c.上级类目" },
-    "标签": { "@": "c.类目标签" },
-    "ID": { "@": "c.Label", "in": ["ID", ":id"] }
-  },
-  "filters": {
-    "关键词": { "@": "f.关键词", "in": ["where.material.name.match"] }
-  },
-  "list": {
-    "primary": "id",
-    "layout": {
-      "columns": [
-        { "name": "ID", "width": 80 },
-        { "name": "标签", "width": 100 },
-        { "name": "名称", "width": 200 },
-        { "name": "上级类目" }
-      ],
-      "filters": [{ "name": "关键词" }]
-    },
-    "actions": {
-      "create": {
-        "type": "button",
-        "props": { "label": "添加类目", "icon": "fas fa-plus" }
+  "action": {
+    "bind": {
+      "model": "material.category",
+      "option": {
+        "withs": {}
       }
     },
-    "option": { "operation": { "unfold": true, "hideView": true } }
+    "after:save": "scripts.category.AfterSave",
+    "search": {
+      "process": "flows.category.data",
+      "bind": "where.name.match"
+    }
   },
-  "edit": {
-    "primary": "id",
-    "layout": {
-      "fieldset": [
+  "layout": {
+    "header": { "preset": {} },
+    "filter": {
+      "actions": [
         {
-          "columns": [
-            { "name": "标签", "width": 12 },
-            { "name": "名称", "width": 12 },
-            { "name": "上级类目", "width": 12 }
-          ]
+          "action": [
+            {
+              "name": "HistoryPush",
+              "payload": {
+                "pathname": "/x/Form/material.category/0/edit"
+              },
+              "type": "Common.historyPush"
+            }
+          ],
+          "icon": "icon-plus",
+          "title": "::Create",
+          "width": 3
         }
       ]
     },
-    "actions": { "cancel": {}, "save": {}, "delete": { "type": "button" } }
+    "table": {
+      "columns": [
+        { "name": "ID", "width": 100 },
+        { "name": "名称", "width": 160 },
+        { "name": "编码", "width": 160 },
+        { "name": "上级类目", "width": 100 },
+        { "name": "创建时间", "width": 160 },
+        { "name": "更新时间", "width": 160 }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "material.category",
+                    "type": "view"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "material.category",
+                    "type": "edit"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Confirm",
+                "type": "Common.confirm",
+                "payload": {
+                  "title": "确认删除",
+                  "content": "删除后不可撤销！"
+                }
+              },
+              {
+                "name": "Delete",
+                "payload": {
+                  "model": "material.category"
+                },
+                "type": "Table.delete"
+              }
+            ],
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ]
+      }
+    }
   },
-  "insert": {},
-  "view": {}
+  "fields": {
+    "table": {
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": { "disabled": true, "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "上级类目": {
+        "bind": "parent_id",
+        "edit": {
+          "props": { "placeholder": "请输入 上级类目" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "名称": {
+        "bind": "name",
+        "edit": { "props": { "placeholder": "请输入 名称" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "编码": {
+        "bind": "category_sn",
+        "edit": { "props": { "placeholder": "请输入 编码" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      }
+    }
+  }
 }

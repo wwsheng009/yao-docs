@@ -1,4 +1,5 @@
 {
+  "name": "计划",
   "action": {
     "bind": {
       "model": "plan",

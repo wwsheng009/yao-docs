@@ -1,6 +1,6 @@
 {
+  "name": "物资",
   "action": { "bind": { "model": "material" } },
-
   "layout": {
     "actions": [
       {
@@ -37,6 +37,14 @@
       {
         "action": [
           {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "确认删除",
+              "content": "删除后不可撤销！"
+            }
+          },
+          {
             "name": "Delete",
             "payload": {
               "model": "material"
@@ -49,10 +57,6 @@
             "payload": {}
           }
         ],
-        "confirm": {
-          "desc": "请确认删除，删除后数据无法恢复",
-          "title": "确认"
-        },
         "icon": "icon-trash-2",
         "style": "danger",
         "title": "Delete"
@@ -77,6 +81,72 @@
           ]
         }
       ]
+    }
+  },
+  "fields": {
+    "form": {
+      "介绍": {
+        "bind": "detail",
+        "edit": {
+          "props": {
+            "autoSize": { "maxRows": 6, "minRows": 2 },
+            "placeholder": "请输入 介绍"
+          },
+          "type": "TextArea"
+        }
+      },
+      "厂商": {
+        "bind": "supplier_id",
+        "edit": {
+          "props": { "placeholder": "请输入 厂商" },
+          "type": "InputNumber"
+        }
+      },
+      "名称": {
+        "bind": "name",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [{ "required": true }]
+            },
+            "placeholder": "请输入 名称"
+          },
+          "type": "Input"
+        },
+        "view": { "props": {}, "type": "" }
+      },
+      "图片": {
+        "bind": "images",
+        "edit": {
+          "type": "Upload",
+          "compute": "Upload",
+          "props": {
+            "filetype": "image",
+            "$api": {
+              "process": "fs.system.Upload"
+            }
+          }
+        },
+        "view": { "props": {}, "type": "" }
+      },
+      "图表": {
+        "bind": "icon",
+        "edit": {
+          "props": {
+            "autoSize": { "maxRows": 6, "minRows": 2 },
+            "placeholder": "请输入 图表"
+          },
+          "type": "TextArea"
+        },
+        "view": { "props": {}, "type": "" }
+      },
+      "类目": {
+        "bind": "category_id",
+        "edit": {
+          "props": { "placeholder": "请输入 类目" },
+          "type": "InputNumber"
+        }
+      }
     }
   }
 }

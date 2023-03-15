@@ -1,0 +1,67 @@
+{
+  "name": "用户",
+  "version": "1.0.0",
+  "decription": "用户管理表格",
+  "bind": { "model": "user", "withs": { "supplier": {} } },
+  "hooks": {
+    "after:save": "scripts.user.AfterSave",
+    "after:delete": "scripts.user.AfterDelete"
+  },
+  "apis": {
+    "search": {
+      "default": [{ "withs": { "supplier": {} } }, null, 10]
+    }
+  },
+  "columns": {
+    "ID": { "@": "c.Label", "in": ["ID", ":id"] },
+    "照片": { "@": "c.Images", "in": ["照片", ":photo", 1, false] },
+    "单位": { "@": "c.所属单位" }
+  },
+  "filters": { "关键词": { "@": "f.关键词", "in": ["where.name.match"] } },
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [
+        { "name": "ID", "width": 80 },
+        { "name": "编码", "width": 100 },
+        { "name": "姓名", "width": 100 },
+        { "name": "身份证", "width": 200 },
+        { "name": "单位", "width": 200 },
+        { "name": "类型", "width": 80 },
+        { "name": "状态", "width": 100 },
+        { "name": "进入门禁", "width": 100 },
+        { "name": "离开门禁", "width": 100 }
+      ],
+      "filters": [{ "name": "关键词" }]
+    },
+    "actions": {
+      "create": {
+        "type": "button",
+        "props": { "label": "添加用户", "icon": "fas fa-plus" }
+      },
+      "pagination": {}
+    },
+    "option": { "operation": { "unfold": true, "hideView": true } }
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [
+        {
+          "columns": [
+            { "name": "姓名", "width": 12 },
+            { "name": "编码", "width": 12 },
+            { "name": "类型", "width": 12 },
+            { "name": "单位", "width": 12 },
+            { "name": "身份证", "width": 12 },
+            { "name": "状态", "width": 12 },
+            { "name": "照片", "width": 24 }
+          ]
+        }
+      ]
+    },
+    "actions": { "cancel": {}, "save": {}, "delete": { "type": "button" } }
+  },
+  "insert": {},
+  "view": {}
+}

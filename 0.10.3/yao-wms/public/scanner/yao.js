@@ -126,8 +126,9 @@ Yao.prototype.Fetch = async function (
  * @param {*} params
  */
 Yao.prototype.Token = function () {
-  var token = sessionStorage.getItem("token") || "";
-  return token;
+  var token = sessionStorage.getItem("token");
+
+  return JSON.parse(token).value || "";
 };
 
 /**
