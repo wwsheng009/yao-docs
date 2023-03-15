@@ -14,7 +14,7 @@ function main() {
     {
       id: 20,
       name: "物资",
-      path: "/table/material",
+      path: "x/Table/material",
       icon: "icon-package",
       rank: 20,
       status: "enabled",
@@ -25,7 +25,7 @@ function main() {
     {
       id: 30,
       name: "计划",
-      path: "/table/plan",
+      path: "x/Table/plan",
       icon: "icon-calendar",
       rank: 30,
       status: "enabled",
@@ -36,7 +36,7 @@ function main() {
     {
       id: 40,
       name: "单位",
-      path: "/table/supplier",
+      path: "x/Table/supplier",
       icon: "icon-book",
       rank: 40,
       status: "enabled",
@@ -47,7 +47,7 @@ function main() {
     {
       id: 50,
       name: "仓库",
-      path: "/table/warehouse",
+      path: "x/Table/warehouse",
       icon: "icon-home",
       rank: 50,
       status: "enabled",
@@ -58,7 +58,7 @@ function main() {
     {
       id: 60,
       name: "人员",
-      path: "/table/user",
+      path: "x/Table/user",
       icon: "icon-users",
       rank: 60,
       status: "enabled",
@@ -69,7 +69,7 @@ function main() {
     {
       id: 70,
       name: "凭据",
-      path: "/table/ticket.total",
+      path: "x/Table/ticket.total",
       icon: "icon-archive",
       rank: 70,
       status: "enabled",
@@ -80,7 +80,7 @@ function main() {
     {
       id: 80,
       name: "标签",
-      path: "/table/rfid",
+      path: "x/Table/rfid",
       icon: "icon-tag",
       rank: 80,
       status: "enabled",
@@ -91,7 +91,7 @@ function main() {
     {
       id: 90,
       name: "记录",
-      path: "/table/record.total",
+      path: "x/Table/record.total",
       icon: "icon-clock",
       rank: 90,
       status: "enabled",
@@ -102,7 +102,7 @@ function main() {
     {
       id: 100,
       name: "导出",
-      path: "/table/exports",
+      path: "x/Table/exports",
       icon: "icon-download",
       rank: 100,
       status: "enabled",
@@ -124,7 +124,7 @@ function main() {
     // {
     //   id: 90,
     //   name: "日志",
-    //   path: "/table/synclog",
+    //   path: "x/Table/synclog",
     //   icon: "icon-clock",
     //   rank: 90,
     //   status: "enabled",
@@ -135,7 +135,7 @@ function main() {
     {
       id: 2010,
       name: "物资",
-      path: "/table/material",
+      path: "x/Table/material",
       icon: "icon-package",
       rank: 10,
       status: "enabled",
@@ -146,7 +146,7 @@ function main() {
     {
       id: 2020,
       name: "单品",
-      path: "/table/material.sku",
+      path: "x/Table/material.sku",
       icon: "icon-package",
       rank: 20,
       status: "enabled",
@@ -157,7 +157,7 @@ function main() {
     {
       id: 2030,
       name: "库存",
-      path: "/table/stock",
+      path: "x/Table/stock",
       icon: "icon-package",
       rank: 30,
       status: "enabled",
@@ -168,7 +168,7 @@ function main() {
     {
       id: 2040,
       name: "类目",
-      path: "/table/material.category",
+      path: "x/Table/material.category",
       icon: "icon-package",
       rank: 40,
       status: "enabled",
@@ -179,7 +179,7 @@ function main() {
     {
       id: 7009,
       name: "全部记录",
-      path: "/table/record.total",
+      path: "x/Table/record.total",
       icon: "icon-package",
       rank: 9,
       status: "enabled",
@@ -190,7 +190,7 @@ function main() {
     {
       id: 7010,
       name: "出库记录",
-      path: "/table/record.material.out",
+      path: "x/Table/record.material.out",
       icon: "icon-package",
       rank: 10,
       status: "enabled",
@@ -201,7 +201,7 @@ function main() {
     {
       id: 7020,
       name: "入库记录",
-      path: "/table/record.material.in",
+      path: "x/Table/record.material.in",
       icon: "icon-package",
       rank: 20,
       status: "enabled",
@@ -212,7 +212,7 @@ function main() {
     {
       id: 7030,
       name: "进入记录",
-      path: "/table/record.user.in",
+      path: "x/Table/record.user.in",
       icon: "icon-package",
       rank: 30,
       status: "enabled",
@@ -223,7 +223,7 @@ function main() {
     {
       id: 7040,
       name: "离开记录",
-      path: "/table/record.user.out",
+      path: "x/Table/record.user.out",
       icon: "icon-package",
       rank: 30,
       status: "enabled",
@@ -234,7 +234,7 @@ function main() {
     {
       id: 101,
       name: "导出下载",
-      path: "/table/exports",
+      path: "x/Table/exports",
       icon: "icon-download",
       rank: 101,
       status: "enabled",
