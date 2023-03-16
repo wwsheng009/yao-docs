@@ -1,0 +1,380 @@
+{
+  "name": "领料记录",
+  "action": {
+    "bind": {
+      "model": "record",
+      "option": {
+        "withs": {}
+      }
+    }
+  },
+  "layout": {
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            {
+              "name": "ID",
+              "width": 12
+            },
+            {
+              "width": 12,
+              "name": "仓库"
+            },
+            {
+              "name": "类型",
+              "width": 12
+            },
+            {
+              "name": "计划",
+              "width": 12
+            },
+            {
+              "width": 12,
+              "name": "单品"
+            },
+            {
+              "width": 12,
+              "name": "编码"
+            },
+            {
+              "name": "用户",
+              "width": 12
+            },
+            {
+              "name": "凭据",
+              "width": 12
+            },
+            {
+              "name": "单品编码",
+              "width": 12
+            },
+            {
+              "width": 12,
+              "name": "计划编码"
+            },
+            {
+              "width": 12,
+              "name": "发生时刻"
+            },
+            {
+              "name": "批次",
+              "width": 12
+            },
+            {
+              "name": "备注",
+              "width": 12
+            },
+            {
+              "name": "状态",
+              "width": 12
+            },
+            {
+              "name": "唯一字段",
+              "width": 12
+            },
+            {
+              "name": "创建时间",
+              "width": 12
+            },
+            {
+              "name": "更新时间",
+              "width": 12
+            }
+          ]
+        }
+      ]
+    },
+    "primary": "id",
+    "actions": [
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "CloseModal",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      },
+      {
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete",
+        "action": [
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "确认删除",
+              "content": "删除后不可撤销！"
+            }
+          },
+          {
+            "name": "Delete",
+            "payload": {
+              "model": "record.material.out"
+            },
+            "type": "Form.delete"
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      }
+    ]
+  },
+  "fields": {
+    "form": {
+      "计划编码": {
+        "bind": "plan_sn",
+        "view": {
+          "type": "",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 计划编码"
+          }
+        }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          }
+        }
+      },
+      "凭据": {
+        "bind": "ticket_id",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 凭据"
+          }
+        }
+      },
+      "唯一字段": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 唯一字段"
+          }
+        },
+        "bind": "unique_id",
+        "view": {
+          "type": "",
+          "props": {}
+        }
+      },
+      "仓库": {
+        "bind": "warehouse_id",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 仓库"
+          }
+        }
+      },
+      "单品": {
+        "bind": "sku_id",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 单品"
+          }
+        }
+      },
+      "备注": {
+        "bind": "remark",
+        "view": {
+          "type": "",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 备注"
+          }
+        }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "showTime": {
+              "format": "HH:mm:ss"
+            },
+            "placeholder": "请选择 更新时间"
+          },
+          "type": "DatePicker"
+        }
+      },
+      "类型": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择 类型",
+            "options": [
+              {
+                "label": "入库",
+                "value": "入库"
+              },
+              {
+                "value": "出库",
+                "label": "出库"
+              },
+              {
+                "label": "进入",
+                "value": "进入"
+              },
+              {
+                "label": "离开",
+                "value": "离开"
+              }
+            ]
+          }
+        },
+        "bind": "type"
+      },
+      "发生时刻": {
+        "bind": "uptime",
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "placeholder": "请选择 发生时刻",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          }
+        }
+      },
+      "批次": {
+        "bind": "batch",
+        "view": {
+          "type": "",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "placeholder": "请输入 批次"
+          },
+          "type": "Input"
+        }
+      },
+      "计划": {
+        "bind": "plan_id",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 计划"
+          },
+          "type": "InputNumber"
+        }
+      },
+      "单品编码": {
+        "bind": "sku_sn",
+        "view": {
+          "props": {},
+          "type": ""
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 单品编码"
+          }
+        }
+      },
+      "状态": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择 状态",
+            "options": [
+              {
+                "label": "录入",
+                "value": "录入"
+              },
+              {
+                "value": "生效",
+                "label": "生效"
+              },
+              {
+                "value": "异常",
+                "label": "异常"
+              },
+              {
+                "value": "归档",
+                "label": "归档"
+              }
+            ]
+          }
+        },
+        "bind": "status"
+      },
+      "编码": {
+        "view": {
+          "type": "",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 编码"
+          }
+        },
+        "bind": "sn"
+      },
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 ID",
+            "disabled": true
+          },
+          "type": "InputNumber"
+        }
+      },
+      "用户": {
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 用户"
+          }
+        },
+        "bind": "user_id"
+      }
+    }
+  },
+  "config": {
+    "full": true
+  }
+}

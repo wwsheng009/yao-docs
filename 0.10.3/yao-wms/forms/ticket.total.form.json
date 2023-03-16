@@ -1,0 +1,11 @@
+{
+  "name": "ticket.total",
+  "action": {
+    "bind": {
+      "model": "ticket.total",
+      "option": {
+        "withs": {}
+      }
+    }
+  }
+}

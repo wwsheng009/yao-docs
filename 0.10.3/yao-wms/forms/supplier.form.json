@@ -1,0 +1,222 @@
+{
+  "name": "supplier",
+  "action": {
+    "bind": {
+      "model": "supplier",
+      "option": {}
+    }
+  },
+  "layout": {
+    "primary": "id",
+    "actions": [
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "CloseModal",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      },
+      {
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete",
+        "action": [
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "确认删除",
+              "content": "删除后不可撤销！"
+            }
+          },
+          {
+            "name": "Delete",
+            "payload": {
+              "model": "supplier"
+            },
+            "type": "Form.delete"
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      }
+    ],
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            {
+              "width": 12,
+              "name": "ID"
+            },
+            {
+              "name": "名称",
+              "width": 12
+            },
+            {
+              "name": "简称",
+              "width": 12
+            },
+            {
+              "name": "技证号",
+              "width": 12
+            },
+            {
+              "name": "状态",
+              "width": 12
+            },
+            {
+              "name": "类型",
+              "width": 12
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "fields": {
+    "form": {
+      "状态": {
+        "bind": "status",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "options": [
+              {
+                "label": "启用",
+                "value": "启用"
+              },
+              {
+                "value": "停用",
+                "label": "停用"
+              }
+            ],
+            "placeholder": "请选择 状态"
+          }
+        }
+      },
+      "类型": {
+        "bind": "type",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择 类型",
+            "options": [
+              {
+                "label": "供应商",
+                "value": "供应商"
+              },
+              {
+                "label": "领料单位",
+                "value": "领料单位"
+              }
+            ]
+          }
+        }
+      },
+      "创建时间": {
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          }
+        },
+        "bind": "created_at"
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "showTime": {
+              "format": "HH:mm:ss"
+            },
+            "placeholder": "请选择 更新时间"
+          }
+        }
+      },
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 ID",
+            "disabled": true
+          }
+        }
+      },
+      "名称": {
+        "view": {
+          "type": "",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 名称"
+          }
+        },
+        "bind": "name"
+      },
+      "简称": {
+        "bind": "short",
+        "view": {
+          "props": {},
+          "type": ""
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 简称"
+          }
+        }
+      },
+      "技证号": {
+        "view": {
+          "type": "",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "placeholder": "请输入 技证号"
+          },
+          "type": "Input"
+        },
+        "bind": "sn"
+      }
+    }
+  },
+  "config": {
+    "full": true
+  }
+}

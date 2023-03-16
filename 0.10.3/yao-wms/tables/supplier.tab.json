@@ -1,7 +1,7 @@
 {
   "name": "单位",
   "action": {
-    "bind": { "model": "supplier" },
+    "bind": { "model": "supplier", "option": { "form": "supplier" } },
     "search": { "default": [null, null, 10] }
   }
 }

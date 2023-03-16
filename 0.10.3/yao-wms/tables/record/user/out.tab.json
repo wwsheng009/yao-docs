@@ -2,7 +2,480 @@
   "name": "出入记录",
   "action": {
     "bind": {
-      "model": "record"
+      "model": "record",
+      "form": "record.user.out"
     }
+  },
+  "layout": {
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "仓库"
+        },
+        {
+          "name": "类型"
+        }
+      ],
+      "actions": [
+        {
+          "action": [
+            {
+              "type": "Common.historyPush",
+              "payload": {
+                "pathname": "/x/Form/record.user.out/0/edit"
+              },
+              "name": "HistoryPush"
+            }
+          ],
+          "title": "创建",
+          "width": 3,
+          "icon": "icon-plus"
+        }
+      ]
+    },
+    "table": {
+      "props": {
+        "scroll": {
+          "x": "max-content"
+        }
+      },
+      "columns": [
+        {
+          "name": "ID",
+          "width": 100
+        },
+        {
+          "name": "仓库",
+          "width": 100
+        },
+        {
+          "name": "类型",
+          "width": 160
+        },
+        {
+          "name": "计划",
+          "width": 100
+        },
+        {
+          "name": "单品",
+          "width": 100
+        },
+        {
+          "name": "编码",
+          "width": 160
+        },
+        {
+          "name": "用户",
+          "width": 100
+        },
+        {
+          "name": "凭据",
+          "width": 100
+        },
+        {
+          "name": "单品编码",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "计划编码"
+        },
+        {
+          "name": "发生时刻",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "批次"
+        },
+        {
+          "name": "备注",
+          "width": 160
+        },
+        {
+          "name": "状态",
+          "width": 160
+        },
+        {
+          "name": "唯一字段",
+          "width": 160
+        },
+        {
+          "name": "创建时间",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "更新时间"
+        }
+      ],
+      "operation": {
+        "hide": true,
+        "actions": []
+      }
+    },
+    "primary": "id"
+  },
+  "fields": {
+    "filter": {
+      "仓库": {
+        "bind": "where.warehouse_id.match",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 仓库"
+          }
+        }
+      },
+      "类型": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择 类型",
+            "options": [
+              {
+                "value": "入库",
+                "label": "入库"
+              },
+              {
+                "label": "出库",
+                "value": "出库"
+              },
+              {
+                "label": "进入",
+                "value": "进入"
+              },
+              {
+                "label": "离开",
+                "value": "离开"
+              }
+            ]
+          }
+        },
+        "bind": "where.type.eq"
+      }
+    },
+    "table": {
+      "凭据": {
+        "bind": "ticket_id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 凭据"
+          }
+        }
+      },
+      "计划编码": {
+        "bind": "plan_sn",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 计划编码"
+          }
+        }
+      },
+      "计划": {
+        "edit": {
+          "props": {
+            "placeholder": "请输入 计划"
+          },
+          "type": "InputNumber"
+        },
+        "bind": "plan_id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "编码": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 编码"
+          }
+        },
+        "bind": "sn"
+      },
+      "用户": {
+        "bind": "user_id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "placeholder": "请输入 用户"
+          },
+          "type": "InputNumber"
+        }
+      },
+      "备注": {
+        "bind": "remark",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "placeholder": "请输入 备注"
+          },
+          "type": "Input"
+        }
+      },
+      "ID": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 ID",
+            "disabled": true
+          }
+        },
+        "bind": "id"
+      },
+      "更新时间": {
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          },
+          "type": "DatePicker"
+        },
+        "bind": "updated_at",
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        }
+      },
+      "状态": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "options": [
+              {
+                "label": "录入",
+                "value": "录入"
+              },
+              {
+                "label": "生效",
+                "value": "生效"
+              },
+              {
+                "label": "异常",
+                "value": "异常"
+              },
+              {
+                "value": "归档",
+                "label": "归档"
+              }
+            ],
+            "placeholder": "请选择 状态"
+          }
+        },
+        "bind": "status",
+        "view": {
+          "props": {
+            "placeholder": "请选择 状态",
+            "options": [
+              {
+                "label": "录入",
+                "value": "录入"
+              },
+              {
+                "label": "生效",
+                "value": "生效"
+              },
+              {
+                "value": "异常",
+                "label": "异常"
+              },
+              {
+                "label": "归档",
+                "value": "归档"
+              }
+            ]
+          },
+          "type": "Tag"
+        }
+      },
+      "仓库": {
+        "bind": "warehouse_id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 仓库"
+          }
+        }
+      },
+      "唯一字段": {
+        "bind": "unique_id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "placeholder": "请输入 唯一字段"
+          },
+          "type": "Input"
+        }
+      },
+      "单品": {
+        "bind": "sku_id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 单品"
+          }
+        }
+      },
+      "批次": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 批次"
+          }
+        },
+        "bind": "batch"
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        },
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          }
+        }
+      },
+      "单品编码": {
+        "bind": "sku_sn",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 单品编码"
+          }
+        }
+      },
+      "发生时刻": {
+        "bind": "uptime",
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        },
+        "edit": {
+          "props": {
+            "showTime": {
+              "format": "HH:mm:ss"
+            },
+            "placeholder": "请选择 发生时刻"
+          },
+          "type": "DatePicker"
+        }
+      },
+      "类型": {
+        "bind": "type",
+        "view": {
+          "type": "Tag",
+          "props": {
+            "options": [
+              {
+                "label": "入库",
+                "value": "入库"
+              },
+              {
+                "label": "出库",
+                "value": "出库"
+              },
+              {
+                "label": "进入",
+                "value": "进入"
+              },
+              {
+                "label": "离开",
+                "value": "离开"
+              }
+            ],
+            "placeholder": "请选择 类型"
+          }
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择 类型",
+            "options": [
+              {
+                "label": "入库",
+                "value": "入库"
+              },
+              {
+                "label": "出库",
+                "value": "出库"
+              },
+              {
+                "value": "进入",
+                "label": "进入"
+              },
+              {
+                "label": "离开",
+                "value": "离开"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "config": {
+    "full": true
   }
 }
