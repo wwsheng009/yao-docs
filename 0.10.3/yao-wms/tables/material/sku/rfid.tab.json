@@ -10,5 +10,96 @@
       }
     },
     "after:search": "scripts.sku.RFID"
+  },
+  "layout": {
+    "header": {
+      "preset": {}
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "关键词"
+        }
+      ]
+    },
+    "table": {
+      "columns": [
+        {
+          "name": "RFID"
+        },
+        {
+          "name": "标签"
+        },
+        {
+          "name": "类目"
+        },
+        {
+          "name": "单品"
+        },
+        {
+          "name": "计划"
+        },
+        {
+          "name": "仓库"
+        },
+        {
+          "name": "状态"
+        }
+      ]
+    }
+  },
+  "fields": {
+    "filter": {
+      "关键词": {
+        "bind": "where.id.eq",
+        "edit": {
+          "type": "InputNumber"
+        }
+      }
+    },
+    "table": {
+      "RFID": {
+        "bind": "rfid",
+        "view": {
+          "type": "Text"
+        }
+      },
+      "标签": {
+        "bind": "item",
+        "view": {
+          "type": "Text"
+        }
+      },
+      "类目": {
+        "bind": "category",
+        "view": {
+          "type": "Text"
+        }
+      },
+      "单品": {
+        "bind": "sku",
+        "view": {
+          "type": "Text"
+        }
+      },
+      "计划": {
+        "bind": "plan",
+        "view": {
+          "type": "Text"
+        }
+      },
+      "仓库": {
+        "bind": "node_id",
+        "view": {
+          "type": "Text"
+        }
+      },
+      "状态": {
+        "bind": "status",
+        "view": {
+          "type": "Text"
+        }
+      }
+    }
   }
 }

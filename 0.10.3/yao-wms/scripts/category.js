@@ -1,4 +1,6 @@
-function AfterSave(id, payload) {
+function AfterSave(id) {
+  var payload = Process("models.category.Find", id, {});
+
   var category_sn = payload["category_sn"];
   if (!category_sn) {
     return Process("models.material.category.Save", {

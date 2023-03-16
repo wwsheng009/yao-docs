@@ -1,9 +1,10 @@
 /**
  * 保存数据后: 更新库存等
  * @param {*} id
- * @param {*} payload
  */
-function AfterSave(id, payload) {
+function AfterSave(id) {
+  var payload = Process("models.record.Find", id, {});
+
   var status = payload.status || "";
   var type = payload.type || "";
 

@@ -9,8 +9,7 @@
     },
     "after:save": "scripts.category.AfterSave",
     "search": {
-      "process": "flows.category.data",
-      "bind": "where.name.match"
+      "process": "flows.category.data"
     }
   },
   "layout": {

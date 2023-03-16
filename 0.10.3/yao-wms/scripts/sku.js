@@ -124,7 +124,9 @@ function DefaultSpecs(material_id) {
  * 保存 Hook, 处理规格, 自动生成标签
  * @param {*} data
  */
-function AfterSave(id, payload) {
+function AfterSave(id) {
+  var payload = Process("models.material.sku.Find", id, {});
+
   if (!payload["specs_list"]) {
     return;
   }

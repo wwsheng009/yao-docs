@@ -4,13 +4,293 @@
     "bind": {
       "model": "user",
       "option": {
-        "withs": { "supplier": {} }
+        "withs": { "supplier": {} },
+        "form": "user"
       }
     },
     "after:save": "scripts.user.AfterSave",
     "after:delete": "scripts.user.AfterDelete",
     "search": {
       "default": [{ "withs": { "supplier": {} } }, null, 10]
+    }
+  },
+  "layout": {
+    "filter": {
+      "actions": [
+        {
+          "action": [
+            {
+              "name": "HistoryPush",
+              "payload": { "pathname": "/x/Form/user/0/edit" },
+              "type": "Common.historyPush"
+            }
+          ],
+          "icon": "icon-plus",
+          "id": "82b840c68372192e83aace271d8d1d3c",
+          "title": "创建",
+          "width": 3
+        }
+      ],
+      "columns": [{ "name": "编码" }, { "name": "供应商" }]
+    },
+    "header": { "actions": [], "preset": {} },
+    "primary": "id",
+    "table": {
+      "columns": [
+        { "name": "ID", "width": 100 },
+        { "name": "姓名", "width": 160 },
+        { "name": "编码", "width": 160 },
+        { "name": "供应商", "width": 100 },
+        { "name": "身份证", "width": 160 },
+        { "name": "照片", "width": 160 },
+        { "name": "类型", "width": 160 },
+        { "name": "状态", "width": 160 },
+        { "name": "进入门禁", "width": 160 },
+        { "name": "离开门禁", "width": 160 },
+        { "name": "创建时间", "width": 160 },
+        { "name": "更新时间", "width": 160 }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": { "Form": { "model": "user", "type": "view" } },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "id": "c61e95a1dbe2dc1aa3515c3fa922fbb4",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": { "Form": { "model": "user", "type": "edit" } },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "id": "251b74e693d9d9ffa4b5834a5b907fdb",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Delete",
+                "payload": { "model": "user" },
+                "type": "Table.delete"
+              }
+            ],
+            "confirm": {
+              "desc": "请确认删除，删除后数据无法恢复",
+              "title": "确认"
+            },
+            "icon": "icon-trash-2",
+            "id": "ef770dc1a8899f706df0da5d8169150e",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ],
+        "width": 140
+      },
+      "props": { "scroll": { "x": "max-content" } }
+    }
+  },
+  "fields": {
+    "filter": {
+      "供应商": {
+        "bind": "where.supplier_id.match",
+        "edit": {
+          "props": { "placeholder": "请输入 供应商" },
+          "type": "InputNumber"
+        },
+        "id": "7fd80c64b6c344331237dc22ca8e4032"
+      },
+      "编码": {
+        "bind": "where.user_sn.match",
+        "edit": { "props": { "placeholder": "请输入 编码" }, "type": "Input" },
+        "id": "35e58bbb68217253344a6a1eaf13b3c0"
+      }
+    },
+    "table": {
+      "ID": {
+        "bind": "id",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "供应商": {
+        "bind": "supplier_id",
+        "edit": {
+          "props": { "placeholder": "请输入 供应商" },
+          "type": "InputNumber"
+        },
+        "id": "3086d375edc980b09d1a05d66f0846ea",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "姓名": {
+        "bind": "name",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [{ "required": true }]
+            },
+            "placeholder": "请输入 姓名"
+          },
+          "type": "Input"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "照片": {
+        "bind": "photo",
+        "edit": {
+          "type": "Upload",
+          "compute": "Download",
+          "props": {
+            "filetype": "image",
+            "$api": {
+              "process": "fs.system.Upload"
+            }
+          }
+        },
+        "view": {
+          "type": "Image",
+          "compute": "Download",
+          "props": {
+            "style": {
+              "width": 36,
+              "height": 36,
+              "borderRadius": "50%"
+            }
+          }
+        }
+      },
+      "状态": {
+        "bind": "status",
+        "edit": {
+          "props": {
+            "options": [
+              { "label": "启用", "value": "启用" },
+              { "label": "停用", "value": "停用" }
+            ],
+            "placeholder": "请选择 状态"
+          },
+          "type": "Select"
+        },
+        "view": {
+          "props": {
+            "options": [
+              { "label": "启用", "value": "启用" },
+              { "label": "停用", "value": "停用" }
+            ],
+            "placeholder": "请选择 状态"
+          },
+          "type": "Tag"
+        }
+      },
+      "离开门禁": {
+        "bind": "face_out",
+        "edit": {
+          "props": {
+            "options": [
+              { "label": "已同步", "value": "已同步" },
+              { "label": "待同步", "value": "待同步" },
+              { "label": "同步中", "value": "同步中" },
+              { "label": "同步失败", "value": "同步失败" }
+            ],
+            "placeholder": "请选择 离开门禁"
+          },
+          "type": "Select"
+        },
+        "view": {
+          "props": {
+            "options": [
+              { "label": "已同步", "value": "已同步" },
+              { "label": "待同步", "value": "待同步" },
+              { "label": "同步中", "value": "同步中" },
+              { "label": "同步失败", "value": "同步失败" }
+            ],
+            "placeholder": "请选择 离开门禁"
+          },
+          "type": "Tag"
+        }
+      },
+      "类型": {
+        "bind": "type",
+        "edit": {
+          "props": {
+            "options": [
+              { "label": "供应商", "value": "供应商" },
+              { "label": "内部员工", "value": "内部员工" }
+            ],
+            "placeholder": "请选择 类型"
+          },
+          "type": "Select"
+        },
+        "id": "c330224c576eb4ec382067a50dd1c63c",
+        "view": {
+          "props": {
+            "options": [
+              { "label": "供应商", "value": "供应商" },
+              { "label": "内部员工", "value": "内部员工" }
+            ],
+            "placeholder": "请选择 类型"
+          },
+          "type": "Tag"
+        }
+      },
+      "编码": {
+        "bind": "user_sn",
+        "edit": { "props": { "placeholder": "请输入 编码" }, "type": "Input" },
+        "id": "89f1905035ce204a3b007cd893f99106",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "身份证": {
+        "bind": "idcard",
+        "edit": {
+          "props": { "placeholder": "请输入 身份证" },
+          "type": "Input"
+        },
+        "id": "b7bee24dfe9d68c7b18ee75bba50319d",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "进入门禁": {
+        "bind": "face_in",
+        "edit": {
+          "props": {
+            "options": [
+              { "label": "已同步", "value": "已同步" },
+              { "label": "待同步", "value": "待同步" },
+              { "label": "同步中", "value": "同步中" },
+              { "label": "同步失败", "value": "同步失败" }
+            ],
+            "placeholder": "请选择 进入门禁"
+          },
+          "type": "Select"
+        },
+        "id": "c08d990e0dcb22b17aa92361f01af949",
+        "view": {
+          "props": {
+            "options": [
+              { "label": "已同步", "value": "已同步" },
+              { "label": "待同步", "value": "待同步" },
+              { "label": "同步中", "value": "同步中" },
+              { "label": "同步失败", "value": "同步失败" }
+            ],
+            "placeholder": "请选择 进入门禁"
+          },
+          "type": "Tag"
+        }
+      }
     }
   }
 }

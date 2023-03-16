@@ -1,20 +1,9 @@
-function BeforeSave(data) {
-  console.log("BeforeSave payload:", data);
-  return data;
-}
-
-/**自定义保存数据函数 */
-function Save(data) {
-  //先保存主表，获取id后再保存从表
-  // console.log("BeforeSave payload:", data);
-  var id = Process("models.plan.Save", data);
-
-  AfterSave(id, data);
-}
 /**
  * 更新 Items
  */
-function AfterSave(id, payload) {
+function AfterSave(id) {
+  var payload = Process("models.plan.Find", id, {});
+
   // console.log(id, payload);
   // console.log("payload:", payload);
   var items = payload.items || {};

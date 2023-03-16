@@ -16,7 +16,8 @@
               }
             }
           }
-        }
+        },
+        "form": "record.total"
       }
     },
     "after:search": "scripts.sku.WithsAfterSearch",

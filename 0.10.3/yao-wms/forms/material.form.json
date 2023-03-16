@@ -127,7 +127,17 @@
             }
           }
         },
-        "view": { "props": {}, "type": "" }
+        "view": {
+          "type": "Image",
+          "compute": "Download",
+          "props": {
+            "style": {
+              "width": 36,
+              "height": 36,
+              "borderRadius": "50%"
+            }
+          }
+        }
       },
       "图表": {
         "bind": "icon",

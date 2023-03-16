@@ -9,9 +9,7 @@
         }
       }
     },
-    "save": {
-      "process": "scripts.plan.Save"
-    },
+
     "before:delete": "scripts.plan.BeforeDeletePlan"
   },
   "layout": {
