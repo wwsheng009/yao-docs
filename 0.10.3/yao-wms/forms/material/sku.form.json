@@ -1,9 +1,15 @@
 {
   "name": "单品",
   "action": {
-    "bind": { "model": "material.sku" },
+    "bind": {
+      "model": "material.sku",
+      "option": {
+        "withs": {}
+      }
+    },
+    "save": { "process": "scripts.sku.Save" },
     "after:find": "scripts.sku.AfterFind",
-    "after:save": "scripts.sku.AfterSave"
+    "before:delete": "scripts.sku.BeforeDelete"
   },
   "layout": {
     "actions": [
@@ -76,7 +82,7 @@
             { "name": "物资", "width": 12 },
             { "name": "单品标签", "width": 12 },
             { "name": "单位", "width": 12 },
-            { "name": "规格", "width": 24 },
+            { "name": "规格清单", "width": 24 },
             { "name": "预警库存", "width": 12 },
             { "name": "状态", "width": 12 }
           ]
@@ -145,7 +151,7 @@
         "bind": "images",
         "edit": {
           "type": "Upload",
-          "compute": "Download",
+          "compute": "Upload",
           "props": {
             "filetype": "image",
             "$api": {
@@ -170,16 +176,14 @@
         "bind": "material_id",
         "edit": {
           "props": {
-            "props": {
-              "xProps": {
-                "$remote": {
-                  "process": "yao.component.SelectOptions",
-                  "query": {
-                    "model": "material",
-                    "label": "name",
-                    "value": "id",
-                    "limit": "3000"
-                  }
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "material",
+                  "label": "name",
+                  "value": "id",
+                  "limit": "3000"
                 }
               }
             }
@@ -212,16 +216,15 @@
         "edit": { "props": { "placeholder": "请输入 编码" }, "type": "Input" },
         "view": { "props": {}, "type": "" }
       },
-      "规格": {
-        "bind": "specs",
+      "规格清单": {
+        "bind": "specs_list",
         "edit": {
           "props": {
-            "autoSize": { "maxRows": 6, "minRows": 2 },
-            "placeholder": "请输入 规格"
+            "name": "material.spec",
+            "showLabel": true
           },
-          "type": "TextArea"
-        },
-        "view": { "props": {}, "type": "" }
+          "type": "List"
+        }
       },
       "预警库存": {
         "bind": "stock",

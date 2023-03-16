@@ -130,31 +130,46 @@
         "view": {
           "type": "Image",
           "compute": "Download",
-          "props": {
-            "style": {
-              "width": 36,
-              "height": 36,
-              "borderRadius": "50%"
-            }
-          }
+          "props": {}
         }
       },
       "图表": {
         "bind": "icon",
         "edit": {
+          "type": "Upload",
+          "compute": "Upload",
           "props": {
-            "autoSize": { "maxRows": 6, "minRows": 2 },
-            "placeholder": "请输入 图表"
-          },
-          "type": "TextArea"
+            "filetype": "image",
+            "$api": {
+              "process": "fs.system.Upload"
+            }
+          }
         },
-        "view": { "props": {}, "type": "" }
+        "view": {
+          "type": "Image",
+          "compute": "Download",
+          "props": {
+            "style": {}
+          }
+        }
       },
       "类目": {
         "bind": "category_id",
         "edit": {
-          "props": { "placeholder": "请输入 类目" },
-          "type": "InputNumber"
+          "type": "Select",
+          "props": {
+            "placeholder": "请输入 类目",
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "material.category",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
         }
       }
     }

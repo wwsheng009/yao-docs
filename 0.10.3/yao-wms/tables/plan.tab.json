@@ -17,7 +17,7 @@
     "find": {
       "default": [null, null, 10]
     },
-    "after:save": "scripts.plan.AfterSave",
+    "save": { "process": "scripts.plan.Save" },
     "before:delete": "scripts.plan.BeforeDeletePlan",
     "before:delete-in": "scripts.plan.BeforeDeletePlanIn"
   },

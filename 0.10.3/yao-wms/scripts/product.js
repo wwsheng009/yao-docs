@@ -1,3 +1,4 @@
+/**扫码增加单品 */
 function Save(payload) {
   var node_id = Process("models.warehouse.get", {
     limit: 1,

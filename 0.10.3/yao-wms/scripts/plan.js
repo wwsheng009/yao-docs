@@ -1,8 +1,16 @@
+/**自定义保存数据函数 */
+function Save(data) {
+  //先保存主表，获取id后再保存从表
+  var id = Process("models.plan.Save", data);
+
+  AfterSave(id, data);
+}
+
 /**
  * 更新 Items
  */
-function AfterSave(id) {
-  var payload = Process("models.plan.Find", id, {});
+function AfterSave(id, payload) {
+  // var payload = Process("models.plan.Find", id, {});
 
   // console.log(id, payload);
   // console.log("payload:", payload);
@@ -17,11 +25,9 @@ function AfterSave(id) {
     for (var i in data) {
       delete data[i].amount;
       if (typeof data[i].id === "string" && data[i].id.startsWith("_")) {
-        //it's a number
         //新增项目，在前端会生成唯一字符串,
         //由于后台使用的自增长ID，不需要生成的唯一字符串，由数据库生成索引
         delete data[i].id;
-        // console.log("data[i]:", data[i]);
       }
     }
 

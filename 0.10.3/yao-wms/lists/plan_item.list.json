@@ -1,5 +1,4 @@
 {
-  "$schema": "/data/projects/yao/demos-v1.0/yao-node-projects/packages/yao-app-ts-types/json-schemas/0.10.3/list.json",
   "action": {
     "bind": {
       "model": "plan.item"

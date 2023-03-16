@@ -12,7 +12,7 @@
       "type": "string",
       "length": 64,
       "unique": true,
-      "comment": "标签: 类目(4)-SKU(6)-计划(6)-Item(6)"
+      "comment": "标签: 类目(0-6)-SKU(7-14)-计划(14-20)-Item(20-29)"
     },
     {
       "label": "仓库",

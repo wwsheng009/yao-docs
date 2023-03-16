@@ -103,7 +103,7 @@ function AfterFind(response) {
   names.sort();
   for (var i in names) {
     var name = names[i];
-    specs_list.push({ name: name, value: specs[name] || "" });
+    specs_list.push({ id: i, name: name, value: specs[name] || "" });
   }
 
   response["specs_list"] = specs_list;
@@ -119,23 +119,69 @@ function DefaultSpecs(material_id) {
   });
   return specs;
 }
+/**
+ * 关联表批量删除
+ * before Delete  Batch
+ * @param {array} param0  object
+ */
+function BeforeDeleteIn({ wheres }) {
+  let array = wheres[0].value || [];
+  array.forEach((element) => {
+    BeforeDelete(element);
+  });
 
+  return array;
+}
+
+/**
+ * 关联表删除
+ * before Delete
+ * @param {number} id  id
+ */
+function BeforeDelete(id) {
+  // console.log("delete with id:", id);
+  let rows = Process("models.material.spec.DeleteWhere", {
+    wheres: [{ column: "material_id", value: id }],
+  });
+
+  // console.log(`${rows} rows deleted`);
+  //remembe to return the id in array format
+  return [id];
+}
+
+function Save(payload) {
+  var id = Process("models.material.sku.Save", payload);
+  if (id.code && id.message) {
+    console.log("id", id);
+    throw new Error(id.message);
+  }
+  AfterSave(id, payload);
+}
 /**
  * 保存 Hook, 处理规格, 自动生成标签
  * @param {*} data
  */
-function AfterSave(id) {
-  var payload = Process("models.material.sku.Find", id, {});
-
+function AfterSave(id, payload) {
   if (!payload["specs_list"]) {
     return;
   }
 
   var specs_list = payload["specs_list"] || {};
-  var specs_data = specs_list["data"] || [];
+  //当有删除项目时,数据保存在specs_list.data里
+  //如果没有删除项目,specs_list
+  var specs_data = specs_list["data"] || specs_list || [];
   var specs = {};
   for (var i in specs_data) {
     var spec = specs_data[i] || {};
+    if (
+      typeof specs_data[i].id === "string" &&
+      specs_data[i].id.startsWith("_")
+    ) {
+      //新增项目，在前端会生成唯一字符串,
+      //由于后台使用的自增长ID，不需要生成的唯一字符串，由数据库生成索引
+      delete specs_data[i].id;
+    }
+
     if (spec.name) {
       specs[spec.name] = spec.value || "";
       if (payload["material_id"]) {
@@ -367,8 +413,11 @@ function FormatDateTime(date) {
   return `${year}年${month}月${day}日 ${hours}:${mins}:${secs}`;
 }
 
+//
+
 //根据标签获取一个产品
 function GetOne(payload, headers) {
+  //输入标签
   var code = payload.code;
   var datas = payload.data;
   for (var i in datas) {
@@ -382,15 +431,19 @@ function GetOne(payload, headers) {
     return "";
   }
   var find = Process("models.rfid.get", {
+    //扫描码
     wheres: [{ column: "s_code", value: code }],
     limit: 1,
   });
   if (!find.length) {
+    log.Error("找不到 扫描码rfid %s", code);
     return "";
   }
+  //标签
   code = find[0]["sn"];
 
   var res = Explode(code);
+  //
   var sku = res.sku;
   if (sku != "") {
     var product = Process("models.material.sku.get", {
@@ -406,7 +459,7 @@ function GetOne(payload, headers) {
       ) {
         var token = headers["Authorization"][0].replace("Bearer ", "");
         product[0].material.icon =
-          "/api/xiang/storage/url?name=" +
+          "/api/__yao/form/material/download/fields.form.图片?name=" +
           product[0].material.icon[0] +
           "&token=" +
           token;
@@ -414,7 +467,11 @@ function GetOne(payload, headers) {
         product[0].material.icon = "";
       }
       return product[0];
+    } else {
+      log.Error("models.material.sku不存在：%s", sku);
     }
+  } else {
+    log.Error("标签的sku不存在 rfid %s", code);
   }
   return "";
 }
@@ -424,6 +481,7 @@ function Explode(sn) {
 
   // 无效标签
   if (sn.length != 29) {
+    log.Error("无效标签 rfid %s", sn);
     return res;
   }
 

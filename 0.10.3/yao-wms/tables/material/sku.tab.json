@@ -12,6 +12,8 @@
         }
       }
     },
+    "before:delete": "scripts.sku.BeforeDelete",
+    "before:delete-in": "scripts.sku.BeforeDeleteIn",
     "after:search": "scripts.sku.AfterSearch",
     "after:find": "scripts.sku.AfterFind",
     "after:save": "scripts.sku.AfterSave",
@@ -76,7 +78,6 @@
         { "name": "税率", "width": 160 },
         { "name": "含税单价", "width": 160 },
         { "name": "列账单价", "width": 160 },
-        { "name": "规格", "width": 160 },
         { "name": "预警库存", "width": 100 },
         { "name": "图集", "width": 160 },
         { "name": "介绍", "width": 160 },
@@ -175,7 +176,14 @@
       },
       "物资图标": {
         "bind": "material.icon",
-        "view": { "props": {}, "type": "Text" }
+        "view": {
+          "type": "Image",
+          "compute": {
+            "process": "Download",
+            "args": ["$C(value)", "$C(props)", "$C(type)", "$C(id)", "$C(path)"]
+          },
+          "props": {}
+        }
       },
       "介绍": {
         "bind": "detail",
@@ -226,13 +234,7 @@
         "view": {
           "type": "Image",
           "compute": "Download",
-          "props": {
-            "style": {
-              "width": 36,
-              "height": 36,
-              "borderRadius": "50%"
-            }
-          }
+          "props": {}
         }
       },
       "物资": {

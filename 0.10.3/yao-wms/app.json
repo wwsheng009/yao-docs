@@ -5,7 +5,11 @@
   "version": "0.10.3",
   "description": "智慧仓库管理平台",
   "adminRoot": "admin",
-  "optional": { "hideNotification": true, "hideSetting": false },
+  "optional": {
+    "hideNotification": true,
+    "hideSetting": false,
+    "remoteCache": false
+  },
   "menu": {
     "process": "flows.app.menu",
     "args": []

@@ -300,19 +300,24 @@
       },
       "公章": {
         "bind": "photo",
-        "view": {
-          "type": "Tooltip",
+        "edit": {
+          "type": "Upload",
+          "compute": "Upload",
           "props": {
-            "title": "公章"
+            "filetype": "image",
+            "$api": {
+              "process": "fs.system.Upload"
+            }
           }
         },
-        "edit": {
-          "type": "TextArea",
+        "view": {
+          "type": "Image",
+          "compute": "Download",
           "props": {
-            "placeholder": "请输入 公章",
-            "autoSize": {
-              "minRows": 2,
-              "maxRows": 6
+            "style": {
+              "width": 36,
+              "height": 36,
+              "borderRadius": "50%"
             }
           }
         }
