@@ -230,7 +230,7 @@ function SaveDefaultSpecs(material_id, specs_data) {
  * @param {*} id
  */
 function NextRFID(id) {
-  var sku = Process("xiang.table.Find", "material.sku", id, {});
+  var sku = Process("yao.table.Find", "material.sku", id, {});
 
   //
   // "标签: 类目(6)-SKU(8)-计划(6)-Item(9)

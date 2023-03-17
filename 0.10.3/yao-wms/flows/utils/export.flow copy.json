@@ -10,7 +10,7 @@
     },
     {
       "name": "文件",
-      "process": "xiang.table.Export",
+      "process": "yao.table.Export",
       "args": ["{{$in.0}}", {}, 20]
     },
     {

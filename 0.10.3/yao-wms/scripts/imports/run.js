@@ -105,7 +105,7 @@ function GetSetSku(material_id, specs, stock, unit) {
 
   // Update
   if (res.length > 0) {
-    var id = Process("xiang.table.Save", "material.sku", {
+    var id = Process("yao.table.Save", "material.sku", {
       id: res[0].id,
       material_id: material_id,
       stock: stock,
@@ -120,7 +120,7 @@ function GetSetSku(material_id, specs, stock, unit) {
   }
 
   // Insert
-  var id = Process("xiang.table.Save", "material.sku", {
+  var id = Process("yao.table.Save", "material.sku", {
     material_id: material_id,
     stock: stock,
     unit: unit,
@@ -182,7 +182,7 @@ function GetSetCategory(name) {
   }
 
   // 新建分类
-  id = Process("xiang.table.save", "material.category", { name: name });
+  id = Process("yao.table.save", "material.category", { name: name });
   if (id.code) {
     log.Error("[Import] Failed to Save material.category: %s", id.message);
     return false;
@@ -220,7 +220,7 @@ function GetSetMaterial(name, category_id) {
   }
 
   // 新建物料
-  id = Process("xiang.table.save", "material", {
+  id = Process("yao.table.save", "material", {
     name: name,
     category_id: category_id,
   });

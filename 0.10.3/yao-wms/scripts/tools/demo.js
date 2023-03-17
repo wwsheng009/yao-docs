@@ -66,7 +66,7 @@ function Sku(row) {
   }
 
   // 保存单品
-  id = Process("xiang.table.Save", "material.sku", data);
+  id = Process("yao.table.Save", "material.sku", data);
   return id;
 }
 
@@ -96,7 +96,7 @@ function Material(row) {
   }
 
   // 保存物资
-  id = Process("xiang.table.Save", "material", {
+  id = Process("yao.table.Save", "material", {
     name: name,
     category_id: category_id,
   });
@@ -152,7 +152,7 @@ function Records(sku_id, row) {
   intime.setDate(intime.getDate() - 1);
 
   // 生成进入记录
-  var err = Process("xiang.table.Save", "record.total", {
+  var err = Process("yao.table.Save", "record.total", {
     warehouse_id: 1,
     type: "进入",
     uptime: intime.toISOString(),
@@ -164,7 +164,7 @@ function Records(sku_id, row) {
   console.log(`进入: ${intime.toISOString()} `, err);
 
   // 生成离开记录
-  Process("xiang.table.Save", "record.total", {
+  Process("yao.table.Save", "record.total", {
     warehouse_id: 1,
     type: "离开",
     uptime: outtime.toISOString(),
@@ -177,7 +177,7 @@ function Records(sku_id, row) {
     var sn = rfid(sku_id);
     console.log(`导入SKU #${sku_id} ${sn} ${i + 1}`);
     // 生成入库记录
-    Process("xiang.table.Save", "record.total", {
+    Process("yao.table.Save", "record.total", {
       warehouse_id: 1,
       type: "入库",
       sn: sn,
@@ -187,7 +187,7 @@ function Records(sku_id, row) {
       user_id: 1,
     });
     // 生成出库记录
-    Process("xiang.table.Save", "record.total", {
+    Process("yao.table.Save", "record.total", {
       warehouse_id: 1,
       type: "出库",
       sn: sn,
@@ -214,7 +214,7 @@ function Records(sku_id, row) {
 
 function rfid(sku_id) {
   var rfids = Process(
-    "xiang.table.Search",
+    "yao.table.Search",
     "material.sku.rfid",
     { wheres: [{ column: "id", value: sku_id }] },
     1,
@@ -222,7 +222,7 @@ function rfid(sku_id) {
   );
 
   var rfid = rfids.data[0];
-  Process("xiang.table.Save", "rfid", { sn: rfid.item, status: "入库" });
+  Process("yao.table.Save", "rfid", { sn: rfid.item, status: "入库" });
   return rfid.item;
 }
 

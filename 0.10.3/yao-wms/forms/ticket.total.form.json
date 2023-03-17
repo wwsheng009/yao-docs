@@ -1,8 +1,8 @@
 {
-  "name": "ticket.total",
+  "name": "台账",
   "action": {
     "bind": {
-      "model": "ticket.total",
+      "model": "ticket",
       "option": {
         "withs": {}
       }

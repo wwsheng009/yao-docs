@@ -5,7 +5,7 @@
   "nodes": [
     {
       "name": "文件",
-      "process": "xiang.table.Export",
+      "process": "yao.table.Export",
       "args": [
         "material.sku.rfid",
         { "wheres": [{ "column": "id", "value": "{{$in.0}}" }] },

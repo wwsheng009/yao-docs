@@ -1,5 +1,7 @@
 # hook 的参数
 
+`Table/Form`都可以使用`hook`来增强功能
+
 ## before:save
 
 `before:save`的输入参数是`payload`,输出是包含`payload`的数组

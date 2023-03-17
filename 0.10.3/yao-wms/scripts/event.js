@@ -224,7 +224,7 @@ function makeRecord(record) {
     throw new Exception(`[Event] makeRecord 参数错误`, 400);
   }
 
-  var resp = Process("xiang.table.Save", "record.total", record);
+  var resp = Process("yao.table.Save", "record.total", record);
   if (resp.code) {
     log.Error(
       `[Event] makeRecord ${record.type} user: ${record.user_id} %v %v`,
@@ -254,7 +254,7 @@ function makeTicket(ticket) {
     throw new Exception(`[Event] makeTicket 参数错误`, 400);
   }
 
-  var resp = Process("xiang.table.Save", "ticket.total", ticket);
+  var resp = Process("yao.table.Save", "ticket.total", ticket);
   if (resp.code) {
     log.Error(
       `[Event] makeTicket ${ticket.type} user: ${ticket.user_id} %v %v`,

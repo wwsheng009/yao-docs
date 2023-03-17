@@ -55,7 +55,7 @@ function onEnter(message) {
     type: "进入",
     status: "生效",
   };
-  var res = Process("xiang.table.Save", "record.total", data);
+  var res = Process("yao.table.Save", "record.total", data);
   if (res.code) {
     return res;
   }
@@ -94,7 +94,7 @@ function onLeave(message) {
     type: "离开",
     status: "生效",
   };
-  var res = Process("xiang.table.Save", "record.total", data);
+  var res = Process("yao.table.Save", "record.total", data);
   if (res.code) {
     return res;
   }
@@ -331,7 +331,7 @@ function saveRFIDs(type, message) {
 
   // 新增凭据
   if (type == "入库" || type == "出库") {
-    ticket_id = Process("xiang.table.Save", "ticket.total", {
+    ticket_id = Process("yao.table.Save", "ticket.total", {
       name: name,
       warehouse_id: node_id,
       user_id: user_id,
@@ -375,7 +375,7 @@ function saveRFIDs(type, message) {
       status: "生效",
     };
 
-    var record_id = Process("xiang.table.Save", "record.total", record); // 更新记录
+    var record_id = Process("yao.table.Save", "record.total", record); // 更新记录
 
     // 保存出错了
     if (typeof record_id == "object" && record_id.code) {
@@ -478,7 +478,7 @@ function Live() {
   now.setSeconds(now.getSeconds() - 60); // 1分钟内的数据
   var timeAgo = now.toISOString().slice(0, 19).replace("T", " ");
   records = Process(
-    "xiang.table.Search",
+    "yao.table.Search",
     "record.total",
     {
       select: ["id", "user_id", "uptime", "type"],
@@ -507,7 +507,7 @@ function Live() {
   data.user = user;
 
   items = Process(
-    "xiang.table.Search",
+    "yao.table.Search",
     "record.total",
     {
       select: ["id", "uptime", "type", "sn"],
