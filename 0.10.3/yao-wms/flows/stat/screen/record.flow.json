@@ -56,7 +56,7 @@
     },
     {
       "name": "合并结果",
-      "process": "xiang.helper.ArrayPluck",
+      "process": "utils.arr.Pluck",
       "args": [
         ["day", "入库", "出库"],
         {

@@ -21,7 +21,7 @@
     },
     {
       "name": "类目树",
-      "process": "xiang.helper.ArrayTree",
+      "process": "utils.arr.Tree",
       "args": ["{{$res.类目}}", { "parent": "parent_id" }]
     }
   ],

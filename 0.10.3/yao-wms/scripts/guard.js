@@ -12,12 +12,7 @@ function TokenRefresh() {
   const user = Process("session.Get", "user");
   const id = user.id;
   const sid = Process("session.ID");
-  const jwt = Process(
-    "xiang.helper.JWTMake",
-    id,
-    {},
-    { timeout: 3600, sid: sid }
-  );
+  const jwt = Process("utils.jwt.Make", id, {}, { timeout: 3600, sid: sid });
 
   // 更新 Session
   Process("session.Set", "user_id", id);

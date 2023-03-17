@@ -4,7 +4,7 @@
 function Status() {
   // 请求上报状态
   Process("scripts.node.Broadcast", "SyncDevices", {});
-  Process("xiang.sys.Sleep", 200);
+  Process("utils.time.Sleep", 200);
   const store = new Store("cache");
   const data = store.Get("devices") || {};
   const devices = data.devices || [];

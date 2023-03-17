@@ -272,7 +272,7 @@ function NextRFID(id) {
   sku["UNIT"] = sku.unit;
   sku["CODE"] = codes;
 
-  // Process("xiang.sys.Sleep", 2000);
+  // Process("utils.time.Sleep", 2000);
   return sku;
 }
 

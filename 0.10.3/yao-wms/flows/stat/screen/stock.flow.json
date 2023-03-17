@@ -78,7 +78,7 @@
     },
     {
       "name": "合并结果",
-      "process": "xiang.helper.ArrayPluck",
+      "process": "utils.arr.Pluck",
       "args": [
         ["day", "正常", "预警", "总数"],
         {

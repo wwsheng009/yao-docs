@@ -17,7 +17,7 @@
     },
     {
       "name": "菜单",
-      "process": "xiang.helper.ArraySplit",
+      "process": "utils.arr.Split",
       "args": ["{{$res.菜单项}}"]
     },
     {

@@ -2,7 +2,7 @@
  * 查询系统信息
  */
 function Info() {
-  const inspect = Process("xiang.main.inspect");
+  const inspect = Process("utils.app.Inspect");
   const datetime = Process("scripts.node.getTime");
 
   return [
