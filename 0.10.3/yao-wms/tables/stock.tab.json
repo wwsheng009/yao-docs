@@ -39,6 +39,7 @@
         { "name": "单品", "width": 100 },
         { "name": "库存", "width": 100 },
         { "name": "状态", "width": 100 },
+        { "name": "规格", "width": 100 },
         { "name": "预警库存", "width": 80 },
         { "name": "更新时间", "width": 160 }
       ],
@@ -127,7 +128,37 @@
       },
       "仓库": {
         "bind": "warehouse_id",
-        "view": { "props": {}, "type": "Text" }
+        "view": {
+          "type": "Tag",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "warehouse",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请输入 仓库",
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "warehouse",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        }
       },
 
       "单品": {
@@ -148,10 +179,6 @@
       },
       "规格": {
         "bind": "spec_tags",
-        "edit": {
-          "props": { "placeholder": "请输入 规格" },
-          "type": "Input"
-        },
         "view": { "props": {}, "type": "Text" }
       },
       "状态": {

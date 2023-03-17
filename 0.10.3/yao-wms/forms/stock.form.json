@@ -1,11 +1,15 @@
 {
   "name": "库存",
   "action": {
-    "bind": { "model": "stock" },
-    "find": { "process": "scripts.stock.Find" }
+    "bind": {
+      "model": "stock"
+    },
+    "find": {
+      "process": "scripts.stock.Find"
+    }
   },
-
   "layout": {
+    "primary": "id",
     "actions": [
       {
         "title": "返回",
@@ -39,11 +43,22 @@
         ]
       },
       {
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete",
         "action": [
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "确认删除",
+              "content": "删除后不可撤销！"
+            }
+          },
           {
             "name": "Delete",
             "payload": {
-              "model": "<MODEL_ID>"
+              "model": "stock"
             },
             "type": "Form.delete"
           },
@@ -52,15 +67,126 @@
             "type": "Common.closeModal",
             "payload": {}
           }
-        ],
-        "confirm": {
-          "desc": "请确认删除，删除后数据无法恢复",
-          "title": "确认"
-        },
-        "icon": "icon-trash-2",
-        "style": "danger",
-        "title": "Delete"
+        ]
       }
-    ]
+    ],
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            {
+              "name": "ID",
+              "width": 12
+            },
+            {
+              "name": "单品",
+              "width": 12
+            },
+            {
+              "name": "仓库",
+              "width": 12
+            },
+            {
+              "width": 12,
+              "name": "库存"
+            },
+            {
+              "name": "最后更新",
+              "width": 12
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "fields": {
+    "form": {
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 ID",
+            "disabled": true
+          },
+          "type": "InputNumber"
+        }
+      },
+      "单品": {
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 单品"
+          }
+        },
+        "bind": "sku_id"
+      },
+      "仓库": {
+        "bind": "warehouse_id",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请输入 仓库",
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "warehouse",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "库存": {
+        "bind": "stock",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 库存"
+          }
+        }
+      },
+      "最后更新": {
+        "bind": "uptime",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 最后更新",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          }
+        }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "showTime": {
+              "format": "HH:mm:ss"
+            },
+            "placeholder": "请选择 更新时间"
+          }
+        }
+      }
+    }
+  },
+  "config": {
+    "full": true
   }
 }

@@ -4,19 +4,6 @@
     "bind": {
       "model": "record",
       "form": "record.material.out"
-    },
-    "search": {
-      "default": [
-        {
-          "wheres": [
-            {
-              "column": "type",
-              "op": "in",
-              "value": ["出库", "离开"]
-            }
-          ]
-        }
-      ]
     }
   },
   "layout": {
@@ -152,8 +139,16 @@
             "placeholder": "请选择 类型",
             "options": [
               {
+                "label": "入库",
+                "value": "入库"
+              },
+              {
                 "label": "出库",
                 "value": "出库"
+              },
+              {
+                "label": "进入",
+                "value": "进入"
               },
               {
                 "label": "离开",
@@ -241,8 +236,16 @@
           "props": {
             "options": [
               {
+                "value": "入库",
+                "label": "入库"
+              },
+              {
                 "label": "出库",
                 "value": "出库"
+              },
+              {
+                "label": "进入",
+                "value": "进入"
               },
               {
                 "label": "离开",
@@ -257,8 +260,16 @@
           "props": {
             "options": [
               {
+                "label": "入库",
+                "value": "入库"
+              },
+              {
                 "label": "出库",
                 "value": "出库"
+              },
+              {
+                "label": "进入",
+                "value": "进入"
               },
               {
                 "label": "离开",

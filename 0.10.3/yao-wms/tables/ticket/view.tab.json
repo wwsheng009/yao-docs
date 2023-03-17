@@ -60,12 +60,16 @@
             {
               "type": "Common.historyPush",
               "payload": {
-                "pathname": "/x/Form/ticket.view/0/edit"
+                "pathname": "/ticket/print.html",
+                "search": {
+                  "id": "{{id}}"
+                },
+                "public": true
               },
               "name": "HistoryPush"
             }
           ],
-          "title": "创建",
+          "title": "打印",
           "width": 3,
           "icon": "icon-plus"
         }

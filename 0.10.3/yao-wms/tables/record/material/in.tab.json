@@ -1,9 +1,23 @@
 {
+  "$schema": "/data/projects/yao/demos-v1.0/yao-node-projects/packages/yao-app-ts-types/json-schemas/0.10.3/table.json",
   "name": "入库记录",
   "action": {
     "bind": {
       "model": "record",
       "form": "record.material.in"
+    },
+    "search": {
+      "default": [
+        {
+          "wheres": [
+            {
+              "column": "type",
+              "op": "in",
+              "value": ["入库", "进入"]
+            }
+          ]
+        }
+      ]
     }
   },
   "layout": {
@@ -142,16 +156,8 @@
                 "value": "入库"
               },
               {
-                "label": "出库",
-                "value": "出库"
-              },
-              {
                 "value": "进入",
                 "label": "进入"
-              },
-              {
-                "value": "离开",
-                "label": "离开"
               }
             ],
             "placeholder": "请选择 类型"
@@ -210,16 +216,8 @@
                 "label": "入库"
               },
               {
-                "label": "出库",
-                "value": "出库"
-              },
-              {
                 "label": "进入",
                 "value": "进入"
-              },
-              {
-                "value": "离开",
-                "label": "离开"
               }
             ]
           }
@@ -234,16 +232,8 @@
                 "value": "入库"
               },
               {
-                "value": "出库",
-                "label": "出库"
-              },
-              {
                 "value": "进入",
                 "label": "进入"
-              },
-              {
-                "label": "离开",
-                "value": "离开"
               }
             ],
             "placeholder": "请选择 类型"
