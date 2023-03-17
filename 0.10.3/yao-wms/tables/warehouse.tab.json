@@ -235,15 +235,6 @@
           "props": {
             "format": "YYYY-MM-DD HH:mm:ss"
           }
-        },
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          }
         }
       },
       "IP地址": {
@@ -367,15 +358,6 @@
         }
       },
       "创建时间": {
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "showTime": {
-              "format": "HH:mm:ss"
-            },
-            "placeholder": "请选择 创建时间"
-          }
-        },
         "bind": "created_at",
         "view": {
           "props": {

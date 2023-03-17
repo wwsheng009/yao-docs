@@ -253,15 +253,6 @@
         "bind": "id"
       },
       "更新时间": {
-        "edit": {
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          },
-          "type": "DatePicker"
-        },
         "bind": "updated_at",
         "view": {
           "type": "Text",
@@ -379,15 +370,6 @@
           "type": "Text",
           "props": {
             "format": "YYYY-MM-DD HH:mm:ss"
-          }
-        },
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
           }
         }
       },

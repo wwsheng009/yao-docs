@@ -68,7 +68,7 @@
           "title": "Section 1",
           "columns": [
             { "name": "名称", "width": 12 },
-            { "name": "厂商", "width": 6 },
+            { "name": "厂商", "width": 12 },
             { "name": "类目", "width": 6 }
           ]
         },
@@ -98,8 +98,20 @@
       "厂商": {
         "bind": "supplier_id",
         "edit": {
-          "props": { "placeholder": "请输入 厂商" },
-          "type": "InputNumber"
+          "type": "Select",
+          "props": {
+            "placeholder": "请输入 类目",
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "supplier",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
         }
       },
       "名称": {

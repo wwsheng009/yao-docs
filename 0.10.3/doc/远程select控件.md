@@ -9,7 +9,6 @@
     "view": {
       "type": "Tag",
       "props": {
-        "placeholder": "请输入 类目",
         "xProps": {
           "$remote": {
             "process": "yao.component.SelectOptions",

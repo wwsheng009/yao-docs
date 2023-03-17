@@ -79,7 +79,7 @@ function BeforeSave(payload) {
  * @param {*} payload
  */
 function AfterSave(ticket_id) {
-  var payload = Process("models.ticket.Find", id, {});
+  var payload = Process("models.ticket.Find", ticket_id, {});
 
   // console.log("AfterSave:", ticket_id, payload);
   var records = payload.records || {};

@@ -30,16 +30,6 @@ function main() {
           path: "/x/Table/material.category",
           icon: "icon-package",
         },
-        {
-          name: "出库记录",
-          path: "/x/Table/record.material.out",
-          icon: "icon-package",
-        },
-        {
-          name: "入库记录",
-          path: "/x/Table/record.material.in",
-          icon: "icon-package",
-        },
       ],
     },
     {
@@ -65,7 +55,7 @@ function main() {
       icon: "icon-calendar",
     },
     {
-      name: "单位",
+      name: "供应商",
       path: "/x/Table/supplier",
       icon: "icon-book",
     },
@@ -121,6 +111,16 @@ function main() {
         {
           name: "全部记录",
           path: "/x/Table/record.total",
+          icon: "icon-package",
+        },
+        {
+          name: "出库记录",
+          path: "/x/Table/record.material.out",
+          icon: "icon-package",
+        },
+        {
+          name: "入库记录",
+          path: "/x/Table/record.material.in",
           icon: "icon-package",
         },
       ],

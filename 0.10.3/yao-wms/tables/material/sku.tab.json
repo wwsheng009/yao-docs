@@ -199,13 +199,6 @@
       },
       "创建时间": {
         "bind": "created_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": { "format": "HH:mm:ss" }
-          },
-          "type": "DatePicker"
-        },
         "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
       },
       "单价": {

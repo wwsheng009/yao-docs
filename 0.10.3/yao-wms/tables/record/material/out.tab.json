@@ -185,15 +185,6 @@
           "props": {
             "format": "YYYY-MM-DD HH:mm:ss"
           }
-        },
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          }
         }
       },
       "唯一字段": {
@@ -436,15 +427,6 @@
           "type": "Text",
           "props": {
             "format": "YYYY-MM-DD HH:mm:ss"
-          }
-        },
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
           }
         },
         "bind": "created_at"

@@ -169,16 +169,37 @@
     },
     "table": {
       "厂商": {
-        "edit": {
-          "type": "InputNumber",
-          "props": {
-            "placeholder": "请输入 厂商"
-          }
-        },
         "bind": "supplier_id",
         "view": {
-          "props": {},
-          "type": "Text"
+          "type": "Tag",
+          "props": {
+            "placeholder": "请输入 供应商",
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "supplier",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "supplier",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
         }
       },
       "创建时间": {
@@ -188,15 +209,6 @@
           "props": {
             "format": "YYYY-MM-DD HH:mm:ss"
           }
-        },
-        "edit": {
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          },
-          "type": "DatePicker"
         }
       },
       "名称": {
@@ -244,15 +256,6 @@
           "type": "Text",
           "props": {
             "format": "YYYY-MM-DD HH:mm:ss"
-          }
-        },
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
           }
         },
         "bind": "updated_at"

@@ -308,15 +308,6 @@
             "format": "YYYY-MM-DD HH:mm:ss"
           }
         },
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          }
-        },
         "bind": "updated_at"
       },
       "用户": {
@@ -396,15 +387,6 @@
             "format": "YYYY-MM-DD HH:mm:ss"
           },
           "type": "Text"
-        },
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          }
         }
       },
       "编码": {

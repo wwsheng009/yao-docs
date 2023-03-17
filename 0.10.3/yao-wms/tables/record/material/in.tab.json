@@ -260,15 +260,6 @@
             "format": "YYYY-MM-DD HH:mm:ss"
           },
           "type": "Text"
-        },
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          }
         }
       },
       "状态": {
