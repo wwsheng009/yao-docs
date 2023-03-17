@@ -14,11 +14,17 @@ function main() {
           name: "物资",
           path: "/x/Table/material",
           icon: "icon-package",
+          blocks: 1,
         },
         {
           name: "单品",
           path: "/x/Table/material.sku",
           icon: "icon-package",
+        },
+        {
+          name: "单品标签下载",
+          icon: "icon-package",
+          path: "/x/Table/material.sku.rfid",
         },
         {
           name: "规格",

@@ -3,15 +3,56 @@
  */
 function Import() {
   var data = Process("scripts.tools.data.History");
+  CreateCategory(data);
+  const suppliers = GetSuppliers();
   for (var i in data) {
     var record = data[i];
-    var sku_id = Sku(record);
-    Records(sku_id, record);
+    var sku_id = Sku(record, suppliers);
+    if (sku_id !== null) {
+      Records(sku_id, record);
+    }
+  }
+}
+function GetSuppliers() {
+  const list = Process("models.supplier.Get", { select: ["id"] });
+  // let list2 = [];
+  // list.map((item) => list2.push(item.id));
+
+  const newArray = list.reduce(
+    (previousValue, currentValue) => previousValue.concat(currentValue.id),
+    []
+  );
+  return newArray;
+}
+function CreateCategory(data) {
+  let category = {};
+  for (const key in data) {
+    const row = data[key];
+    var name = row["大项"];
+    if (!name) {
+      continue;
+    }
+    category[name] = name;
+  }
+  for (const key in category) {
+    const name = category[key];
+
+    var cate = Process("models.material.category.Get", {
+      select: ["id"],
+      wheres: [{ column: "name", value: name }],
+    });
+
+    if (cate.length < 1) {
+      // 保存分类,使用yao.table.save会自动的触发after:save
+      id = Process("yao.table.Save", "material.category", {
+        name: name,
+      });
+    }
   }
 }
 
 function Stat() {
-  var from = new Date("2022-03-24");
+  var from = new Date("2023-03-11");
   var now = new Date();
   while (from.getTime() < now.getTime()) {
     from.setDate(from.getDate() + 1);
@@ -25,8 +66,8 @@ function Stat() {
  * 创建SKU
  * @param {*} row
  */
-function Sku(row) {
-  material_id = Material(row);
+function Sku(row, suppliers) {
+  material_id = Material(row, suppliers);
   if (material_id == -1) {
     return -1;
   }
@@ -66,7 +107,10 @@ function Sku(row) {
   }
 
   // 保存单品
-  id = Process("yao.table.Save", "material.sku", data);
+  const id = Process("yao.table.Save", "material.sku", data);
+  if (id === null) {
+    throw new Error("保存单品失败");
+  }
   return id;
 }
 
@@ -74,13 +118,13 @@ function Sku(row) {
  * 创建物料
  * @param {*} row
  */
-function Material(row) {
+function Material(row, suppliers) {
   var name = row["物资名称"];
   if (!name) {
     return -1;
   }
 
-  category_id = Category(row);
+  const category_id = Category(row);
   if (category_id == -1) {
     return -1;
   }
@@ -95,9 +139,17 @@ function Material(row) {
     return material[0].id;
   }
 
+  let supplier_id = null;
+  // Generate a random index
+  if (suppliers.length > 0) {
+    const randomIndex = Math.floor(Math.random() * suppliers.length);
+    supplier_id = suppliers[randomIndex];
+  }
+
   // 保存物资
   id = Process("yao.table.Save", "material", {
     name: name,
+    supplier_id: supplier_id,
     category_id: category_id,
   });
 
@@ -213,6 +265,8 @@ function Records(sku_id, row) {
 }
 
 function rfid(sku_id) {
+  //通过视图计算出rfid,视图又从hook after:search中计算出rfid
+  //material.sku.rfid 只能一条一条的读取处理
   var rfids = Process(
     "yao.table.Search",
     "material.sku.rfid",
@@ -220,7 +274,6 @@ function rfid(sku_id) {
     1,
     1
   );
-
   var rfid = rfids.data[0];
   Process("yao.table.Save", "rfid", { sn: rfid.item, status: "入库" });
   return rfid.item;
@@ -230,7 +283,7 @@ function getDateTime(day) {
   day = day || "";
   day = day.replace("月", "-");
   day = day.replace("日", "");
-  day = `2022-${day} ${getRandomInt(9, 20)}:${getRandomInt(
+  day = `2023-${day} ${getRandomInt(9, 20)}:${getRandomInt(
     1,
     59
   )}:${getRandomInt(1, 59)}`;

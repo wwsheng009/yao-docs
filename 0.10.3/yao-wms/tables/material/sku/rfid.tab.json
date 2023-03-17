@@ -4,8 +4,10 @@
     "bind": {
       "model": "material.sku",
       "option": {
-        "material": {
-          "query": { "withs": { "category": {}, "supplier": {} } }
+        "withs": {
+          "material": {
+            "query": { "withs": { "category": {}, "supplier": {} } }
+          }
         }
       }
     },

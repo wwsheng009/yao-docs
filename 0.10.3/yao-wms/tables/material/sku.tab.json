@@ -16,20 +16,7 @@
     "before:delete-in": "scripts.sku.BeforeDeleteIn",
     "after:search": "scripts.sku.AfterSearch",
     "after:find": "scripts.sku.AfterFind",
-    "after:save": "scripts.sku.AfterSave",
-    "search": {
-      "default": [
-        {
-          "withs": {
-            "material": {
-              "query": { "withs": { "category": {}, "supplier": {} } }
-            }
-          }
-        },
-        null,
-        10
-      ]
-    }
+    "save": { "process": "scripts.sku.Save" }
   },
   "layout": {
     "filter": {

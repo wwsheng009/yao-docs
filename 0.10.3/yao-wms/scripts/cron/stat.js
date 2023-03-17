@@ -63,6 +63,7 @@ function userSnap(day) {
   }
 
   var data = Process("flows.stat.user", now);
+  console.log(data);
   var users = {};
 
   // 整理数据
@@ -94,9 +95,11 @@ function userSnap(day) {
     wheres: [{ column: "day", value: now }],
   });
 
-  // 插入新数据
-  Process("models.stat.user.Insert", columns, values);
-  return [columns, values];
+  if (values.length > 0) {
+    // 插入新数据
+    Process("models.stat.user.Insert", columns, values);
+    return [columns, values];
+  }
 }
 
 /**

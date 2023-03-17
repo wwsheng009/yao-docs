@@ -1,0 +1,33 @@
+{
+  "label": "人员统计",
+  "version": "1.0.0",
+  "description": "人员统计",
+  "nodes": [
+    {
+      "name": "日期",
+      "process": "scripts.time.Nextday",
+      "args": ["{{$in.0}}"]
+    },
+    {
+      "name": "统计",
+      "engine": "xiang",
+      "query": {
+        "select": [
+          "user_id",
+          "type",
+          ":COUNT(record.id) as 数量",
+          ":DATE_FORMAT(uptime, '%Y-%m-%d') as day",
+          ":DATE_FORMAT(uptime, '%Y年%m月%d日') as 日期"
+        ],
+        "wheres": [
+          { ":type": "类型", "in": ["进入", "离开"] },
+          { ":uptime": "时刻", "<": "?:$res.日期" },
+          { ":uptime": "时刻", ">": "?:$in.0" }
+        ],
+        "from": "$record",
+        "groups": ["user_id", "type"]
+      }
+    }
+  ],
+  "output": "{{$res.统计}}"
+}

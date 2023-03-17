@@ -1,0 +1,42 @@
+{
+  "label": "仓库基本信息和库存预警明细呈现",
+  "version": "1.0.0",
+  "description": "仓库基本信息和库存预警明细呈现",
+  "nodes": [
+    {
+      "name": "日期",
+      "process": "scripts.time.RangeYesterday",
+      "args": ["{{$in.0}}"]
+    },
+    {
+      "name": "仓库",
+      "process": "models.warehouse.Get",
+      "args": [
+        {
+          "limit": 10,
+          "select": ["name", "id", "status", "location", "node_id"]
+        }
+      ]
+    },
+    {
+      "name": "库存",
+      "process": "scripts.stock.Search",
+      "args": [{ "wheres": [{ "column": "status", "value": "不足" }] }, 1, 10]
+    },
+    {
+      "name": "单品",
+      "engine": "xiang",
+      "query": {
+        "debug": false,
+        "select": [":COUNT(id) as 总数", "id"],
+        "from": "$material.sku",
+        "first": true
+      }
+    }
+  ],
+  "output": {
+    "库存": "{{$res.库存.data}}",
+    "仓库": "{{$res.仓库}}",
+    "数量": "{{$res.单品.总数}}"
+  }
+}

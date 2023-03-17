@@ -152,53 +152,52 @@ function BeforeDelete(id) {
 function Save(payload) {
   var id = Process("models.material.sku.Save", payload);
   if (id.code && id.message) {
-    console.log("id", id);
     throw new Error(id.message);
   }
-  AfterSave(id, payload);
+
+  return afterSave(id, payload);
 }
 /**
- * 保存 Hook, 处理规格, 自动生成标签
+ * 处理规格, 自动生成标签
  * @param {*} data
  */
-function AfterSave(id, payload) {
-  if (!payload["specs_list"]) {
-    return;
-  }
+function afterSave(id, payload) {
+  var data = { id: id };
 
-  var specs_list = payload["specs_list"] || {};
-  //当有删除项目时,数据保存在specs_list.data里
-  //如果没有删除项目,specs_list
-  var specs_data = specs_list["data"] || specs_list || [];
-  var specs = {};
-  for (var i in specs_data) {
-    var spec = specs_data[i] || {};
-    if (
-      typeof specs_data[i].id === "string" &&
-      specs_data[i].id.startsWith("_")
-    ) {
-      //新增项目，在前端会生成唯一字符串,
-      //由于后台使用的自增长ID，不需要生成的唯一字符串，由数据库生成索引
-      delete specs_data[i].id;
-    }
+  if (payload["specs_list"]) {
+    var specs_list = payload["specs_list"] || {};
+    //当有删除项目时,数据保存在specs_list.data里
+    //如果没有删除项目,specs_list
+    var specs_data = specs_list["data"] || specs_list || [];
+    var specs = {};
+    for (var i in specs_data) {
+      var spec = specs_data[i] || {};
+      if (
+        typeof specs_data[i].id === "string" &&
+        specs_data[i].id.startsWith("_")
+      ) {
+        //新增项目，在前端会生成唯一字符串,
+        //由于后台使用的自增长ID，不需要生成的唯一字符串，由数据库生成索引
+        delete specs_data[i].id;
+      }
 
-    if (spec.name) {
-      specs[spec.name] = spec.value || "";
-      if (payload["material_id"]) {
-        Process("models.material.spec.Save", {
-          material_id: payload["material_id"],
-          name: spec.name,
-          type: "文本",
-        });
+      if (spec.name) {
+        specs[spec.name] = spec.value || "";
+        if (payload["material_id"]) {
+          Process("models.material.spec.Save", {
+            material_id: payload["material_id"],
+            name: spec.name,
+            type: "文本",
+          });
+        }
       }
     }
+    // 保存默认参数
+    SaveDefaultSpecs(id, specs_data);
+    data["specs"] = specs;
   }
 
-  // 保存默认参数
-  SaveDefaultSpecs(id, specs_data);
-
-  var data = { id: id, specs: specs };
-
+  //console.log("生成SKU SN");
   // 生成SKU SN
   var sku_sn = payload["sku_sn"];
   if (payload["material_id"] && !sku_sn) {
@@ -317,7 +316,8 @@ function MakeSN(material_id, id) {
 }
 
 /**
- * 生成RFID
+ * 生成RFID的hook
+ * scripts.sku.RFID
  * @param {*} args
  */
 function RFID(res) {
@@ -333,14 +333,13 @@ function RFID(res) {
   }
 
   var sku = res.data[0] || {};
-  //
+
   // "标签: 类目(6)-SKU(8)-计划(6)-Item(9)
   //      10000120000001000000400000001
   var category_sn = sku.category && sku.category.category_sn;
   var sku_sn = sku.sku_sn;
   var plan_sn = "000000";
   var prefix = `${category_sn}${sku_sn}${plan_sn}`;
-
   // 读取最后一个 ITEM
   rfids = Process("models.rfid.Get", {
     wheres: [{ column: "sn", op: "like", value: `${prefix}%` }],

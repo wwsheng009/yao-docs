@@ -340,8 +340,8 @@ function locale(datetimeTz) {
 // ==========
 /**
  * 进入通知
- * {"warehouse_id":"1","user_id":1,"uptime":"2022-04-11 12:43:01","type":"进入","status":"生效"}
- * yao run scripts.event.Enter '::{"warehouse_id":"1","user_id":1,"uptime":"2022-04-11 12:43:01","type":"进入","status":"生效"}'
+ * {"warehouse_id":"1","user_id":1,"uptime":"2023-03-11 12:43:01","type":"进入","status":"生效"}
+ * yao run scripts.event.Enter '::{"warehouse_id":"1","user_id":1,"uptime":"2023-03-11 12:43:01","type":"进入","status":"生效"}'
  * @param {*} message
  */
 function Enter(message) {
@@ -359,8 +359,8 @@ function Enter(message) {
 
 /**
  * 离开通知
- * {"warehouse_id":"1","user_id":1,"uptime":"2022-04-11 13:16:04","type":"离开","status":"生效"}
- * yao run scripts.event.Leave '::{"warehouse_id":"1","user_id":1,"uptime":"2022-04-11 13:16:04","type":"离开","status":"生效"}'
+ * {"warehouse_id":"1","user_id":1,"uptime":"2023-03-11 13:16:04","type":"离开","status":"生效"}
+ * yao run scripts.event.Leave '::{"warehouse_id":"1","user_id":1,"uptime":"2023-03-11 13:16:04","type":"离开","status":"生效"}'
  * @param {*} message
  */
 function Leave(message) {
@@ -378,8 +378,8 @@ function Leave(message) {
 
 /**
  * 入库通知
- * [{"type":"入库","plan_id":2,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2022-04-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"入库","plan_id":2,"status":"生效","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2022-04-11 13:17:37"}]
- * yao run scripts.event.In '::[{"type":"入库","plan_id":2,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2022-04-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"入库","plan_id":2,"status":"生效","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2022-04-11 13:17:37"}]'
+ * [{"type":"入库","plan_id":2,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2023-03-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"入库","plan_id":2,"status":"生效","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2023-03-11 13:17:37"}]
+ * yao run scripts.event.In '::[{"type":"入库","plan_id":2,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2023-03-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"入库","plan_id":2,"status":"生效","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2023-03-11 13:17:37"}]'
  * @param {*} message
  */
 function In(message) {
@@ -390,8 +390,8 @@ function In(message) {
 
 /**
  * 出库通知
- * [{"type":"出库","plan_id":null,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2022-04-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"入库","plan_id":null,"status":"出库","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2022-04-11 13:17:37"}]
- * yao run scripts.event.Out '::[{"type":"出库","plan_id":null,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2022-04-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"出库","plan_id":null,"status":"生效","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2022-04-11 13:17:37"}]'
+ * [{"type":"出库","plan_id":null,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2023-03-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"入库","plan_id":null,"status":"出库","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2023-03-11 13:17:37"}]
+ * yao run scripts.event.Out '::[{"type":"出库","plan_id":null,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2023-03-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"出库","plan_id":null,"status":"生效","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2023-03-11 13:17:37"}]'
  * @param {*} message
  */
 function Out(message) {
@@ -428,7 +428,7 @@ function getUser(user_id) {
 
 /**
  * 读取物料详情
- * yao run scripts.event.getItems '::[{"type":"入库","plan_id":2,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2022-04-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"入库","plan_id":2,"status":"生效","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2022-04-11 13:17:37"}]'
+ * yao run scripts.event.getItems '::[{"type":"入库","plan_id":2,"sku_id":3,"warehouse_id":"1","user_id":1,"ticket_id":14,"sn":"10000120000003000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","uptime":"2023-03-11 13:17:37","status":"生效"},{"ticket_id":14,"type":"入库","plan_id":2,"status":"生效","warehouse_id":"1","user_id":1,"sn":"10000120000001000000400000001","batch":"A7F0AD99E3B5B7A20BAB7DF13E336380","sku_id":1,"uptime":"2023-03-11 13:17:37"}]'
  * @param {*} data
  */
 function getItems(data) {

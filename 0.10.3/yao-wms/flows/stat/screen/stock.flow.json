@@ -12,7 +12,7 @@
       "name": "预警",
       "engine": "xiang",
       "query": {
-        "debug": false,
+        "debug": true,
         "select": [
           ":datetime(day, '%Y年%m月%d日') as day",
           ":COUNT(id) as 数量"
@@ -30,9 +30,9 @@
       "name": "正常",
       "engine": "xiang",
       "query": {
-        "debug": false,
+        "debug": true,
         "select": [
-          ":datetime(day, '%Y年%m月%d日') as day",
+          ":strftime('%Y年%m月%d日',`day`) as day",
           ":COUNT(id) as 数量"
         ],
         "wheres": [
@@ -48,9 +48,9 @@
       "name": "总数",
       "engine": "xiang",
       "query": {
-        "debug": false,
+        "debug": true,
         "select": [
-          ":datetime(day, '%Y年%m月%d日') as day",
+          ":strftime('%Y年%m月%d日',`day`) as day",
           ":COUNT(id) as 数量"
         ],
         "wheres": [

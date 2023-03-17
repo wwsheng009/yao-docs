@@ -1,5 +1,5 @@
 {
-  "name": "规则清单",
+  "name": "规格",
   "action": {
     "bind": {
       "model": "material.spec",

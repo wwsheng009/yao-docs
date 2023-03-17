@@ -63,9 +63,8 @@ EOF > /app/path/wms/.env
 ```bash
 cd /app/path/wms
 
-# 创建数据表 & 设置菜单
+# 创建数据表
 yao migrate --reset
-yao run flows.init.menu
 
 # 演示数据
 yao run flows.demo.data

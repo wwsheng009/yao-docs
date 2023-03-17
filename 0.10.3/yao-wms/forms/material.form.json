@@ -100,7 +100,9 @@
         "edit": {
           "type": "Select",
           "props": {
-            "placeholder": "请输入 类目",
+            "itemProps": {
+              "rules": [{ "required": true }]
+            },
             "xProps": {
               "$remote": {
                 "process": "yao.component.SelectOptions",
@@ -170,7 +172,9 @@
         "edit": {
           "type": "Select",
           "props": {
-            "placeholder": "请输入 类目",
+            "itemProps": {
+              "rules": [{ "required": true }]
+            },
             "xProps": {
               "$remote": {
                 "process": "yao.component.SelectOptions",

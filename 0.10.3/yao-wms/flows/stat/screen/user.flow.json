@@ -12,9 +12,9 @@
       "name": "统计",
       "engine": "xiang",
       "query": {
-        "debug": false,
+        "debug": true,
         "select": [
-          ":datetime(day, '%Y年%m月%d日') as day",
+          ":strftime('%Y年%m月%d日',day) as day",
           ":SUM(enter) as 进入",
           ":SUM(leave) as 离开"
         ],

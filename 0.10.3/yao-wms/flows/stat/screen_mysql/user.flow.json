@@ -1,0 +1,36 @@
+{
+  "label": "人员进出大屏呈现",
+  "version": "1.0.0",
+  "description": "人员进出大屏呈现",
+  "nodes": [
+    {
+      "name": "日期",
+      "process": "scripts.time.RangeYesterday",
+      "args": ["{{$in.0}}"]
+    },
+    {
+      "name": "统计",
+      "engine": "xiang",
+      "query": {
+        "debug": false,
+        "select": [
+          ":DATE_FORMAT(day, '%Y年%m月%d日') as day",
+          ":SUM(enter) as 进入",
+          ":SUM(leave) as 离开"
+        ],
+        "wheres": [
+          { ":day": "日期", ">=": "?:$res.日期.from" },
+          { ":day": "日期", "<=": "?:$res.日期.to" }
+        ],
+        "from": "stat_user",
+        "groups": ["day"]
+      }
+    },
+    {
+      "name": "结果",
+      "process": "scripts.time.Defaults",
+      "args": ["{{$res.日期}}", "{{$res.统计}}", { "进入": 0, "离开": 0 }]
+    }
+  ],
+  "output": "{{$res.结果}}"
+}

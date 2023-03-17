@@ -7,10 +7,9 @@
   "layout": {
     "list": {
       "columns": [
-        { "name": "id", "width": 4 },
-        { "name": "单品", "width": 4 },
+        { "name": "单品", "width": 8 },
         { "name": "计划数量", "width": 8 },
-        { "name": "实际数量", "width": 8 }
+        { "name": "入库数量", "width": 8 }
       ]
     }
   },
@@ -27,15 +26,31 @@
       "单品": {
         "bind": "sku_id",
         "edit": {
-          "props": { "placeholder": "请输入 单品" },
-          "type": "InputNumber"
-        },
-        "view": { "props": {}, "type": "Text" }
+          "props": {
+            "itemProps": {
+              "rules": [{ "required": true }]
+            },
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "material.sku",
+                  "label": "sku_sn",
+                  "value": "id"
+                }
+              }
+            }
+          },
+          "type": "Select"
+        }
       },
-      "实际数量": {
+      "入库数量": {
         "bind": "amount",
         "edit": {
-          "props": { "placeholder": "请输入 实际数量" },
+          "props": {
+            "placeholder": "只读字段",
+            "disabled": true
+          },
           "type": "InputNumber"
         },
         "view": { "props": {}, "type": "Text" }
@@ -43,7 +58,12 @@
       "计划数量": {
         "bind": "amount_plan",
         "edit": {
-          "props": { "placeholder": "请输入 计划数量" },
+          "props": {
+            "itemProps": {
+              "rules": [{ "required": true }]
+            },
+            "min": 0
+          },
           "type": "InputNumber"
         },
         "view": { "props": {}, "type": "Text" }

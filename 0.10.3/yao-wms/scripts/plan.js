@@ -32,6 +32,7 @@ function AfterSave(id, payload) {
     }
 
     // 保存物品清单
+    console.log("plan.item:", data);
     var res = Process("models.plan.item.EachSaveAfterDelete", deletes, data, {
       plan_id: id,
     });

@@ -36,7 +36,7 @@ function Event(payload) {
  *      "action": "进入",
  *      "device_sn": "ET63606",
  *      "unique_id": "DL000001|进入|54974964.5",
- *      "uptime": "2022-04-06 20:42:15",
+ *      "uptime": "2023-03-06 20:42:15",
  *      "user_sn": "DL000001"
  *    },
  *    "event": "进入",
@@ -75,7 +75,7 @@ function onEnter(message) {
  *      "action": "离开",
  *      "device_sn": "RLM-00037521",
  *      "unique_id": "DL000001|离开|54974965.233333334",
- *      "uptime": "2022-04-06 20:42:37",
+ *      "uptime": "2023-03-06 20:42:37",
  *      "user_sn": "DL000001"
  *    },
  *    "event": "离开",
@@ -119,7 +119,7 @@ function onLeave(message) {
  *        "action": "进入",
  *        "device_sn": "ET63606",
  *        "unique_id": "DL000001|进入|54974964.5",
- *        "uptime": "2022-04-06 20:42:15",
+ *        "uptime": "2023-03-06 20:42:15",
  *        "user_sn": "DL000001"
  *      }
  *    },
@@ -144,7 +144,7 @@ function onIn(message) {
  *        "action": "离开",
  *        "device_sn": "RLM-00037521",
  *        "unique_id": "DL000001|离开|54974969.46666667",
- *        "uptime": "2022-04-06 20:44:44",
+ *        "uptime": "2023-03-06 20:44:44",
  *        "user_sn": "DL000001"
  *      }
  *    },

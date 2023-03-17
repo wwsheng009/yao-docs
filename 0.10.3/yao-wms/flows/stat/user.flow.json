@@ -16,8 +16,8 @@
           "user_id",
           "type",
           ":COUNT(record.id) as 数量",
-          ":datetime(uptime, '%Y-%m-%d') as day",
-          ":datetime(uptime, '%Y年%m月%d日') as 日期"
+          ":strftime('%Y-%m-%d',uptime) as day",
+          ":strftime('%Y年%m月%d日',uptime) as 日期"
         ],
         "wheres": [
           { ":type": "类型", "in": ["进入", "离开"] },

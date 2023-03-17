@@ -75,7 +75,7 @@ function BeforeSave(payload) {
 
 /**
  * 修改 Hook, 处理凭证相关记录请求
- * yao run scripts.ticket.AfterSave 32 '::{"name":"入库 | SP000001 | 2022-04-11 | 15:31:46","warehouse_id":1,"type":"入库","plan_id":null,"uptime":"2022-04-11T15:31:46+08:00","status":"生效","user_id":1,"records":{"data":[{"name":[11]},{"id":122,"name":"[入库 王伟平 2022-04-11] 梯子(高度:250) 坚朗 2022年1月物资采购 #10000120000001000000400000002"},{"id":124,"name":"[入库 王伟平 2022-04-11] 梯子(高度:250) 坚朗 2022年1月物资采购 #10000120000001000000400000001"}],"delete":[123],"query":{"sort":"$index"}},"remark":null,"id":"32"}'
+ * yao run scripts.ticket.AfterSave 32 '::{"name":"入库 | SP000001 | 2023-03-11 | 15:31:46","warehouse_id":1,"type":"入库","plan_id":null,"uptime":"2023-03-11T15:31:46+08:00","status":"生效","user_id":1,"records":{"data":[{"name":[11]},{"id":122,"name":"[入库 王伟平 2023-03-11] 梯子(高度:250) 坚朗 2022年1月物资采购 #10000120000001000000400000002"},{"id":124,"name":"[入库 王伟平 2023-03-11] 梯子(高度:250) 坚朗 2022年1月物资采购 #10000120000001000000400000001"}],"delete":[123],"query":{"sort":"$index"}},"remark":null,"id":"32"}'
  * @param {*} ticket_id
  * @param {*} payload
  */
@@ -117,7 +117,7 @@ function AfterSave(ticket_id) {
 
 /**
  * 处理提交参数, 解析记录ID
- * yao run scripts.ticket.ExtraRecordIds '::{"data":[{"name":[11]},{"id":122,"name":"[入库 王伟平 2022-04-11] 梯子(高度:250) 坚朗 2022年1月物资采购 #10000120000001000000400000002"},{"id":124,"name":"[入库 王伟平 2022-04-11] 梯子(高度:250) 坚朗 2022年1月物资采购 #10000120000001000000400000001"}],"delete":[123],"query":{"sort":"$index"}}'
+ * yao run scripts.ticket.ExtraRecordIds '::{"data":[{"name":[11]},{"id":122,"name":"[入库 王伟平 2023-03-11] 梯子(高度:250) 坚朗 2022年1月物资采购 #10000120000001000000400000002"},{"id":124,"name":"[入库 王伟平 2023-03-11] 梯子(高度:250) 坚朗 2022年1月物资采购 #10000120000001000000400000001"}],"delete":[123],"query":{"sort":"$index"}}'
  * @param {*} data
  */
 function ExtraRecordIds(records) {
