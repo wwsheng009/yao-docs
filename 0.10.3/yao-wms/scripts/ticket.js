@@ -7,6 +7,7 @@ function BeforeSearch(query, page, pagesize) {
   for (var i in wheres) {
     var where = wheres[i] || {};
     if (where.column == "uptime" && where.value) {
+      where.value = where.value.replaceAll(`"`, "");
       var value = new Date(where.value).toISOString().split("T")[0];
       query.wheres[i]["value"] = value;
     }

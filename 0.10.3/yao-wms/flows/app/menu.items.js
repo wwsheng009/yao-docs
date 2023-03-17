@@ -47,6 +47,11 @@ function main() {
           path: "/x/Table/stock",
           icon: "icon-package",
         },
+        {
+          name: "库存快照",
+          path: "/x/Table/stat.stock",
+          icon: "icon-package",
+        },
       ],
     },
     {
@@ -102,6 +107,11 @@ function main() {
       name: "扫码录入",
       path: "/iframe?src=/scanner",
       icon: "icon-trello",
+    },
+    {
+      name: "大屏",
+      path: "/iframe?src=/screen",
+      icon: "icon-activity",
     },
     {
       name: "记录",

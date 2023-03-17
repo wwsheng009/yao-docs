@@ -183,6 +183,9 @@
         "edit": {
           "type": "Input",
           "props": {
+            "itemProps": {
+              "rules": [{ "required": true }]
+            },
             "placeholder": "请输入 名称"
           }
         },

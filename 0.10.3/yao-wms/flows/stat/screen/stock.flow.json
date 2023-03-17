@@ -14,7 +14,7 @@
       "query": {
         "debug": false,
         "select": [
-          ":DATE_FORMAT(day, '%Y年%m月%d日') as day",
+          ":datetime(day, '%Y年%m月%d日') as day",
           ":COUNT(id) as 数量"
         ],
         "wheres": [
@@ -32,7 +32,7 @@
       "query": {
         "debug": false,
         "select": [
-          ":DATE_FORMAT(day, '%Y年%m月%d日') as day",
+          ":datetime(day, '%Y年%m月%d日') as day",
           ":COUNT(id) as 数量"
         ],
         "wheres": [
@@ -50,7 +50,7 @@
       "query": {
         "debug": false,
         "select": [
-          ":DATE_FORMAT(day, '%Y年%m月%d日') as day",
+          ":datetime(day, '%Y年%m月%d日') as day",
           ":COUNT(id) as 数量"
         ],
         "wheres": [

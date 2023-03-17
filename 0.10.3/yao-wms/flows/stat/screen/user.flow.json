@@ -14,7 +14,7 @@
       "query": {
         "debug": false,
         "select": [
-          ":DATE_FORMAT(day, '%Y年%m月%d日') as day",
+          ":datetime(day, '%Y年%m月%d日') as day",
           ":SUM(enter) as 进入",
           ":SUM(leave) as 离开"
         ],

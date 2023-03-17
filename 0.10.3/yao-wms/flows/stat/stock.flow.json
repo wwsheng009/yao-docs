@@ -18,8 +18,8 @@
           "type",
           "uptime",
           ":COUNT(record.id) as 数量",
-          ":DATE_FORMAT(uptime, '%Y-%m-%d') as day",
-          ":DATE_FORMAT(uptime, '%Y年%m月%d日') as 日期"
+          ":datetime(uptime, '%Y-%m-%d') as day",
+          ":datetime(uptime, '%Y年%m月%d日') as 日期"
         ],
         "wheres": [
           { ":type": "类型", "=": "入库" },
@@ -41,8 +41,8 @@
           "sku.stock as 预警",
           "type",
           ":COUNT(record.id) as 数量",
-          ":DATE_FORMAT(uptime, '%Y-%m-%d') as day",
-          ":DATE_FORMAT(uptime, '%Y年%m月%d日') as 日期"
+          ":datetime(uptime, '%Y-%m-%d') as day",
+          ":datetime(uptime, '%Y年%m月%d日') as 日期"
         ],
         "wheres": [
           { ":type": "类型", "=": "出库" },

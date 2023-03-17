@@ -14,7 +14,7 @@
       "query": {
         "debug": true,
         "select": [
-          ":DATE_FORMAT(uptime, '%Y年%m月%d日') as day",
+          ":datetime(uptime, '%Y年%m月%d日') as day",
           ":COUNT(id) as 数量"
         ],
         "wheres": [
@@ -32,7 +32,7 @@
       "query": {
         "debug": true,
         "select": [
-          ":DATE_FORMAT(uptime, '%Y年%m月%d日') as day",
+          ":datetime(uptime, '%Y年%m月%d日') as day",
           ":COUNT(id) as 数量"
         ],
         "wheres": [
