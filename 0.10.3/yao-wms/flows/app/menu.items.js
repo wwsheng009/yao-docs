@@ -90,6 +90,18 @@ function main() {
       name: "凭据",
       path: "/x/Table/ticket.total",
       icon: "icon-archive",
+      children: [
+        {
+          name: "凭据",
+          path: "/x/Table/ticket.total",
+          icon: "icon-archive",
+        },
+        {
+          name: "凭据打印",
+          path: "/x/Table/ticket.view",
+          icon: "icon-archive",
+        },
+      ],
     },
     {
       name: "标签",

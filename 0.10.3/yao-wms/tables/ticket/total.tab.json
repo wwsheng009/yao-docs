@@ -309,15 +309,6 @@
         "bind": "type"
       },
       "创建时间": {
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          }
-        },
         "bind": "created_at",
         "view": {
           "props": {
@@ -527,7 +518,7 @@
       "记录": {
         "bind": "records",
         "view": {
-          "type": "Tooltip",
+          "type": "Text",
           "props": {
             "title": "记录"
           }
@@ -597,15 +588,6 @@
         "bind": "uno"
       },
       "更新时间": {
-        "edit": {
-          "type": "DatePicker",
-          "props": {
-            "showTime": {
-              "format": "HH:mm:ss"
-            },
-            "placeholder": "请选择 更新时间"
-          }
-        },
         "bind": "updated_at",
         "view": {
           "type": "Text",

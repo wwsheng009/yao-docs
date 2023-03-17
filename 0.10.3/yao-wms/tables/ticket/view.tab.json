@@ -8,18 +8,30 @@
           "user": {
             "query": {
               "select": ["id", "name", "photo", "supplier_id"],
-              "withs": { "supplier": {} }
+              "withs": {
+                "supplier": {}
+              }
             }
           },
-          "plan": { "query": { "select": ["id", "name"] } },
+          "plan": {
+            "query": {
+              "select": ["id", "name"]
+            }
+          },
           "warehouse": {
-            "query": { "select": ["id", "name", "dept", "photo"] }
+            "query": {
+              "select": ["id", "name", "dept", "photo"]
+            }
           },
           "sku": {
             "query": {
               "select": ["id", "specs"],
               "withs": {
-                "material": { "query": { "select": ["name", "id"] } }
+                "material": {
+                  "query": {
+                    "select": ["name", "id"]
+                  }
+                }
               }
             }
           }
@@ -27,5 +39,351 @@
       }
     },
     "after:find": "scripts.ticket.AfterFindView"
+  },
+  "layout": {
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "名称"
+        },
+        {
+          "name": "仓库"
+        }
+      ],
+      "actions": [
+        {
+          "action": [
+            {
+              "type": "Common.historyPush",
+              "payload": {
+                "pathname": "/x/Form/ticket.view/0/edit"
+              },
+              "name": "HistoryPush"
+            }
+          ],
+          "title": "创建",
+          "width": 3,
+          "icon": "icon-plus"
+        }
+      ]
+    },
+    "table": {
+      "props": {
+        "scroll": {
+          "x": "max-content"
+        }
+      },
+      "columns": [
+        {
+          "name": "ID",
+          "width": 100
+        },
+        {
+          "name": "名称",
+          "width": 160
+        },
+        {
+          "name": "仓库",
+          "width": 100
+        },
+        {
+          "name": "单号",
+          "width": 160
+        },
+        {
+          "name": "单位",
+          "width": 160
+        },
+        {
+          "name": "主管",
+          "width": 160
+        },
+        {
+          "name": "收料人",
+          "width": 160
+        },
+        {
+          "name": "发料人",
+          "width": 160
+        },
+        {
+          "name": "工号",
+          "width": 160
+        },
+        {
+          "name": "类型",
+          "width": 160
+        },
+        {
+          "name": "来料凭证",
+          "width": 160
+        },
+        {
+          "width": 100,
+          "name": "计划"
+        },
+        {
+          "name": "用户",
+          "width": 100
+        },
+        {
+          "name": "记录",
+          "width": 160
+        },
+        {
+          "name": "发生时刻",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "备注"
+        },
+        {
+          "name": "状态",
+          "width": 160
+        },
+        {
+          "name": "创建时间",
+          "width": 160
+        },
+        {
+          "name": "更新时间",
+          "width": 160
+        }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "title": "打印",
+            "icon": "icon-eye",
+            "action": [
+              {
+                "name": "Print",
+                "type": "Common.historyPush",
+                "payload": {
+                  "pathname": "/ticket/print.html",
+                  "public": true,
+                  "search": {
+                    "id": "{{id}}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "primary": "id"
+  },
+  "fields": {
+    "table": {
+      "发生时刻": {
+        "bind": "uptime",
+        "view": {
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          "type": "Text"
+        }
+      },
+      "创建时间": {
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        },
+        "bind": "created_at"
+      },
+      "仓库": {
+        "bind": "warehouse_id",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "发料人": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "bind": "send"
+      },
+      "状态": {
+        "bind": "status",
+        "view": {
+          "type": "Tag",
+          "props": {
+            "options": [
+              {
+                "label": "录入",
+                "value": "录入"
+              },
+              {
+                "label": "生效",
+                "value": "生效"
+              },
+              {
+                "label": "作废",
+                "value": "作废"
+              }
+            ],
+            "placeholder": "请选择 状态"
+          }
+        }
+      },
+      "来料凭证": {
+        "bind": "invoice",
+        "view": {
+          "type": "Tag",
+          "props": {
+            "placeholder": "请选择 来料凭证",
+            "options": [
+              {
+                "label": "点收单",
+                "value": "点收单"
+              },
+              {
+                "label": "领料单",
+                "value": "领料单"
+              },
+              {
+                "label": "专票",
+                "value": "专票"
+              },
+              {
+                "label": "普票",
+                "value": "普票"
+              }
+            ]
+          }
+        }
+      },
+      "用户": {
+        "bind": "user_id",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "单位": {
+        "bind": "company",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "主管": {
+        "bind": "manager",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "类型": {
+        "view": {
+          "props": {
+            "options": [
+              {
+                "label": "入库",
+                "value": "入库"
+              },
+              {
+                "label": "出库",
+                "value": "出库"
+              }
+            ],
+            "placeholder": "请选择 类型"
+          },
+          "type": "Tag"
+        },
+        "bind": "type"
+      },
+      "备注": {
+        "bind": "remark",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "收料人": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "bind": "receive"
+      },
+      "工号": {
+        "bind": "uno",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "ID": {
+        "bind": "id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "计划": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "bind": "plan_id"
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        }
+      },
+      "名称": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "bind": "name"
+      },
+      "单号": {
+        "bind": "ticket_sn",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      }
+    },
+    "filter": {
+      "名称": {
+        "bind": "where.name.match",
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 名称"
+          }
+        }
+      },
+      "仓库": {
+        "bind": "where.warehouse_id.match",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 仓库"
+          },
+          "type": "InputNumber"
+        }
+      }
+    }
+  },
+  "config": {
+    "full": true
   }
 }

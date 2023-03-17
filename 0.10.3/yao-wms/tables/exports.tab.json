@@ -80,13 +80,9 @@
     "table": {
       "下载地址": {
         "view": {
-          "type": "Text",
-          "props": {}
-        },
-        "edit": {
-          "type": "Input",
+          "type": "A",
           "props": {
-            "placeholder": "请输入 下载地址"
+            "href": "/api/utils/download?id={{id}}"
           }
         },
         "bind": "url"

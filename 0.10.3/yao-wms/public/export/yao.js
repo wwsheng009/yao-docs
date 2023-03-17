@@ -47,9 +47,15 @@ Yao.prototype.Post = async function (path, data, params, headers) {
  */
 Yao.prototype.Download = async function (path, params, savefile, headers) {
   try {
+    // console.log(path, params);
     const blob = await this.Fetch("GET", path, params, null, headers, true);
-
+    if (blob.code && blob.message) {
+      console.log(blob);
+      alert(blob.message);
+      return blob;
+    }
     var objectUrl = window.URL.createObjectURL(blob);
+
     let anchor = document.createElement("a");
     document.body.appendChild(anchor);
     anchor.href = objectUrl;
