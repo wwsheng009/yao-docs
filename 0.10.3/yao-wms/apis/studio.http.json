@@ -1,0 +1,31 @@
+{
+  "name": "studio",
+  "version": "1.0.2",
+  "description": "studio生成模型函数相关接口",
+  "group": "studio",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/menu",
+      "method": "GET",
+      "guard": "-",
+      "process": "scripts.studio.menu.Menu",
+      "in": [":query"],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    },
+    {
+      "path": "/detail",
+      "method": "GET",
+      "guard": "-",
+      "process": "scripts.studio.menu.Detail",
+      "in": [":query"],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    }
+  ]
+}
