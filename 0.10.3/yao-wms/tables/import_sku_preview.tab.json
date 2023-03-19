@@ -1,4 +1,0 @@
-{
-  "name": "物资单品导入规则预览",
-  "action": { "bind": { "model": "material.sku" } }
-}

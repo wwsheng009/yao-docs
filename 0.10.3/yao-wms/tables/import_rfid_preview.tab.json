@@ -1,4 +1,0 @@
-{
-  "name": "RFID导入规则预览",
-  "action": { "bind": { "model": "rfid" } }
-}

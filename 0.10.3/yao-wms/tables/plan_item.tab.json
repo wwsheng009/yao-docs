@@ -1,8 +1,0 @@
-{
-  "name": "计划行项目",
-  "action": {
-    "bind": {
-      "model": "plan.item"
-    }
-  }
-}
