@@ -45,3 +45,27 @@ selectColumns := []string{
 
 
 ```
+
+出错的地方：
+
+```go
+	sql := fmt.Sprintf(`
+			SELECT %s
+			FROM sqlite_master m
+			LEFT OUTER JOIN pragma_table_info((m.name)) p  ON m.name <> p.name
+			WHERE m.type = 'table' and table_name=%s
+		`,
+		strings.Join(selectColumns, ","),
+```
+
+从上面修改成下面的：
+
+```go
+	sql := fmt.Sprintf(`
+			SELECT %s
+			FROM sqlite_master m,
+			pragma_table_info((m.name)) p
+			WHERE m.type = 'table' and table_name=%s
+		`,
+		strings.Join(selectColumns, ","),
+```
