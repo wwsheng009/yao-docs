@@ -5,10 +5,10 @@
 
 ```json
 {
-  "name": "物资",
-  "table": { "name": "material", "comment": "物资" },
+  "name": "物资-模型名称",
+  "table": { "name": "数据库表名", "comment": "模型备注" },
   "columns": [
-    { "label": "ID", "name": "id", "type": "ID" },
+    { "label": "ID", "name": "id", "type": "ID", "comment": "数据库表主键" },
     {
       "label": "厂商",
       "name": "supplier_id",
@@ -28,12 +28,22 @@
       "label": "类目",
       "name": "category_id",
       "type": "integer",
-      "comment": "所属类目",
+      "comment": "所属类目-外键字段",
       "index": true,
       "nullable": true
     },
-    { "label": "图片", "name": "images", "type": "json", "nullable": true },
-    { "label": "介绍", "name": "detail", "type": "text", "nullable": true }
+    {
+      "label": "图片-图片类型使用json",
+      "name": "images",
+      "type": "json",
+      "nullable": true
+    },
+    {
+      "label": "介绍-长文本使用text",
+      "name": "detail",
+      "type": "text",
+      "nullable": true
+    }
   ],
   "relations": {
     "category": {
