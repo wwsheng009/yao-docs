@@ -1,0 +1,43 @@
+{
+  "name": "用户",
+  "table": { "name": "user", "comment": "用户表" },
+  "columns": [
+    { "label": "ID", "name": "id", "type": "ID", "comment": "ID" },
+    {
+      "label": "供应商",
+      "name": "supplier_id",
+      "type": "bigInteger",
+      "index": true,
+      "comment": "供应商ID"
+    },
+    {
+      "label": "姓名",
+      "name": "name",
+      "type": "string",
+      "index": true,
+      "comment": "用户姓名"
+    },
+    {
+      "label": "APPID",
+      "name": "app_id",
+      "type": "string",
+      "length": 10,
+      "index": true,
+      "comment": "用户姓名"
+    }
+  ],
+  "relations": {
+    "suppliers": {
+      "key": "app_id",
+      "foreign": "app_id",
+      "model": "supplier",
+      "type": "hasMany"
+    }
+  },
+  "values": [
+    { "id": 1, "supplier_id": 1, "name": "张无忌", "app_id": "123" },
+    { "id": 2, "supplier_id": 1, "name": "李光富", "app_id": "456" },
+    { "id": 3, "supplier_id": 2, "name": "李木婷", "app_id": "789" },
+    { "id": 4, "supplier_id": 2, "name": "赵长青", "app_id": "012" }
+  ]
+}
