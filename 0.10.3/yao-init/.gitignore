@@ -1,4 +1,4 @@
 .env
-db
 data
 logs
+db

@@ -51,6 +51,11 @@
             "visible_menu": 1
           }
         ]
+      },
+      {
+        "icon": "icon-book",
+        "name": "表单",
+        "path": "/x/Table/salesorder"
       }
     ],
     "setting": [
