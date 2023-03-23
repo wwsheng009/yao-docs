@@ -81,7 +81,7 @@ yao studio run init.CreateForm salesorder
 - `forms/salesorder.form.default.json`
 - `tables/salesorder.tab.default.json`
 
-确认没有问题手，需要手动复制内容到以下文件，或是直接重命文件名，这里脚本没有自动覆盖原文件。
+确认没有问题后，需要手动复制内容到以下文件，或是直接重命文件名，这里脚本没有自动覆盖原文件。
 
 - `forms/salesorder.form.default.json` => `forms/salesorder.form.json`
 - `tables/salesorder.tab.default.json` => `tables/salesorder.tab.json`
