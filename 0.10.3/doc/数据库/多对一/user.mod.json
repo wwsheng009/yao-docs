@@ -27,7 +27,19 @@
     }
   ],
   "relations": {
-    "suppliers": {
+    "one_supplier": {
+      "key": "id",
+      "foreign": "supplier_id",
+      "model": "supplier",
+      "type": "hasOne"
+    },
+    "many_suppliers": {
+      "key": "user_id",
+      "foreign": "id",
+      "model": "supplier",
+      "type": "hasMany"
+    },
+    "apps": {
       "key": "app_id",
       "foreign": "app_id",
       "model": "supplier",

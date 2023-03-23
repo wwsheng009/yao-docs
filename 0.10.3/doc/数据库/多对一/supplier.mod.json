@@ -21,11 +21,27 @@
       "type": "string",
       "length": 10,
       "index": true,
+      "comment": "应用标识"
+    },
+    {
+      "label": "USERID",
+      "name": "user_id",
+      "type": "bigInteger",
+      "length": 10,
+      "index": true,
       "comment": "用户姓名"
     }
   ],
+  "relations": {
+    "users": {
+      "key": "supplier_id",
+      "foreign": "id",
+      "model": "user",
+      "type": "hasMany"
+    }
+  },
   "values": [
-    { "id": 1, "name": "象传智慧", "app_id": "456" },
-    { "id": 2, "name": "Yao App Engine", "app_id": "456" }
+    { "id": 1, "name": "象传智慧", "app_id": "456", "user_id": 1 },
+    { "id": 2, "name": "Yao App Engine", "app_id": "456", "user_id": 1 }
   ]
 }
