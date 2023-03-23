@@ -1,4 +1,4 @@
-## 使用富文本
+## 使用富文本控件
 
 **需要使用 0.10.3 版本的 Yao 程序**
 
@@ -133,3 +133,13 @@ function main(args, out, res) {
   }
 }
 ```
+
+### 富文本控件生成的内容转换成 HTML
+
+`Yao`富文本控件`RichText`内部封装了[`editorjs`](https://github.com/editor-js)。控件保存的内容的格式是`Json`数组，数组中每一行数据都是一个对象，对象在单独的类型与内容。
+
+如果我们的需求是把`edjtorjs`控件生成的内容转换成`html`格式内容，有一个现成的组件能帮我们实现。插件的源代码地址：
+https://github.com/pavittarx/editorjs-html
+
+插件的功能逻辑比较简单，主要是循环查找`json`数组中的`block`对象，再根据规则替换成文本。对源代码作下简单的处理，转换成`Yao`处理器。
+处理器源代码如下：[`RichText`转换成`HTML`代码处理器](./Parser.js)
