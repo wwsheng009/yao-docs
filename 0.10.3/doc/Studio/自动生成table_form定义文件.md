@@ -12,4 +12,4 @@ yao studio run  init.CreateTable material.spec
 yao studio run  init.CreateForm material.spec
 ```
 
-注意如果需要同时生成两份文件，需要分别执行两次命令。
+如果模型对应的`table/form`不存在，分别执行两次命令可以生成最小化配置与全量配置。

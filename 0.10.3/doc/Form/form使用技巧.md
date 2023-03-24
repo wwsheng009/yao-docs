@@ -1,5 +1,7 @@
 # form 的一些使用技巧
 
+[使用`Studio`脚本生成`Form`配置](../Studio/%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90table_form%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6.md)
+
 ## form 最小化配置
 
 只需要以下最小的配置，即可在`xgen`上使用`form`.字段与控件的配置会根据`model`中的配置自动生成
