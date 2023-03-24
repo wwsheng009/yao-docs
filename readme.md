@@ -1,29 +1,11 @@
-# yao 应用引擎模板
+# 开发过程中的一些问题与技巧收集
 
-注意：0.10.2 与 0.10.3 引擎并不兼容，所以使用的模板也不一样。
+- [Yao 引擎](https://github.com/YaoApp)
 
-## 菜单
+- [VSCode 编辑器语法校验证配置](https://github.com/wwsheng009/yao-app-ts-types)
 
-菜单的数据格式不一样。可以对比以下两个文件
-0.10.2 的菜单输出是一个数组
-0.10.3 的菜单输出是一个对象
+- [0.10.3 版本的 Yao-WMS](https://github.com/wwsheng009/yao-wms)
 
-## form/table dsl 不一样
+- [0.10.3 版本的 Yao-Init](https://github.com/wwsheng009/yao-init-0.10.3)
 
-2 个版本中的 form/table dsl 中的 action 对象结构不一样
-
-## 模板使用
-
-0.10.2 的请使用以下模板
-
-```sh
-cd 0.10.2/yao-init
-yao start
-```
-
-0.10.3 的请使用以下模板
-
-```sh
-cd 0.10.3/yao-init
-yao start
-```
+- [0.10.3 版本的 Yao-ChatGPT](https://github.com/wwsheng009/yao-chatgpt)
