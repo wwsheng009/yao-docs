@@ -1,6 +1,6 @@
 # 自动的生成 form/table 定义文件
 
-把`init.js`脚本复制到项目应用的`studio`目录。
+把[`init.js`](./init.js)脚本复制到项目应用的`studio`目录。
 
 脚本有两个作用：
 

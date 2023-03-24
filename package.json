@@ -1,0 +1,18 @@
+{
+  "name": "yao-docs",
+  "version": "1.0.0",
+  "description": "yao documents",
+  "main": "index.js",
+  "repository": "https://github.com/wwsheng009/yao-docs",
+  "author": "wwsheng009 <vincentwwsheng@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
+  },
+  "devDependencies": {
+    "medium-zoom": "^1.0.8",
+    "vitepress": "^1.0.0-alpha.61"
+  }
+}

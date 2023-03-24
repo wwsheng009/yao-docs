@@ -3,3 +3,5 @@ db/*.db
 data
 logs
 .session
+node_modules
+docs/.vitepress/cache

@@ -1,4 +1,4 @@
-# Table/Form Action 控件根据记录的值禁用
+# 有条件禁用`Table_Form Action`按钮
 
 设置`action.disabled`属性，`action.disabled.bind`是绑定的值，`action.disabled.value`是禁用条件。
 

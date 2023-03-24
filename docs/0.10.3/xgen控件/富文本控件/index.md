@@ -1,4 +1,4 @@
-## 使用富文本控件
+# 使用富文本控件
 
 **需要使用 0.10.3 版本的 Yao 程序**
 
@@ -142,4 +142,5 @@ function main(args, out, res) {
 https://github.com/pavittarx/editorjs-html
 
 插件的功能逻辑比较简单，主要是循环查找`json`数组中的`block`对象，再根据规则替换成文本。对源代码作下简单的处理，转换成`Yao`处理器。
-处理器源代码如下：[`RichText`转换成`HTML`代码处理器](./Parser.js)
+
+处理器源代码如下：[`RichText`转换成`HTML`代码处理器](./EdJsParser.js)
