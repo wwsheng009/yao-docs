@@ -1,3 +1,1 @@
-# <a href="./png/yao_database_migrate.drawio.png" target="_blank">新页签打开</a>
-
-![](./png/yao_database_migrate.drawio.png)
+<ZoomImg src="./png/yao_database_migrate.drawio.png" />

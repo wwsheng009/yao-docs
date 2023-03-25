@@ -5,7 +5,7 @@ title: Learn Yao
 titleTemplate: The easy way to learn Yao Engine
 
 hero:
-  name: Yao
+  name: 分享
   text: 让学习Yao变得更容易
   tagline: 学习，总结，分享，提升。
   actions:

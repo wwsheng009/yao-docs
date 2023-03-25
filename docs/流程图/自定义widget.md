@@ -1,5 +1,3 @@
-# 自定义 Widget 存储开发
+# 自定义 Widget 开发
 
-## <a href="./png/yao_widget.drawio.png" target="_blank">新页签打开</a>
-
-![](./png/yao_widget.drawio.png)
+<ZoomImg src="./png/yao_widget.drawio.png" />
