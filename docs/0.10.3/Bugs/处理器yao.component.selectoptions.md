@@ -62,7 +62,7 @@ https://github.com/wwsheng009/yao/commit/f6637e9dc29e2e1e418d0c84c37577e10f51ab9
 
 https://github.com/wwsheng009/yao/commit/347f491d6c2da3d3e00d4d235cb2c2c898633c5f
 
-```golang
+```go
 
 	case []interface{}:
 		for _, line := range input {

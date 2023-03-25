@@ -6,7 +6,7 @@
 
 `plugins/demo/main.go`
 
-```golang
+```go
 package main
 
 //插件模板

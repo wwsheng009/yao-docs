@@ -49,7 +49,7 @@ func Dump(values ...interface{}) {
 
 https://github.com/wwsheng009/kun/commit/8ed8e7237d35e829050dff98ae0e5dd500380a14
 
-```golang
+```go
 // Dump The Dump function dumps the given variables:
 func Dump(values ...interface{}) {
 	f := colorjson.NewFormatter()
