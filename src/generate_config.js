@@ -215,6 +215,9 @@ function checkAndCreateIndex(folderp) {
     .filter((link) => link); // filter out undefined links
 
   const folerBase = path.basename(folder);
+  if (fileLinks.length == 0) {
+    return;
+  }
   // create README markdown content
   const readmeContent = `# ${folerBase}\n\n${fileLinks.join("\n")}`;
 

@@ -6,4 +6,4 @@ xun 是一个轻量级别的 ORM。可以根据自己的需求增强 xun 数据�
 
 ## <a href="./png/yao_database-database_xun.drawio.png" target="_blank">新页签打开</a>
 
-![](./png/yao_database-database_xun.drawio.png)
+![](./png/yao_database_database_xun.drawio.png)

@@ -9,6 +9,10 @@ export default {
                 "link": "/0.10.3/index"
             },
             {
+                "text": "YaoDSL",
+                "link": "/YaoDSL/index"
+            },
+            {
                 "text": "流程图",
                 "link": "/流程图/index"
             }
@@ -267,22 +271,36 @@ export default {
                     "link": "/0.10.3/数据库/"
                 }
             ],
+            "/YaoDSL/": [
+                {
+                    "text": "Flow中Query使用前缀绑定变量",
+                    "link": "/YaoDSL/Flow中Query使用前缀绑定变量"
+                },
+                {
+                    "text": "在JsAPI中使用QueryDsl",
+                    "link": "/YaoDSL/在JsAPI中使用QueryDsl"
+                },
+                {
+                    "text": "在url请求中使用查询语法QueryParam",
+                    "link": "/YaoDSL/在url请求中使用查询语法QueryParam"
+                },
+                {
+                    "text": "数据查询使用SQL.STMT需要注意的问题",
+                    "link": "/YaoDSL/数据查询使用SQL.STMT需要注意的问题"
+                }
+            ],
             "/流程图/": [
                 {
                     "text": "api请求过程",
                     "link": "/流程图/api请求过程"
                 },
                 {
-                    "text": "yao-migrate",
-                    "link": "/流程图/yao-migrate"
+                    "text": "yao_migrate",
+                    "link": "/流程图/yao_migrate"
                 },
                 {
                     "text": "任务Task处理",
                     "link": "/流程图/任务Task处理"
-                },
-                {
-                    "text": "参数查询",
-                    "link": "/流程图/参数查询"
                 },
                 {
                     "text": "数据库schema",
@@ -299,6 +317,10 @@ export default {
                 {
                     "text": "数据库读取流程",
                     "link": "/流程图/数据库读取流程"
+                },
+                {
+                    "text": "查询参数QueryParam",
+                    "link": "/流程图/查询参数QueryParam"
                 },
                 {
                     "text": "用户登录流程会话",
