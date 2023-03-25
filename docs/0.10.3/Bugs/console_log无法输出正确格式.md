@@ -1,4 +1,4 @@
-## console.log 无法正确输出
+# console.log 无法正确输出
 
 当在脚本中使用`console.log`打印`html`字符时，输出的是`unicode`编码而不是`utf8`编码。这与浏览器的输出差异比较大。
 

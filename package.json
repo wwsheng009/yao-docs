@@ -10,7 +10,7 @@
     "docs:dev": "vitepress dev docs --host",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
-    "docs:default": "node ./src/generate_config.js"
+    "docs:default": "node ./src/generate.js"
   },
   "devDependencies": {
     "medium-zoom": "^1.0.8",

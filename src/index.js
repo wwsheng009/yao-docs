@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const CreateConfig = require("./generate_config");
+const { CreateVitePressConfig } = require("./generate_config");
 // Define the folder to watch
 const docsPath = path.resolve("./docs");
 
@@ -11,7 +11,7 @@ const callback = (eventType, filename) => {
   }
   console.log(`File ${filename} has been ${eventType}`);
 
-  CreateConfig();
+  CreateVitePressConfig();
 };
 
 // Watch the folder for file changes

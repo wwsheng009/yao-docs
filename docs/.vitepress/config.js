@@ -1,16 +1,16 @@
 export default {
-    "title": "Yao Docs",
+    "title": "Yao学习笔记",
     "base": "/yao-docs/",
     "themeConfig": {
-        "siteTitle": "Yao Documents",
+        "siteTitle": "Yao学习笔记",
         "nav": [
             {
                 "text": "0.10.3",
-                "link": "/0.10.3/"
+                "link": "/0.10.3/index"
             },
             {
-                "text": "drawio",
-                "link": "/drawio/"
+                "text": "流程图",
+                "link": "/流程图/index"
             }
         ],
         "socialLinks": [
@@ -85,7 +85,8 @@ export default {
                             "text": "处理器yao.component.selectoptions修正",
                             "link": "/0.10.3/Bugs/处理器yao.component.selectoptions修正"
                         }
-                    ]
+                    ],
+                    "link": "/0.10.3/Bugs/"
                 },
                 {
                     "text": "ChatGPT",
@@ -111,9 +112,11 @@ export default {
                                     "text": "model_without_relations",
                                     "link": "/0.10.3/ChatGPT/Prompts/model_without_relations"
                                 }
-                            ]
+                            ],
+                            "link": "/0.10.3/ChatGPT/Prompts/"
                         }
-                    ]
+                    ],
+                    "link": "/0.10.3/ChatGPT/"
                 },
                 {
                     "text": "Form",
@@ -127,7 +130,8 @@ export default {
                             "text": "在Form里使用子表",
                             "link": "/0.10.3/Form/在Form里使用子表"
                         }
-                    ]
+                    ],
+                    "link": "/0.10.3/Form/"
                 },
                 {
                     "text": "Studio",
@@ -137,7 +141,8 @@ export default {
                             "text": "自动生成table_form定义文件",
                             "link": "/0.10.3/Studio/自动生成table_form定义文件"
                         }
-                    ]
+                    ],
+                    "link": "/0.10.3/Studio/"
                 },
                 {
                     "text": "Table",
@@ -171,7 +176,8 @@ export default {
                             "text": "搜索默认值",
                             "link": "/0.10.3/Table/搜索默认值"
                         }
-                    ]
+                    ],
+                    "link": "/0.10.3/Table/"
                 },
                 {
                     "text": "Xgen控件",
@@ -212,8 +218,31 @@ export default {
                         {
                             "text": "远程select控件",
                             "link": "/0.10.3/Xgen控件/远程select控件"
+                        },
+                        {
+                            "text": "富文本控件",
+                            "collapsed": true,
+                            "items": [
+                                {
+                                    "text": "使用富文本控件",
+                                    "link": "/0.10.3/Xgen控件/富文本控件/使用富文本控件"
+                                }
+                            ],
+                            "link": "/0.10.3/Xgen控件/富文本控件/"
                         }
-                    ]
+                    ],
+                    "link": "/0.10.3/Xgen控件/"
+                },
+                {
+                    "text": "插件",
+                    "collapsed": true,
+                    "items": [
+                        {
+                            "text": "golang grpc 插件模板",
+                            "link": "/0.10.3/插件/golang grpc 插件模板"
+                        }
+                    ],
+                    "link": "/0.10.3/插件/"
                 },
                 {
                     "text": "数据库",
@@ -231,15 +260,53 @@ export default {
                                     "text": "一对一，多对一关联关系定义",
                                     "link": "/0.10.3/数据库/模型多对一/一对一，多对一关联关系定义"
                                 }
-                            ]
+                            ],
+                            "link": "/0.10.3/数据库/模型多对一/"
                         }
-                    ]
+                    ],
+                    "link": "/0.10.3/数据库/"
                 }
             ],
-            "/drawio/": [
+            "/流程图/": [
+                {
+                    "text": "api请求过程",
+                    "link": "/流程图/api请求过程"
+                },
                 {
                     "text": "yao-migrate",
-                    "link": "/drawio/yao-migrate"
+                    "link": "/流程图/yao-migrate"
+                },
+                {
+                    "text": "任务Task处理",
+                    "link": "/流程图/任务Task处理"
+                },
+                {
+                    "text": "参数查询",
+                    "link": "/流程图/参数查询"
+                },
+                {
+                    "text": "数据库schema",
+                    "link": "/流程图/数据库schema"
+                },
+                {
+                    "text": "数据库xun架构",
+                    "link": "/流程图/数据库xun架构"
+                },
+                {
+                    "text": "数据库更新流程",
+                    "link": "/流程图/数据库更新流程"
+                },
+                {
+                    "text": "数据库读取流程",
+                    "link": "/流程图/数据库读取流程"
+                },
+                {
+                    "text": "用户登录流程会话",
+                    "link": "/流程图/用户登录流程会话"
+                },
+                {
+                    "text": "自定义widget",
+                    "link": "/流程图/自定义widget"
                 }
             ]
         },

@@ -67,44 +67,4 @@ func (demo *DemoPlugin) Exec(name string, args ...interface{}) (*grpc.Response, 
 			out["x1"] = map[string]interface{}{"name": "Hello", "value": code}
 		}
 
-	default:
-		out = map[string]interface{}{"name": name, "args": args}
-	}
-
-    //所有输出需要转换成bytes
-	bytes, err := json.Marshal(out)
-	if err != nil {
-		return nil, err
-	}
-	//支持的类型：map/interface/string/integer,int/float,double/array,slice
-	return &grpc.Response{Bytes: bytes, Type: "map"}, nil
-}
-
-// 生成插件时函数名修改成main
-func main() {
-	plugin := &DemoPlugin{}
-	plugin.setLogFile()
-	grpc.Serve(plugin)
-}
-
-// 调试时开启，需要直接调试时修改成main
-func MainTest() {
-	plugin := &DemoPlugin{}
-	plugin.setLogFile()
-	plugin.Exec("hello", "world")
-}
-```
-
-构建
-
-```sh
-go build -o ../demo.so .
-chmod +x ../demo.so
-```
-
-测试
-
-```sh
-yao run plugins.demo.Hello "World"
-
 ```

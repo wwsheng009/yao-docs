@@ -1,4 +1,4 @@
-## List 删除项目后，列表被清空
+# List 删除项目后，列表被清空
 
 0.10.3/yao-wms/forms/plan.form.json 这个 form 里使用了 List 控件作为子表保存数据，
 当用户删除已有的项目时，会清空整个列表。

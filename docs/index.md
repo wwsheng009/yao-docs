@@ -11,7 +11,7 @@ hero:
   actions:
     - theme: brand
       text: 开始学习
-      link: /0.10.3/
+      link: readme.md
     - theme: alt
       text: 源代码
       link: https://github.com/wwsheng009/yao-docs
