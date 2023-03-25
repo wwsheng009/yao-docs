@@ -1,4 +1,4 @@
-## sqlite 数据库表中的字段名不能与表名一样。
+## Sqlite 数据库表中的字段名不能与表名一样。
 
 处理器：`schemas.default.TableGet`，无法读取表的字段定义，提示`schemas.default.TableGet the column %s does not exists`,
 

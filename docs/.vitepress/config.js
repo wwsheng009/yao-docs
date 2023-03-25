@@ -82,8 +82,8 @@ export default {
                             "link": "/0.10.3/Bugs/加密处理器调用错误"
                         },
                         {
-                            "text": "处理器yao.component.selectoptions",
-                            "link": "/0.10.3/Bugs/处理器yao.component.selectoptions"
+                            "text": "处理器yao.component.selectoptions修正",
+                            "link": "/0.10.3/Bugs/处理器yao.component.selectoptions修正"
                         }
                     ]
                 },

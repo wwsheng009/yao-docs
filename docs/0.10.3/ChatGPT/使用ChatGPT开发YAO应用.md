@@ -20,11 +20,11 @@ yao start
 
 ## Step2 使用 ChatGPT 生成模型定义
 
-这里提供了一个[ChatGPT 的提示词模板](./ChatGPT/Prompts/model_with_relations.md)，复制提示词模板中的所有内容到`ChatGPT`，让`ChatGPT`生成模型定义。
+这里提供了一个[ChatGPT 的提示词模板](./Prompts/model_with_relations.md)，复制提示词模板中的所有内容到`ChatGPT`，让`ChatGPT`生成模型定义。
 
 大家可以根据需要训练出更好的`ChatGPT`模板。
 
-把生成的模型定义复制到`/yao-init/models`目录，比如[`/yao-init/models/salesorder.mod.json`](./ChatGPT/examples/salesorder/salesorder.mod.json)
+把生成的模型定义复制到`/yao-init/models`目录，比如[`/yao-init/models/salesorder.mod.json`](./examples/salesorder/salesorder.mod.json)
 
 执行命令`yao migrate`更新数据库表结构，请确保提示`更新表结构成功`。
 
@@ -100,9 +100,9 @@ yao studio run init.CreateForm salesorder
 效果：
 
 Table:
-![Table](./ChatGPT/examples/salesorder/chatgpt-salesorder3.png)
+![Table](./examples/salesorder/chatgpt-salesorder3.png)
 Form:
-![Form](./ChatGPT/examples/salesorder/chatgpt-salesorder4.png)
+![Form](./examples/salesorder/chatgpt-salesorder4.png)
 
 ### Step4 修改菜单配置文件
 

@@ -1,3 +1,13 @@
+# MYSQL 与 SQLITE
+
+`MYSQL`与`SQLITE`数据库在某些场景有不致的风险,开发与生产最好使用同一类型的数据库。
+
+## Switch 控件
+
+`Switch`控件在两个数据库下使用需要差异化的配置。
+
+[`Switch`控件](../Xgen%E6%8E%A7%E4%BB%B6/Switch%E6%8E%A7%E4%BB%B6.md)
+
 ## 时间格式化函数
 
 MYSQL 使用`DATE_FORMAT`函数
@@ -23,7 +33,7 @@ MYSQL 使用`DATE_FORMAT`函数
 }
 ```
 
-SQLITE 使用`datetime`函数
+SQLITE 使用`strftime`函数格式化日期
 
 ```json
 {
@@ -32,7 +42,7 @@ SQLITE 使用`datetime`函数
   "query": {
     "debug": true,
     "select": [
-      ":datetime(uptime, '%Y年%m月%d日') as day",
+      ":strftime(uptime, '%Y年%m月%d日') as day",
       ":COUNT(id) as 数量"
     ],
     "wheres": [
