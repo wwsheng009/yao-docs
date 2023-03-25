@@ -1,3 +1,3 @@
-const { CreateVitePressConfig } = require("./generate_config");
+const { CreateVitePressConfig } = require('./generate_config')
 
-CreateVitePressConfig();
+CreateVitePressConfig()

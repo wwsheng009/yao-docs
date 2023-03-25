@@ -20,13 +20,21 @@ features:
   - icon: 📝
     title: 常用的技巧
     details: 总结了一些常用的可重复利用的代码段.
+    link: /0.10.3/
+    linkText: "0.10.3"
   - icon: ❤️
     title: 常用的项目模板
     details: 包含简单的，复杂的项目模板.
+    link: /readme
+    linkText: "项目模板"
   - icon: 🔥
     title: Yao引擎源代码分析
     details: 使用drawio绘制了Yao引擎的结构与原理.
+    link: /流程图/
+    linkText: 流程图
   - icon: 🚀
     title: 好用的插件
     details: 使用Studio插件/Vscode插件提升开发效率.
+    link: /0.10.3/Studio/
+    linkText: 编辑器
 ---

@@ -7,10 +7,10 @@
 `before:save`的输入参数是`payload`,输出是包含`payload`的数组
 
 ```js
-/**数据保存之间调用 */
+/** 数据保存之间调用 */
 function BeforeSave(payload) {
-  //输出数组,为下一个处理器save作准备,格式一定是数组
-  return [payload];
+  // 输出数组,为下一个处理器save作准备,格式一定是数组
+  return [payload]
 }
 ```
 
@@ -29,8 +29,8 @@ Save 处理器的说明如下，第一个参数是结构体，不是数组,使�
 function Save(payload) {
   // 自定义的处理逻辑
 
-  //可以返回id或是返回数组[id]
-  return id;
+  // 可以返回id或是返回数组[id]
+  return id
 }
 ```
 
@@ -46,15 +46,15 @@ function Save(payload) {
  * */
 function AfterSave(id) {
   // read the saved record
-  var payload = Process("models.<模型名称>.Find", id, {});
+  var payload = Process('models.<模型名称>.Find', id, {})
 
   // 可以增加其它筛选条件
-  var payload = Process("models.<模型名称>.Find", id, {
-    select: ["id", "name", "user_sn", "photo", "status"],
-  });
+  var payload = Process('models.<模型名称>.Find', id, {
+    select: ['id', 'name', 'user_sn', 'photo', 'status'],
+  })
 
-  //一般都返回id
-  return id;
+  // 一般都返回id
+  return id
 }
 ```
 

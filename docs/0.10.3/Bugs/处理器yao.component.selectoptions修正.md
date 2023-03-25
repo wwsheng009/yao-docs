@@ -9,46 +9,45 @@
 ```js
 function Test() {
   const param = {
-    key: "search",
-    label: "name",
-    model: "material.category",
-    search: "电",
-    value: "id",
+    key: 'search',
+    label: 'name',
+    model: 'material.category',
+    search: '电',
+    value: 'id',
     wheres: '{"column":"id","op":"ne","value":"4"}',
-  };
+  }
 
-  const data = Search(param);
-  console.log(data);
+  const data = Search(param)
+  console.log(data)
 }
 
 function Search(param) {
-  if (param.search == "") {
-    return [];
-  }
+  if (param.search == '')
+    return []
 
-  //使用字符串数组
-  let wheres_str = [
+  // 使用字符串数组
+  const wheres_str = [
     param.wheres,
     JSON.stringify({
-      column: "name",
-      op: "match",
+      column: 'name',
+      op: 'match',
       value: param.search,
     }),
-  ];
+  ]
 
-  //使用对象数组
-  let wheres_object = [
+  // 使用对象数组
+  const wheres_object = [
     JSON.parse(param.wheres),
     {
-      column: "name",
-      op: "match",
+      column: 'name',
+      op: 'match',
       value: param.search,
     },
-  ];
+  ]
 
-  param.wheres = wheres_object;
-  const values = Process("yao.component.SelectOptions", param);
-  return values;
+  param.wheres = wheres_object
+  const values = Process('yao.component.SelectOptions', param)
+  return values
 }
 ```
 

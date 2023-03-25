@@ -6,13 +6,13 @@
 
 ```js
 function GetSelect() {
-  var query = new Query();
-  var res = query.Get({
-    wheres: [{ ":deleted_at": "删除", "=": null }],
-    select: ["id as value", "name as label"],
-    from: "company",
-  });
-  return res;
+  const query = new Query()
+  const res = query.Get({
+    wheres: [{ ':deleted_at': '删除', '=': null }],
+    select: ['id as value', 'name as label'],
+    from: 'company',
+  })
+  return res
 }
 
 /**
@@ -20,15 +20,15 @@ function GetSelect() {
  * @returns
  */
 function GetSupplier() {
-  var query = new Query();
-  var res = query.Get({
+  const query = new Query()
+  const res = query.Get({
     wheres: [
-      { ":deleted_at": "删除", "=": null },
-      { ":type": "类型", "=": "外部" },
+      { ':deleted_at': '删除', '=': null },
+      { ':type': '类型', '=': '外部' },
     ],
-    select: ["id as value", "name as label"],
-    from: "company",
-  });
-  return res;
+    select: ['id as value', 'name as label'],
+    from: 'company',
+  })
+  return res
 }
 ```

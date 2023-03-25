@@ -1,6 +1,6 @@
 # 自动的生成 form/table 定义文件
 
-把[`init.js`](./init.js)脚本复制到项目应用的`studio`目录。
+把[`init.js`](https://github.com/wwsheng009/yao-init-0.10.3/blob/main/studio/init.js)脚本复制到项目应用的`studio`目录。
 
 脚本有两个作用：
 
@@ -12,4 +12,9 @@ yao studio run  init.CreateTable material.spec
 yao studio run  init.CreateForm material.spec
 ```
 
-如果模型对应的`table/form`不存在，分别执行两次命令可以生成最小化配置与全量配置。
+如果模型对应的`table/form`不存在，再执行两次命令可以生成最小化配置与全量配置。
+
+```sh
+yao studio run  init.CreateTable material.spec
+yao studio run  init.CreateForm material.spec
+```

@@ -5,7 +5,7 @@
 - [图片控件](%E5%9B%BE%E7%89%87%E6%8E%A7%E4%BB%B6.md)
 - [控件onSelect回调](%E6%8E%A7%E4%BB%B6onSelect%E5%9B%9E%E8%B0%83.md)
 - [文件上传](%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0.md)
-- [有条件禁用`Table_Form Action`按钮](%E6%9C%89%E6%9D%A1%E4%BB%B6%E7%A6%81%E7%94%A8%60Table_Form%20Action%60%E6%8C%89%E9%92%AE.md)
+- [根据条件禁用`Table_Form Action`按钮](%E6%A0%B9%E6%8D%AE%E6%9D%A1%E4%BB%B6%E7%A6%81%E7%94%A8%60Table_Form%20Action%60%E6%8C%89%E9%92%AE.md)
 - [禁用编辑控件](%E7%A6%81%E7%94%A8%E7%BC%96%E8%BE%91%E6%8E%A7%E4%BB%B6.md)
 - [设置控件的必输属性](%E8%AE%BE%E7%BD%AE%E6%8E%A7%E4%BB%B6%E7%9A%84%E5%BF%85%E8%BE%93%E5%B1%9E%E6%80%A7.md)
 - [远程select控件](%E8%BF%9C%E7%A8%8Bselect%E6%8E%A7%E4%BB%B6.md)

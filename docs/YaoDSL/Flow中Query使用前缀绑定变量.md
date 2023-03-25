@@ -76,8 +76,8 @@ func (exp *Expression) parseExpField(s string) error {
         "wheres": [
           {
             "field": "category.name",
-            "op": "?:$in.0.wheres.0.op", //无效
-            "value": "?:$in.0.wheres.0.value" //有效
+            "op": "?:$in.0.wheres.0.op", // 无效
+            "value": "?:$in.0.wheres.0.value" // 有效
           }
         ],
         "limit": 1000

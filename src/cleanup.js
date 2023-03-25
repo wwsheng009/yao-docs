@@ -1,4 +1,4 @@
-const { CleanUp } = require("./generate_config");
+const { CleanUp } = require('./generate_config')
 
 // CleanUp();
-CleanUp("index.md");
+CleanUp('index.md')

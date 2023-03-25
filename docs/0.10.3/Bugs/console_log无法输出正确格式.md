@@ -6,24 +6,24 @@
 
 ```js
 function excute() {
-  console.log("<");
-  console.log("\u003c");
+  console.log('<')
+  console.log('\u003C')
 }
 
-//都是输出
-//"\u003c"
+// 都是输出
+// "\u003c"
 ```
 
 `ES6 js`
 
 ```js
 function excute() {
-  console.log("<");
-  console.log("\u003c");
+  console.log('<')
+  console.log('\u003C')
 }
 
-//都是输出
-//<
+// 都是输出
+// <
 ```
 
 原因，脚本中的`console.log`是`golang`函数的代理，在`golang`中使用`json.Marshal`方法处理对象时，把数据转换成了`unicode`编码

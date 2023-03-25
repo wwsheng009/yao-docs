@@ -5,5 +5,25 @@ logs
 .session
 node_modules
 docs/.vitepress/cache
-docs/.vitepress/dist
 *.bak
+
+node_modules
+.temp
+dist
+.vscode
+cache
+.eslintcache
+components.d.ts
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# json
+meta.json
