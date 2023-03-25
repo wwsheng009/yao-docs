@@ -1,1 +1,1 @@
-<ZoomImg src="./png/yao_database_xun_schema.drawio.png" />
+![](./png/yao_database_xun_schema.drawio.png)

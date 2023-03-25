@@ -303,7 +303,7 @@ function deleteFilesWithBakSuffix(dirPath, extension) {
   }
 
   let ext = extension ? extension : ".bak";
-  console.log(extension, ext);
+  // console.log(extension, ext);
   // 获取目录下的所有文件和子目录
   const files = fs.readdirSync(dirPath);
   // 循环遍历每个文件和子目录

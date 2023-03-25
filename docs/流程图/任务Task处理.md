@@ -1,1 +1,1 @@
-<ZoomImg src="./png/yao_task.drawio.png" />
+![](./png/yao_task.drawio.png)

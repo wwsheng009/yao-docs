@@ -7,13 +7,14 @@
   "author": "wwsheng009 <vincentwwsheng@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "docs:dev": "vitepress dev docs --host",
-    "docs:build": "vitepress build docs",
+    "docs:dev": "yarn vitepress:generate && vitepress dev docs --host",
+    "docs:build": "yarn vitepress:generate && vitepress build docs",
     "docs:serve": "vitepress serve docs",
-    "docs:default": "node ./src/generate.js"
+    "vitepress:generate": "node ./src/generate.js"
   },
   "devDependencies": {
     "medium-zoom": "^1.0.8",
-    "vitepress": "^1.0.0-alpha.61"
+    "vitepress": "^1.0.0-alpha.61",
+    "vue": "^3.2.47"
   }
 }
