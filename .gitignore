@@ -5,4 +5,5 @@ logs
 .session
 node_modules
 docs/.vitepress/cache
+docs/.vitepress/dist
 *.bak
