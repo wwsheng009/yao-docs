@@ -7,9 +7,10 @@
   "author": "wwsheng009 <vincentwwsheng@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "docs:dev": "vitepress dev docs",
+    "docs:dev": "vitepress dev docs --host",
     "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
+    "docs:serve": "vitepress serve docs",
+    "docs:default": "node ./src/generate_config.js"
   },
   "devDependencies": {
     "medium-zoom": "^1.0.8",
