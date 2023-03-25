@@ -9,6 +9,7 @@ import socialLinks from './link'
 import algolia from './algolia'
 
 export default withPwa(defineConfig({
+  base: '/yao-docs/',
   pwa,
   outDir: '../dist',
   title: name,
