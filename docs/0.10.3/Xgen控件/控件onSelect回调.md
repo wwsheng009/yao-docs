@@ -1,6 +1,6 @@
 # select 控件动态搜索
 
-这里有一个 bug.[bug](../bugs/xgen%20remoteSearch.md)
+这里有一个 bug.[bug](../Bugs/xgen%20remoteSearch.md)
 
 xpath:`edit.props.xProps.$search`,
 
