@@ -16,12 +16,15 @@ pnpm run build
 
 ## `vitepress`配置文件自动生成
 
-`vitepress`配置文件`/docs/.vitepress/sidebar.ts`使用脚本`/src/generate_config.js`根据目录结构自动生成。
+`vitepress`以下配置文件使用脚本生成
+
+- `/docs/.vitepress/sidebar.ts`使用脚本`script/generate_config.ts`根据目录结构自动生成。
+- `/docs/.vitepress/nav.ts`使用脚本`script/generate_config.ts`根据目录结构自动生成。
 
 监听文件变更，自动生成`vitepress`配置文件
 
 ```sh
-node src/index.js
+node script/watch.ts
 ```
 
 ## `index.md`文件的更新
