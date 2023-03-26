@@ -67,7 +67,6 @@ yao start
 
 ![](./vscode_quick_dev/vscode_create_new_model.png)
 
-![](./vscode_quick_dev/vscode_create_new_model.png)
 
 - 生成的文件基本上是可以满足要求的，有些字段显示黄色，说明这个字段不符合`Yao`的`DSL`语法。删除或是忽略即可。`yao-init`项目已经配置好了[编辑器`vscode`智能提示](../%E7%BC%96%E8%BE%91%E5%99%A8vscode%E6%99%BA%E8%83%BD%E6%8F%90%E7%A4%BA.md)
 
@@ -120,4 +119,4 @@ yao start
 `http://http://127.0.0.1:5099/admin/x/Table/hospital`
 
 
-## 恭喜你创建了一个新的`CURD`程序
+## 恭喜你成功创建了一个新的`CURD`程序

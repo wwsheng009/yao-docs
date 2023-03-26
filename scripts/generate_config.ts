@@ -3,9 +3,9 @@ import path from 'node:path';
 
 const basePath = path.resolve('./docs');
 
-const auto_created_index_file = 'index';
+// const ignore_index = ['index', '_index'];
 
-const auto_created_index_file_name = `${auto_created_index_file}.md`;
+const ignore_index_files = [`index.md`, '_index.md'];
 
 interface NavItem {
   text: string;
@@ -51,7 +51,7 @@ const configTemplate = {
  */
 function checkIsIndexFile(filePath: string) {
   const base = path.basename(filePath).toLowerCase();
-  return base === auto_created_index_file_name;
+  return ignore_index_files.includes(base);
 }
 /**
  * check is md file?
@@ -220,15 +220,13 @@ function checkAndCreateIndex(folderp: string) {
           return null;
         }
 
-        if (fileName === auto_created_index_file) {
+        if (ignore_index_files.includes(fileName)) {
           return null;
         }
 
-        return `- [${fileName}](${encodeURIComponent(
-          `${fileName}/${auto_created_index_file}`,
-        )})`;
+        return `- [${fileName}](${encodeURIComponent(`${fileName}/index`)})`;
       } else {
-        if (fileName === auto_created_index_file_name) {
+        if (ignore_index_files.includes(fileName)) {
           return null;
         }
 
@@ -249,21 +247,25 @@ function checkAndCreateIndex(folderp: string) {
   // create README markdown content
   const readmeContent = `# ${folerBase}\n\n${fileLinks.join('\n')}`;
 
-  let indexPath = path.join(folder, auto_created_index_file_name); // replace with your desired README path
+  let indexFile1 = 'index.md';
+  let indexPath = path.join(folder, indexFile1); // replace with your desired README path
 
   // 如果已经存在，判断是否相同
   if (fs.existsSync(indexPath)) {
     const file2 = fs.readFileSync(indexPath, 'utf-8');
     if (readmeContent === file2) {
       return;
-    } else indexPath = path.join(folder, `_${auto_created_index_file_name}`);
+    } else {
+      indexFile1 = `_index.md`;
+      indexPath = path.join(folder, indexFile1);
+    }
   }
   // write README file
   fs.writeFile(indexPath, readmeContent, (err) => {
     if (err) {
       throw err;
     }
-    console.log(`${auto_created_index_file_name} file created at ${indexPath}`);
+    console.log(`${indexFile1} file created at ${folder}`);
   });
 }
 
@@ -316,7 +318,7 @@ function _CreateVitePressConfigFile(): void {
 
   const nav = folders.reduce(
     (total: NavItem[], item) =>
-      total.concat({ text: item, link: `/${item}/${auto_created_index_file}` }), // }
+      total.concat({ text: item, link: `/${item}/index` }), // }
     [] as NavItem[],
   );
   const sidebar = {};
@@ -360,8 +362,7 @@ function CreateVitePressConfig() {
 
   const folders = rootFolderList(basePath);
   const nav = folders.reduce(
-    (total, item) =>
-      total.concat({ text: item, link: `/${item}/${auto_created_index_file}` }), // }
+    (total, item) => total.concat({ text: item, link: `/${item}/index` }), // }
     [] as NavItem[],
   );
 
