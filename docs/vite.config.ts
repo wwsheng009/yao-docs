@@ -1,10 +1,10 @@
-import { resolve } from 'node:path'
-import { defineConfig } from 'vite'
-import UnoCSS from 'unocss/vite'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
-import Components from 'unplugin-vue-components/vite'
-import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
+import { resolve } from 'node:path';
+import { defineConfig } from 'vite';
+import UnoCSS from 'unocss/vite';
+import Icons from 'unplugin-icons/vite';
+import IconsResolver from 'unplugin-icons/resolver';
+import Components from 'unplugin-vue-components/vite';
+import { MarkdownTransform } from './.vitepress/plugins/markdownTransform';
 
 export default defineConfig(async () => {
   return {
@@ -13,9 +13,7 @@ export default defineConfig(async () => {
         overlay: false,
       },
       fs: {
-        allow: [
-          resolve(__dirname, '..'),
-        ],
+        allow: [resolve(__dirname, '..')],
       },
     },
     plugins: [
@@ -40,5 +38,5 @@ export default defineConfig(async () => {
       }),
       UnoCSS(),
     ],
-  }
-})
+  };
+});

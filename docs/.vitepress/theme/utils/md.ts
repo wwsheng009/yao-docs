@@ -6,15 +6,17 @@ export function renderMarkdown(markdownText = '') {
     .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
     .replace(/\*\*(.*)\*\*/gim, '<b>$1</b>')
     .replace(/\*(.*)\*/gim, '<i>$1</i>')
-    .replace(/!\[(.*?)\]\((.*?)\)/gim, '<img alt=\'$1\' src=\'$2\' />')
-    .replace(/\[(.*?)\]\((.*?)\)/gim, '<a href=\'$2\'>$1</a>')
+    .replace(/!\[(.*?)\]\((.*?)\)/gim, "<img alt='$1' src='$2' />")
+    .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2'>$1</a>")
     .replace(/`(.*?)`/gim, '<code>$1</code>')
-    .replace(/\n$/gim, '<br />')
+    .replace(/\n$/gim, '<br />');
 
-  return htmlText.trim()
+  return htmlText.trim();
 }
 
 export function renderCommitMessage(msg: string) {
-  return renderMarkdown(msg)
-    .replace(/\#([0-9]+)/g, '<a href=\'https://github.com/Chocolate1999/chodocs/issues/$1\'>#$1</a>')
+  return renderMarkdown(msg).replace(
+    /\#([0-9]+)/g,
+    "<a href='https://github.com/Chocolate1999/chodocs/issues/$1'>#$1</a>",
+  );
 }

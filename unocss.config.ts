@@ -5,7 +5,7 @@ import {
   presetUno,
   transformerDirectives,
   transformerVariantGroup,
-} from 'unocss'
+} from 'unocss';
 
 export default defineConfig({
   shortcuts: {
@@ -29,8 +29,5 @@ export default defineConfig({
       mono: 'var(--vt-font-family-mono)',
     },
   },
-  transformers: [
-    transformerDirectives(),
-    transformerVariantGroup(),
-  ],
-})
+  transformers: [transformerDirectives(), transformerVariantGroup()],
+});

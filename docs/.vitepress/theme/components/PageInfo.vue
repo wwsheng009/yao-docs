@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useData } from 'vitepress'
-import { getDate, getFromNow } from '../utils'
+import { computed, ref } from 'vue';
+import { useData } from 'vitepress';
+import { getDate, getFromNow } from '../utils';
 defineProps<{
-  readTime: string
-  words: string
-}>()
-const defaultAuthor = 'Vincent Wang'
-const author = ref(defaultAuthor)
-const { frontmatter, page } = useData()
+  readTime: string;
+  words: string;
+}>();
+const defaultAuthor = 'Vincent Wang';
+const author = ref(defaultAuthor);
+const { frontmatter, page } = useData();
 
-const publishedTime = getDate(frontmatter.value?.date)
+const publishedTime = getDate(frontmatter.value?.date);
 
-if (frontmatter.value?.author)
-  author.value = frontmatter.value?.author
+if (frontmatter.value?.author) author.value = frontmatter.value?.author;
 
-const lastUpdatedDate = computed(() => new Date(page.value.lastUpdated!))
-const isoDatetime = computed(() => lastUpdatedDate.value.toISOString())
-const timeFormNow = getFromNow(isoDatetime.value)
+const lastUpdatedDate = computed(() => new Date(page.value.lastUpdated!));
+const isoDatetime = computed(() => lastUpdatedDate.value.toISOString());
+const timeFormNow = getFromNow(isoDatetime.value);
 </script>
 
 <template>
@@ -49,7 +48,9 @@ const timeFormNow = getFromNow(isoDatetime.value)
       </div>
       <div class="flex gap-[4px] items-center">
         <ph:eye-fill />
-        阅读量:<span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv" /></span>
+        阅读量:<span id="busuanzi_container_page_pv"
+          ><span id="busuanzi_value_page_pv"></span
+        ></span>
       </div>
     </section>
   </div>

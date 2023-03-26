@@ -18,12 +18,12 @@ html.dark {
 .VPTeamPageTitle .title {
   line-height: 32px;
   font-size: 24px;
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .VPTeamPageTitle .lead {
   font-size: 14px;
-  opacity: .4;
+  opacity: 0.4;
 }
 
 .medium-zoom-overlay {

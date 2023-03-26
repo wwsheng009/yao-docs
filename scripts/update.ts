@@ -1,3 +1,3 @@
-import { updateContributors } from './utils'
+import { updateContributors } from './utils';
 
-updateContributors()
+updateContributors();

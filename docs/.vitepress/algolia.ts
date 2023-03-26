@@ -8,4 +8,4 @@ export default {
       buttonText: '搜索文档',
     },
   },
-}
+};

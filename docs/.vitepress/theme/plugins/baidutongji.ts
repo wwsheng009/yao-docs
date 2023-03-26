@@ -1,13 +1,13 @@
-import { inBrowser } from 'vitepress'
+import { inBrowser } from 'vitepress';
 
 /**
  * 统计站点的 ID 列表
  */
-export const siteIds = 'eb1ef90b1e9476b8d3d43088d3ac9c49'
+export const siteIds = 'eb1ef90b1e9476b8d3d43088d3ac9c49';
 
 declare global {
   interface Window {
-    _hmt: any
+    _hmt: string[][];
   }
 }
 
@@ -15,16 +15,18 @@ declare global {
  * 注册统计
  */
 export function registerAnalytics(siteId: string) {
-  if (!inBrowser)
-    return
-  if (document.querySelector(`#analytics-plugin-${siteId}`))
-    return
-  window._hmt = window._hmt ? window._hmt : []
-  const script = document.createElement('script')
-  script.id = `analytics-${siteId}`
-  script.async = true
-  script.src = `https://hm.baidu.com/hm.js?${siteId}`
-  document.querySelector('head')?.appendChild(script)
+  if (!inBrowser) {
+    return;
+  }
+  if (document.querySelector(`#analytics-plugin-${siteId}`)) {
+    return;
+  }
+  window._hmt = window._hmt ? window._hmt : [];
+  const script = document.createElement('script');
+  script.id = `analytics-${siteId}`;
+  script.async = true;
+  script.src = `https://hm.baidu.com/hm.js?${siteId}`;
+  document.querySelector('head')?.appendChild(script);
 }
 
 /**
@@ -33,17 +35,19 @@ export function registerAnalytics(siteId: string) {
  * @param pageUrl - 页面 URL
  */
 export function trackPageview(siteId: string, pageUrl: string) {
-  if (!inBrowser)
-    return
-  if (!pageUrl || typeof pageUrl !== 'string')
-    pageUrl = '/'
-
-  if (pageUrl.startsWith('http')) {
-    const urlFragment = pageUrl.split('/')
-    const origin = `${urlFragment[0]}//${urlFragment[2]}`
-    pageUrl = pageUrl.replace(origin, '')
+  if (!inBrowser) {
+    return;
+  }
+  if (!pageUrl || typeof pageUrl !== 'string') {
+    pageUrl = '/';
   }
 
-  window._hmt.push(['_setAccount', siteId])
-  window._hmt.push(['_trackPageview', pageUrl])
+  if (pageUrl.startsWith('http')) {
+    const urlFragment = pageUrl.split('/');
+    const origin = `${urlFragment[0]}//${urlFragment[2]}`;
+    pageUrl = pageUrl.replace(origin, '');
+  }
+
+  window._hmt.push(['_setAccount', siteId]);
+  window._hmt.push(['_trackPageview', pageUrl]);
 }

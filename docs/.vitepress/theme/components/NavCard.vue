@@ -1,8 +1,8 @@
-<script setup lang="ts">
-import type { navItem } from '../../../favorites/types'
+<script lang="ts" setup>
+import type { navItem } from '../../../favorites/types';
 defineProps<{
-  navData: navItem[]
-}>()
+  navData: navItem[];
+}>();
 </script>
 
 <template>

@@ -1,6 +1,6 @@
-import fg from 'fast-glob'
-import { resolve } from 'pathe'
-import type { VitePWAOptions } from 'vite-plugin-pwa'
+import fg from 'fast-glob';
+import { resolve } from 'pathe';
+import type { VitePWAOptions } from 'vite-plugin-pwa';
 import {
   description,
   githubSourceContentRegex,
@@ -8,7 +8,7 @@ import {
   googleStaticFontRegex,
   jsdelivrCDNRegex,
   name,
-} from '../meta'
+} from '../meta';
 
 /**
  * Vite Plugin PWA uses Workbox  library to build the service worker
@@ -19,7 +19,9 @@ export const pwa: Partial<VitePWAOptions> = {
   outDir: '../dist',
   registerType: 'autoUpdate',
   // include all static assets under public/
-  includeAssets: fg.sync('**/*.{png,svg,gif,ico,txt}', { cwd: resolve(__dirname, '../../public') }),
+  includeAssets: fg.sync('**/*.{png,svg,gif,ico,txt}', {
+    cwd: resolve(__dirname, '../../public'),
+  }),
   manifest: {
     id: '/',
     name,
@@ -107,4 +109,4 @@ export const pwa: Partial<VitePWAOptions> = {
       },
     ],
   },
-}
+};

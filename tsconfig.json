@@ -12,7 +12,7 @@
     "preserveValueImports": true,
     "importsNotUsedAsValues": "error",
     "jsx": "preserve",
-    "lib": ["ESNext", "DOM"]
+    "lib": ["ESNext", "dom", "ES2021.String"]
   },
   "include": [
     "docs",
