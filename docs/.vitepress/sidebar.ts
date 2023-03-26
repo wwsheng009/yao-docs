@@ -52,6 +52,10 @@ export default {
           link: '/0.10.3/Bugs/Compute 处理器无法处理关联表',
         },
         {
+          text: 'Null值转换成Int类型值时panic',
+          link: '/0.10.3/Bugs/Null值转换成Int类型值时panic',
+        },
+        {
           text: 'sqlite数据库bug',
           link: '/0.10.3/Bugs/sqlite数据库bug',
         },
@@ -74,6 +78,10 @@ export default {
         {
           text: '处理器yao.component.selectoptions修正',
           link: '/0.10.3/Bugs/处理器yao.component.selectoptions修正',
+        },
+        {
+          text: '数据库Schema默认值转换异常',
+          link: '/0.10.3/Bugs/数据库Schema默认值转换异常',
         },
       ],
       link: '/0.10.3/Bugs/',
