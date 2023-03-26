@@ -62,13 +62,20 @@ function checkIsMdFile(filePath: string) {
   const ext = path.extname(filePath);
   return ext === '.md';
 }
+// This function takes in a filepath as a string input and returns the relative path of the file (without extension)
 function getFileRelativePath(filepath: string) {
+  // Replace any base path that may exist in the filepath with an empty string
   filepath = filepath.replace(basePath, '');
+
+  // Get the extension of the file using Node.js' built-in path module
   const fileExt = path.extname(filepath);
+
+  // Remove the extension from the filepath by taking a slice of the string from the beginning up to the length of the extension (i.e. removing the last few characters of the string)
   filepath = filepath.slice(0, 0 - fileExt.length); // remove extension
+
+  // Return the modified filepath (relative path without extension)
   return filepath;
 }
-
 function sortFiles(d: string, files: string[]) {
   const folder_list: string[] = [];
   const file_list: string[] = [];

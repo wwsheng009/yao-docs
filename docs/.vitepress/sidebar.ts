@@ -83,6 +83,10 @@ export default {
       collapsed: true,
       items: [
         {
+          text: 'Vscode编辑器使用插件快速开发模型',
+          link: '/0.10.3/ChatGPT/Vscode编辑器使用插件快速开发模型',
+        },
+        {
           text: '使用ChatGPT开发YAO应用',
           link: '/0.10.3/ChatGPT/使用ChatGPT开发YAO应用',
         },

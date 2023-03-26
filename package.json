@@ -12,7 +12,7 @@
     "serve": "vitepress serve docs",
     "generate": "tsx scripts/generate.ts",
     "lint": "eslint --cache .",
-    "lint:fix": "eslint --cache . --fix",
+    "lint:fix": "nr lint --fix",
     "release": "tsx scripts/release.ts",
     "update": "tsx scripts/update.ts",
     "prettier": "npx prettier docs --check",
