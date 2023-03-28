@@ -1,6 +1,11 @@
+---
+author: Vincent Wang
+contributors: [AbbetWang]
+---
+
 # MYSQL 与 SQLITE
 
-`MYSQL`与`SQLITE`数据库在某些场景有不致的风险,开发与生产最好使用同一类型的数据库。
+`MYSQL`与`SQLITE`数据库在某些场景有不一致的风险,开发与生产最好使用同一类型的数据库。
 
 ## Switch 控件
 

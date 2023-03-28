@@ -5,6 +5,14 @@ export default [
     link: '/0.10.3/index',
   },
   {
+    text: 'Studio',
+    link: '/Studio/index',
+  },
+  {
+    text: 'YaoDSL',
+    link: '/YaoDSL/index',
+  },
+  {
     text: '流程图',
     link: '/流程图/index',
   },

@@ -258,6 +258,38 @@ export default {
       link: '/0.10.3/数据库/',
     },
   ],
+  '/Studio/': [
+    {
+      text: 'Yao Studio介绍',
+      link: '/Studio/Yao Studio介绍',
+    },
+    {
+      text: '如何修改管理员用户密码',
+      link: '/Studio/如何修改管理员用户密码',
+    },
+    {
+      text: '自动生成table_form定义文件',
+      link: '/Studio/自动生成table_form定义文件',
+    },
+  ],
+  '/YaoDSL/': [
+    {
+      text: 'Flow中Query使用前缀绑定变量',
+      link: '/YaoDSL/Flow中Query使用前缀绑定变量',
+    },
+    {
+      text: '在JsAPI中使用QueryDsl',
+      link: '/YaoDSL/在JsAPI中使用QueryDsl',
+    },
+    {
+      text: '在url请求中使用查询语法QueryParam',
+      link: '/YaoDSL/在url请求中使用查询语法QueryParam',
+    },
+    {
+      text: '数据查询使用SQL.STMT需要注意的问题',
+      link: '/YaoDSL/数据查询使用SQL.STMT需要注意的问题',
+    },
+  ],
   '/流程图/': [
     {
       text: 'api请求过程',
