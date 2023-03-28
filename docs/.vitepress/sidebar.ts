@@ -136,21 +136,6 @@ export default {
       link: '/0.10.3/Form/',
     },
     {
-      text: 'Studio',
-      collapsed: true,
-      items: [
-        {
-          text: '如何修改用户密码',
-          link: '/0.10.3/Studio/如何修改用户密码',
-        },
-        {
-          text: '自动生成table_form定义文件',
-          link: '/0.10.3/Studio/自动生成table_form定义文件',
-        },
-      ],
-      link: '/0.10.3/Studio/',
-    },
-    {
       text: 'Table',
       collapsed: true,
       items: [
