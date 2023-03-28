@@ -6,13 +6,13 @@
 
 ```js
 function GetSelect() {
-  const query = new Query()
+  const query = new Query();
   const res = query.Get({
     wheres: [{ ':deleted_at': '删除', '=': null }],
     select: ['id as value', 'name as label'],
     from: 'company',
-  })
-  return res
+  });
+  return res;
 }
 
 /**
@@ -20,7 +20,7 @@ function GetSelect() {
  * @returns
  */
 function GetSupplier() {
-  const query = new Query()
+  const query = new Query();
   const res = query.Get({
     wheres: [
       { ':deleted_at': '删除', '=': null },
@@ -28,7 +28,7 @@ function GetSupplier() {
     ],
     select: ['id as value', 'name as label'],
     from: 'company',
-  })
-  return res
+  });
+  return res;
 }
 ```

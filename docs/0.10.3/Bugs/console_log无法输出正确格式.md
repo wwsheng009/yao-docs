@@ -6,8 +6,8 @@
 
 ```js
 function excute() {
-  console.log('<')
-  console.log('\u003C')
+  console.log('<');
+  console.log('\u003C');
 }
 
 // 都是输出
@@ -18,8 +18,8 @@ function excute() {
 
 ```js
 function excute() {
-  console.log('<')
-  console.log('\u003C')
+  console.log('<');
+  console.log('\u003C');
 }
 
 // 都是输出

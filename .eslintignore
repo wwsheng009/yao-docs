@@ -7,6 +7,5 @@ cache/
 !/.eslintrc.js
 !.test
 .temp
-docs/**/*.md
+
 docs/**/*.js
-*.md

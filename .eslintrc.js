@@ -94,8 +94,6 @@ module.exports = {
       files: [
         '**/*.md',
         '**/*.md/*.*',
-        'demo.vue',
-        'demo.client.vue',
         'scripts/*.ts',
         '*.test.ts',
         'utils.ts',

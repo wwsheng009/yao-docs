@@ -179,6 +179,10 @@ export default {
           link: '/0.10.3/Xgen控件/Switch控件',
         },
         {
+          text: 'Xgen多语言支持',
+          link: '/0.10.3/Xgen控件/Xgen多语言支持',
+        },
+        {
           text: '使用Hook转换日期控件的值',
           link: '/0.10.3/Xgen控件/使用Hook转换日期控件的值',
         },
@@ -201,6 +205,10 @@ export default {
         {
           text: '禁用编辑控件',
           link: '/0.10.3/Xgen控件/禁用编辑控件',
+        },
+        {
+          text: '菜单配置',
+          link: '/0.10.3/Xgen控件/菜单配置',
         },
         {
           text: '设置控件的必输属性',
@@ -288,6 +296,10 @@ export default {
     {
       text: '数据查询使用SQL.STMT需要注意的问题',
       link: '/YaoDSL/数据查询使用SQL.STMT需要注意的问题',
+    },
+    {
+      text: '自定义用户登陆过程api',
+      link: '/YaoDSL/自定义用户登陆过程api',
     },
   ],
   '/流程图/': [

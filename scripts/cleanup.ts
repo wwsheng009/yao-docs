@@ -1,4 +1,4 @@
 import { CleanUp } from './generate_config';
 
 // CleanUp();
-CleanUp('index');
+CleanUp('index.md');
