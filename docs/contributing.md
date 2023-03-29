@@ -24,7 +24,7 @@ pnpm dev
 
 - 如果你是修正某篇文章，请在 `contributors` 字段增加自己的 GitHub 账号名，也会有贡献者头像，并不会修改原作者信息。
 
-```bash
+```md
 ---
 author: Vincent Wang
 contributors: [HearLing]
@@ -33,12 +33,30 @@ contributors: [HearLing]
 
 ## 代码格式
 
-对于代码格式，本仓库使用 `eslint` 与 `git-hooks`，在你提交代码的时候会进行格式化以及修复一些问题。
+对于代码格式，本仓库使用 `prettier` 与 `git-hooks`，在你提交代码的时候会进行格式化以及修复一些问题。
 
 也可以手动执行一下：
 
 ```bash
-pnpm run lint:fix
+pnpm prettier:fix
+```
+
+提交之前需要`build`检查有没有错误。
+
+```bash
+pnpm run build && pnpm run serve
+```
+
+重建所有的`index.md`文件
+
+```bash
+pnpm run index
+```
+
+删除所有的`index.md`/`_index.md`文件
+
+```bash
+pnpm run cleanup
 ```
 
 ## 贡献者列表
@@ -49,7 +67,7 @@ pnpm run lint:fix
 
 笔记内容按照 [中文文案排版指北](https://mazhuang.org/wiki/chinese-copywriting-guidelines/)进行排版，即尽量保证中英文之间的空格，也可以使用 VSCode 相关格式化工具。
 
-> todo：集成 md 格式化（欢迎 PR）
+`md`的文档格使用`pritter`配合`vscode`的插件[`esbenp.prettier-vscode`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 ## 感谢参与
 

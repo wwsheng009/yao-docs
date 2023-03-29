@@ -11,6 +11,7 @@
     "build": "pnpm run generate && vitepress build docs",
     "serve": "vitepress serve docs",
     "generate": "tsx scripts/generate.ts",
+    "index": "tsx scripts/generate_index.ts",
     "cleanup": "tsx scripts/cleanup.ts",
     "lint": "eslint --cache .",
     "lint:fix": "nr lint --fix",

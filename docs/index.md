@@ -38,3 +38,5 @@ features:
     link: /0.10.3/Studio/
     linkText: 编辑器
 ---
+
+<IndexInfo />

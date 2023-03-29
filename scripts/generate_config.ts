@@ -1,11 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const basePath = path.resolve('./docs');
+export const BaseDocPath = path.resolve('./docs');
 
 // const ignore_index = ['index', '_index'];
 
-const ignore_index_files = [`index.md`, '_index.md'];
+export const IgnoreIndexFiles = [`index.md`, '_index.md'];
 
 interface NavItem {
   text: string;
@@ -51,7 +51,7 @@ interface FileItem {
  */
 function checkIsIndexFile(filePath: string) {
   const base = path.basename(filePath).toLowerCase();
-  return ignore_index_files.includes(base);
+  return IgnoreIndexFiles.includes(base);
 }
 /**
  * check is md file?
@@ -65,7 +65,7 @@ function checkIsMdFile(filePath: string) {
 // This function takes in a filepath as a string input and returns the relative path of the file (without extension)
 function getFileRelativePath(filepath: string) {
   // Replace any base path that may exist in the filepath with an empty string
-  filepath = filepath.replace(basePath, '');
+  filepath = filepath.replace(BaseDocPath, '');
 
   // Get the extension of the file using Node.js' built-in path module
   const fileExt = path.extname(filepath);
@@ -94,6 +94,13 @@ function sortFiles(d: string, files: string[]) {
 
   return file_list.concat(folder_list);
 }
+export interface folder {
+  text: string;
+  collapsed?: boolean;
+  items?: never[];
+  link: string;
+}
+
 /**
  * 读取一个目录下所有的md文件
  * @param dir 目录
@@ -102,16 +109,7 @@ function sortFiles(d: string, files: string[]) {
 function getAllMdFiles(dir: string) {
   const filesall = [];
 
-  checkAndCreateIndex(dir);
-  const addFiles = (
-    parent: {
-      text: string;
-      collapsed?: boolean;
-      items?: never[];
-      link: string;
-    }[],
-    d: string,
-  ) => {
+  const addFiles = (parent: folder[], d: string) => {
     let files = fs.readdirSync(d);
 
     files = sortFiles(d, files);
@@ -125,7 +123,7 @@ function getAllMdFiles(dir: string) {
           text: file,
           collapsed: true,
           items: [],
-          link: `${filePath.replace(basePath, '')}/`, // ; + auto_created_index_file,
+          link: `${filePath.replace(BaseDocPath, '')}/`, // ; + auto_created_index_file,
           // should end with "/"
         };
         addFiles(folder.items, filePath);
@@ -134,7 +132,6 @@ function getAllMdFiles(dir: string) {
           parent.push(folder);
         }
         // create index.md under the folder
-        checkAndCreateIndex(filePath);
       } else {
         if (checkIsMdFile(filePath) && !checkIsIndexFile(file)) {
           parent.push({
@@ -155,7 +152,7 @@ function getAllMdFiles(dir: string) {
  * @param {string} fileExtensions array of file extensions
  * @returns array of filenames
  */
-function getFilesUnderFolder(folderPath: string, fileExtensions: string[]) {
+function GetFilesUnderFolder(folderPath: string, fileExtensions: string[]) {
   const files: FileItem[] = [];
   const items_list = fs
     .readdirSync(folderPath)
@@ -189,75 +186,6 @@ function getFilesUnderFolder(folderPath: string, fileExtensions: string[]) {
   });
   return files;
 }
-/**
- * check and create index.md file under folder
- * @param {string} folderp folder path
- * @returns
- */
-function checkAndCreateIndex(folderp: string) {
-  const folder = path.resolve(folderp);
-  const fileExtensions = ['.md']; // replace with your desired file extensions
-  const files = getFilesUnderFolder(folder, fileExtensions);
-  // create markdown links for each file
-  const fileLinks = files
-    .map((file_obj) => {
-      const file = file_obj.path;
-      const fileName = path.basename(file);
-
-      if (file_obj.type === 'folder') {
-        const files = getFilesUnderFolder(file, fileExtensions);
-        if (files.length === 0) {
-          return null;
-        }
-
-        if (ignore_index_files.includes(fileName)) {
-          return null;
-        }
-
-        return `- [${fileName}](${encodeURIComponent(`${fileName}/index`)})`;
-      } else {
-        if (ignore_index_files.includes(fileName)) {
-          return null;
-        }
-
-        const nameWithoutExt = path.parse(fileName).name;
-        const fileExt = path.extname(file);
-        if (fileExtensions.includes(fileExt))
-          return `- [${nameWithoutExt}](${encodeURIComponent(fileName)})`;
-      }
-      return null;
-    })
-    .filter((link) => link); // filter out undefined links
-
-  const folerBase = path.basename(folder);
-  if (fileLinks.length === 0) {
-    return;
-  }
-
-  // create README markdown content
-  const readmeContent = `# ${folerBase}\n\n${fileLinks.join('\n')}`;
-
-  let indexFile1 = 'index.md';
-  let indexPath = path.join(folder, indexFile1); // replace with your desired README path
-
-  // 如果已经存在，判断是否相同
-  if (fs.existsSync(indexPath)) {
-    const file2 = fs.readFileSync(indexPath, 'utf-8');
-    if (readmeContent === file2) {
-      return;
-    } else {
-      indexFile1 = `_index.md`;
-      indexPath = path.join(folder, indexFile1);
-    }
-  }
-  // write README file
-  fs.writeFile(indexPath, readmeContent, (err) => {
-    if (err) {
-      throw err;
-    }
-    console.log(`${indexFile1} file created at ${folder}`);
-  });
-}
 
 /**
  * Get folder list under path
@@ -284,7 +212,7 @@ function rootFolderList(basePath: string) {
   const fileExtensions = ['.md']; // replace with your desired file extensions
 
   const noempty = subfolders.reduce((total, folder) => {
-    return getFilesUnderFolder(path.join(basePath, folder), fileExtensions)
+    return GetFilesUnderFolder(path.join(basePath, folder), fileExtensions)
       .length
       ? total.concat(folder)
       : total;
@@ -341,7 +269,7 @@ function CreateVitePressConfig() {
   const sidebar = {};
 
   // let files = rootFileList(basePath);
-  const files = rootFileList(basePath);
+  const files = rootFileList(BaseDocPath);
   const items = files.reduce(
     (total, file) =>
       total.concat({
@@ -352,14 +280,14 @@ function CreateVitePressConfig() {
   );
   sidebar['/'] = items;
 
-  const folders = rootFolderList(basePath);
+  const folders = rootFolderList(BaseDocPath);
   const nav = folders.reduce(
     (total, item) => total.concat({ text: item, link: `/${item}/index` }), // }
     [] as NavItem[],
   );
 
   folders.forEach((item) => {
-    const files = getAllMdFiles(path.join(basePath, item));
+    const files = getAllMdFiles(path.join(BaseDocPath, item));
     if (files.length > 0) {
       sidebar[`/${item}/`] = files;
     }
@@ -370,12 +298,12 @@ function CreateVitePressConfig() {
   export default
   `;
   fs.writeFileSync(
-    path.join(basePath, '/.vitepress/sidebar.ts'),
+    path.join(BaseDocPath, '/.vitepress/sidebar.ts'),
     prepend + JSON.stringify(sidebar, null, 2),
   );
   console.log(
     `Generated vitepress config:${path.join(
-      basePath,
+      BaseDocPath,
       '/.vitepress/config.js',
     )}`,
   );
@@ -385,48 +313,11 @@ function CreateVitePressConfig() {
   export default
   `;
   fs.writeFileSync(
-    path.join(basePath, '/.vitepress/nav.ts'),
+    path.join(BaseDocPath, '/.vitepress/nav.ts'),
     prepend + JSON.stringify(nav, null, 2),
   );
 }
 
-// 定义删除函数
-function deleteFilesWithBakSuffix(dirPath: string, extension: string) {
-  if (dirPath.startsWith('.vitepress')) {
-    return;
-  }
-
-  const ext = extension || '.bak';
-  // console.log(extension, ext);
-  // 获取目录下的所有文件和子目录
-  const files = fs.readdirSync(dirPath);
-  // 循环遍历每个文件和子目录
-  files
-    .filter(
-      (file) => path.join(dirPath, file) !== path.join(basePath, 'index.md'),
-    )
-    .forEach((file) => {
-      const filePath = path.join(dirPath, file);
-      const stat = fs.statSync(filePath);
-      // 如果是目录，则递归删除子目录中的文件
-      if (stat.isDirectory()) {
-        deleteFilesWithBakSuffix(filePath, extension);
-      } else {
-        // 如果是后缀为.bak的文件，则删除
-        if (file.endsWith(ext)) {
-          fs.unlinkSync(filePath);
-        }
-        // console.log(`Deleted file: ${filePath}`)
-      }
-    });
-  // // 删除空目录
-  // fs.rmdirSync(dirPath);
-  // console.log(`Deleted directory: ${dirPath}`);
-}
-
-function CleanUp(extension: string) {
-  deleteFilesWithBakSuffix(basePath, extension);
-}
 // 调用删除函数
 
-export { CreateVitePressConfig, CleanUp };
+export { CreateVitePressConfig, GetFilesUnderFolder };
