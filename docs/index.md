@@ -11,7 +11,7 @@ hero:
   actions:
     - theme: brand
       text: 开始学习
-      link: readme.md
+      link: /%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/readme.md
     - theme: alt
       text: 源代码
       link: https://github.com/wwsheng009/yao-docs
@@ -25,7 +25,7 @@ features:
   - icon: ❤️
     title: 常用的项目模板
     details: 包含简单的，复杂的项目模板.
-    link: /readme
+    link: /%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/readme.md
     linkText: '项目模板'
   - icon: 🔥
     title: Yao引擎源代码分析

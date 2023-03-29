@@ -17,6 +17,10 @@ export default [
     link: '/YaoDSL/index',
   },
   {
+    text: '入门指南',
+    link: '/入门指南/index',
+  },
+  {
     text: '流程图',
     link: '/流程图/index',
   },

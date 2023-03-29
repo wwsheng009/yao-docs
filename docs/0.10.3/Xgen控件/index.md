@@ -12,3 +12,4 @@
 - [设置控件的必输属性](%E8%AE%BE%E7%BD%AE%E6%8E%A7%E4%BB%B6%E7%9A%84%E5%BF%85%E8%BE%93%E5%B1%9E%E6%80%A7.md)
 - [远程 select 控件](%E8%BF%9C%E7%A8%8Bselect%E6%8E%A7%E4%BB%B6.md)
 - [富文本控件](%E5%AF%8C%E6%96%87%E6%9C%AC%E6%8E%A7%E4%BB%B6/index)
+- [自定义](%E8%87%AA%E5%AE%9A%E4%B9%89/index)

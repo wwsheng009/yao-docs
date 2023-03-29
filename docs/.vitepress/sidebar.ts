@@ -5,10 +5,6 @@ export default {
       text: 'contributing',
       link: 'contributing',
     },
-    {
-      text: 'readme',
-      link: 'readme',
-    },
   ],
   '/0.10.3/': [
     {
@@ -89,6 +85,10 @@ export default {
         {
           text: 'Form使用技巧',
           link: '/0.10.3/Form/Form使用技巧',
+        },
+        {
+          text: '单据参考创建',
+          link: '/0.10.3/Form/单据参考创建',
         },
         {
           text: '在Form里使用子表',
@@ -190,6 +190,17 @@ export default {
             },
           ],
           link: '/0.10.3/Xgen控件/富文本控件/',
+        },
+        {
+          text: '自定义',
+          collapsed: true,
+          items: [
+            {
+              text: '表格跳转表单携带数据',
+              link: '/0.10.3/Xgen控件/自定义/表格跳转表单携带数据',
+            },
+          ],
+          link: '/0.10.3/Xgen控件/自定义/',
         },
       ],
       link: '/0.10.3/Xgen控件/',
@@ -329,6 +340,16 @@ export default {
         },
       ],
       link: '/YaoDSL/Query/',
+    },
+  ],
+  '/入门指南/': [
+    {
+      text: 'readme',
+      link: '/入门指南/readme',
+    },
+    {
+      text: 'Yao学习路线图',
+      link: '/入门指南/Yao学习路线图',
     },
   ],
   '/流程图/': [
