@@ -48,4 +48,5 @@
 
 ## 📄 License
 
-<a href="./../LICENSE" target="_blank" rel="noreferrer">./../LICENSE</a> © 2023-PRESENT [Vincent Wang](https://github.com/wwsheng009)
+<a href="https://github.com/wwsheng009/yao-docs/blob/main/LICENSE" target="_blank" rel="noreferrer">LICENSE</a>
+© 2023-PRESENT [Vincent Wang](https://github.com/wwsheng009)
