@@ -35,7 +35,7 @@ features:
   - icon: 🚀
     title: 好用的插件
     details: 使用Studio插件/Vscode插件提升开发效率.
-    link: /0.10.3/Studio/
+    link: /Studio/
     linkText: 编辑器
 ---
 

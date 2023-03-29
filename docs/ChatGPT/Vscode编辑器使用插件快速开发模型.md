@@ -64,7 +64,7 @@ yao start
 
 ![](./vscode_quick_dev/vscode_create_new_model.png)
 
-- 生成的文件基本上是可以满足要求的，有些字段显示黄色，说明这个字段不符合`Yao`的`DSL`语法。删除或是忽略即可。`yao-init`项目已经配置好了[编辑器`vscode`智能提示](../%E7%BC%96%E8%BE%91%E5%99%A8vscode%E6%99%BA%E8%83%BD%E6%8F%90%E7%A4%BA.md)
+- 生成的文件基本上是可以满足要求的，有些字段显示黄色，说明这个字段不符合`Yao`的`DSL`语法。删除或是忽略即可。`yao-init`项目已经配置好了[编辑器`vscode`智能提示](../Studio/%E7%BC%96%E8%BE%91%E5%99%A8vscode%E6%99%BA%E8%83%BD%E6%8F%90%E7%A4%BA.md)
 
 - 除了生成一个完整的模型，你还可以让`ChatGPT`参考现有的字段定义生成新的字段，这需要发挥你的聪明才智了。
 
@@ -76,7 +76,7 @@ yao start
 yao migrate
 ```
 
-使用`Studio`脚本生成`table/form`定义文件。Studio 脚本的更多使用方法参考：[自动生成 table_form 定义文件](../../Studio/%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90table_form%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6.md)
+使用`Studio`脚本生成`table/form`定义文件。Studio 脚本的更多使用方法参考：[自动生成 table_form 定义文件](../Studio/%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90table_form%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6.md)
 
 ```sh
 yao studio run init.CreateTableAndForm hospital

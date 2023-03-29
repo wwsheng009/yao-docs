@@ -32,10 +32,6 @@ export default {
       link: '/0.10.3/编译yao源代码',
     },
     {
-      text: '编辑器vscode智能提示',
-      link: '/0.10.3/编辑器vscode智能提示',
-    },
-    {
       text: '菜单结构',
       link: '/0.10.3/菜单结构',
     },
@@ -85,40 +81,6 @@ export default {
         },
       ],
       link: '/0.10.3/Bugs/',
-    },
-    {
-      text: 'ChatGPT',
-      collapsed: true,
-      items: [
-        {
-          text: 'Vscode编辑器使用插件快速开发模型',
-          link: '/0.10.3/ChatGPT/Vscode编辑器使用插件快速开发模型',
-        },
-        {
-          text: '使用ChatGPT开发YAO应用',
-          link: '/0.10.3/ChatGPT/使用ChatGPT开发YAO应用',
-        },
-        {
-          text: 'Prompts',
-          collapsed: true,
-          items: [
-            {
-              text: 'ChatGPT生成模型模板',
-              link: '/0.10.3/ChatGPT/Prompts/ChatGPT生成模型模板',
-            },
-            {
-              text: 'model_with_relations',
-              link: '/0.10.3/ChatGPT/Prompts/model_with_relations',
-            },
-            {
-              text: 'model_without_relations',
-              link: '/0.10.3/ChatGPT/Prompts/model_without_relations',
-            },
-          ],
-          link: '/0.10.3/ChatGPT/Prompts/',
-        },
-      ],
-      link: '/0.10.3/ChatGPT/',
     },
     {
       text: 'Form',
@@ -266,6 +228,35 @@ export default {
       link: '/0.10.3/数据库/',
     },
   ],
+  '/ChatGPT/': [
+    {
+      text: 'Vscode编辑器使用插件快速开发模型',
+      link: '/ChatGPT/Vscode编辑器使用插件快速开发模型',
+    },
+    {
+      text: '使用ChatGPT开发YAO应用',
+      link: '/ChatGPT/使用ChatGPT开发YAO应用',
+    },
+    {
+      text: 'Prompts',
+      collapsed: true,
+      items: [
+        {
+          text: 'ChatGPT生成模型模板',
+          link: '/ChatGPT/Prompts/ChatGPT生成模型模板',
+        },
+        {
+          text: 'model_with_relations',
+          link: '/ChatGPT/Prompts/model_with_relations',
+        },
+        {
+          text: 'model_without_relations',
+          link: '/ChatGPT/Prompts/model_without_relations',
+        },
+      ],
+      link: '/ChatGPT/Prompts/',
+    },
+  ],
   '/Studio/': [
     {
       text: 'Yao Studio介绍',
@@ -274,6 +265,10 @@ export default {
     {
       text: '如何修改管理员用户密码',
       link: '/Studio/如何修改管理员用户密码',
+    },
+    {
+      text: '编辑器vscode智能提示',
+      link: '/Studio/编辑器vscode智能提示',
     },
     {
       text: '自动生成table_form定义文件',

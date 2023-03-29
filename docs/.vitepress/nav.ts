@@ -5,6 +5,10 @@ export default [
     link: '/0.10.3/index',
   },
   {
+    text: 'ChatGPT',
+    link: '/ChatGPT/index',
+  },
+  {
     text: 'Studio',
     link: '/Studio/index',
   },
