@@ -52,8 +52,11 @@ function checkAndCreateIndex(folderp: string) {
         if (IgnoreIndexFiles.includes(fileName)) {
           return null;
         }
-
-        return `- [${fileName}](${encodeURIComponent(`${fileName}/index`)})`;
+        const f = path.join(folderp, fileName, 'index.md');
+        if (!fs.existsSync(f)) {
+          return null;
+        }
+        return `- [${fileName}](${encodeURIComponent(fileName)}/index)`;
       } else {
         if (IgnoreIndexFiles.includes(fileName)) {
           return null;

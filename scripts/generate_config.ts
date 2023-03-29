@@ -146,6 +146,18 @@ function getAllMdFiles(dir: string) {
   return filesall;
 }
 
+function getSubfolderCount(path) {
+  let count = 0;
+  const files = fs.readdirSync(path);
+  files.forEach((file) => {
+    const stats = fs.statSync(`${path}/${file}`);
+    if (stats.isDirectory()) {
+      count++;
+    }
+  });
+  return count;
+}
+
 /**
  *  Get files from a directory
  * @param {string} folderPath folder path
@@ -165,10 +177,11 @@ function GetFilesUnderFolder(folderPath: string, fileExtensions: string[]) {
           folder.endsWith('.bak')
         ),
     );
+  const subfolderCount = getSubfolderCount(folderPath);
 
   const containsMdFile = items_list.some((str) => str.endsWith('.md'));
-  if (!containsMdFile) {
-    console.log(`${folderPath} Don't cantain any md file!`);
+  if (!containsMdFile && !subfolderCount) {
+    console.log(`${folderPath} Don't cantain any folder or md file!`);
     return [];
   }
 

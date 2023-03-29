@@ -194,39 +194,6 @@ export default {
       ],
       link: '/0.10.3/Xgen控件/',
     },
-    {
-      text: '插件',
-      collapsed: true,
-      items: [
-        {
-          text: 'golang grpc 插件模板',
-          link: '/0.10.3/插件/golang grpc 插件模板',
-        },
-      ],
-      link: '/0.10.3/插件/',
-    },
-    {
-      text: '数据库',
-      collapsed: true,
-      items: [
-        {
-          text: 'sqlite与mysql的差异',
-          link: '/0.10.3/数据库/sqlite与mysql的差异',
-        },
-        {
-          text: '模型多对一',
-          collapsed: true,
-          items: [
-            {
-              text: '一对一，多对一关联关系定义',
-              link: '/0.10.3/数据库/模型多对一/一对一，多对一关联关系定义',
-            },
-          ],
-          link: '/0.10.3/数据库/模型多对一/',
-        },
-      ],
-      link: '/0.10.3/数据库/',
-    },
   ],
   '/ChatGPT/': [
     {
@@ -259,6 +226,10 @@ export default {
   ],
   '/Studio/': [
     {
+      text: 'vscode调试yao',
+      link: '/Studio/vscode调试yao',
+    },
+    {
       text: 'Yao Studio介绍',
       link: '/Studio/Yao Studio介绍',
     },
@@ -277,24 +248,87 @@ export default {
   ],
   '/YaoDSL/': [
     {
-      text: 'Flow中Query使用前缀绑定变量',
-      link: '/YaoDSL/Flow中Query使用前缀绑定变量',
+      text: 'API',
+      collapsed: true,
+      items: [
+        {
+          text: 'API Guard',
+          link: '/YaoDSL/API/API Guard',
+        },
+        {
+          text: 'API预定义变量',
+          link: '/YaoDSL/API/API预定义变量',
+        },
+        {
+          text: '在api中使用变量引用上下文变量',
+          link: '/YaoDSL/API/在api中使用变量引用上下文变量',
+        },
+        {
+          text: '服务器端会话session保持',
+          link: '/YaoDSL/API/服务器端会话session保持',
+        },
+        {
+          text: '自定义用户登陆API',
+          link: '/YaoDSL/API/自定义用户登陆API',
+        },
+      ],
+      link: '/YaoDSL/API/',
     },
     {
-      text: '在JsAPI中使用QueryDsl',
-      link: '/YaoDSL/在JsAPI中使用QueryDsl',
+      text: 'Model',
+      collapsed: true,
+      items: [
+        {
+          text: 'sqlite与mysql的差异',
+          link: '/YaoDSL/Model/sqlite与mysql的差异',
+        },
+        {
+          text: '模型多对一',
+          collapsed: true,
+          items: [
+            {
+              text: '一对一，多对一关联关系定义',
+              link: '/YaoDSL/Model/模型多对一/一对一，多对一关联关系定义',
+            },
+          ],
+          link: '/YaoDSL/Model/模型多对一/',
+        },
+      ],
+      link: '/YaoDSL/Model/',
     },
     {
-      text: '在url请求中使用查询语法QueryParam',
-      link: '/YaoDSL/在url请求中使用查询语法QueryParam',
+      text: 'Plugin',
+      collapsed: true,
+      items: [
+        {
+          text: 'golang grpc 插件模板',
+          link: '/YaoDSL/Plugin/golang grpc 插件模板',
+        },
+      ],
+      link: '/YaoDSL/Plugin/',
     },
     {
-      text: '数据查询使用SQL.STMT需要注意的问题',
-      link: '/YaoDSL/数据查询使用SQL.STMT需要注意的问题',
-    },
-    {
-      text: '自定义用户登陆过程api',
-      link: '/YaoDSL/自定义用户登陆过程api',
+      text: 'Query',
+      collapsed: true,
+      items: [
+        {
+          text: 'Flow中Query使用前缀绑定变量',
+          link: '/YaoDSL/Query/Flow中Query使用前缀绑定变量',
+        },
+        {
+          text: '在JsAPI中使用QueryDsl',
+          link: '/YaoDSL/Query/在JsAPI中使用QueryDsl',
+        },
+        {
+          text: '在url请求中使用查询语法QueryParam',
+          link: '/YaoDSL/Query/在url请求中使用查询语法QueryParam',
+        },
+        {
+          text: '数据查询使用SQL.STMT需要注意的问题',
+          link: '/YaoDSL/Query/数据查询使用SQL.STMT需要注意的问题',
+        },
+      ],
+      link: '/YaoDSL/Query/',
     },
   ],
   '/流程图/': [

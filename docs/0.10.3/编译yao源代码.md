@@ -9,9 +9,15 @@ ldd --version
 ldd (GNU libc) 2.17
 ```
 
-need to install the `go 1.20` and `node 16`.
+install go-bindata
+
+```sh
+go install -a -v github.com/go-bindata/go-bindata/...@latest
+```
 
 `setup go`
+
+need to install the `go 1.20` and `node 16`.
 
 ```sh
 mkdir -p /root/go

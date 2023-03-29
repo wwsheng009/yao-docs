@@ -1,4 +1,6 @@
-# 自定义用户登陆过程 api
+# 自定义用户登陆 API
+
+## 使用 Flow 自定义登录
 
 `demo-crm\flows\login\password.flow.json`
 第一步，检查动态验证码，如果是接口调用，这一步可以省略
@@ -43,10 +45,12 @@
 }
 ```
 
+## Token 设置
+
 `demo-crm\flows\login\token.flow.json`
 第一步，读取用户信息
 第二步，生成 token
-第三步，设置全局会话信息，一般是用户的信息
+第三步，设置全局会话（Session）信息，可自定义设置变量，一般是用户的信息
 
 ```json
 {

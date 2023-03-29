@@ -50,13 +50,7 @@ pnpm run build && pnpm run serve
 重建所有的`index.md`文件
 
 ```bash
-pnpm run index
-```
-
-删除所有的`index.md`/`_index.md`文件
-
-```bash
-pnpm run cleanup
+pnpm run build:index
 ```
 
 ## 贡献者列表

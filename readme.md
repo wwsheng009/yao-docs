@@ -31,4 +31,8 @@ node script/watch.ts
 
 当一个目录中新增/修改/删除文件后，索引文件`index.md`并不会自动的更新。
 
-当运行脚本`pnpm run build`或是`pnpm run generate`后，会生成一个`_index.md`，这个新文件会包含最新的所有的文件列表。需要手动合并变更。
+重建所有的`index.md`文件
+
+```bash
+pnpm run build:index
+```
