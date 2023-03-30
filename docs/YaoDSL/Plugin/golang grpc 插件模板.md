@@ -47,24 +47,57 @@ func (demo *DemoPlugin) setLogFile() {
 //
 // args参数是一个数组，需要在插件中自行解析。判断它的长度与类型，再转入具体的go类型。
 //
+// Exec 读取
 func (demo *DemoPlugin) Exec(name string, args ...interface{}) (*grpc.Response, error) {
 	demo.Logger.Log(hclog.Trace, "plugin method called", name)
 	demo.Logger.Log(hclog.Trace, "args", args)
-
-    //输出值支持的类型：map/interface/string/integer,int/float,double/array,slice
-	var out = make(map[string]interface{})
+	var v = make(map[string]interface{})
 	switch name {
 	case "hello":
 		if len(args) < 1 {
-			out = map[string]interface{}{"code": 400, "message": "参数不足，需要一个参数"}
+			v = map[string]interface{}{"code": 400, "message": "参数不足，需要一个参数"}
 			break
 		}
 		code, ok := args[0].(string)
 		if !ok {
-			out = map[string]interface{}{"code": 400, "message": "参数的类型需要是字符串", "args": args}
+			v = map[string]interface{}{"code": 400, "message": "参数的类型需要是字符串", "args": args}
 		} else {
-			out = map[string]interface{}{"name": "Hello", "value": code}
-			out["x1"] = map[string]interface{}{"name": "Hello", "value": code}
+			v = map[string]interface{}{"name": "Hello", "value": code}
+			v["x1"] = map[string]interface{}{"name": "Hello", "value": code}
 		}
 
+	default:
+		v = map[string]interface{}{"name": name, "args": args}
+	}
+	//输出前需要转换成字节
+	bytes, err := json.Marshal(v)
+	if err != nil {
+		return nil, err
+	}
+	//设置输出数据的类型
+	//支持的类型：map/interface/string/integer,int/float,double/array,slice
+	return &grpc.Response{Bytes: bytes, Type: "map"}, nil
+}
+
+// 生成插件时函数名修改成main
+func main() {
+
+	plugin := &DemoPlugin{}
+	plugin.setLogFile()
+	grpc.Serve(plugin)
+}
+
+// 调试时开启，需要直接调试时修改成main
+func Main() {
+
+	plugin := &DemoPlugin{}
+	plugin.setLogFile()
+	// grpc.Serve(plugin) 不要使用server
+	plugin.Exec("hello", "world")//普通的go程序，用于开发调试
+}
+
+// go build -o ../demo.so .
+// chmod +x ../demo.so
+
+//yao run plugins.demo.Hello "World"
 ```
