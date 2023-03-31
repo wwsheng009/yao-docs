@@ -345,6 +345,10 @@ export default {
   ],
   '/源代码/': [
     {
+      text: '0.10.3-pre To 0.10.3-dev',
+      link: '/源代码/0.10.3-pre To 0.10.3-dev',
+    },
+    {
       text: 'Github Commit List',
       link: '/源代码/Github Commit List',
     },
