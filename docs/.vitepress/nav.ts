@@ -24,4 +24,8 @@ export default [
     text: '流程图',
     link: '/流程图/index',
   },
+  {
+    text: '源代码',
+    link: '/源代码/index',
+  },
 ];

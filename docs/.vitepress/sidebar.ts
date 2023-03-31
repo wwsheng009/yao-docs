@@ -24,59 +24,8 @@ export default {
       link: '/0.10.3/系统默认的用户名',
     },
     {
-      text: '编译yao源代码',
-      link: '/0.10.3/编译yao源代码',
-    },
-    {
       text: '菜单结构',
       link: '/0.10.3/菜单结构',
-    },
-    {
-      text: 'Bugs',
-      collapsed: true,
-      items: [
-        {
-          text: 'console_log无法输出正确格式',
-          link: '/0.10.3/Bugs/console_log无法输出正确格式',
-        },
-        {
-          text: 'Compute 处理器无法处理关联表',
-          link: '/0.10.3/Bugs/Compute 处理器无法处理关联表',
-        },
-        {
-          text: 'Null值转换成Int类型值时panic',
-          link: '/0.10.3/Bugs/Null值转换成Int类型值时panic',
-        },
-        {
-          text: 'sqlite数据库bug',
-          link: '/0.10.3/Bugs/sqlite数据库bug',
-        },
-        {
-          text: 'xgen List控件保存数据时数据被清空',
-          link: '/0.10.3/Bugs/xgen List控件保存数据时数据被清空',
-        },
-        {
-          text: 'xgen remoteSearch',
-          link: '/0.10.3/Bugs/xgen remoteSearch',
-        },
-        {
-          text: 'xgen 批量上传功能',
-          link: '/0.10.3/Bugs/xgen 批量上传功能',
-        },
-        {
-          text: '加密处理器调用错误',
-          link: '/0.10.3/Bugs/加密处理器调用错误',
-        },
-        {
-          text: '处理器yao.component.selectoptions修正',
-          link: '/0.10.3/Bugs/处理器yao.component.selectoptions修正',
-        },
-        {
-          text: '数据库Schema默认值转换异常',
-          link: '/0.10.3/Bugs/数据库Schema默认值转换异常',
-        },
-      ],
-      link: '/0.10.3/Bugs/',
     },
     {
       text: 'Form',
@@ -392,6 +341,91 @@ export default {
     {
       text: '自定义widget',
       link: '/流程图/自定义widget',
+    },
+  ],
+  '/源代码/': [
+    {
+      text: 'Github Commit List',
+      link: '/源代码/Github Commit List',
+    },
+    {
+      text: '编译yao源代码',
+      link: '/源代码/编译yao源代码',
+    },
+    {
+      text: 'Gou',
+      collapsed: true,
+      items: [
+        {
+          text: 'Null值转换成Int类型值时panic',
+          link: '/源代码/Gou/Null值转换成Int类型值时panic',
+        },
+        {
+          text: '加密处理器调用错误',
+          link: '/源代码/Gou/加密处理器调用错误',
+        },
+        {
+          text: '数据库Schema默认值转换异常',
+          link: '/源代码/Gou/数据库Schema默认值转换异常',
+        },
+      ],
+      link: '/源代码/Gou/',
+    },
+    {
+      text: 'Kun',
+      collapsed: true,
+      items: [
+        {
+          text: 'console_log无法输出正确格式',
+          link: '/源代码/Kun/console_log无法输出正确格式',
+        },
+      ],
+      link: '/源代码/Kun/',
+    },
+    {
+      text: 'Xgen',
+      collapsed: true,
+      items: [
+        {
+          text: 'xgen List控件保存数据时数据被清空',
+          link: '/源代码/Xgen/xgen List控件保存数据时数据被清空',
+        },
+        {
+          text: 'xgen remoteSearch',
+          link: '/源代码/Xgen/xgen remoteSearch',
+        },
+        {
+          text: 'xgen 批量上传功能',
+          link: '/源代码/Xgen/xgen 批量上传功能',
+        },
+      ],
+      link: '/源代码/Xgen/',
+    },
+    {
+      text: 'Xun',
+      collapsed: true,
+      items: [
+        {
+          text: 'sqlite数据库bug',
+          link: '/源代码/Xun/sqlite数据库bug',
+        },
+      ],
+      link: '/源代码/Xun/',
+    },
+    {
+      text: 'Yao',
+      collapsed: true,
+      items: [
+        {
+          text: 'Compute 处理器无法处理关联表',
+          link: '/源代码/Yao/Compute 处理器无法处理关联表',
+        },
+        {
+          text: '处理器yao.component.selectoptions修正',
+          link: '/源代码/Yao/处理器yao.component.selectoptions修正',
+        },
+      ],
+      link: '/源代码/Yao/',
     },
   ],
 };
