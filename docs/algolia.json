@@ -14,7 +14,8 @@
     "lvl4": ".content h4",
     "lvl5": ".content h5",
     "lang": {
-      "selector": "html[lang]",
+      "selector": "/html/@lang",
+      "type": "xpath",
       "defaultValue": ["zh-CN"]
     },
     "content": ".content p, .content li"
