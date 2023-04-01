@@ -1,8 +1,8 @@
 ---
 layout: home
 
-title: Learn Yao
-titleTemplate: The easy way to learn Yao Engine
+title: Yao
+titleTemplate: 学习笔记
 
 hero:
   name: 分享

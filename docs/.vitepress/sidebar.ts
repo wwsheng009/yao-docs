@@ -36,12 +36,16 @@ export default {
           link: '/0.10.3/Form/Form使用技巧',
         },
         {
-          text: '单据参考创建',
-          link: '/0.10.3/Form/单据参考创建',
+          text: 'Form单据参考创建',
+          link: '/0.10.3/Form/Form单据参考创建',
         },
         {
-          text: '在Form里使用子表',
-          link: '/0.10.3/Form/在Form里使用子表',
+          text: 'Form里嵌套List',
+          link: '/0.10.3/Form/Form里嵌套List',
+        },
+        {
+          text: 'Form里嵌套Table',
+          link: '/0.10.3/Form/Form里嵌套Table',
         },
       ],
       link: '/0.10.3/Form/',
@@ -55,28 +59,36 @@ export default {
           link: '/0.10.3/Table/TableA跳转到FormB',
         },
         {
+          text: 'Table_Form禁用Action',
+          link: '/0.10.3/Table/Table_Form禁用Action',
+        },
+        {
+          text: 'Table上使用Tab',
+          link: '/0.10.3/Table/Table上使用Tab',
+        },
+        {
+          text: 'Table中设置字段只读',
+          link: '/0.10.3/Table/Table中设置字段只读',
+        },
+        {
           text: 'Table使用技巧',
           link: '/0.10.3/Table/Table使用技巧',
+        },
+        {
+          text: 'Table增加查看，编辑，删除按钮',
+          link: '/0.10.3/Table/Table增加查看，编辑，删除按钮',
+        },
+        {
+          text: 'Table搜索默认值',
+          link: '/0.10.3/Table/Table搜索默认值',
         },
         {
           text: 'Table最小化配置',
           link: '/0.10.3/Table/Table最小化配置',
         },
         {
-          text: '在table中设置字段只读',
-          link: '/0.10.3/Table/在table中设置字段只读',
-        },
-        {
-          text: '在table界面上增加创建按钮',
-          link: '/0.10.3/Table/在table界面上增加创建按钮',
-        },
-        {
-          text: '增加查看，编辑，删除按钮',
-          link: '/0.10.3/Table/增加查看，编辑，删除按钮',
-        },
-        {
-          text: '搜索默认值',
-          link: '/0.10.3/Table/搜索默认值',
+          text: 'Table界面上增加创建按钮',
+          link: '/0.10.3/Table/Table界面上增加创建按钮',
         },
       ],
       link: '/0.10.3/Table/',
@@ -106,12 +118,8 @@ export default {
           link: '/0.10.3/Xgen控件/控件onSelect回调',
         },
         {
-          text: '文件上传',
-          link: '/0.10.3/Xgen控件/文件上传',
-        },
-        {
-          text: '根据条件禁用`Table_Form Action`按钮',
-          link: '/0.10.3/Xgen控件/根据条件禁用`Table_Form Action`按钮',
+          text: '文件上传UploadFile',
+          link: '/0.10.3/Xgen控件/文件上传UploadFile',
         },
         {
           text: '禁用编辑控件',
@@ -130,26 +138,15 @@ export default {
           link: '/0.10.3/Xgen控件/远程select控件',
         },
         {
-          text: '富文本控件',
+          text: 'RichText富文本控件',
           collapsed: true,
           items: [
             {
               text: '使用富文本控件',
-              link: '/0.10.3/Xgen控件/富文本控件/使用富文本控件',
+              link: '/0.10.3/Xgen控件/RichText富文本控件/使用富文本控件',
             },
           ],
-          link: '/0.10.3/Xgen控件/富文本控件/',
-        },
-        {
-          text: '自定义',
-          collapsed: true,
-          items: [
-            {
-              text: '表格跳转表单携带数据',
-              link: '/0.10.3/Xgen控件/自定义/表格跳转表单携带数据',
-            },
-          ],
-          link: '/0.10.3/Xgen控件/自定义/',
+          link: '/0.10.3/Xgen控件/RichText富文本控件/',
         },
       ],
       link: '/0.10.3/Xgen控件/',
@@ -190,6 +187,10 @@ export default {
       link: '/Studio/vscode调试yao',
     },
     {
+      text: 'yao run 命令中的特殊字符',
+      link: '/Studio/yao run 命令中的特殊字符',
+    },
+    {
       text: 'Yao Studio介绍',
       link: '/Studio/Yao Studio介绍',
     },
@@ -207,6 +208,10 @@ export default {
     },
   ],
   '/YaoDSL/': [
+    {
+      text: '使用compute',
+      link: '/YaoDSL/使用compute',
+    },
     {
       text: 'API',
       collapsed: true,
