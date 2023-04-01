@@ -15,5 +15,5 @@ jobs:
         uses: signcl/docsearch-scraper-action@master
         env:
           APPLICATION_ID: ${{secrets.APPLICATION_ID}}
-          ADMIN_API_KEY: ${{secrets.ADMIN_API_KEY}}
+          ALGOLIA_API_KEY: ${{secrets.ADMIN_API_KEY}}
           CONFIG: ${{ steps.algolia_config.outputs.config }}
