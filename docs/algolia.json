@@ -26,5 +26,8 @@
     ".next-and-prev-link",
     ".table-of-contents"
   ],
+  "custom_settings": {
+    "attributesForFaceting": ["lang"]
+  },
   "js_render": true
 }

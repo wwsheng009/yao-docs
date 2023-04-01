@@ -1,8 +1,8 @@
 name: algolia
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'docs/**/*.md'
 jobs:
   algolia:
     runs-on: ubuntu-latest
