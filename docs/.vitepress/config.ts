@@ -11,6 +11,7 @@ import algolia from './algolia';
 export default withPwa(
   defineConfig({
     base: '/yao-docs/',
+    lang: 'zh-CN',
     pwa,
     outDir: '../dist',
     title: name,
