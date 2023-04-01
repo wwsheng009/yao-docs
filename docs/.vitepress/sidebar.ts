@@ -300,6 +300,10 @@ export default {
       text: 'Yao学习路线图',
       link: '/入门指南/Yao学习路线图',
     },
+    {
+      text: 'Yao简单介绍',
+      link: '/入门指南/Yao简单介绍',
+    },
   ],
   '/流程图/': [
     {

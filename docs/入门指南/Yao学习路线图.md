@@ -30,9 +30,9 @@
 
 ## 学习资源
 
-[官网文档](https://yaoapps.com/doc)
-
-[本项目](https://wwsheng009.github.io/yao-docs/)
+- [官网文档](https://yaoapps.com/doc)
+- [官网仓库](https://github.com/YaoApp)
+- [本项目](https://wwsheng009.github.io/yao-docs/)
 
 ## Yao 项目
 
@@ -43,6 +43,13 @@
 
 开发版本 0.10.3,以下非官方维护。
 
-- [yao-init](https://github.com/wwsheng009/yao-init-0.10.3)
-- [yao-admin](https://github.com/wwsheng009/yao-admin)
-- [yao-chatgpt](https://github.com/wwsheng009/yao-chatgpt)
+- [yao-init](https://github.com/wwsheng009/yao-init-0.10.3),项目初始化模板
+- [yao-wms](https://github.com/wwsheng009/yao-wms),比较复杂的示例
+- [yao-chatgpt](https://github.com/wwsheng009/yao-chatgpt)，简单的示例
+- [yao-admin](https://github.com/wwsheng009/yao-admin)，增强版 yao-admin
+
+## 工具
+
+- [YAO 应用 JSON-SCHEMA](https://github.com/wwsheng009/yao-app-ts-types)
+
+- [YAO 应用调试器](https://github.com/wwsheng009/yao-app-debugger)
