@@ -106,6 +106,10 @@ export default {
           link: '/0.10.3/Xgen控件/Xgen多语言支持',
         },
         {
+          text: 'Xgen自定义远程控件',
+          link: '/0.10.3/Xgen控件/Xgen自定义远程控件',
+        },
+        {
           text: '使用Hook转换日期控件的值',
           link: '/0.10.3/Xgen控件/使用Hook转换日期控件的值',
         },
@@ -418,6 +422,10 @@ export default {
       text: 'Xun',
       collapsed: true,
       items: [
+        {
+          text: 'Mysql数据库事务',
+          link: '/源代码/Xun/Mysql数据库事务',
+        },
         {
           text: 'sqlite数据库bug',
           link: '/源代码/Xun/sqlite数据库bug',
