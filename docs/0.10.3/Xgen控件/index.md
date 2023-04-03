@@ -2,6 +2,7 @@
 
 - [Switch 控件](Switch%E6%8E%A7%E4%BB%B6.md)
 - [Xgen 多语言支持](Xgen%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81.md)
+- [Xgen 登录界面邮件电话校验规则](Xgen%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2%E9%82%AE%E4%BB%B6%E7%94%B5%E8%AF%9D%E6%A0%A1%E9%AA%8C%E8%A7%84%E5%88%99.md)
 - [Xgen 自定义远程控件](Xgen%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%9C%E7%A8%8B%E6%8E%A7%E4%BB%B6.md)
 - [使用 Hook 转换日期控件的值](%E4%BD%BF%E7%94%A8Hook%E8%BD%AC%E6%8D%A2%E6%97%A5%E6%9C%9F%E6%8E%A7%E4%BB%B6%E7%9A%84%E5%80%BC.md)
 - [图片控件](%E5%9B%BE%E7%89%87%E6%8E%A7%E4%BB%B6.md)

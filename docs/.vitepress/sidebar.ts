@@ -106,6 +106,10 @@ export default {
           link: '/0.10.3/Xgen控件/Xgen多语言支持',
         },
         {
+          text: 'Xgen登录界面邮件电话校验规则',
+          link: '/0.10.3/Xgen控件/Xgen登录界面邮件电话校验规则',
+        },
+        {
           text: 'Xgen自定义远程控件',
           link: '/0.10.3/Xgen控件/Xgen自定义远程控件',
         },
@@ -376,6 +380,10 @@ export default {
         {
           text: 'Null值转换成Int类型值时panic',
           link: '/源代码/Gou/Null值转换成Int类型值时panic',
+        },
+        {
+          text: '两个HasMany问题',
+          link: '/源代码/Gou/两个HasMany问题',
         },
         {
           text: '加密处理器调用错误',
