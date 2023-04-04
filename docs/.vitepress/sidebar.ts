@@ -248,17 +248,6 @@ export default {
       link: '/YaoDSL/API/',
     },
     {
-      text: 'dyForm',
-      collapsed: true,
-      items: [
-        {
-          text: 'dyForm 深入学习',
-          link: '/YaoDSL/dyForm/dyForm 深入学习',
-        },
-      ],
-      link: '/YaoDSL/dyForm/',
-    },
-    {
       text: 'Model',
       collapsed: true,
       items: [
@@ -313,6 +302,17 @@ export default {
         },
       ],
       link: '/YaoDSL/Query/',
+    },
+    {
+      text: 'Widget',
+      collapsed: true,
+      items: [
+        {
+          text: '自定义 Widget',
+          link: '/YaoDSL/Widget/自定义 Widget',
+        },
+      ],
+      link: '/YaoDSL/Widget/',
     },
   ],
   '/入门指南/': [
