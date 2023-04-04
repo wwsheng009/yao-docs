@@ -248,6 +248,17 @@ export default {
       link: '/YaoDSL/API/',
     },
     {
+      text: 'dyForm',
+      collapsed: true,
+      items: [
+        {
+          text: 'dyForm 深入学习',
+          link: '/YaoDSL/dyForm/dyForm 深入学习',
+        },
+      ],
+      link: '/YaoDSL/dyForm/',
+    },
+    {
       text: 'Model',
       collapsed: true,
       items: [
