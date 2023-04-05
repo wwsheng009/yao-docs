@@ -1,5 +1,5 @@
-# 数据库读取流程
+# yao migrate
 
 [流程图在线查看](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&page-id=2XGTXKiTmeM8RcKDhDW0&title=yao_database.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Fwwsheng009%2Fyao-docs%2Fmain%2Fdocs%2F%25E6%25B5%2581%25E7%25A8%258B%25E5%259B%25BE%2Fdrawio%2Fyao_database.drawio)
 
-![](./png/yao_app_%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E8%BF%87%E7%A8%8B.drawio.png)
+![](./png/yao_database_migrate.drawio.png)

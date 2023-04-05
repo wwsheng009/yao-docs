@@ -12,8 +12,8 @@ export default {
       link: '/0.10.3/0.10.2与0.10.3差异',
     },
     {
-      text: 'Hook参数说明',
-      link: '/0.10.3/Hook参数说明',
+      text: '菜单结构',
+      link: '/0.10.3/菜单结构',
     },
     {
       text: '后台执行',
@@ -24,8 +24,8 @@ export default {
       link: '/0.10.3/系统默认的用户名',
     },
     {
-      text: '菜单结构',
-      link: '/0.10.3/菜单结构',
+      text: 'Hook参数说明',
+      link: '/0.10.3/Hook参数说明',
     },
     {
       text: 'Form',
@@ -98,6 +98,38 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '菜单配置',
+          link: '/0.10.3/Xgen控件/菜单配置',
+        },
+        {
+          text: '禁用编辑控件',
+          link: '/0.10.3/Xgen控件/禁用编辑控件',
+        },
+        {
+          text: '控件onSelect回调',
+          link: '/0.10.3/Xgen控件/控件onSelect回调',
+        },
+        {
+          text: '设置控件的必输属性',
+          link: '/0.10.3/Xgen控件/设置控件的必输属性',
+        },
+        {
+          text: '使用Hook转换日期控件的值',
+          link: '/0.10.3/Xgen控件/使用Hook转换日期控件的值',
+        },
+        {
+          text: '图片控件',
+          link: '/0.10.3/Xgen控件/图片控件',
+        },
+        {
+          text: '文件上传UploadFile',
+          link: '/0.10.3/Xgen控件/文件上传UploadFile',
+        },
+        {
+          text: '远程select控件',
+          link: '/0.10.3/Xgen控件/远程select控件',
+        },
+        {
           text: 'Switch控件',
           link: '/0.10.3/Xgen控件/Switch控件',
         },
@@ -112,38 +144,6 @@ export default {
         {
           text: 'Xgen自定义远程控件',
           link: '/0.10.3/Xgen控件/Xgen自定义远程控件',
-        },
-        {
-          text: '使用Hook转换日期控件的值',
-          link: '/0.10.3/Xgen控件/使用Hook转换日期控件的值',
-        },
-        {
-          text: '图片控件',
-          link: '/0.10.3/Xgen控件/图片控件',
-        },
-        {
-          text: '控件onSelect回调',
-          link: '/0.10.3/Xgen控件/控件onSelect回调',
-        },
-        {
-          text: '文件上传UploadFile',
-          link: '/0.10.3/Xgen控件/文件上传UploadFile',
-        },
-        {
-          text: '禁用编辑控件',
-          link: '/0.10.3/Xgen控件/禁用编辑控件',
-        },
-        {
-          text: '菜单配置',
-          link: '/0.10.3/Xgen控件/菜单配置',
-        },
-        {
-          text: '设置控件的必输属性',
-          link: '/0.10.3/Xgen控件/设置控件的必输属性',
-        },
-        {
-          text: '远程select控件',
-          link: '/0.10.3/Xgen控件/远程select控件',
         },
         {
           text: 'RichText富文本控件',
@@ -162,12 +162,12 @@ export default {
   ],
   '/ChatGPT/': [
     {
-      text: 'Vscode编辑器使用插件快速开发模型',
-      link: '/ChatGPT/Vscode编辑器使用插件快速开发模型',
-    },
-    {
       text: '使用ChatGPT开发YAO应用',
       link: '/ChatGPT/使用ChatGPT开发YAO应用',
+    },
+    {
+      text: 'Vscode编辑器使用插件快速开发模型',
+      link: '/ChatGPT/Vscode编辑器使用插件快速开发模型',
     },
     {
       text: 'Prompts',
@@ -178,18 +178,30 @@ export default {
           link: '/ChatGPT/Prompts/ChatGPT生成模型模板',
         },
         {
-          text: 'model_with_relations',
-          link: '/ChatGPT/Prompts/model_with_relations',
-        },
-        {
           text: 'model_without_relations',
           link: '/ChatGPT/Prompts/model_without_relations',
+        },
+        {
+          text: 'model_with_relations',
+          link: '/ChatGPT/Prompts/model_with_relations',
         },
       ],
       link: '/ChatGPT/Prompts/',
     },
   ],
   '/Studio/': [
+    {
+      text: '编辑器vscode智能提示',
+      link: '/Studio/编辑器vscode智能提示',
+    },
+    {
+      text: '如何修改管理员用户密码',
+      link: '/Studio/如何修改管理员用户密码',
+    },
+    {
+      text: '自动生成table_form定义文件',
+      link: '/Studio/自动生成table_form定义文件',
+    },
     {
       text: 'vscode调试yao',
       link: '/Studio/vscode调试yao',
@@ -202,18 +214,6 @@ export default {
       text: 'Yao Studio介绍',
       link: '/Studio/Yao Studio介绍',
     },
-    {
-      text: '如何修改管理员用户密码',
-      link: '/Studio/如何修改管理员用户密码',
-    },
-    {
-      text: '编辑器vscode智能提示',
-      link: '/Studio/编辑器vscode智能提示',
-    },
-    {
-      text: '自动生成table_form定义文件',
-      link: '/Studio/自动生成table_form定义文件',
-    },
   ],
   '/YaoDSL/': [
     {
@@ -225,24 +225,24 @@ export default {
       collapsed: true,
       items: [
         {
-          text: 'API Guard',
-          link: '/YaoDSL/API/API Guard',
-        },
-        {
-          text: 'API预定义变量',
-          link: '/YaoDSL/API/API预定义变量',
+          text: '服务器端会话session保持',
+          link: '/YaoDSL/API/服务器端会话session保持',
         },
         {
           text: '在api中使用变量引用上下文变量',
           link: '/YaoDSL/API/在api中使用变量引用上下文变量',
         },
         {
-          text: '服务器端会话session保持',
-          link: '/YaoDSL/API/服务器端会话session保持',
-        },
-        {
           text: '自定义用户登陆API',
           link: '/YaoDSL/API/自定义用户登陆API',
+        },
+        {
+          text: 'API Guard',
+          link: '/YaoDSL/API/API Guard',
+        },
+        {
+          text: 'API预定义变量',
+          link: '/YaoDSL/API/API预定义变量',
         },
       ],
       link: '/YaoDSL/API/',
@@ -285,8 +285,8 @@ export default {
       collapsed: true,
       items: [
         {
-          text: 'Flow中Query使用前缀绑定变量',
-          link: '/YaoDSL/Query/Flow中Query使用前缀绑定变量',
+          text: '数据查询使用SQL.STMT需要注意的问题',
+          link: '/YaoDSL/Query/数据查询使用SQL.STMT需要注意的问题',
         },
         {
           text: '在JsAPI中使用QueryDsl',
@@ -297,8 +297,8 @@ export default {
           link: '/YaoDSL/Query/在url请求中使用查询语法QueryParam',
         },
         {
-          text: '数据查询使用SQL.STMT需要注意的问题',
-          link: '/YaoDSL/Query/数据查询使用SQL.STMT需要注意的问题',
+          text: 'Flow中Query使用前缀绑定变量',
+          link: '/YaoDSL/Query/Flow中Query使用前缀绑定变量',
         },
       ],
       link: '/YaoDSL/Query/',
@@ -331,12 +331,8 @@ export default {
   ],
   '/流程图/': [
     {
-      text: 'api请求过程',
-      link: '/流程图/api请求过程',
-    },
-    {
-      text: 'yao_migrate',
-      link: '/流程图/yao_migrate',
+      text: '查询参数QueryParam',
+      link: '/流程图/查询参数QueryParam',
     },
     {
       text: '任务Task处理',
@@ -359,16 +355,24 @@ export default {
       link: '/流程图/数据库读取流程',
     },
     {
-      text: '查询参数QueryParam',
-      link: '/流程图/查询参数QueryParam',
-    },
-    {
       text: '用户登录流程会话',
       link: '/流程图/用户登录流程会话',
     },
     {
       text: '自定义widget',
       link: '/流程图/自定义widget',
+    },
+    {
+      text: 'api请求过程',
+      link: '/流程图/api请求过程',
+    },
+    {
+      text: 'yao migrate',
+      link: '/流程图/yao migrate',
+    },
+    {
+      text: 'Yao 架构概览',
+      link: '/流程图/Yao 架构概览',
     },
   ],
   '/源代码/': [
@@ -377,32 +381,32 @@ export default {
       link: '/源代码/0.10.3-pre To 0.10.3-dev',
     },
     {
-      text: 'Github Commit List',
-      link: '/源代码/Github Commit List',
-    },
-    {
       text: '编译yao源代码',
       link: '/源代码/编译yao源代码',
+    },
+    {
+      text: 'Github Commit List',
+      link: '/源代码/Github Commit List',
     },
     {
       text: 'Gou',
       collapsed: true,
       items: [
         {
-          text: 'Null值转换成Int类型值时panic',
-          link: '/源代码/Gou/Null值转换成Int类型值时panic',
+          text: '加密处理器调用错误',
+          link: '/源代码/Gou/加密处理器调用错误',
         },
         {
           text: '两个HasMany问题',
           link: '/源代码/Gou/两个HasMany问题',
         },
         {
-          text: '加密处理器调用错误',
-          link: '/源代码/Gou/加密处理器调用错误',
-        },
-        {
           text: '数据库Schema默认值转换异常',
           link: '/源代码/Gou/数据库Schema默认值转换异常',
+        },
+        {
+          text: 'Null值转换成Int类型值时panic',
+          link: '/源代码/Gou/Null值转换成Int类型值时panic',
         },
       ],
       link: '/源代码/Gou/',
@@ -457,12 +461,12 @@ export default {
       collapsed: true,
       items: [
         {
-          text: 'Compute 处理器无法处理关联表',
-          link: '/源代码/Yao/Compute 处理器无法处理关联表',
-        },
-        {
           text: '处理器yao.component.selectoptions修正',
           link: '/源代码/Yao/处理器yao.component.selectoptions修正',
+        },
+        {
+          text: 'Compute 处理器无法处理关联表',
+          link: '/源代码/Yao/Compute 处理器无法处理关联表',
         },
       ],
       link: '/源代码/Yao/',

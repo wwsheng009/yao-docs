@@ -27,3 +27,4 @@ pnpm-debug.log*
 
 # json
 meta.json
+*.bkp

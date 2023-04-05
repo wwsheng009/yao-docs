@@ -123,7 +123,7 @@ function getAllMdFiles(dir: string) {
           text: file,
           collapsed: true,
           items: [],
-          link: `${filePath.replace(BaseDocPath, '')}/`, // ; + auto_created_index_file,
+          link: `${filePath.replace(BaseDocPath, '').replaceAll('\\', '/')}/`, // ; + auto_created_index_file,
           // should end with "/"
         };
         addFiles(folder.items, filePath);
@@ -136,7 +136,7 @@ function getAllMdFiles(dir: string) {
         if (checkIsMdFile(filePath) && !checkIsIndexFile(file)) {
           parent.push({
             text: file.slice(0, -3),
-            link: getFileRelativePath(filePath),
+            link: getFileRelativePath(filePath).replaceAll('\\', '/'),
           });
         }
       }
