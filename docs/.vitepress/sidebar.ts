@@ -215,6 +215,12 @@ export default {
       link: '/Studio/Yao Studio介绍',
     },
   ],
+  '/Xgen/': [
+    {
+      text: 'xgen远程onChange事件',
+      link: '/Xgen/xgen远程onChange事件',
+    },
+  ],
   '/YaoDSL/': [
     {
       text: '使用compute',

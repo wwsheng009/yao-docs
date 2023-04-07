@@ -13,6 +13,10 @@ export default [
     link: '/Studio/index',
   },
   {
+    text: 'Xgen',
+    link: '/Xgen/index',
+  },
+  {
     text: 'YaoDSL',
     link: '/YaoDSL/index',
   },
