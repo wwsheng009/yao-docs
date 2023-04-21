@@ -118,6 +118,10 @@ export default {
           link: '/0.10.3/Xgen控件/使用Hook转换日期控件的值',
         },
         {
+          text: '视频上传',
+          link: '/0.10.3/Xgen控件/视频上传',
+        },
+        {
           text: '图片控件',
           link: '/0.10.3/Xgen控件/图片控件',
         },
