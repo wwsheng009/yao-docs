@@ -218,6 +218,17 @@ export default {
       text: 'Yao Studio介绍',
       link: '/Studio/Yao Studio介绍',
     },
+    {
+      text: 'Yao-admin',
+      collapsed: true,
+      items: [
+        {
+          text: 'yao-admin 根据数据库生成管理后台',
+          link: '/Studio/Yao-admin/yao-admin 根据数据库生成管理后台',
+        },
+      ],
+      link: '/Studio/Yao-admin/',
+    },
   ],
   '/Xgen/': [
     {
