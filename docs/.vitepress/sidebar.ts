@@ -398,16 +398,27 @@ export default {
   ],
   '/源代码/': [
     {
-      text: '0.10.3-pre To 0.10.3-dev',
-      link: '/源代码/0.10.3-pre To 0.10.3-dev',
-    },
-    {
-      text: '编译yao源代码',
-      link: '/源代码/编译yao源代码',
-    },
-    {
       text: 'Github Commit List',
       link: '/源代码/Github Commit List',
+    },
+    {
+      text: '源码编译',
+      collapsed: true,
+      items: [
+        {
+          text: '0.10.3-pre To 0.10.3-dev',
+          link: '/源代码/源码编译/0.10.3-pre To 0.10.3-dev',
+        },
+        {
+          text: '编译yao windows修改版本',
+          link: '/源代码/源码编译/编译yao windows修改版本',
+        },
+        {
+          text: '编译yao源代码',
+          link: '/源代码/源码编译/编译yao源代码',
+        },
+      ],
+      link: '/源代码/源码编译/',
     },
     {
       text: 'Gou',
