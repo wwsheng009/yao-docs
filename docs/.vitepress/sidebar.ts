@@ -232,6 +232,10 @@ export default {
   ],
   '/Xgen/': [
     {
+      text: 'xgen组件之Upload在List下视频样式错乱',
+      link: '/Xgen/xgen组件之Upload在List下视频样式错乱',
+    },
+    {
       text: 'xgen远程onChange事件',
       link: '/Xgen/xgen远程onChange事件',
     },
