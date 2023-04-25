@@ -118,6 +118,10 @@ export default {
           link: '/0.10.3/Xgen控件/使用Hook转换日期控件的值',
         },
         {
+          text: '视频上传',
+          link: '/0.10.3/Xgen控件/视频上传',
+        },
+        {
           text: '图片控件',
           link: '/0.10.3/Xgen控件/图片控件',
         },
@@ -213,6 +217,17 @@ export default {
     {
       text: 'Yao Studio介绍',
       link: '/Studio/Yao Studio介绍',
+    },
+    {
+      text: 'Yao-admin',
+      collapsed: true,
+      items: [
+        {
+          text: 'yao-admin 根据数据库生成管理后台',
+          link: '/Studio/Yao-admin/yao-admin 根据数据库生成管理后台',
+        },
+      ],
+      link: '/Studio/Yao-admin/',
     },
   ],
   '/Xgen/': [
@@ -383,16 +398,27 @@ export default {
   ],
   '/源代码/': [
     {
-      text: '0.10.3-pre To 0.10.3-dev',
-      link: '/源代码/0.10.3-pre To 0.10.3-dev',
-    },
-    {
-      text: '编译yao源代码',
-      link: '/源代码/编译yao源代码',
-    },
-    {
       text: 'Github Commit List',
       link: '/源代码/Github Commit List',
+    },
+    {
+      text: '源码编译',
+      collapsed: true,
+      items: [
+        {
+          text: '0.10.3-pre To 0.10.3-dev',
+          link: '/源代码/源码编译/0.10.3-pre To 0.10.3-dev',
+        },
+        {
+          text: '编译yao windows修改版本',
+          link: '/源代码/源码编译/编译yao windows修改版本',
+        },
+        {
+          text: '编译yao源代码',
+          link: '/源代码/源码编译/编译yao源代码',
+        },
+      ],
+      link: '/源代码/源码编译/',
     },
     {
       text: 'Gou',
