@@ -16,6 +16,16 @@ pnpm install
 pnpm dev
 ```
 
+## github pages 配置
+
+fork 项目后，需要在项目中配置环境变量。
+
+在项目访问地址`yao-docs/settings/secrets/actions`增加以下两个变量后，发布到 github-page 的流程才不会失败。
+
+ALGOLIA_ACCESS_KEY=f3f332389d40f82741dc99678e577e5d
+
+ALGOLIA_APPLICATION_ID=Z0GOIBJSIG
+
 ## 文章贡献
 
 对于文章贡献，分两种情况：

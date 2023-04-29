@@ -170,6 +170,10 @@ export default {
       link: '/ChatGPT/使用ChatGPT开发YAO应用',
     },
     {
+      text: 'aigc处理器',
+      link: '/ChatGPT/aigc处理器',
+    },
+    {
       text: 'Vscode编辑器使用插件快速开发模型',
       link: '/ChatGPT/Vscode编辑器使用插件快速开发模型',
     },
@@ -269,6 +273,14 @@ export default {
           text: 'API预定义变量',
           link: '/YaoDSL/API/API预定义变量',
         },
+        {
+          text: 'stream api接口',
+          link: '/YaoDSL/API/stream api接口',
+        },
+        {
+          text: 'stream http客户端请求',
+          link: '/YaoDSL/API/stream http客户端请求',
+        },
       ],
       link: '/YaoDSL/API/',
     },
@@ -298,6 +310,10 @@ export default {
       text: 'Plugin',
       collapsed: true,
       items: [
+        {
+          text: '0.10.3版本插件',
+          link: '/YaoDSL/Plugin/0.10.3版本插件',
+        },
         {
           text: 'golang grpc 插件模板',
           link: '/YaoDSL/Plugin/golang grpc 插件模板',
@@ -414,12 +430,23 @@ export default {
           link: '/源代码/源码编译/0.10.3-pre To 0.10.3-dev',
         },
         {
-          text: '编译yao windows修改版本',
-          link: '/源代码/源码编译/编译yao windows修改版本',
-        },
-        {
           text: '编译yao源代码',
           link: '/源代码/源码编译/编译yao源代码',
+        },
+        {
+          text: 'windows版本适配',
+          collapsed: true,
+          items: [
+            {
+              text: '编译yao windows修改版本',
+              link: '/源代码/源码编译/windows版本适配/编译yao windows修改版本',
+            },
+            {
+              text: 'windows pack功能适配',
+              link: '/源代码/源码编译/windows版本适配/windows pack功能适配',
+            },
+          ],
+          link: '/源代码/源码编译/windows版本适配/',
         },
       ],
       link: '/源代码/源码编译/',
@@ -503,6 +530,10 @@ export default {
         {
           text: 'Compute 处理器无法处理关联表',
           link: '/源代码/Yao/Compute 处理器无法处理关联表',
+        },
+        {
+          text: 'yao 应用打包功能pack',
+          link: '/源代码/Yao/yao 应用打包功能pack',
         },
       ],
       link: '/源代码/Yao/',

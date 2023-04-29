@@ -4,7 +4,12 @@
 
 在应用的根目录创建目录`plugins`,再在`plugins`下面创建`demo`目录
 
-`plugins/demo/main.go`
+```sh
+mkdir -p plugins/demo
+touch plugins/demo/main.go
+```
+
+代码模板：`plugins/demo/main.go`
 
 ```go
 package main
@@ -88,7 +93,7 @@ func main() {
 }
 
 // 调试时开启，需要直接调试时修改成main
-func Main() {
+func debug() {
 
 	plugin := &DemoPlugin{}
 	plugin.setLogFile()
@@ -96,8 +101,33 @@ func Main() {
 	plugin.Exec("hello", "world")//普通的go程序，用于开发调试
 }
 
-// go build -o ../demo.so .
-// chmod +x ../demo.so
+```
 
-//yao run plugins.demo.Hello "World"
+插件构建，插件的后缀名一定是.so 或是.dll，生成的插件文件在 windows 下也是可以使用的。
+
+```bash
+# 切换到插件目录
+cd plugins/demo
+
+# 初始化项目
+go mod init main
+
+# 下载依赖
+go mod tidy
+
+# 构建制品 linux/macox
+go build -o ../demo.so .
+
+# 构建制品 windows
+# go build -o ../demo.dll .
+
+# linux/macox 增加执行权限
+chmod +x ../demo.so
+
+# 回来目录
+cd ../../
+
+# 测试插件功能
+yao run plugins.demo.Hello "World"
+
 ```

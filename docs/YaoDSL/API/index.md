@@ -5,3 +5,5 @@
 - [自定义用户登陆 API](%E8%87%AA%E5%AE%9A%E4%B9%89%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86API.md)
 - [API Guard](API%20Guard.md)
 - [API 预定义变量](API%E9%A2%84%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F.md)
+- [stream api 接口](stream%20api%E6%8E%A5%E5%8F%A3.md)
+- [stream http 客户端请求](stream%20http%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%B7%E6%B1%82.md)
