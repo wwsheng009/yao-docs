@@ -6,7 +6,7 @@
 
 ## 配置
 
-在配置 api 接口时，在 out 节点里设置`"stream":true`,这个接口的服务端处理器将会使用 stream 流式处理。**注意流式处理器的类型必须是 js 脚本，比如 scripts.xxx.xx**。在流处理器(js 脚本中)里可以两个全局函数`ssEvent/cancel`。
+在配置 api 接口时，在 out 节点里设置`text/event-stream`作为 type 前缀,这个接口的服务端处理器将会使用 stream 流式处理。**注意流式处理器的类型必须是 js 脚本，比如 scripts.xxx.xx**。在流处理器(js 脚本中)里可以两个全局函数`ssEvent/cancel`。
 
 - ssEvent 在服务器端脚本里向流发送数据，客户端会收到响应。
 - cancel 在服务器脚本里调用，取消请求。
@@ -19,9 +19,8 @@
   "process": "scripts.ai.stream.Call",
   "in": [":payload"],
   "out": {
-    "stream": true,
     "status": 200,
-    "type": "application/json"
+    "type": "text/event-stream; charset=utf-8"
   }
 }
 ```

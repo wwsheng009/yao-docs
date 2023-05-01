@@ -166,6 +166,10 @@ export default {
   ],
   '/ChatGPT/': [
     {
+      text: '内置neo聊天服务',
+      link: '/ChatGPT/内置neo聊天服务',
+    },
+    {
       text: '使用ChatGPT开发YAO应用',
       link: '/ChatGPT/使用ChatGPT开发YAO应用',
     },
@@ -508,6 +512,10 @@ export default {
       text: 'Xun',
       collapsed: true,
       items: [
+        {
+          text: '数据库连接配置',
+          link: '/源代码/Xun/数据库连接配置',
+        },
         {
           text: 'Mysql数据库事务',
           link: '/源代码/Xun/Mysql数据库事务',
