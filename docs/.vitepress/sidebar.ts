@@ -6,164 +6,6 @@ export default {
       link: 'contributing',
     },
   ],
-  '/0.10.3/': [
-    {
-      text: '0.10.2与0.10.3差异',
-      link: '/0.10.3/0.10.2与0.10.3差异',
-    },
-    {
-      text: '菜单结构',
-      link: '/0.10.3/菜单结构',
-    },
-    {
-      text: '后台执行',
-      link: '/0.10.3/后台执行',
-    },
-    {
-      text: '系统默认的用户名',
-      link: '/0.10.3/系统默认的用户名',
-    },
-    {
-      text: 'Hook参数说明',
-      link: '/0.10.3/Hook参数说明',
-    },
-    {
-      text: 'Form',
-      collapsed: true,
-      items: [
-        {
-          text: 'Form使用技巧',
-          link: '/0.10.3/Form/Form使用技巧',
-        },
-        {
-          text: 'Form单据参考创建',
-          link: '/0.10.3/Form/Form单据参考创建',
-        },
-        {
-          text: 'Form里嵌套List',
-          link: '/0.10.3/Form/Form里嵌套List',
-        },
-        {
-          text: 'Form里嵌套Table',
-          link: '/0.10.3/Form/Form里嵌套Table',
-        },
-      ],
-      link: '/0.10.3/Form/',
-    },
-    {
-      text: 'Table',
-      collapsed: true,
-      items: [
-        {
-          text: 'TableA跳转到FormB',
-          link: '/0.10.3/Table/TableA跳转到FormB',
-        },
-        {
-          text: 'Table_Form禁用Action',
-          link: '/0.10.3/Table/Table_Form禁用Action',
-        },
-        {
-          text: 'Table上使用Tab',
-          link: '/0.10.3/Table/Table上使用Tab',
-        },
-        {
-          text: 'Table中设置字段只读',
-          link: '/0.10.3/Table/Table中设置字段只读',
-        },
-        {
-          text: 'Table使用技巧',
-          link: '/0.10.3/Table/Table使用技巧',
-        },
-        {
-          text: 'Table增加查看，编辑，删除按钮',
-          link: '/0.10.3/Table/Table增加查看，编辑，删除按钮',
-        },
-        {
-          text: 'Table搜索默认值',
-          link: '/0.10.3/Table/Table搜索默认值',
-        },
-        {
-          text: 'Table最小化配置',
-          link: '/0.10.3/Table/Table最小化配置',
-        },
-        {
-          text: 'Table界面上增加创建按钮',
-          link: '/0.10.3/Table/Table界面上增加创建按钮',
-        },
-      ],
-      link: '/0.10.3/Table/',
-    },
-    {
-      text: 'Xgen控件',
-      collapsed: true,
-      items: [
-        {
-          text: '菜单配置',
-          link: '/0.10.3/Xgen控件/菜单配置',
-        },
-        {
-          text: '禁用编辑控件',
-          link: '/0.10.3/Xgen控件/禁用编辑控件',
-        },
-        {
-          text: '控件onSelect回调',
-          link: '/0.10.3/Xgen控件/控件onSelect回调',
-        },
-        {
-          text: '设置控件的必输属性',
-          link: '/0.10.3/Xgen控件/设置控件的必输属性',
-        },
-        {
-          text: '使用Hook转换日期控件的值',
-          link: '/0.10.3/Xgen控件/使用Hook转换日期控件的值',
-        },
-        {
-          text: '视频上传',
-          link: '/0.10.3/Xgen控件/视频上传',
-        },
-        {
-          text: '图片控件',
-          link: '/0.10.3/Xgen控件/图片控件',
-        },
-        {
-          text: '文件上传UploadFile',
-          link: '/0.10.3/Xgen控件/文件上传UploadFile',
-        },
-        {
-          text: '远程select控件',
-          link: '/0.10.3/Xgen控件/远程select控件',
-        },
-        {
-          text: 'Switch控件',
-          link: '/0.10.3/Xgen控件/Switch控件',
-        },
-        {
-          text: 'Xgen多语言支持',
-          link: '/0.10.3/Xgen控件/Xgen多语言支持',
-        },
-        {
-          text: 'Xgen登录界面邮件电话校验规则',
-          link: '/0.10.3/Xgen控件/Xgen登录界面邮件电话校验规则',
-        },
-        {
-          text: 'Xgen自定义远程控件',
-          link: '/0.10.3/Xgen控件/Xgen自定义远程控件',
-        },
-        {
-          text: 'RichText富文本控件',
-          collapsed: true,
-          items: [
-            {
-              text: '使用富文本控件',
-              link: '/0.10.3/Xgen控件/RichText富文本控件/使用富文本控件',
-            },
-          ],
-          link: '/0.10.3/Xgen控件/RichText富文本控件/',
-        },
-      ],
-      link: '/0.10.3/Xgen控件/',
-    },
-  ],
   '/ChatGPT/': [
     {
       text: '内置neo聊天服务',
@@ -240,16 +82,175 @@ export default {
   ],
   '/Xgen/': [
     {
-      text: 'neo嵌入业务指令',
-      link: '/Xgen/neo嵌入业务指令',
+      text: '0.10.2与0.10.3差异',
+      link: '/Xgen/0.10.2与0.10.3差异',
     },
     {
-      text: 'xgen组件之Upload在List下视频样式错乱',
-      link: '/Xgen/xgen组件之Upload在List下视频样式错乱',
+      text: '菜单结构',
+      link: '/Xgen/菜单结构',
+    },
+    {
+      text: '系统默认的用户名',
+      link: '/Xgen/系统默认的用户名',
+    },
+    {
+      text: 'Hook参数说明',
+      link: '/Xgen/Hook参数说明',
     },
     {
       text: 'xgen远程onChange事件',
       link: '/Xgen/xgen远程onChange事件',
+    },
+    {
+      text: 'Xgen多语言支持',
+      link: '/Xgen/Xgen多语言支持',
+    },
+    {
+      text: 'Form',
+      collapsed: true,
+      items: [
+        {
+          text: 'Form使用技巧',
+          link: '/Xgen/Form/Form使用技巧',
+        },
+        {
+          text: 'Form单据参考创建',
+          link: '/Xgen/Form/Form单据参考创建',
+        },
+        {
+          text: 'Form里嵌套List',
+          link: '/Xgen/Form/Form里嵌套List',
+        },
+        {
+          text: 'Form里嵌套Table',
+          link: '/Xgen/Form/Form里嵌套Table',
+        },
+      ],
+      link: '/Xgen/Form/',
+    },
+    {
+      text: 'Neo',
+      collapsed: true,
+      items: [
+        {
+          text: 'neo嵌入业务指令',
+          link: '/Xgen/Neo/neo嵌入业务指令',
+        },
+      ],
+      link: '/Xgen/Neo/',
+    },
+    {
+      text: 'Table',
+      collapsed: true,
+      items: [
+        {
+          text: 'TableA跳转到FormB',
+          link: '/Xgen/Table/TableA跳转到FormB',
+        },
+        {
+          text: 'Table_Form禁用Action',
+          link: '/Xgen/Table/Table_Form禁用Action',
+        },
+        {
+          text: 'Table上使用Tab',
+          link: '/Xgen/Table/Table上使用Tab',
+        },
+        {
+          text: 'Table中设置字段只读',
+          link: '/Xgen/Table/Table中设置字段只读',
+        },
+        {
+          text: 'Table使用技巧',
+          link: '/Xgen/Table/Table使用技巧',
+        },
+        {
+          text: 'Table增加查看，编辑，删除按钮',
+          link: '/Xgen/Table/Table增加查看，编辑，删除按钮',
+        },
+        {
+          text: 'Table搜索默认值',
+          link: '/Xgen/Table/Table搜索默认值',
+        },
+        {
+          text: 'Table最小化配置',
+          link: '/Xgen/Table/Table最小化配置',
+        },
+        {
+          text: 'Table界面上增加创建按钮',
+          link: '/Xgen/Table/Table界面上增加创建按钮',
+        },
+      ],
+      link: '/Xgen/Table/',
+    },
+    {
+      text: 'Xgen控件',
+      collapsed: true,
+      items: [
+        {
+          text: '菜单配置',
+          link: '/Xgen/Xgen控件/菜单配置',
+        },
+        {
+          text: '禁用编辑控件',
+          link: '/Xgen/Xgen控件/禁用编辑控件',
+        },
+        {
+          text: '控件onSelect回调',
+          link: '/Xgen/Xgen控件/控件onSelect回调',
+        },
+        {
+          text: '设置控件的必输属性',
+          link: '/Xgen/Xgen控件/设置控件的必输属性',
+        },
+        {
+          text: '使用Hook转换日期控件的值',
+          link: '/Xgen/Xgen控件/使用Hook转换日期控件的值',
+        },
+        {
+          text: '视频上传',
+          link: '/Xgen/Xgen控件/视频上传',
+        },
+        {
+          text: '图片控件',
+          link: '/Xgen/Xgen控件/图片控件',
+        },
+        {
+          text: '文件上传UploadFile',
+          link: '/Xgen/Xgen控件/文件上传UploadFile',
+        },
+        {
+          text: '远程select控件',
+          link: '/Xgen/Xgen控件/远程select控件',
+        },
+        {
+          text: 'Switch控件',
+          link: '/Xgen/Xgen控件/Switch控件',
+        },
+        {
+          text: 'Upload在List下视频样式错乱',
+          link: '/Xgen/Xgen控件/Upload在List下视频样式错乱',
+        },
+        {
+          text: 'Xgen登录界面邮件电话校验规则',
+          link: '/Xgen/Xgen控件/Xgen登录界面邮件电话校验规则',
+        },
+        {
+          text: 'Xgen自定义远程控件',
+          link: '/Xgen/Xgen控件/Xgen自定义远程控件',
+        },
+        {
+          text: 'RichText富文本控件',
+          collapsed: true,
+          items: [
+            {
+              text: '使用富文本控件',
+              link: '/Xgen/Xgen控件/RichText富文本控件/使用富文本控件',
+            },
+          ],
+          link: '/Xgen/Xgen控件/RichText富文本控件/',
+        },
+      ],
+      link: '/Xgen/Xgen控件/',
     },
   ],
   '/YaoDSL/': [
@@ -358,6 +359,10 @@ export default {
     },
   ],
   '/入门指南/': [
+    {
+      text: '后台执行',
+      link: '/入门指南/后台执行',
+    },
     {
       text: 'readme',
       link: '/入门指南/readme',

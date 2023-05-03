@@ -3,25 +3,22 @@
 ## 此项目收集使用`Yao`低代码引擎开发应用的文档，希望对您有帮助。
 
 - [Yao 低代码引擎官网](https://yaoapps.com/)
-
 - [Yao Github 主页](https://github.com/YaoApp)
-
 - 文档已经布署到 Githhub Pages 上，欢迎访问：[Yao-docs](https://github.com/wwsheng009/yao-docs)
 
 ## 主要分类
 
-- 与`Yao`0.10.3 版本相关的内容[0.10.3 文档](../0.10.3/index)
-
+- [入门指南](../%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/index)
+- [ChatGPT](../ChatGPT/index)
+- [Xgen](../Xgen/index)
+- [YaoDSL](../YaoDSL/index)
 - 一些与`Yao`工作机制的流程图[Yao 流程图](../流程图/index)
 
 ## 其它工具与项目
 
 - [VSCode 编辑器语法校验证配置](https://github.com/wwsheng009/yao-app-ts-types)
-
 - [0.10.3 版本的 Yao-Init](https://github.com/wwsheng009/yao-init-0.10.3)
-
 - [0.10.3 版本的 Yao-WMS](https://github.com/wwsheng009/yao-wms)
-
 - [0.10.3 版本的 Yao-ChatGPT](https://github.com/wwsheng009/yao-chatgpt)
 
 ## 站点主题

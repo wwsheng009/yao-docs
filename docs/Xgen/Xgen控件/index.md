@@ -10,7 +10,7 @@
 - [文件上传 UploadFile](%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0UploadFile.md)
 - [远程 select 控件](%E8%BF%9C%E7%A8%8Bselect%E6%8E%A7%E4%BB%B6.md)
 - [Switch 控件](Switch%E6%8E%A7%E4%BB%B6.md)
-- [Xgen 多语言支持](Xgen%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81.md)
+- [Upload 在 List 下视频样式错乱](Upload%E5%9C%A8List%E4%B8%8B%E8%A7%86%E9%A2%91%E6%A0%B7%E5%BC%8F%E9%94%99%E4%B9%B1.md)
 - [Xgen 登录界面邮件电话校验规则](Xgen%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2%E9%82%AE%E4%BB%B6%E7%94%B5%E8%AF%9D%E6%A0%A1%E9%AA%8C%E8%A7%84%E5%88%99.md)
 - [Xgen 自定义远程控件](Xgen%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%9C%E7%A8%8B%E6%8E%A7%E4%BB%B6.md)
 - [RichText 富文本控件](RichText%E5%AF%8C%E6%96%87%E6%9C%AC%E6%8E%A7%E4%BB%B6/index)
