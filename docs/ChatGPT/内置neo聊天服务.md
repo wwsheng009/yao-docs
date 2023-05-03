@@ -122,18 +122,9 @@ function Chat(path, params, query, payload, headers) {
 ```json
 {
   "xgen": "1.0",
-  "name": "::Demo Application",
-  "short": "::Demo",
-  "description": "::Another yao application",
-  "version": "1.0.1",
-  "setup": "scripts.demo.Data",
-  "adminRoot": "admin",
   "optional": {
-    "hideNotification": true,
-    "hideSetting": false,
     "neo": { "api": "http://localhost:5099/api/__yao/neo" }
-  },
-  "menu": { "process": "flows.app.menu", "args": ["demo"] }
+  }
 }
 ```
 

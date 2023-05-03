@@ -1,5 +1,4 @@
-我们来学习一个新的基于 DSL 的低代码平台，DSL 使用 JSON 格式文件描述模型的属性。我给你提供一个模型的模板内容，你基于我提供的模板生成对应的模型。
-下面是数据模型的简单实例：
+下面是一个业务模型的描述文件模板，基于这个模板，生成销售订单模型，只输出 json 内容，不需要解释
 
 ```json
 {
@@ -12,7 +11,6 @@
       "name": "supplier_id",
       "type": "bigInteger",
       "comment": "所属厂商",
-      "index": true,
       "nullable": true
     },
     {
@@ -20,6 +18,7 @@
       "name": "name",
       "type": "string",
       "length": 200,
+      "index": true,
       "unique": true
     },
     {
@@ -27,7 +26,6 @@
       "name": "category_id",
       "type": "integer",
       "comment": "所属类目-外键字段",
-      "index": true,
       "nullable": true
     },
     {
@@ -66,5 +64,3 @@
   "option": { "timestamps": true, "soft_deletes": true }
 }
 ```
-
-基于以上的模板，生成产品与销售订单模型

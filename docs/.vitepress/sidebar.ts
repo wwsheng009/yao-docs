@@ -240,6 +240,10 @@ export default {
   ],
   '/Xgen/': [
     {
+      text: 'neo嵌入业务指令',
+      link: '/Xgen/neo嵌入业务指令',
+    },
+    {
       text: 'xgen组件之Upload在List下视频样式错乱',
       link: '/Xgen/xgen组件之Upload在List下视频样式错乱',
     },
@@ -258,20 +262,20 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '服务器端会话session保持',
-          link: '/YaoDSL/API/服务器端会话session保持',
-        },
-        {
-          text: '在api中使用变量引用上下文变量',
-          link: '/YaoDSL/API/在api中使用变量引用上下文变量',
-        },
-        {
-          text: '自定义用户登陆API',
-          link: '/YaoDSL/API/自定义用户登陆API',
+          text: '自定义用户登陆login api',
+          link: '/YaoDSL/API/自定义用户登陆login api',
         },
         {
           text: 'API Guard',
           link: '/YaoDSL/API/API Guard',
+        },
+        {
+          text: 'API会话session保持',
+          link: '/YaoDSL/API/API会话session保持',
+        },
+        {
+          text: 'API引用上下文变量',
+          link: '/YaoDSL/API/API引用上下文变量',
         },
         {
           text: 'API预定义变量',
@@ -293,19 +297,12 @@ export default {
       collapsed: true,
       items: [
         {
-          text: 'sqlite与mysql的差异',
-          link: '/YaoDSL/Model/sqlite与mysql的差异',
+          text: '多对一关联关系定义',
+          link: '/YaoDSL/Model/多对一关联关系定义',
         },
         {
-          text: '模型多对一',
-          collapsed: true,
-          items: [
-            {
-              text: '一对一，多对一关联关系定义',
-              link: '/YaoDSL/Model/模型多对一/一对一，多对一关联关系定义',
-            },
-          ],
-          link: '/YaoDSL/Model/模型多对一/',
+          text: 'sqlite与mysql的差异',
+          link: '/YaoDSL/Model/sqlite与mysql的差异',
         },
       ],
       link: '/YaoDSL/Model/',

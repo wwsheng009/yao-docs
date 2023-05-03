@@ -1,18 +1,19 @@
 # 自定义用户登陆 API
 
-## 使用 Flow 自定义登录
+## 使用 Flow 自定义登录 API
 
-`demo-crm\flows\login\password.flow.json`
-第一步，检查动态验证码，如果是接口调用，这一步可以省略
-第二步，读取用户的 ID 与密码
-第三步，检查用户密码
-第四步，生成 token
+- 第一步，检查动态验证码，如果是接口调用，这一步可以省略
+- 第二步，读取用户的 ID 与密码
+- 第三步，检查用户密码
+- 第四步，生成 token
+
+示例：`flows\login\password.flow.json`
 
 ```json
 {
-  "label": "Password Login",
+  "label": "Login",
   "version": "1.0.0",
-  "description": "Password Login",
+  "description": "Login",
   "nodes": [
     {
       "name": "Validate Captcha",
@@ -47,10 +48,13 @@
 
 ## Token 设置
 
-`demo-crm\flows\login\token.flow.json`
-第一步，读取用户信息
-第二步，生成 token
-第三步，设置全局会话（Session）信息，可自定义设置变量，一般是用户的信息
+用户名密码校验成功后，可以根据用户 id 可以读取用户的菜单或是权限设置。
+
+- 第一步，读取用户信息
+- 第二步，生成 token
+- 第三步，设置全局会话（Session）信息，可使用处理器`session.set`设置变量
+
+示例：`demo-crm\flows\login\token.flow.json`
 
 ```json
 {

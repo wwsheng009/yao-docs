@@ -22,7 +22,7 @@
 
 - 更新您的模型定义文件，增加更多的字段，或是调整字段类型，增加模型与模型之间的关系。[数据模型关联](https://yaoapps.com/doc/%E8%BF%9B%E9%98%B6/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E5%85%B3%E8%81%94)。创建了新的模型，同样可以使用工具生成界面配置。[Yao 界面生成工具](../Studio/%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90table_form%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6.md)
 
-  - 更新模型后，记得运行命令`yao migrate`更新数据库，sqlite 数据库请执行`yao migrate --reset`
+  > 更新模型后，记得运行命令`yao migrate`更新数据库，sqlite 数据库请执行`yao migrate --reset`
 
 - 学习了解[Yao 处理器](https://yaoapps.com/doc/%E5%9F%BA%E7%A1%80/%E4%BD%BF%E7%94%A8%E5%A4%84%E7%90%86%E5%99%A8)，这是 Yao 低代码平台的精华所在。
 
@@ -39,12 +39,12 @@
 目前官方正式的版本是 0.10.2。可以在官网的 github 上下载并学习。
 
 - [yao-admin，零代码生成 yao 应用] (https://github.com/YaoApp/yao-admin)
-- [yao-wms,仓库管理系统] (https://github.com/YaoApp/yao-wms)
+- [yao-wms，仓库管理系统] (https://github.com/YaoApp/yao-wms)
 
 开发版本 0.10.3,以下非官方维护。
 
-- [yao-init](https://github.com/wwsheng009/yao-init-0.10.3),项目初始化模板
-- [yao-wms](https://github.com/wwsheng009/yao-wms),比较复杂的示例
+- [yao-init](https://github.com/wwsheng009/yao-init-0.10.3)，项目初始化模板
+- [yao-wms](https://github.com/wwsheng009/yao-wms)，比较复杂的示例
 - [yao-chatgpt](https://github.com/wwsheng009/yao-chatgpt)，简单的示例
 - [yao-admin](https://github.com/wwsheng009/yao-admin)，增强版 yao-admin
 
@@ -52,4 +52,4 @@
 
 - [YAO 应用 JSON-SCHEMA](https://github.com/wwsheng009/yao-app-ts-types)
 
-- [YAO 应用调试器](https://github.com/wwsheng009/yao-app-debugger)
+- [YAO 脚本调试器](https://github.com/wwsheng009/yao-app-debugger)

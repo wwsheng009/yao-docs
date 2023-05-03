@@ -1,4 +1,6 @@
-# API Guard
+# API 守卫 Guard
+
+可以把 api guard 理解成 api 请求拦截器。比如用户身份验证，额外信息获取判断等。
 
 ## `API DSL` 定义
 
@@ -53,6 +55,7 @@ yao 内置常用的中间件:
 // Guards middlewares
 var Guards = map[string]gin.HandlerFunc{
 	"bearer-jwt":       guardBearerJWT,   // Bearer JWT
+  "query-jwt":        guardQueryJWT,    // Get JWT Token from query string  "__tk"
 	"cross-origin":     guardCrossOrigin, // Cross-Origin Resource Sharing
 	"table-guard":      table_v0.Guard,   // Table Guard ( v0.9 table)
 	"widget-table":     table.Guard,      // Widget Table Guard
@@ -121,6 +124,60 @@ func (http HTTP) guard(handlers *[]gin.HandlerFunc, guard string, defaults strin
             }
         }
     }
+}
+```
+
+## 全局变量
+
+**注意**：适用 0.10.3-dev 版本。
+
+设置 `__global` 变量
+`__global` 变量是一个全局的 context 变量，在 http 请求的生命周期中所有的处理器都可以使用。
+
+`api\http.go`
+
+```go
+v := process.Run()
+if data, ok := v.(map[string]interface{}); ok {
+  if sid, ok := data["__sid"].(string); ok {
+    c.Set("__sid", sid)
+  }
+
+  if global, ok := data["__global"].(map[string]interface{}); ok {
+    c.Set("__global", global)
+  }
+}
+```
+
+在 golang 代码中引用全局变量，适用于插件或是使用直接引用 gou 库进行开发。
+
+```go
+// 处理器定义
+type Handler func(process *Process) interface{}
+
+func processTest(process *Process) interface{} {
+	return map[string]interface{}{
+		"group":  process.Group,
+		"method": process.Method,
+		"id":     process.ID,
+		"args":   process.Args,
+		"sid":    process.Sid,
+		"global": process.Global,
+	}
+}
+```
+
+在 js 脚本中引用全局变量
+
+```js
+function test() {
+  //这里的DATA是全局对象。
+  //ROOT boolean 是否超级权限脚本，比如studio脚本
+  //SID 使用 Session start 设置的SID
+  const { SID, ROOT, DATA } = __yao_data;
+
+  //__yao_data也是一个可写的对象，比如设置ROOT后可在脚本中调用studio处理器。
+  __yao_data = { ROOT: true };
 }
 ```
 

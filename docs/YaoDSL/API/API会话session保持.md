@@ -148,6 +148,7 @@ login token 会返回到客户端，客户端在访问 API 时自动的把 token
 
 在 table 的 action 定义中可以使用“$.”作为前缀引用 session 信息。
 调用 API 里怎么知道是哪个用户，并且在 table 绑定的 search 函数里还可直接调用户的会话信息。
+
 `yao/widgets/action/process.go`
 
 ```go
@@ -179,4 +180,4 @@ login token 会返回到客户端，客户端在访问 API 时自动的把 token
 
 ```
 
-答案在于 api 每次调用都携带的 token,在经过 api 的 bearer-jwt guard 处理后，http 的 conText 自动保存了对应的 context id，后面的 process 根据 sid 可以找到对应的 session
+答案在于 api 每次调用都携带的 token,在经过 api 的 bearer-jwt guard 处理后，http 的 上下文 context 自动保存了对应的 context id，后面的 process 根据 sid 可以找到对应的 session
