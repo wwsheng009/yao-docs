@@ -36,7 +36,7 @@ openai 连接器可以参考[aigc 处理器](aigc%E5%A4%84%E7%90%86%E5%99%A8.md)
 ```yaml
 # 配置openai connector
 connector: gpt-3_5-turbo
-# 必输参数，聊天token认证处理器
+# 自定义聊天token认证处理器，处理器一定要返回参数__sid
 guard: 'scripts.guard.Chat'
 
 conversation:
@@ -124,6 +124,17 @@ function Chat(path, params, query, payload, headers) {
   "xgen": "1.0",
   "optional": {
     "neo": { "api": "http://localhost:5099/api/__yao/neo" }
+  }
+}
+```
+
+或是配置成`/neo`，因为`yao`默认的内置前缀是`/api/__yao`。
+
+```json
+{
+  "xgen": "1.0",
+  "optional": {
+    "neo": { "api": "/neo" }
   }
 }
 ```

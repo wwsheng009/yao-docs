@@ -8,16 +8,20 @@ export default {
   ],
   '/ChatGPT/': [
     {
-      text: '内置neo聊天服务',
-      link: '/ChatGPT/内置neo聊天服务',
-    },
-    {
       text: '使用ChatGPT开发YAO应用',
       link: '/ChatGPT/使用ChatGPT开发YAO应用',
     },
     {
       text: 'aigc处理器',
       link: '/ChatGPT/aigc处理器',
+    },
+    {
+      text: 'neo助手',
+      link: '/ChatGPT/neo助手',
+    },
+    {
+      text: 'neo命令模式',
+      link: '/ChatGPT/neo命令模式',
     },
     {
       text: 'Vscode编辑器使用插件快速开发模型',
