@@ -12,18 +12,6 @@ export default {
       link: '/ChatGPT/使用ChatGPT开发YAO应用',
     },
     {
-      text: 'aigc处理器',
-      link: '/ChatGPT/aigc处理器',
-    },
-    {
-      text: 'neo助手',
-      link: '/ChatGPT/neo助手',
-    },
-    {
-      text: 'neo命令模式',
-      link: '/ChatGPT/neo命令模式',
-    },
-    {
       text: 'Vscode编辑器使用插件快速开发模型',
       link: '/ChatGPT/Vscode编辑器使用插件快速开发模型',
     },
@@ -263,6 +251,36 @@ export default {
       link: '/YaoDSL/使用compute',
     },
     {
+      text: '处理器',
+      collapsed: true,
+      items: [
+        {
+          text: 'Array转树形结构',
+          link: '/YaoDSL/处理器/Array转树形结构',
+        },
+      ],
+      link: '/YaoDSL/处理器/',
+    },
+    {
+      text: 'AIGC',
+      collapsed: true,
+      items: [
+        {
+          text: 'aigc处理器',
+          link: '/YaoDSL/AIGC/aigc处理器',
+        },
+        {
+          text: 'neo助手',
+          link: '/YaoDSL/AIGC/neo助手',
+        },
+        {
+          text: 'neo命令模式',
+          link: '/YaoDSL/AIGC/neo命令模式',
+        },
+      ],
+      link: '/YaoDSL/AIGC/',
+    },
+    {
       text: 'API',
       collapsed: true,
       items: [
@@ -302,8 +320,12 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '多对一关联关系定义',
-          link: '/YaoDSL/Model/多对一关联关系定义',
+          text: '定义多对一关联关系',
+          link: '/YaoDSL/Model/定义多对一关联关系',
+        },
+        {
+          text: '模型处理器列表',
+          link: '/YaoDSL/Model/模型处理器列表',
         },
         {
           text: 'sqlite与mysql的差异',
@@ -332,20 +354,20 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '数据查询使用SQL.STMT需要注意的问题',
-          link: '/YaoDSL/Query/数据查询使用SQL.STMT需要注意的问题',
+          text: '使用SQL.STMT需要注意的问题',
+          link: '/YaoDSL/Query/使用SQL.STMT需要注意的问题',
         },
         {
-          text: '在JsAPI中使用QueryDsl',
-          link: '/YaoDSL/Query/在JsAPI中使用QueryDsl',
+          text: '在url中使用QueryParam',
+          link: '/YaoDSL/Query/在url中使用QueryParam',
         },
         {
-          text: '在url请求中使用查询语法QueryParam',
-          link: '/YaoDSL/Query/在url请求中使用查询语法QueryParam',
+          text: 'Flow Query绑定变量',
+          link: '/YaoDSL/Query/Flow Query绑定变量',
         },
         {
-          text: 'Flow中Query使用前缀绑定变量',
-          link: '/YaoDSL/Query/Flow中Query使用前缀绑定变量',
+          text: 'QueryDsl',
+          link: '/YaoDSL/Query/QueryDsl',
         },
       ],
       link: '/YaoDSL/Query/',

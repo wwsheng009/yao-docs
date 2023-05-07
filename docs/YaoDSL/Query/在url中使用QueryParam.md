@@ -1,6 +1,8 @@
-# Yao 在 url 请求中使用查询语法 QueryParam
+# Yao 在 url 请求中使用 QueryParam 查询语法
 
-`QueryParam`可以理解为查询参数，用于构建数据查询条件。使用结构化的思维封装`SQL`查询条件。是`Yao`应用开发中使用比较频繁的对象，需要掌握理解。`QueryParam`的主要使用场景是转换`url api`中的查询参数为数据库`sql`条件。
+`QueryParam`可以理解为查询参数，用于构建数据查询条件。使用结构化的思维把 url 参数转换成`SQL`查询条件。是`Yao`应用开发中使用比较频繁的对象，需要掌握理解。
+
+`QueryParam`的主要使用场景是转换`url api`中的查询参数为数据库`sql`条件。一个`QueryParam`对象代表了一个 url 查询请求对象。
 
 [URL Query String 与 QueryParam 对照表](https://yaoapps.com/doc/%E6%89%8B%E5%86%8C/Widgets/API#URL%20Query%20String%20%E4%B8%8E%20QueryParam%20%E5%AF%B9%E7%85%A7%E8%A1%A8)
 
@@ -10,7 +12,7 @@
 
 `url`的查询参数`where.kind.match=狗`会被解析成以下的`where`条件`kind = 狗`,这是一个最简单的使用例子。`QueryParam`还可以包含其它复杂的使用方法。
 
-一个`QueryParam`对象代表了一个查询请求对象。
+## 源代码学习
 
 `QueryParam`结构定义：
 
@@ -115,6 +117,13 @@ func URLToQueryParam(values url.Values) QueryParam {
 }
 ```
 
+## `QueryParam`与`QueryDSL`
+
+`QueryParam`与`QueryDSL`是两个不同的对象，两者的 wheres 条件的语法是不一样的，不要搞混了。
+
+- `QueryDSL`用在 Flow/jsapi 中定义描述数据查询条件。
+- `QueryParam`主要用于转换`url api`中的查询参数。
+
 需要注意的是，在`url`使用的操作符跟`query dsl`中不一样，在`query dsl`中是使用以下操作符。
 
 - "=":
@@ -128,7 +137,7 @@ func URLToQueryParam(values url.Values) QueryParam {
 - "in":
 - "is":
 
-而在`url`中只能使用 eq|gt|lt|ge|le|like|match|in|null|notnull
+而在`url`中只能使用 eq|gt|lt|ge|le|like|match|in|null|notnull，主要是因为 url 不能包含特符号。
 
 ## 参考
 
