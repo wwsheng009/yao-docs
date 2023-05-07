@@ -5,7 +5,7 @@
 `/data/projects/yao/yao-app-sources/gou/process.go`
 session 有以下的处理器:
 
-- session.start,如果在一个 flow 调用了 session.start,在这个调用的节点后的所有 flow 节点都能使用 session 的 sid
+- ~~session.start~~,如果在一个 flow 调用了 session.start,在这个调用的节点后的所有 flow 节点都能使用 session 的 sid
 - session.get，可以指定不同的 sid
 - ssseion.set，可以指定 sid，还有超时时间
 - session.setmany，有三种调用方法
@@ -181,3 +181,17 @@ login token 会返回到客户端，客户端在访问 API 时自动的把 token
 ```
 
 答案在于 api 每次调用都携带的 token,在经过 api 的 bearer-jwt guard 处理后，http 的 上下文 context 自动保存了对应的 context id，后面的 process 根据 sid 可以找到对应的 session
+
+## 版本变更
+
+在 0.10.3-dev 版本以后，`session.start`不再可用。使用处理器`utils.str.UUID`生成 ID。
+
+`session.set`与`session.get`的使用需要在最后一个参数放入 sid。
+
+```js
+const sessionId = Process('utils.str.UUID');
+
+Process('session.set', 'user', userPayload, timeout, sessionId);
+Process('session.set', 'token', jwt.token, timeout, sessionId);
+Process('session.set', 'user_id', user.id, timeout, sessionId);
+```

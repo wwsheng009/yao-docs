@@ -126,7 +126,21 @@ function GetSelect() {
 }
 ```
 
-使用数据库函数，使用特定数据库的函数后，代码不再通用。
+非简化写法
+
+```js
+function GetSelect() {
+  const query = new Query();
+  const res = query.Get({
+    wheres: [{ field: 'deleted_at', comment: '删除', op: '=', value: null }],
+    select: ['id as value', 'name as label'],
+    from: 'company',
+  });
+  return res;
+}
+```
+
+使用数据库函数，使用特定数据库的函数后，代码不再适用所有数据库。
 
 ```js
 function Data(params) {
@@ -138,7 +152,7 @@ function Data(params) {
   });
 ```
 
-在 `from`字段中可以使用前缀`$`引用 model，而不是直接引用表名。
+在 `from`字段中可以使用前缀`$`引用 model，会自动的解析成表名。
 
 ```javascript
 function test(id) {
@@ -153,7 +167,7 @@ function test(id) {
 }
 ```
 
-使用 Paginate
+使用 Paginate 翻页查询。
 
 ```js
 const qb = new Query();

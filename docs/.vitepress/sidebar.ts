@@ -369,6 +369,10 @@ export default {
           text: 'QueryDsl',
           link: '/YaoDSL/Query/QueryDsl',
         },
+        {
+          text: 'QueryParam语法',
+          link: '/YaoDSL/Query/QueryParam语法',
+        },
       ],
       link: '/YaoDSL/Query/',
     },

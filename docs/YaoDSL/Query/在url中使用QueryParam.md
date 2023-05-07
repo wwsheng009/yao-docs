@@ -42,7 +42,7 @@ func (param QueryParam) NewQuery() *QueryStack {
 }
 ```
 
-在源代码：`gou/query.url.go`中的函数`URLToQueryParam`会把`url`转换成`QueryParam`对象中的`select,order,where|orwhere|wherein|orwherein,group,with,select`,
+在源代码：`gou/query.url.go`中的函数`URLToQueryParam`会把`url`转换成`QueryParam`对象中的`select,order,where|orwhere|wherein|orwherein,group,with,select`。
 
 - `select`查询字段
 - `order` 排序
@@ -116,28 +116,6 @@ func URLToQueryParam(values url.Values) QueryParam {
   ]
 }
 ```
-
-## `QueryParam`与`QueryDSL`
-
-`QueryParam`与`QueryDSL`是两个不同的对象，两者的 wheres 条件的语法是不一样的，不要搞混了。
-
-- `QueryDSL`用在 Flow/jsapi 中定义描述数据查询条件。
-- `QueryParam`主要用于转换`url api`中的查询参数。
-
-需要注意的是，在`url`使用的操作符跟`query dsl`中不一样，在`query dsl`中是使用以下操作符。
-
-- "=":
-- ">":
-- ">=":
-- "<":
-- "<=":
-- "<>":
-- "like":
-- "match":
-- "in":
-- "is":
-
-而在`url`中只能使用 eq|gt|lt|ge|le|like|match|in|null|notnull，主要是因为 url 不能包含特符号。
 
 ## 参考
 
