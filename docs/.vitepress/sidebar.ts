@@ -270,6 +270,10 @@ export default {
           link: '/YaoDSL/AIGC/aigc处理器',
         },
         {
+          text: 'chatgpt模型中角色的作用',
+          link: '/YaoDSL/AIGC/chatgpt模型中角色的作用',
+        },
+        {
           text: 'neo助手',
           link: '/YaoDSL/AIGC/neo助手',
         },

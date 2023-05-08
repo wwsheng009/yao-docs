@@ -11,6 +11,19 @@ neo command 模式是 yao 利用 ai 智能调用后端服务的功能。比如�
 - 交互性好，前后端的接口使用 SSE 技术，信息的及时性有保证，并且集成了上下文对话功能。
 - 扩展性好，yao 把命令的定义接口留给用户，用户可以根据自己的实际需求扩展自己的功能。
 
+整个 neo 命令的执行流程如下：
+
+- ->定义命令
+- ->调用命令模板处理器 prepare
+- ->处理器返回提示词模板，所有提示词的 role 都设置成 system
+- ->调用 chatgpt API 接口
+- ->检查返回聊天消息
+- ->从聊天消息中解析出处理器参数
+- ->让用户确认\[可选\]
+- ->调用处理器
+- ->处理器返回结果
+- ->浏览器执行 Action
+
 ## 配置
 
 ### 定义命令
@@ -69,6 +82,7 @@ prepare:
       # prepare.before处理器返回的json数据{explain:''}
       content: '{{ explain }}'
 
+    #让gpt不要解析结果内容，并返回指定的数据内容
     - role: system
       content: |
         - According to my description, according to the template given to you, generate a similar JSON data.
@@ -92,11 +106,8 @@ optional:
 ## neo 助手初始化过程
 
 - 检查内置的聊天记录表是否存在，如果不存在创建新表，默认的表名是 yao_neo_conversation。这个表可以在 neo.yml 配置文件中进行修改。
-
 - 初始化聊天机器人的驱动，模型根据 neo.yml 配置的 connector，默认是使用 chatgpt 的 gpt-3_5-turbo 模型。
-
 - 加载用户的命令列表`*.cmd.yml, *.cmd.yaml`到内存中。
-
 - 用户在 neo 聊天框中输入消息。
 
 ## 用户应答过程
@@ -105,12 +116,12 @@ optional:
 
 - api guard 中解析出`__sid`作为聊天上下文 id。
 - 根据 sid 查找用户的聊天历史，查找表 yao_neo_conversation，聊天历史可以通过配置控制长度。如果是新的会话，聊天历史会是空的。
-- 在聊天消息中加入用户最新的请求,比如，“帮我生成一条数据”
-- 根据用户最后的输入消息中是否包含了命令。
+- 在聊天消息历史中合并用户最新的提问内容,比如，“帮我生成一条数据”
+- 根据用户最后的输入消息中是否包含了命令，使用 chatgpt 进行检查。
 
 用户命令的匹配过程如下：
 
-### 检查请求与命令是否匹配。
+### 检查请求与命令匹配与过滤。
 
 neo 助手的每一次请求都会携带两个当前界面组件的信息。`path` 与 `stack` 属性。path 是 neo 助手发送命令时界面的 url 地址，stack 是 xgen 界面组件在界面上的层次关系。
 
@@ -118,7 +129,7 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
 { "Stack": "Table-Page-pet", "Path": "/x/Table/pet" }
 ```
 
-这两个参数会跟 所有 cmd.yml 中配置的 path 与 stack 属性进行比较。可以使用通配符`*`,命令中如果没有配置两个参数是匹配所有请求。
+这两个参数会跟所有 cmd.yml 中配置的 path 与 stack 属性进行比较。可以使用通配符`*`,命令中如果没有配置两个参数是匹配所有请求。
 
 把所有的匹配到的命令列表的名称 name 与描述 description，还有用户的请求消息一起提交给 chatgpt 作判断。如果匹配成功，返回处理命令 cmd 的 id。
 
@@ -134,7 +145,7 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
 
 - 准备与 chatgpt 交互的提示词。
 
-  - 调用处理器 prepareBefore，获取用户定义的模板内容。
+  - 调用处理器 prepareBefore，获取用户定义的模板内容，返回的内容用于填充 prepare.prompts。
 
     ```js
     /**
@@ -164,9 +175,11 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
     }
     ```
 
-  - 把处理 prepareBefore 返回的内容与 cmd.prepare 中的 prompt 模板进行合并成新的提示模板。这里可以使用`{{}}`语法绑定。
-  - 合并提示模板(system)与用户提问消息(user)，向 chatgpt 提交请求。
-  - 调用处理器 prepareAfter。
+  - 处理器 prepareBefore 返回的内容与 cmd.prepare 中的 prompt 模板进行合并成新的提示模板。这里可以使用`{{}}`语法绑定。
+  - 提示模板中所有的的提示词的角色都是 system，而用户提问消息的角色设置的是 user，向 chatgpt 提交请求，并返回请求结果。
+  - 调用后继处理器 prepareAfter。后继处理的作用是检查，格式化 chatgpt 返回的消息。如果有必要也可以使用全局函数 ssWrite 写入 neo 助手的聊天对话框。
+
+  示例：
 
   ```js
   /**
@@ -198,7 +211,7 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
   }
   ```
 
-  - 根据`Command.Args`解析出返回数据中的参数。
+  - 校验 chatgpt 返回的数据并生成处理器参数。经过上面 gpt 与后继处理器的处理后，得到一个初步的结果，这些结果将会作为命令处理器的参数。在这一步里会根据配置的命令参数配置进行参数检查。参数`Command.Args`配置了哪些参数是必输项，参数名是什么，根据参数名筛选上面返回的结果作为命令处理器的参数。
 
   ```js
   // validate the args
@@ -216,7 +229,7 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
   }
   ```
 
-  - 如果配置了`Command.Optional.Confirm`，配置项将作为 yao service 函数名，把上一步解析出来的数据作为最后处理器的参数，生成一个新的名称为`ExecCommand`的`Action`。这个`Action`的默认类型是`Service.neo`，即是调用 services 目录下的脚本文件 neo.js。
+  - 如果配置了`Command.Optional.Confirm`，说明这个命令是需要用户进行确认的，Yao 会给用户返回一个确认的指令，等用户确认后再执行操作。这里比较绕，它的操作是把上面得到的参数与处理器再次封装一个 json 数据，返回给浏览器客户端，等用户确认后再把 json 数据提交到 yao 后端执行。将 confirm 配置项将作为一个 yao service 函数名，并且把上一步解析出来的数据作为处理器的参数，生成一个新的名称为`ExecCommand`的`Action`。这个`Action`的默认类型是`Service.neo`，用户确认命令后调用 services 目录下的脚本文件 neo.js。
 
   ```go
     //yao/neo/command/request.go
@@ -270,7 +283,7 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
   }
   ```
 
-- 如果配置了`Command.Actions`，合并 actions，并通过 sse 发送到客户端。
+- 如果配置了其它的`Command.Actions`，将会合并在一起，并通过 sse 全局函数发送到客户端。
 
 ### 用户确认命令
 
@@ -279,15 +292,35 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
 - 调用 action `Service.neo`，会调用服务端的`/services/neo.js`中的`Exec`方法，插入新的数据。
 - 调用 action `Table.search`,刷新 table 界面，显示最新的 table 数据。
 
+- 如果没有配置`Command.Optional.Confirm`，说明这个命令是可以直接在后台执行，不需要用户确认。Yao 会直接调用处理器`req.Command.Process`进行处理。
+
+### 处理器执行
+
+如果是直接执行的处理器，可以在 actions 里绑定处理器返回的内容。
+
+```yaml
+process: studio.html.Page
+actions:
+  - name: Redirect to the generated page
+    type: 'Common.historyPush'
+    payload:
+      pathname: '{{ iframe }}' #绑定处理器studio.html.Page返回的内容
+      public: false
+```
+
 ## 示例代码
 
 ```sh
+
 git clone https://github.com/YaoApp/yao-neo-dev.git
 
+git clone https://github.com/YaoApp/yao-dev-app.git
 ```
 
-## 缺点
+## 注意点
 
-- ai 并不一定百分百匹配到命令。
-- 命令的配置内容比较多。
-- 提示词设置需要十分小心。
+整个命令的定义过程与步骤内容比较多。
+
+- ai 并不一定一次就能百分百匹配到命令。
+- ai 返回的结果不一定十分准确。
+- 提示词设置需要一些技巧与遵循一定的规则。

@@ -139,6 +139,20 @@ function Chat(path, params, query, payload, headers) {
 }
 ```
 
+还支持使用 studio api
+
+```jsonc
+  /**
+    * Admin:
+    * - PATH:        {"api":"/neo"}
+    * - URL:         {"api":"http://localhost:5099/api/__yao/neo"}
+    *
+    * Studio:
+    * - Studio PATH: {"api":"/neo", "studio":true }
+    * - Studio URL:  {"api":"http://localhost:5077/neo", "studio":true }
+    */
+```
+
 ## 测试代码
 
 官方已提供了测试样例
