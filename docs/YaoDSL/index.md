@@ -7,4 +7,5 @@
 - [Model](Model/index)
 - [Plugin](Plugin/index)
 - [Query](Query/index)
+- [v8go](v8go/index)
 - [Widget](Widget/index)

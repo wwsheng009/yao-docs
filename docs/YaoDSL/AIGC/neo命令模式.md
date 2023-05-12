@@ -1,40 +1,41 @@
-# Neo 命令模式
+# Neo 命令模型
 
-在最新的代码中，yao 实现了 neo command 模式。
+在最新的代码中，yao 实现了 neo 命令模式。
 
-neo command 模式是 yao 利用 ai 智能调用后端服务的功能。比如，用户在 neo 聊天框中输入处理命令"帮我生成 10 条测试数据"，yao 就调用后端服务生成 10 条测试数据。
+Neo 命令模式，是指在用户与 Neo 助手聊天过程中切入到业务操作模式，在命令模式下，用户可以向 Yao 发出业务操作指令，Yao 会响应指令并作出合适的响应，在这过程中 Yao 会调用 ChatGPT 进行消息处理与回复。比如，用户在 neo 聊天框中输入处理命令"帮我生成 10 条测试数据"，yao 就调用 ChatGPT 智能的生成 10 条测试数据。
 
 优势与特点：
 
 - 对用户友好，对用户来说，不再需要记住具体的功能菜单入口，只需要在聊天框中自然的描述他的想法。
-- Yao 融合了命令与聊天功能，chatgpt 与 yao 无缝集成，在聊天的过程上随时可以调用后端命令。
+- Yao 融合了命令与聊天功能，ChatGPT 与 yao 无缝集成，在聊天的过程上随时可以调用后端命令。
 - 交互性好，前后端的接口使用 SSE 技术，信息的及时性有保证，并且集成了上下文对话功能。
 - 扩展性好，yao 把命令的定义接口留给用户，用户可以根据自己的实际需求扩展自己的功能。
 
 整个 neo 命令的执行流程如下：
 
 - ->定义命令
-- ->调用命令模板处理器 prepare
-- ->处理器返回提示词模板，所有提示词的 role 都设置成 system
-- ->调用 chatgpt API 接口
+- ->调用命令模板处理器 prepare,读取用户配置的提示词模板
+- ->格式化提示词
+- ->调用 ChatGPT API 接口
 - ->检查返回聊天消息
 - ->从聊天消息中解析出处理器参数
 - ->让用户确认\[可选\]
-- ->调用处理器
-- ->处理器返回结果
-- ->浏览器执行 Action
+- ->调用数据回调处理器，可以在处理器向前端写入预览消息
+- ->浏览器执行 Action(刷新界面)
 
 ## 配置
 
 ### 定义命令
 
-一个命令需要包含以下的内容。
+一个 Neo 命令需要包含以下的内容。
 
-- process 回调处理器，处理 ai 返回的数据,在用户确认后调用的处理器。
-- actions 在 xgen 界面上的回调操作。
-- prepare 准备与 ai 交互的提示词，尽可能准确的描述的你的目的。
+- process 回调处理器，处理 ai 返回的数据,在用户确认后调用的处理器或是直接执行的处理器。
+- actions 定义，在 xgen 界面上的回调操作。
+- prepare 处理器，准备与 ai 交互的提示词，尽可能准确的描述的你的目的。
 
-在目录/neo 下创建后缀为`.cmd.yml`配置文件。
+定义 Neo 命令的方法是在目录/neo 下创建后缀为`.cmd.yml`配置文件。
+
+示例：
 
 `/neo/table/data.cmd.yml`
 
@@ -46,13 +47,15 @@ neo command 模式是 yao 利用 ai 智能调用后端服务的功能。比如�
 
 # 命令的名称 用于匹配用户的提示请求
 name: Generate test data for the table
+# neo 命令的快捷引用方式，比如在neo助手中输入/data,直接引用这个命令，这样的好处是更快更准确的引用命令
+use: data
 # 连接器定义
 connector: gpt-3_5-turbo
-# 用户确认执行命令后yao进行回调的处理器。
+# 用户确认或是直接执行的处理器。
 process: scripts.table.Data
 # 处理器的参数类型与说明
 args:
-  - name: data # name 用于筛选chatgpt返回的json数据,并作为处理器的参数
+  - name: data # name 用于筛选ChatGPT返回的json数据,并作为处理器的参数
     type: Array
     description: The data sets to generate
     required: true # 表示参数是必须的，如果不存在会报错
@@ -72,7 +75,7 @@ prepare:
   option:
     temperature: 0.8
 
-  # 与chatgpt交互的提示词，角色是system
+  # 与ChatGPT交互的提示词，角色是system
   prompts:
     - role: system
       # prepare.before处理器返回的json数据{template:''}
@@ -106,7 +109,7 @@ optional:
 ## neo 助手初始化过程
 
 - 检查内置的聊天记录表是否存在，如果不存在创建新表，默认的表名是 yao_neo_conversation。这个表可以在 neo.yml 配置文件中进行修改。
-- 初始化聊天机器人的驱动，模型根据 neo.yml 配置的 connector，默认是使用 chatgpt 的 gpt-3_5-turbo 模型。
+- 初始化聊天机器人的驱动，模型根据 neo.yml 配置的 connector，默认是使用 ChatGPT 的 gpt-3_5-turbo 模型。
 - 加载用户的命令列表`*.cmd.yml, *.cmd.yaml`到内存中。
 - 用户在 neo 聊天框中输入消息。
 
@@ -117,7 +120,7 @@ optional:
 - api guard 中解析出`__sid`作为聊天上下文 id。
 - 根据 sid 查找用户的聊天历史，查找表 yao_neo_conversation，聊天历史可以通过配置控制长度。如果是新的会话，聊天历史会是空的。
 - 在聊天消息历史中合并用户最新的提问内容,比如，“帮我生成一条数据”
-- 根据用户最后的输入消息中是否包含了命令，使用 chatgpt 进行检查。
+- 根据用户最后的输入消息中是否包含了命令，使用 ChatGPT 进行检查。
 
 用户命令的匹配过程如下：
 
@@ -129,21 +132,29 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
 { "Stack": "Table-Page-pet", "Path": "/x/Table/pet" }
 ```
 
+命令的模糊匹配
+
 这两个参数会跟所有 cmd.yml 中配置的 path 与 stack 属性进行比较。可以使用通配符`*`,命令中如果没有配置两个参数是匹配所有请求。
 
-把所有的匹配到的命令列表的名称 name 与描述 description，还有用户的请求消息一起提交给 chatgpt 作判断。如果匹配成功，返回处理命令 cmd 的 id。
+把所有的匹配到的命令列表的名称 name 与描述 description，还有用户的请求消息一起提交给 ChatGPT 作判断。如果匹配成功，返回处理命令 cmd 的 id。
 
 所以，一个命令是否匹配的上，取决于 3 个因素
 
 - cmd.yml 中配置的`path`与`stack`属性与请求中的`path`与`stack`属性的匹配度。
 - cmd.yml 中名称与描述与用户请求消息的匹配度。
-- chatgpt 的判断。
+- ChatGPT 的判断。
+
+命令的精确匹配
+
+也可以在命令中配置 Use 属性，这样就能直接在聊天对话框中使用命令，比如配置了`Use:data`在聊天中就能使用`/data 生成数据`定位命令。
+
+命令的名称只能包含大小写字母。聊天消息可以是只包含命令`/Command` 或是聊天消息以命令作为前缀`/Command `，命令后需要有空格。Neo 助手中输入`/`符号后会显示 Neo 命令列表。
 
 ### 命令执行过程
 
 成功匹配到命令后，会进入命令处理环节。
 
-- 准备与 chatgpt 交互的提示词。
+- 准备与 ChatGPT 交互的提示词。
 
   - 调用处理器 prepareBefore，获取用户定义的模板内容，返回的内容用于填充 prepare.prompts。
 
@@ -175,9 +186,9 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
     }
     ```
 
-  - 处理器 prepareBefore 返回的内容与 cmd.prepare 中的 prompt 模板进行合并成新的提示模板。这里可以使用`{{}}`语法绑定。
-  - 提示模板中所有的的提示词的角色都是 system，而用户提问消息的角色设置的是 user，向 chatgpt 提交请求，并返回请求结果。
-  - 调用后继处理器 prepareAfter。后继处理的作用是检查，格式化 chatgpt 返回的消息。如果有必要也可以使用全局函数 ssWrite 写入 neo 助手的聊天对话框。
+  - 处理器 prepareBefore 返回的内容与命令定义中的`cmd.prepare`属性中的 prompt 模板进行合并成新的提示模板。这里可以使用`{{}}`语法绑定。
+  - 提示模板中所有的的提示词的角色都会被设置成`system`，而用户提问消息的角色会被设置成`user`，Yao 结合两部分的内容后，向 ChatGPT 提交请求，并返回请求结果。
+  - 调用后继处理器 prepareAfter。后继处理的作用是检查，格式化 ChatGPT 返回的消息。如果有必要也可以使用全局函数 ssWrite 写入 neo 助手的聊天对话框。
 
   示例：
 
@@ -185,7 +196,7 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
   /**
    * Command neo.table.data
    * Prepare Hook: After
-   * @param {*} content chatgpt返回消息
+   * @param {*} content ChatGPT返回消息
    */
   function DataAfter(content) {
     // console.log("DataAfter:", content);
@@ -211,7 +222,7 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
   }
   ```
 
-  - 校验 chatgpt 返回的数据并生成处理器参数。经过上面 gpt 与后继处理器的处理后，得到一个初步的结果，这些结果将会作为命令处理器的参数。在这一步里会根据配置的命令参数配置进行参数检查。参数`Command.Args`配置了哪些参数是必输项，参数名是什么，根据参数名筛选上面返回的结果作为命令处理器的参数。
+  - 校验 ChatGPT 返回的数据并生成处理器参数。经过上面 gpt 与后继处理器的处理后，得到一个初步的结果，这些结果将会作为命令处理器的参数。在这一步里会根据配置的命令参数配置进行参数检查。参数`Command.Args`配置了哪些参数是必输项，参数名是什么，根据参数名筛选上面返回的结果作为命令处理器的参数。
 
   ```js
   // validate the args
@@ -267,7 +278,7 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
     }
   ```
 
-  如果`/services/neo.js` 不存在，需要手工创建。为什么不直接调用 process,而是需要中间多一层 service 函数。因为在 xgen 上是无法直接调用后端的 process 处理器，需要使用 service 函数作为中间层。
+  像这种需要用户确认命令的场景，需要确认封装脚本文件`/services/neo.js` 存在，如果不存在需要手工创建。为什么不直接调用 process,而是需要中间多一层 service 函数。因为在 xgen 上是无法直接调用后端的 process 处理器，需要使用 service 函数作为中间层。
 
   ```js
   /**
@@ -321,6 +332,6 @@ git clone https://github.com/YaoApp/yao-dev-app.git
 
 整个命令的定义过程与步骤内容比较多。
 
-- ai 并不一定一次就能百分百匹配到命令。
-- ai 返回的结果不一定十分准确。
+- ai 并不一定一次就能百分百匹配到命令，可以使用 Use 属性解决这个问题。
+- ai 返回的结果不一定十分准确，解决方法是，1 使用准确的提示词，2 让用户确认内容，3 脚本检测并加工处理内容。
 - 提示词设置需要一些技巧与遵循一定的规则。

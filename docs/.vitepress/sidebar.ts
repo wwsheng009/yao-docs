@@ -289,6 +289,10 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '文件上传下载接口',
+          link: '/YaoDSL/API/文件上传下载接口',
+        },
+        {
           text: '自定义用户登陆login api',
           link: '/YaoDSL/API/自定义用户登陆login api',
         },
@@ -379,6 +383,21 @@ export default {
         },
       ],
       link: '/YaoDSL/Query/',
+    },
+    {
+      text: 'v8go',
+      collapsed: true,
+      items: [
+        {
+          text: '后台异常执行作业',
+          link: '/YaoDSL/v8go/后台异常执行作业',
+        },
+        {
+          text: 'Promise',
+          link: '/YaoDSL/v8go/Promise',
+        },
+      ],
+      link: '/YaoDSL/v8go/',
     },
     {
       text: 'Widget',
