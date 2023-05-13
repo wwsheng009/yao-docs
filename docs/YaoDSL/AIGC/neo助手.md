@@ -139,18 +139,10 @@ function Chat(path, params, query, payload, headers) {
 }
 ```
 
-还支持使用 studio api
+还支持使用 studio api,通过 studio api 可以调用 yao 的 studio 脚本，适用在开发场景下使用。在官方示例样例中有使用 stuio 接口生成模型文件场景。
 
 ```jsonc
-  /**
-    * Admin:
-    * - PATH:        {"api":"/neo"}
-    * - URL:         {"api":"http://localhost:5099/api/__yao/neo"}
-    *
-    * Studio:
-    * - Studio PATH: {"api":"/neo", "studio":true }
-    * - Studio URL:  {"api":"http://localhost:5077/neo", "studio":true }
-    */
+ "neo": { "api": "/neo", "studio": true }
 ```
 
 ## 测试代码

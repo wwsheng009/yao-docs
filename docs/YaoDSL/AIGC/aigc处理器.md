@@ -106,6 +106,13 @@ aigc 处理器只适用于单个请求，对话功能需要使用 neo。
 yao run aigcs.translate 你好
 ```
 
+## openai 相关的其它处理器
+
+- openai.tiktoken 计算接口 token
+- openai.embeddings Embedding 接口
+- openai.chat.completions 聊天接口
+- openai.audio.transcriptions 语音翻译接口
+
 ## 测试代码
 
 官方已提供了测试样例

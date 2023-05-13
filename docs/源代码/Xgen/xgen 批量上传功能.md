@@ -2,6 +2,8 @@
 
 xgen 本身有批量上传功能，但是上传控件少了一个参数`api`。
 
+这里通过硬改代码的方式处理。
+
 xgen 源代码尝试修复如下：
 https://github.com/wwsheng009/xgen/commit/8bac8871c9986efc13d0e8e7762e5b74bbf4fb85
 
