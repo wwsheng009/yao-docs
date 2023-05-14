@@ -4,7 +4,7 @@
 
 - 到官网上看看 Yao 的介绍，先了解 Yao 的定位与用途=>[官网入口](https://yaoapps.com/)。
 
-- 下载安装 Yao：[下载与安装](./Yao%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85.md)。
+- 下载安装 Yao。
 
 - 使用 Yao-Init 初始化工具构建您的第一个 Yao 项目，让自己对 Yao 有一个感性的认识。[初始化项目入口](https://github.com/wwsheng009/yao-init-0.10.3)。
 

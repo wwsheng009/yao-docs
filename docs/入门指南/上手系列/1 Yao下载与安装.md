@@ -35,6 +35,9 @@ mv yao-0.10.2-linux-amd64 /usr/local/bin/yao
 
 # 加上程序执行权限
 chmod +x /usr/local/bin/yao
+
+# 版本检查
+yao version --all
 ```
 
 ### 开发版本
@@ -42,6 +45,30 @@ chmod +x /usr/local/bin/yao
 开发版本的会有最新的特性与功能。从 github 的 actions 中可以找到最新的开发版本。
 
 https://github.com/YaoApp/yao/actions
+
+按照自己的操作系统类别找到对应的制品程序。
+
+- MacOS intel/m1/m2
+- Linux amd64/arm64
+
+  0.10.3 版本 Linux
+
+https://github.com/YaoApp/yao/actions/workflows/build-linux-dev.yml
+
+这里无法使用命令下载，需要在浏览器中下载。
+
+下载后是一个 zip 压缩包，里面包含了 arm64 与 amd64 版本的程序。
+
+```sh
+# 移动程序到bin目录
+mv yao-0.10.3-dev-linux-amd64 /usr/local/bin/yao
+
+# 加上程序执行权限
+chmod +x /usr/local/bin/yao
+
+# 版本检查
+yao version --all
+```
 
 ## 从源代码安装
 
@@ -97,3 +124,7 @@ xgen 的调试需要配置 host 文件`/etc/hosts`。
 ```sh
 127.0.0.1 _dev.com
 ```
+
+## 总结
+
+Yao 各个版本的差异比较大，需要仔细辨别。
