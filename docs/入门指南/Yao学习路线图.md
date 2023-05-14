@@ -4,6 +4,8 @@
 
 - 到官网上看看 Yao 的介绍，先了解 Yao 的定位与用途=>[官网入口](https://yaoapps.com/)。
 
+- 下载安装 Yao：[下载与安装](./Yao%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85.md)。
+
 - 使用 Yao-Init 初始化工具构建您的第一个 Yao 项目，让自己对 Yao 有一个感性的认识。[初始化项目入口](https://github.com/wwsheng009/yao-init-0.10.3)。
 
 - 创建您的第一个模型文件。在目录/models 下参考 pet.mod.json 创建你的模型，初始阶段模型定义尽可能的简单。如果你的电脑环境可以使用 ChatGPT,可以让参考这里：[使用`ChatGPT`开发`Yao`应用](../ChatGPT/%E4%BD%BF%E7%94%A8ChatGPT%E5%BC%80%E5%8F%91YAO%E5%BA%94%E7%94%A8.md)

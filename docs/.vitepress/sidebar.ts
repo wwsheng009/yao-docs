@@ -336,6 +336,10 @@ export default {
           link: '/YaoDSL/Model/模型处理器列表',
         },
         {
+          text: '字段aes加密解密',
+          link: '/YaoDSL/Model/字段aes加密解密',
+        },
+        {
           text: 'sqlite与mysql的差异',
           link: '/YaoDSL/Model/sqlite与mysql的差异',
         },
@@ -419,6 +423,10 @@ export default {
     {
       text: 'readme',
       link: '/入门指南/readme',
+    },
+    {
+      text: 'Yao下载与安装',
+      link: '/入门指南/Yao下载与安装',
     },
     {
       text: 'Yao学习路线图',
