@@ -26,7 +26,7 @@ aigc 处理器是在 yao 中实现的直接与 openai 接口交互的处理器�
   "type": "openai", //类型一定是openai
   "options": {
     "model": "gpt-3.5-turbo",
-    "key": "$ENV.OPENAI_TEST_KEY"
+    "key": "$ENV.OPENAI_KEY"
   }
 }
 ```

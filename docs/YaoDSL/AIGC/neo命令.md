@@ -1,4 +1,4 @@
-# Neo 命令模型
+# Neo 命令
 
 在最新的代码中，yao 实现了 neo 命令模式。
 
@@ -104,7 +104,7 @@ optional:
 
 ## 配置聊天 api guard
 
-参考[内置 neo 聊天服务](./neo%E5%8A%A9%E6%89%8B.md)
+参考[neo 聊天助手](./neo%E8%81%8A%E5%A4%A9%E5%8A%A9%E6%89%8B.md)
 
 ## neo 助手初始化过程
 

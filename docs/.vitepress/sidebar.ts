@@ -274,12 +274,12 @@ export default {
           link: '/YaoDSL/AIGC/chatgpt模型中角色的作用',
         },
         {
-          text: 'neo助手',
-          link: '/YaoDSL/AIGC/neo助手',
+          text: 'neo命令',
+          link: '/YaoDSL/AIGC/neo命令',
         },
         {
-          text: 'neo命令模式',
-          link: '/YaoDSL/AIGC/neo命令模式',
+          text: 'neo聊天助手',
+          link: '/YaoDSL/AIGC/neo聊天助手',
         },
       ],
       link: '/YaoDSL/AIGC/',
