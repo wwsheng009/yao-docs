@@ -417,10 +417,6 @@ export default {
   ],
   '/入门指南/': [
     {
-      text: '后台执行',
-      link: '/入门指南/后台执行',
-    },
-    {
       text: 'readme',
       link: '/入门指南/readme',
     },
@@ -431,6 +427,17 @@ export default {
     {
       text: 'Yao简单介绍',
       link: '/入门指南/Yao简单介绍',
+    },
+    {
+      text: '进阶系列',
+      collapsed: true,
+      items: [
+        {
+          text: '后台执行',
+          link: '/入门指南/进阶系列/后台执行',
+        },
+      ],
+      link: '/入门指南/进阶系列/',
     },
     {
       text: '上手系列',

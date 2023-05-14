@@ -18,20 +18,26 @@ mv /usr/local/bin/yao /usr/local/bin/yao-0.10.2
 yao-0.10.2 start
 ```
 
-## 下载成品
+## 下载 Yao 程序
 
 ### 官方发行版本
 
-访问地址：https://yaoapps.com/release。点击下载按钮后，会自动一个没有后缀的二进制文件。只需要把这个文件放到目录`/usr/local/bin/`即可。
+官方在重大功能更新后会发布新的版本。
 
-比如下载安装 0.10.2 版本程序：
+访问地址：https://yaoapps.com/release
+
+在发布页面可以看到各个版本的下载地址与相关的说明。
+
+找到合适的版本后，点击下载按钮后，会自动一个没有后缀的二进制文件。只需要把这个文件放到目录`/usr/local/bin/`即可。
+
+比如下载安装 0.10.3 版本程序：
 
 ```sh
 
-wget https://release-bj.yaoapps.com/archives/yao-0.10.2-linux-amd64
+wget https://release-bj.yaoapps.com/archives/yao-0.10.3-linux-amd64
 
 # 移动程序到bin目录
-mv yao-0.10.2-linux-amd64 /usr/local/bin/yao
+mv yao-0.10.3-linux-amd64 /usr/local/bin/yao
 
 # 加上程序执行权限
 chmod +x /usr/local/bin/yao
