@@ -97,8 +97,8 @@ description: |
   Generate test data for the table
 
 optional:
-  #用户确认命令后回调的service脚本函数，比如/services/neo.js中的Exec方法
-  confirm: neo.Exec
+  #命令是否需要用户确认，会在neo助手上显示"执行"按钮
+  confirm: true
   autopilot: true
 ```
 
@@ -239,7 +239,7 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
   }
   ```
 
-  - 校验 ChatGPT 返回的数据并生成处理器参数。经过上面 gpt 与后继处理器的处理后，得到一个初步的结果，这些结果将会作为命令处理器的参数。在这一步里会根据配置的命令参数配置进行参数检查。参数`Command.Args`配置了哪些参数是必输项，参数名是什么，根据参数名筛选上面返回的结果作为命令处理器的参数。
+  - 校验 ChatGPT 返回的数据并生成处理器参数。经过上面 ChatGPT 与后继处理器的处理后，得到一个初步的结果，这些结果将会作为命令处理器的参数。在这一步里会根据配置的命令参数配置进行参数检查。参数`Command.Args`配置了哪些参数是必输项，参数名是什么，根据参数名筛选上面返回的结果作为命令处理器的参数。
 
   ```js
   // validate the args
@@ -257,59 +257,40 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
   }
   ```
 
-  - 如果配置了`Command.Optional.Confirm`，说明这个命令是需要用户进行确认的，Yao 会给用户返回一个确认的指令，等用户确认后再执行操作。这里比较绕，它的操作是把上面得到的参数与处理器再次封装一个 json 数据，返回给浏览器客户端，等用户确认后再把 json 数据提交到 yao 后端执行。将 confirm 配置项将作为一个 yao service 函数名，并且把上一步解析出来的数据作为处理器的参数，生成一个新的名称为`ExecCommand`的`Action`。这个`Action`的默认类型是`Service.neo`，用户确认命令后调用 services 目录下的脚本文件 neo.js。
+  - 如果配置了`Command.Optional.Confirm`，说明这个命令是需要用户进行确认的，Yao 会给用户返回一个确认的指令，等用户确认后再执行操作。这里比较绕，它的操作是把前面操作得到的结果作为参数与处理器再次封装一个 json 数据，返回给浏览器客户端，等用户确认后再把 json 数据提交到 yao 后端执行。整个动作会被定义成一个新的名称为`ExecCommand`的`Action`。这个`Action`的默认类型会被设置成`Service.__neo`，用户确认命令后，会调用一个 Yao 的内部的服务方法`Service.__neo`。
 
   ```go
     //yao/neo/command/request.go
     // confirm the command
     func (req *Request) confirm(args []interface{}, cb func(msg *message.JSON) int) {
 
-        service := strings.Split(req.Command.Optional.Confirm, ".")
-        if len(service) == 0 {
-            service = []string{"neo", "Exec"}
-        } else if len(service) == 1 {
-            service = []string{"neo", service[0]}
+      payload := map[string]interface{}{
+        "method": "ExecCommand",
+        "args": []interface{}{
+          req.id,
+          req.Command.Process,
+          args,
+          map[string]interface{}{"stack": req.ctx.Stack, "path": req.ctx.Path},
+        },
+      }
+
+      msg := req.msg().
+        Action("ExecCommand", "Service.__neo", payload, "").
+        Confirm().
+        Done()
+
+      if req.Actions != nil && len(req.Actions) > 0 {
+        for _, action := range req.Actions {
+          msg.Action(action.Name, action.Type, action.Payload, action.Next)
         }
+      }
 
-        payload := map[string]interface{}{
-            "method": service[1],
-            "args": []interface{}{
-                req.id,
-                req.Command.Process,//处理器函数
-                args,
-            },
-        }
-
-        msg := req.msg().
-            Action("ExecCommand", fmt.Sprintf("Service.%s", service[0]), payload, "").
-            Confirm().
-            Done()
-
-        if req.Actions != nil && len(req.Actions) > 0 {
-            for _, action := range req.Actions {
-                msg.Action(action.Name, action.Type, action.Payload, action.Next)
-            }
-        }
-
-        cb(msg)
+      cb(msg)
     }
+
   ```
 
-  像这种需要用户确认命令的场景，需要确认封装脚本文件`/services/neo.js` 存在，如果不存在需要手工创建。为什么不直接调用 process,而是需要中间多一层 service 函数。因为在 xgen 上是无法直接调用后端的 process 处理器，需要使用 service 函数作为中间层。
-
-  ```js
-  /**
-   * Execute a process
-   * @param {*} id
-   * @param {*} process cmd中配置的处理器。
-   * @param {*} payload
-   * @returns
-   */
-  function Exec(id, process, args) {
-    const res = Process(process, ...args);
-    return { id: id, result: res };
-  }
-  ```
+  像这种需要用户确认命令的场景,为什么不直接调用 process,而是需要中间多一层 service 函数。因为在 xgen 上是无法直接调用后端的 process 处理器，需要使用 service 函数（云函数）作为中间层。
 
 - 如果配置了其它的`Command.Actions`，将会合并在一起，并通过 sse 全局函数发送到客户端。
 
@@ -317,8 +298,8 @@ neo 助手的每一次请求都会携带两个当前界面组件的信息。`pat
 
 经过上面的处理，在 xgen 的 neo 助手界面上会显示提示消息："消息包含业务指令，是否执行？"。当用户点击执行后，会依次调用上面配置的 actions。
 
-- 调用 action `Service.neo`，会调用服务端的`/services/neo.js`中的`Exec`方法，插入新的数据。
-- 调用 action `Table.search`,刷新 table 界面，显示最新的 table 数据。
+- 调用 action `Service.__neo`，服务端的`Service.__neo`方法会调用`Command.Process`，处理用户数据。
+- 调用用户自定义的 action，比如`Table.search`,刷新 table 界面，显示最新的 table 数据。
 
 - 如果没有配置`Command.Optional.Confirm`，说明这个命令是可以直接在后台执行，不需要用户确认。Yao 会直接调用处理器`req.Command.Process`进行处理。
 
