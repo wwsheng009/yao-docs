@@ -9,11 +9,12 @@
 在个人 Home 目录或是其它的目录下创建一个空的目录 hello_wolrd。
 
 ```sh
-# 创建一个hello world的目录
+# 创建一个hello world的空目录
 mkdir hello_world
 
 cd hello_world
 
+# 执行start命令，打开配置页面
 yao start
 ```
 
@@ -129,6 +130,6 @@ http://127.0.0.1:5099
 
 ## 总结
 
-使用命令`Yao start`启动项目。
+使用命令`Yao start`启动项目的配置页面。
 
-Yao 一行命令启动并生成初始化项目，非常的方便。
+Yao 使用模板与命令辅助生成初始化项目，非常的方便。

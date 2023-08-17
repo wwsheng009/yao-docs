@@ -76,61 +76,8 @@ chmod +x /usr/local/bin/yao
 yao version --all
 ```
 
-## 从源代码安装
-
-参考[源码编译](https://yaoapps.com/doc/%E4%B8%93%E5%AE%B6/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91)
-
-yao 后端程序编译
-
-```sh
-mkdir /your-project/root
-git clone https://github.com/yaoapp/yao
-git clone https://github.com/yaoapp/gou
-git clone https://github.com/yaoapp/xun
-git clone https://github.com/yaoapp/kun
-git clone https://github.com/yaoapp/v8go
-
-cd yao
-
-go mod tidy
-
-# 调试,需要设置环境变量
-go run .
-go run . run xiang.sys.ping
-go run . start
-
-# 不集成 XGen 界面引擎
-make debug
-
-# macos制品
-make release
-
-# linux 制品
-make linux-release
-```
-
-yao 前端 xgen 单独编译，需要 nodejs 16+。
-
-```sh
-git clone https://github.com/YaoApp/xgen
-
-cd xgen
-# 安装依赖
-pnpm install --no-frozen-lockfile
-# 开发
-pnpm run dev
-# 编译
-pnpm run build
-```
-
-xgen 是一个独立的 react 项目，xgen 与 yao 前后端分离，可以单独进行单独的运行与调试。
-
-xgen 的调试需要配置 host 文件`/etc/hosts`。
-
-```sh
-127.0.0.1 _dev.com
-```
-
 ## 总结
+
+Yao 执行程序就一个二进制的文件，可以直接移动或是删除。
 
 Yao 各个版本的差异比较大，需要仔细辨别。
