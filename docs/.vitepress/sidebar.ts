@@ -20,6 +20,10 @@ export default {
       link: '/Amis/组件事件刷新',
     },
     {
+      text: 'amis与yao集成',
+      link: '/Amis/amis与yao集成',
+    },
+    {
       text: 'dialog组件',
       link: '/Amis/dialog组件',
     },
@@ -93,6 +97,10 @@ export default {
         {
           text: 'yao-admin 根据数据库生成管理后台',
           link: '/Studio/Yao-admin/yao-admin 根据数据库生成管理后台',
+        },
+        {
+          text: 'yao-admin 的前提条件',
+          link: '/Studio/Yao-admin/yao-admin 的前提条件',
         },
       ],
       link: '/Studio/Yao-admin/',
