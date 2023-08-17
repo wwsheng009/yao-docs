@@ -6,6 +6,32 @@ export default {
       link: 'contributing',
     },
   ],
+  '/Amis/': [
+    {
+      text: '事件动作中的reload',
+      link: '/Amis/事件动作中的reload',
+    },
+    {
+      text: '适配yao的fetcher',
+      link: '/Amis/适配yao的fetcher',
+    },
+    {
+      text: '组件事件刷新',
+      link: '/Amis/组件事件刷新',
+    },
+    {
+      text: 'dialog组件',
+      link: '/Amis/dialog组件',
+    },
+    {
+      text: 'js写入登录cookie',
+      link: '/Amis/js写入登录cookie',
+    },
+    {
+      text: 'propsTransform',
+      link: '/Amis/propsTransform',
+    },
+  ],
   '/ChatGPT/': [
     {
       text: '使用ChatGPT开发YAO应用',
@@ -255,6 +281,10 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '处理器列表',
+          link: '/YaoDSL/处理器/处理器列表',
+        },
+        {
           text: 'Array转树形结构',
           link: '/YaoDSL/处理器/Array转树形结构',
         },
@@ -311,6 +341,10 @@ export default {
         {
           text: 'API预定义变量',
           link: '/YaoDSL/API/API预定义变量',
+        },
+        {
+          text: 'service接口',
+          link: '/YaoDSL/API/service接口',
         },
         {
           text: 'stream api接口',
@@ -408,8 +442,12 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '自定义 Widget',
-          link: '/YaoDSL/Widget/自定义 Widget',
+          text: '自定义Widget',
+          link: '/YaoDSL/Widget/自定义Widget',
+        },
+        {
+          text: '自定义Widget升级版',
+          link: '/YaoDSL/Widget/自定义Widget升级版',
         },
       ],
       link: '/YaoDSL/Widget/',

@@ -139,7 +139,7 @@ export interface QueryWhere {
    *| orwhere  | ... OR WHERE 字段 = 数值              |
    */
   method?: string;
-  /**匹配关系 `eq`,`like`,`in`,`gt` 等默认为 `eq`
+  /**默认为 `eq`
    *
    *| 匹配关系 | 说明                             |
    *| -------- | -------------------------------- |
@@ -252,4 +252,4 @@ function GetSelect() {
 
 ### QueryParam 可以在数据模型处理器中使用,QueryDSL 不可以。
 
-数据模型处理器 Find, Get, Paginate, UpdateWhere, DeleteWhere, DestroyWhere 均支持传入查询参数 Object QueryParam
+数据模型处理器 Find, Get, Paginate, UpdateWhere, DeleteWhere, DestroyWhere 均支持传入 QueryParam 查询参数
