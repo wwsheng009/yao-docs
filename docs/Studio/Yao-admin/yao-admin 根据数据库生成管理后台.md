@@ -30,9 +30,9 @@ https://github.com/linlinjava/litemall/tree/master/litemall-db/sql
 
 ## 下载 yao
 
-目前是推荐使用 yao-0.10.3-pre 版本的执行程序。请在以下地址找到 yao 程序并下载安装。
+目前是推荐使用 yao-0.10.3 版本的执行程序。请在以下地址找到 yao 程序并下载安装。
 
-https://yaoapps.com/doc/release/v0.10.3-pre#Mac%20&%20Linux
+https://yaoapps.com/release#Yao%20v0.10.3%20%E6%AD%A3%E5%BC%8F%E5%8F%91%E5%B8%83
 
 yao 程序是 go 编译的单文件执行程序,如果你有几个版本的 yao,只需要把 yao 执行程序重命名即可。
 
