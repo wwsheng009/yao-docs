@@ -4,7 +4,7 @@ yao http.Stream 用于进行异步 sse 请求。
 
 ## 适用版本
 
-0.10.3-dev 或以上
+0.10.3 或以上
 
 ## 使用方法
 
@@ -60,10 +60,10 @@ function handler(payload) {
 
 ## 示例代码
 
-yao-chatgpt 0.10.3-dev 分支
+yao-chatgpt 0.10.3 分支
 
 ```sh
 git clone https://github.com/wwsheng009/yao-chatgpt.git
 
-cd yao-chatgpt && git checkout 0.10.3-dev
+cd yao-chatgpt && git checkout 0.10.3
 ```

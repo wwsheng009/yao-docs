@@ -2,7 +2,7 @@
 
 ## 适用版本
 
-0.10.3-dev 或以上
+0.10.3 或以上
 
 ## 配置
 
@@ -44,12 +44,12 @@ xgen react 使用 EventSource 的示例
 
 `yao-chatgpt` 的 vue 使用 fetch 函数进行 api 调用示例：`front-end\src\chatpgt.ts`
 
-yao-chatgpt 0.10.3-dev 分支
+yao-chatgpt 0.10.3 分支
 
 ```sh
 git clone https://github.com/wwsheng009/yao-chatgpt.git
 
-cd yao-chatgpt && git checkout 0.10.3-dev
+cd yao-chatgpt && git checkout 0.10.3
 ```
 
 ```js

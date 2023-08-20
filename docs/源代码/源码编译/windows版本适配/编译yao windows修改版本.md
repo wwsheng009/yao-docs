@@ -23,7 +23,7 @@ go install -a -v github.com/go-bindata/go-bindata/...@latest
 
 # 步骤一 下载代码
 
-最新的开发分支版本是 0.10.3-dev
+最新的开发分支版本是 0.10.3
 
 ```sh
 git clone https://github.com/yaoapp/yao

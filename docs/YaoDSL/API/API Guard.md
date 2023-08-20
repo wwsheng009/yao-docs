@@ -129,7 +129,7 @@ func (http HTTP) guard(handlers *[]gin.HandlerFunc, guard string, defaults strin
 
 ## 全局变量
 
-**注意**：适用 0.10.3-dev 版本。
+**注意**：适用 0.10.3 版本。
 
 设置 `__global` 变量
 `__global` 变量是一个全局的 context 变量，在 http 请求的生命周期中所有的处理器都可以使用。

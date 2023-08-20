@@ -1,5 +1,15 @@
 # 服务器端会话 session 保持
 
+## 使用会话 session 保持登录状态
+
+在 Yao 中可以使用 session 保持登录状态,yao 会自动在客户端和服务器端同步 session。
+
+操作步骤：
+
+- 在用户登录处理器中设置 session，在登录成功后,调用 `session.set('user', user)` 将用户信息保存到 session 中。yao 内置的登录处理器已经实现了这一步，如果需要自定义登录逻辑,也要设置 session。
+
+- 在其它需要检查登录状态的地方,通过 `session.get('user')` 获取用户信息。如果获取不到,则表示未登录。这里还有一个前提条件，就是 http api 需要开启登录认证，`"guard": "bearer-jwt"`。
+
 ## 与 session 相关的 process 定义
 
 `/data/projects/yao/yao-app-sources/gou/process.go`
@@ -28,7 +38,7 @@ session 有以下的处理器:
     }
 ```
 
-## 案例：使用 session 在 flow 中保存用户的信息
+## 案例：自定义登录过程，使用 session 在 flow 中保存用户的信息
 
 session 信息处理流转图
 
@@ -140,18 +150,15 @@ login token 会返回到客户端，客户端在访问 API 时自动的把 token
 }
 ```
 
-## API 中使用 session
-
-在所有的使用了 jwt token 作为 api guard 的 api 中都可以使用$session 直接引用会话变量。
-
 ## 在 table 的 action 定义中使用 session
 
 在 table 的 action 定义中可以使用“$.”作为前缀引用 session 信息。
 调用 API 里怎么知道是哪个用户，并且在 table 绑定的 search 函数里还可直接调用户的会话信息。
 
-`yao/widgets/action/process.go`
+实现的原理：
 
 ```go
+// `yao/widgets/action/process.go`
 // Session $.user.id $.user_id
     v := strings.TrimSpace(valueStr)
     if strings.HasPrefix(v, "$.") {
@@ -182,11 +189,20 @@ login token 会返回到客户端，客户端在访问 API 时自动的把 token
 
 答案在于 api 每次调用都携带的 token,在经过 api 的 bearer-jwt guard 处理后，http 的 上下文 context 自动保存了对应的 context id，后面的 process 根据 sid 可以找到对应的 session
 
+## JS 脚本中使用 Session
+
+经过上面的处理，在 js 脚本中可以直接调用处理器`session.get`与`session.dump`获取会话相关的信息。
+
+```js
+const ses = Process('session.dump');
+console.log('session:', ses);
+const user = Process('session.get', 'user');
+console.log('user:', user);
+```
+
 ## 版本变更
 
-在 0.10.3-dev 版本以后，`session.start`不再可用。使用处理器`utils.str.UUID`生成 ID。
-
-`session.set`与`session.get`的使用需要在最后一个参数放入 sid。
+在 0.10.3 版本以后，`session.start`不再可用。需要使用处理器`utils.str.UUID`先生成唯一的标识 ID，在使用处理器`session.set`与`session.get`的时候在最后一个参数放入 sid。
 
 ```js
 const sessionId = Process('utils.str.UUID');

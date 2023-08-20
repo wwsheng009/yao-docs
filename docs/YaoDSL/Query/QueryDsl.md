@@ -298,4 +298,4 @@ function Tree(data) {
 
 ## 版本变更
 
-在 0.10.3-dev 后，engine 不能再使用`xiang`，应该使用`default`或是空值。
+在 0.10.3 后，engine 不能再使用`xiang`，应该使用`default`或是空值。

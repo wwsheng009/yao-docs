@@ -67,7 +67,7 @@ https://github.com/YaoApp/yao/actions/workflows/build-linux-dev.yml
 
 ```sh
 # 移动程序到bin目录
-mv yao-0.10.3-dev-linux-amd64 /usr/local/bin/yao
+mv yao-0.10.3-linux-amd64 /usr/local/bin/yao
 
 # 加上程序执行权限
 chmod +x /usr/local/bin/yao

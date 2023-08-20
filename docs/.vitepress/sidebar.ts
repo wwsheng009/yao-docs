@@ -8,6 +8,10 @@ export default {
   ],
   '/Amis/': [
     {
+      text: '表单控件列表',
+      link: '/Amis/表单控件列表',
+    },
+    {
       text: '事件动作中的reload',
       link: '/Amis/事件动作中的reload',
     },
@@ -16,8 +20,12 @@ export default {
       link: '/Amis/适配yao的fetcher',
     },
     {
-      text: '组件事件刷新',
-      link: '/Amis/组件事件刷新',
+      text: '组件事件刷新reload',
+      link: '/Amis/组件事件刷新reload',
+    },
+    {
+      text: '组件查找逻辑',
+      link: '/Amis/组件查找逻辑',
     },
     {
       text: 'amis与yao集成',
@@ -378,6 +386,10 @@ export default {
           link: '/YaoDSL/Model/模型处理器列表',
         },
         {
+          text: '模型字段类型',
+          link: '/YaoDSL/Model/模型字段类型',
+        },
+        {
           text: '字段aes加密解密',
           link: '/YaoDSL/Model/字段aes加密解密',
         },
@@ -483,6 +495,10 @@ export default {
           link: '/入门指南/进阶系列/后台执行',
         },
         {
+          text: '使用会话保存信息',
+          link: '/入门指南/进阶系列/使用会话保存信息',
+        },
+        {
           text: 'yao源代码安装',
           link: '/入门指南/进阶系列/yao源代码安装',
         },
@@ -520,6 +536,14 @@ export default {
         {
           text: '7 配置外部API',
           link: '/入门指南/上手系列/7 配置外部API',
+        },
+        {
+          text: '8 处理器',
+          link: '/入门指南/上手系列/8 处理器',
+        },
+        {
+          text: '9 数据增删改查',
+          link: '/入门指南/上手系列/9 数据增删改查',
         },
       ],
       link: '/入门指南/上手系列/',

@@ -1,6 +1,6 @@
 # 适用于 windows 的 pack 功能适配
 
-0.10.3-dev 版本提供了一个程序应用打包的功能。操作命令是：
+0.10.3 版本提供了一个程序应用打包的功能。操作命令是：
 
 打包后的文件默认情况是保存在目录 dist/app.yaz
 
@@ -25,7 +25,7 @@ yao start -f app.yaz -k xxxx
 
 官方目前只测试了 linux 版本，不支持 windows 版，需要手工处理。
 
-0.10.3-dev 版本的 pack 功能 windows 平台适配
+0.10.3 版本的 pack 功能 windows 平台适配
 
 https://github.com/wwsheng009/gou/commit/773b81ea80b289055ee26a303a625eec101556cd
 
