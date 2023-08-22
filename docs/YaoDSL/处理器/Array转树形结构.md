@@ -1,13 +1,11 @@
 # Array 转树形结构
 
-处理器`xiang.helper.ArrayTree`或是`utils.arr.Tree`
+处理器`xiang.helper.ArrayTree`或是`utils.arr.Tree`，传入有父子节点关系的对象数组，返回转换后树形结构数据。转换后的子节点的数据保存在`children`属性中，可嵌套。
+
+典型的应用是转换保存在数据库中的菜单数据成 JSON 对象。
 
 - 参数 1： 记录集合
-- 参数 2： 配置项
-
-返回转换后树形结构数据
-
-参数 2，配置项定义：
+- 参数 2： 数据转换配置项，配置项定义：
 
 ```go
 // ArrayTreeOption Array转树形结构参数表

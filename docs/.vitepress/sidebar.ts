@@ -28,6 +28,10 @@ export default {
       link: '/Amis/组件查找逻辑',
     },
     {
+      text: 'amis fetcher的工作原理',
+      link: '/Amis/amis fetcher的工作原理',
+    },
+    {
       text: 'amis与yao集成',
       link: '/Amis/amis与yao集成',
     },
