@@ -12,6 +12,10 @@ export default {
       link: '/Amis/表单控件列表',
     },
     {
+      text: '表达式',
+      link: '/Amis/表达式',
+    },
+    {
       text: '事件动作中的reload',
       link: '/Amis/事件动作中的reload',
     },
@@ -38,6 +42,10 @@ export default {
     {
       text: 'dialog组件',
       link: '/Amis/dialog组件',
+    },
+    {
+      text: 'font-awesome',
+      link: '/Amis/font-awesome',
     },
     {
       text: 'js写入登录cookie',
@@ -339,6 +347,10 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '配置Redis保存会话',
+          link: '/YaoDSL/API/配置Redis保存会话',
+        },
+        {
           text: '文件上传下载接口',
           link: '/YaoDSL/API/文件上传下载接口',
         },
@@ -388,6 +400,10 @@ export default {
         {
           text: '模型处理器列表',
           link: '/YaoDSL/Model/模型处理器列表',
+        },
+        {
+          text: '模型字段校验',
+          link: '/YaoDSL/Model/模型字段校验',
         },
         {
           text: '模型字段类型',
