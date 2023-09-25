@@ -186,9 +186,10 @@ function test() {
 可自定义`guard`,`guard`处理器的参数有:
 
 - 1 `api`路径
-- 2 `api`参数
-- 3 `body`请求`payload`
-- 4 `header`请求抬头
+- 2 `api`参数对象
+- 3 `query`参数对象
+- 4 `body`请求`payload`，如果是 application/json,是对象，其它是字符串
+- 5 `header`请求抬头
 
 ```go
 args := []interface{}{
@@ -216,6 +217,17 @@ function Guard(path, params, query, payload, headers) {
   if (isTest[0] == 'yes') {
     throw new Exception('Unit-test throw', 418);
   }
+
+  //  query对象格式
+  //   "query:"
+  // {
+  //     "key": [
+  //         "xxx"
+  //     ],
+  //     "name": [
+  //         "xx"
+  //     ]
+  // }
 }
 ```
 

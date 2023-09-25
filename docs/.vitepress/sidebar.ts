@@ -347,8 +347,16 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '超级用户权限',
+          link: '/YaoDSL/API/超级用户权限',
+        },
+        {
           text: '配置Redis保存会话',
           link: '/YaoDSL/API/配置Redis保存会话',
+        },
+        {
+          text: '刷新token',
+          link: '/YaoDSL/API/刷新token',
         },
         {
           text: '文件上传下载接口',
@@ -463,12 +471,27 @@ export default {
       link: '/YaoDSL/Query/',
     },
     {
+      text: 'Store',
+      collapsed: true,
+      items: [
+        {
+          text: 'Mongo配置',
+          link: '/YaoDSL/Store/Mongo配置',
+        },
+      ],
+      link: '/YaoDSL/Store/',
+    },
+    {
       text: 'v8go',
       collapsed: true,
       items: [
         {
           text: '后台异常执行作业',
           link: '/YaoDSL/v8go/后台异常执行作业',
+        },
+        {
+          text: '在yao中使用外部库',
+          link: '/YaoDSL/v8go/在yao中使用外部库',
         },
         {
           text: 'Promise',
@@ -665,6 +688,10 @@ export default {
         {
           text: '数据库Schema默认值转换异常',
           link: '/源代码/Gou/数据库Schema默认值转换异常',
+        },
+        {
+          text: 'jsapi中的undefined转换',
+          link: '/源代码/Gou/jsapi中的undefined转换',
         },
         {
           text: 'Null值转换成Int类型值时panic',
