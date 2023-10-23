@@ -1,8 +1,12 @@
 # golang grpc 插件模板
 
-插件使用`grpc`通讯协议。`yao`框架已经把大部分的`grpc`调用逻辑封装好了。插件只需要一个`Exec`方法即可。
+插件使用`grpc`通讯协议。`yao`框架已经把大部分的`grpc`调用逻辑封装好了。插件只需要实现一个`Exec`方法即可。
 
-在应用的根目录创建目录`plugins`,再在`plugins`下面创建`demo`目录
+## 创建插件
+
+下面以一个简单的例子来说明如何编写一个插件。
+
+在应用的根目录或外部目录创建目录`plugins`,再在`plugins`下面创建`demo`目录。这个目录实际上是一个独立的 golang 项目，只需要在`main.go`中实现`Exec`方法即可。
 
 ```sh
 mkdir -p plugins/demo
@@ -37,7 +41,7 @@ func (demo *DemoPlugin) setLogFile() {
 		logroot = "./logs"
 	}
 	if logroot != "" {
-		logfile, err := os.Create(path.Join(logroot, "plugin.log"))
+		logfile, err := os.OpenFile(path.Join(logroot, "plugin.log"), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 		if err == nil {
 			output = logfile
 		}
@@ -52,7 +56,7 @@ func (demo *DemoPlugin) setLogFile() {
 //
 // args参数是一个数组，需要在插件中自行解析。判断它的长度与类型，再转入具体的go类型。
 //
-// Exec 读取
+// Exec 插件入口函数
 func (demo *DemoPlugin) Exec(name string, args ...interface{}) (*grpc.Response, error) {
 	demo.Logger.Log(hclog.Trace, "plugin method called", name)
 	demo.Logger.Log(hclog.Trace, "args", args)
@@ -103,7 +107,9 @@ func debug() {
 
 ```
 
-插件构建，插件的后缀名一定是.so 或是.dll，生成的插件文件在 windows 下也是可以使用的。
+## 插件构建
+
+生成的插件文件的后缀名需要是.so 或是.dll。
 
 ```bash
 # 切换到插件目录
@@ -124,7 +130,7 @@ go build -o ../demo.so .
 # linux/macox 增加执行权限
 chmod +x ../demo.so
 
-# 回来目录
+# 切换到yoa应用目录
 cd ../../
 
 # 测试插件功能

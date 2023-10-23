@@ -433,8 +433,12 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '0.10.3版本插件',
-          link: '/YaoDSL/Plugin/0.10.3版本插件',
+          text: '飞书自定义登录',
+          link: '/YaoDSL/Plugin/飞书自定义登录',
+        },
+        {
+          text: '外部插件',
+          link: '/YaoDSL/Plugin/外部插件',
         },
         {
           text: 'golang grpc 插件模板',

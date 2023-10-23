@@ -1,7 +1,7 @@
 # 适配 Yao 的 amis fetcher
 
 默认情况下，amis 会使用一个默认的 fetcher,这个 fetcher 会直接发起请求。
-同时对返回数据格式有一定的要求。
+Amis 框架对返回数据格式有一定的要求。
 
 为了让 amis 适配 yao 返回的数据格式，需要创建一个适配 yao 的 fetcher,主要负责请求数据和处理响应。
 
