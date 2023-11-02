@@ -164,3 +164,47 @@ componentId 是全局定位指定的组件，首先会定位到域的顶端，�
   }
 }
 ```
+
+示例：
+
+旧版本的刷新与新版本的刷新操作对比。
+
+```json
+{
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "导入-旧",
+      "actionType": "ajax",
+      "api": "post:/api/v1/system/meta/model/import_system_models",
+      "reload": "model-list"
+    },
+    {
+      "type": "button",
+      "label": "导入系统模型-新",
+      "onEvent": {
+        "click": {
+          "actions": [
+            {
+              "ignoreError": false,
+              "outputVar": "",
+              "actionType": "ajax",
+              "options": {},
+              "api": {
+                "url": "/api/v1/system/meta/model/import_system_models",
+                "method": "post"
+              }
+            },
+            {
+              "componentName": "model-list",
+              "ignoreError": false,
+              "actionType": "reload"
+            }
+          ]
+        }
+      },
+      "id": "u:9bde38141acd"
+    }
+  ]
+}
+```

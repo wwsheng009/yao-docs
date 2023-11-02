@@ -2,6 +2,9 @@
 
 - [表单控件列表](%E8%A1%A8%E5%8D%95%E6%8E%A7%E4%BB%B6%E5%88%97%E8%A1%A8.md)
 - [表达式](%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
+- [弹出框的两种方式](%E5%BC%B9%E5%87%BA%E6%A1%86%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F.md)
+- [控件字段状态的几状方法](%E6%8E%A7%E4%BB%B6%E5%AD%97%E6%AE%B5%E7%8A%B6%E6%80%81%E7%9A%84%E5%87%A0%E7%8A%B6%E6%96%B9%E6%B3%95.md)
+- [使用 amis 需要注意的地方](%E4%BD%BF%E7%94%A8amis%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E5%9C%B0%E6%96%B9.md)
 - [事件动作中的 reload](%E4%BA%8B%E4%BB%B6%E5%8A%A8%E4%BD%9C%E4%B8%AD%E7%9A%84reload.md)
 - [适配 yao 的 fetcher](%E9%80%82%E9%85%8Dyao%E7%9A%84fetcher.md)
 - [组件事件刷新 reload](%E7%BB%84%E4%BB%B6%E4%BA%8B%E4%BB%B6%E5%88%B7%E6%96%B0reload.md)

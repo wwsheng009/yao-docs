@@ -16,6 +16,18 @@ export default {
       link: '/Amis/表达式',
     },
     {
+      text: '弹出框的两种方式',
+      link: '/Amis/弹出框的两种方式',
+    },
+    {
+      text: '控件字段状态的几状方法',
+      link: '/Amis/控件字段状态的几状方法',
+    },
+    {
+      text: '使用amis需要注意的地方',
+      link: '/Amis/使用amis需要注意的地方',
+    },
+    {
       text: '事件动作中的reload',
       link: '/Amis/事件动作中的reload',
     },
@@ -142,6 +154,10 @@ export default {
     {
       text: 'Hook参数说明',
       link: '/Xgen/Hook参数说明',
+    },
+    {
+      text: 'xgen登录过程',
+      link: '/Xgen/xgen登录过程',
     },
     {
       text: 'xgen远程onChange事件',
@@ -492,6 +508,10 @@ export default {
         {
           text: '后台异常执行作业',
           link: '/YaoDSL/v8go/后台异常执行作业',
+        },
+        {
+          text: '在js脚本中抛出异常',
+          link: '/YaoDSL/v8go/在js脚本中抛出异常',
         },
         {
           text: '在yao中使用外部库',
