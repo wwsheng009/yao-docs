@@ -484,6 +484,10 @@ export default {
           link: '/YaoDSL/Query/QueryDsl',
         },
         {
+          text: 'QueryParam与QueryDSL',
+          link: '/YaoDSL/Query/QueryParam与QueryDSL',
+        },
+        {
           text: 'QueryParam语法',
           link: '/YaoDSL/Query/QueryParam语法',
         },

@@ -19,7 +19,7 @@ function test() {
 
 如果在 js 使用`==null`或是`!=null`会无法正确判断 undefined 值。
 
-```golang
+```go
 // Undefined jsValue  Undefined
 var Undefined UndefinedT = 0x00
 

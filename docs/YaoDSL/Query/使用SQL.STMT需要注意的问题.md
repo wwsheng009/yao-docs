@@ -116,9 +116,9 @@ func (gou Query) Run(data maps.Map) interface{} {
 }
 ```
 
-## 使用 `jsapi` 执行 `stmt`
+## 使用 `jsapi` 执行 SQL 语句
 
-但是我们可以在`jsapi`中直接使用`sql stmt`读取数据。下面的代码是两种不同的读取方法。获取的结果是一样的。
+但是我们可以在`jsapi`中直接使用`sql`语句读取数据。下面的代码是两种不同的读取方法。获取的结果是一样的。
 
 示例：`scripts/test.js`
 

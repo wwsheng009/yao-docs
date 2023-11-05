@@ -26,7 +26,7 @@
 
 应用配置文件的结构如下，其中语言可以通过环境变量配置默认值。Token 与 Optional 可以自定义配置。
 
-```golang
+```go
 
 type DSL struct {
 	Name        string      `json:"name,omitempty"`//
@@ -75,7 +75,7 @@ type DSL struct {
 
 登录配置文件结构定义：
 
-```golang
+```go
 
 // DSL the login DSL
 type DSL struct {
