@@ -39,6 +39,7 @@ assistant，所有 ai 回复的消息的角色都是 assistant。
   "created": 1683212418,
   "model": "gpt-3.5-turbo-0301",
   "usage": {
+    //chat模式没有，只有complete模式才有
     "prompt_tokens": 12,
     "completion_tokens": 18,
     "total_tokens": 30
@@ -53,5 +54,82 @@ assistant，所有 ai 回复的消息的角色都是 assistant。
       "index": 0
     }
   ]
+}
+```
+
+## gpt 接口交互
+
+stream 模式下的数据格式：
+
+原始数据：
+
+```text
+data: {"id":"chatcmpl-8KLHFd0wez62XH6UOxs2mGV0JUD68","object":"chat.completion.chunk","created":1699859041,"model":"gpt-3.5-turbo-0613","choices":[{"index":0,"delta":{"content":"吗"},"finish_reason":null}]}
+```
+
+如果是结束,固定返回以下内容
+
+```text
+data: [DONE]
+```
+
+可以把聊天内容理解为 json 数据
+
+返回的第一条数据：
+
+```json
+{
+  "data": {
+    "id": "chatcmpl-8KLRrq4mHgncUN0OSF4QQ1DSOsfJ4",
+    "object": "chat.completion.chunk",
+    "created": 1699859699,
+    "model": "gpt-3.5-turbo-0613",
+    "choices": [
+      {
+        "index": 0,
+        "delta": {
+          "role": "assistant", //角色
+          "content": ""
+        },
+        "finish_reason": null
+      }
+    ]
+  }
+}
+```
+
+正常对话内容：
+
+```json
+{
+  "data": {
+    "id": "chatcmpl-8KLHFd0wez62XH6UOxs2mGV0JUD68", //每次聊天的会话标识
+    "object": "chat.completion.chunk", //对象类型
+    "created": 1699859041, //创建时间
+    "model": "gpt-3.5-turbo-0613", //模型
+    "choices": [
+      {
+        "index": 0,
+        "delta": { "content": "吗" }, //增量
+        "finish_reason": null
+      }
+    ]
+  }
+}
+```
+
+如果是结束，在最后一条消息也会有不同数据。`finish_reason`等于`stop`
+
+```json
+{
+  "data": {
+    "id": "chatcmpl-8KLHFd0wez62XH6UOxs2mGV0JUD68",
+    "object": "chat.completion.chunk",
+    "created": 1699859041,
+    "model": "gpt-3.5-turbo-0613",
+    "choices": [
+      { "index": 0, "delta": {}, "finish_reason": "stop" } //结束原因
+    ]
+  }
 }
 ```

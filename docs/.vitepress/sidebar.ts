@@ -67,6 +67,14 @@ export default {
       text: 'propsTransform',
       link: '/Amis/propsTransform',
     },
+    {
+      text: 'soybean-admin路由处理',
+      link: '/Amis/soybean-admin路由处理',
+    },
+    {
+      text: 'Select控件联动',
+      link: '/Amis/Select控件联动',
+    },
   ],
   '/ChatGPT/': [
     {
@@ -348,12 +356,20 @@ export default {
           link: '/YaoDSL/AIGC/chatgpt模型中角色的作用',
         },
         {
+          text: 'neo_api接口',
+          link: '/YaoDSL/AIGC/neo_api接口',
+        },
+        {
           text: 'neo命令',
           link: '/YaoDSL/AIGC/neo命令',
         },
         {
           text: 'neo聊天助手',
           link: '/YaoDSL/AIGC/neo聊天助手',
+        },
+        {
+          text: 'openai处理器',
+          link: '/YaoDSL/AIGC/openai处理器',
         },
       ],
       link: '/YaoDSL/AIGC/',
@@ -468,16 +484,20 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '使用SQL.STMT需要注意的问题',
-          link: '/YaoDSL/Query/使用SQL.STMT需要注意的问题',
-        },
-        {
           text: '在url中使用QueryParam',
           link: '/YaoDSL/Query/在url中使用QueryParam',
         },
         {
           text: 'Flow Query绑定变量',
           link: '/YaoDSL/Query/Flow Query绑定变量',
+        },
+        {
+          text: 'Flow处理器与JSAPI区别',
+          link: '/YaoDSL/Query/Flow处理器与JSAPI区别',
+        },
+        {
+          text: 'JSAPI',
+          link: '/YaoDSL/Query/JSAPI',
         },
         {
           text: 'QueryDsl',

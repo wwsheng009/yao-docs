@@ -60,7 +60,7 @@ type QueryDSL struct {
 在 jsapi 中使用 query 的方法是构建一个新的 Query 对象。构建 Query 对象时可以传入 Engine id 使用不同数据库的 connector,默认是`default`。
 query 对象有以下的方法：
 
-- Get，执行查询并返回数据记录集合，不分页，这里也可以使用 stmt 来读取数据库数据。[SQL.STMT](./%E4%BD%BF%E7%94%A8SQL.STMT%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98.md)
+- Get，执行查询并返回数据记录集合，不分页，这里也可以使用 stmt 来读取数据库数据。
 - Paginate，执行查询并返回带分页信息的数据记录数组。
 - First,执行查询并返回一条数据记录。
 - Run,执行查询根据查询条件返回结果,调用的是 db.exec 不能返回数据记录,与 flow 中使用 stmt 效果一样。

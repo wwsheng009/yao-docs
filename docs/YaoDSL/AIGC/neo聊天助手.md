@@ -107,6 +107,13 @@ command:
   # neo命令解析连接器定义，如果没有配置会使用neo connector
   parser: gpt-3_5-turbo
 
+# 当用户请求到达API接口后，使用这个hook修改用户的请求信息后再发送到openai,接收用户请求的消息，并返回新的消息
+# 如果有聊天的历史，在这里也可以获取到。
+prepare: 'scripts.neo.Prepare'
+
+# 收到openai的回复后进行调整回复的消息后再返回到客户端
+write: 'scripts.neo.Write'
+
 prompts:
   - role: system
     content: |
