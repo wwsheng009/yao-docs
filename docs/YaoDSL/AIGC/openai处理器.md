@@ -1,6 +1,13 @@
 # openai 处理器
 
-### 连接器
+yao 内置了以下几个与 openai 相关的处理器：
+
+- openai.audio.transcriptions，转换文本成语音。
+- openai.chat.completions，聊天接口，支持异步 sse。
+- openai.embeddings，调用"text-embedding-ada-002"，把文本转换成向量。
+- openai.tiktoken， 计算 token。
+
+## 配置 openai 连接器
 
 使用 openai 之前需要先配置连接器.
 
@@ -24,6 +31,8 @@ openai 连接器类型定义:`\gou\connector\openai\openai.go`
 
 ## 聊天处理器
 
+处理器：`openai.chat.completions`。
+
 使用聊天处理器可以快速方便的请求 openai 接口。并且处理器还支持异步调用，可以在 api 接口中应用。
 
 `yao\openai\process.go`
@@ -39,6 +48,8 @@ openai 连接器类型定义:`\gou\connector\openai\openai.go`
 
 [消息的格式说明](chatgpt%E6%A8%A1%E5%9E%8B%E4%B8%AD%E8%A7%92%E8%89%B2%E7%9A%84%E4%BD%9C%E7%94%A8.md)
 
+处理器示例：
+
 ```js
 const connectorId = 'gpt-3_5-turbo';
 
@@ -49,14 +60,14 @@ const messages = [
 const options = { max_tokens: 2 };
 
 //方法一
-Process('chat.completions', connectorId, messages);
+Process('openai.chat.completions', connectorId, messages);
 
 //方法二
-Process('chat.completions', connectorId, messages, options);
+Process('openai.chat.completions', connectorId, messages, options);
 
 //方法三
 Process(
-  'chat.completions',
+  'openai.chat.completions',
   connectorId,
   message,
   options,

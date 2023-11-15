@@ -36,6 +36,10 @@ export default {
       link: '/Amis/适配yao的fetcher',
     },
     {
+      text: '自定义事件检查',
+      link: '/Amis/自定义事件检查',
+    },
+    {
       text: '组件事件刷新reload',
       link: '/Amis/组件事件刷新reload',
     },
@@ -52,12 +56,20 @@ export default {
       link: '/Amis/amis与yao集成',
     },
     {
+      text: 'amis关键字',
+      link: '/Amis/amis关键字',
+    },
+    {
       text: 'dialog组件',
       link: '/Amis/dialog组件',
     },
     {
       text: 'font-awesome',
       link: '/Amis/font-awesome',
+    },
+    {
+      text: 'InputTable的数据更新',
+      link: '/Amis/InputTable的数据更新',
     },
     {
       text: 'js写入登录cookie',
@@ -532,6 +544,10 @@ export default {
         {
           text: '后台异常执行作业',
           link: '/YaoDSL/v8go/后台异常执行作业',
+        },
+        {
+          text: '小心字节处理',
+          link: '/YaoDSL/v8go/小心字节处理',
         },
         {
           text: '在js脚本中抛出异常',

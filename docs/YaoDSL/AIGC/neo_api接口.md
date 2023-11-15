@@ -1,6 +1,6 @@
 # neo api 接口
 
-yao 本身已经内置了 ai 聊天接口。
+yao 本身已经内置了 neo ai 聊天接口。
 
 ## 聊天请求
 
@@ -59,6 +59,16 @@ const es = new EventSource(
 `/api/__yao/neo/history`，请求方法：`get`,返回：
 
 ```json
+{
+  "data": [{}] //历史记录
+}
+```
+
+## 获取命令列表
+
+`/api/__yao/neo/commands`，请求方法：`get`,返回：
+
+```json
 [
   {
     "name": "",
@@ -68,17 +78,6 @@ const es = new EventSource(
     "path": ""
   }
 ]
-```
-
-## 获取命令列表
-
-`/api/__yao/neo/commands`，请求方法：`get`,返回：
-
-```json
-{
-  "data": `history`,
-  "command": []
-}
 ```
 
 ## 执行命令
