@@ -6,6 +6,39 @@ export default {
       link: 'contributing',
     },
   ],
+  '/Admin-App/': [
+    {
+      text: 'amis-yao-admin',
+      link: '/Admin-App/amis-yao-admin',
+    },
+    {
+      text: '教程',
+      collapsed: true,
+      items: [
+        {
+          text: '1项目介绍',
+          link: '/Admin-App/教程/1项目介绍',
+        },
+        {
+          text: '2项目安装',
+          link: '/Admin-App/教程/2项目安装',
+        },
+        {
+          text: '3模型管理',
+          link: '/Admin-App/教程/3模型管理',
+        },
+        {
+          text: '4数据维护',
+          link: '/Admin-App/教程/4数据维护',
+        },
+        {
+          text: '5代码生成',
+          link: '/Admin-App/教程/5代码生成',
+        },
+      ],
+      link: '/Admin-App/教程/',
+    },
+  ],
   '/Amis/': [
     {
       text: '表单控件列表',
