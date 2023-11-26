@@ -120,13 +120,13 @@
 
 完成以上的操作，就可以在 Form 看到一个列表控件。控件中的行项目可以拖动调整顺序。
 
-![list in form](../../public/imgs/xgen-form-list.png)
+![list in form](../../../public/imgs/xgen-form-list.png)
 
 ## Step3 保存数据。
 
 你可能会遇到这个问题
 
-[List 删除项目后，列表被清空](../../%E6%BA%90%E4%BB%A3%E7%A0%81/Xgen/xgen%20List%E6%8E%A7%E4%BB%B6%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E6%97%B6%E6%95%B0%E6%8D%AE%E8%A2%AB%E6%B8%85%E7%A9%BA.md)
+[List 删除项目后，列表被清空](../../../%E6%BA%90%E4%BB%A3%E7%A0%81/Xgen/xgen%20List%E6%8E%A7%E4%BB%B6%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E6%97%B6%E6%95%B0%E6%8D%AE%E8%A2%AB%E6%B8%85%E7%A9%BA.md)
 
 `List`控件的数据保存操作需要在`Form`的`Hook`里进行拦截处理。
 

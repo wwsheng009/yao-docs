@@ -15,7 +15,7 @@ yao 作为 api 后端，给 amis 提供数据，amis 作为前端，使用 amis-
 - yao 提供 amis 设计器生成的源代码读取与保存接口
 
 源代码的读取与保存使用了 yao 的自定义 widget 功能，可以把 amis 页面的源代码保存到数据库表中，并且缓存在 yao 的应用中。
-参考：[自定义 wdiget](../YaoDSL/Widget/%E8%87%AA%E5%AE%9A%E4%B9%89Widget%E5%8D%87%E7%BA%A7%E7%89%88.md)
+参考：[自定义 wdiget](../../YaoDSL/Widget/%E8%87%AA%E5%AE%9A%E4%B9%89Widget%E5%8D%87%E7%BA%A7%E7%89%88.md)
 
 ## amis 应用与 yao 集成开发
 

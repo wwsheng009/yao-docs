@@ -38,87 +38,92 @@ export default {
       ],
       link: '/Admin-App/教程/',
     },
-  ],
-  '/Amis/': [
     {
-      text: '表单控件列表',
-      link: '/Amis/表单控件列表',
-    },
-    {
-      text: '表达式',
-      link: '/Amis/表达式',
-    },
-    {
-      text: '弹出框的两种方式',
-      link: '/Amis/弹出框的两种方式',
-    },
-    {
-      text: '控件字段状态的几状方法',
-      link: '/Amis/控件字段状态的几状方法',
-    },
-    {
-      text: '使用amis需要注意的地方',
-      link: '/Amis/使用amis需要注意的地方',
-    },
-    {
-      text: '事件动作中的reload',
-      link: '/Amis/事件动作中的reload',
-    },
-    {
-      text: '适配yao的fetcher',
-      link: '/Amis/适配yao的fetcher',
-    },
-    {
-      text: '自定义事件检查',
-      link: '/Amis/自定义事件检查',
-    },
-    {
-      text: '组件事件刷新reload',
-      link: '/Amis/组件事件刷新reload',
-    },
-    {
-      text: '组件查找逻辑',
-      link: '/Amis/组件查找逻辑',
-    },
-    {
-      text: 'amis fetcher的工作原理',
-      link: '/Amis/amis fetcher的工作原理',
-    },
-    {
-      text: 'amis与yao集成',
-      link: '/Amis/amis与yao集成',
-    },
-    {
-      text: 'amis关键字',
-      link: '/Amis/amis关键字',
-    },
-    {
-      text: 'dialog组件',
-      link: '/Amis/dialog组件',
-    },
-    {
-      text: 'font-awesome',
-      link: '/Amis/font-awesome',
-    },
-    {
-      text: 'InputTable的数据更新',
-      link: '/Amis/InputTable的数据更新',
-    },
-    {
-      text: 'js写入登录cookie',
-      link: '/Amis/js写入登录cookie',
-    },
-    {
-      text: 'propsTransform',
-      link: '/Amis/propsTransform',
-    },
-    {
-      text: 'soybean-admin路由处理',
-      link: '/Amis/soybean-admin路由处理',
-    },
-    {
-      text: 'Select控件联动',
-      link: '/Amis/Select控件联动',
+      text: 'Amis',
+      collapsed: true,
+      items: [
+        {
+          text: '表单控件列表',
+          link: '/Admin-App/Amis/表单控件列表',
+        },
+        {
+          text: '表达式',
+          link: '/Admin-App/Amis/表达式',
+        },
+        {
+          text: '弹出框的两种方式',
+          link: '/Admin-App/Amis/弹出框的两种方式',
+        },
+        {
+          text: '控件字段状态的几状方法',
+          link: '/Admin-App/Amis/控件字段状态的几状方法',
+        },
+        {
+          text: '使用amis需要注意的地方',
+          link: '/Admin-App/Amis/使用amis需要注意的地方',
+        },
+        {
+          text: '事件动作中的reload',
+          link: '/Admin-App/Amis/事件动作中的reload',
+        },
+        {
+          text: '适配yao的fetcher',
+          link: '/Admin-App/Amis/适配yao的fetcher',
+        },
+        {
+          text: '自定义事件检查',
+          link: '/Admin-App/Amis/自定义事件检查',
+        },
+        {
+          text: '组件事件刷新reload',
+          link: '/Admin-App/Amis/组件事件刷新reload',
+        },
+        {
+          text: '组件查找逻辑',
+          link: '/Admin-App/Amis/组件查找逻辑',
+        },
+        {
+          text: 'amis fetcher的工作原理',
+          link: '/Admin-App/Amis/amis fetcher的工作原理',
+        },
+        {
+          text: 'amis与yao集成',
+          link: '/Admin-App/Amis/amis与yao集成',
+        },
+        {
+          text: 'amis关键字',
+          link: '/Admin-App/Amis/amis关键字',
+        },
+        {
+          text: 'dialog组件',
+          link: '/Admin-App/Amis/dialog组件',
+        },
+        {
+          text: 'font-awesome',
+          link: '/Admin-App/Amis/font-awesome',
+        },
+        {
+          text: 'InputTable的数据更新',
+          link: '/Admin-App/Amis/InputTable的数据更新',
+        },
+        {
+          text: 'js写入登录cookie',
+          link: '/Admin-App/Amis/js写入登录cookie',
+        },
+        {
+          text: 'propsTransform',
+          link: '/Admin-App/Amis/propsTransform',
+        },
+        {
+          text: 'soybean-admin路由处理',
+          link: '/Admin-App/Amis/soybean-admin路由处理',
+        },
+        {
+          text: 'Select控件联动',
+          link: '/Admin-App/Amis/Select控件联动',
+        },
+      ],
+      link: '/Admin-App/Amis/',
     },
   ],
   '/ChatGPT/': [
@@ -191,181 +196,188 @@ export default {
       link: '/Studio/Yao-admin/',
     },
   ],
-  '/Xgen/': [
+  '/ui/': [
     {
-      text: '0.10.2与0.10.3差异',
-      link: '/Xgen/0.10.2与0.10.3差异',
-    },
-    {
-      text: '菜单结构',
-      link: '/Xgen/菜单结构',
-    },
-    {
-      text: '系统默认的用户名',
-      link: '/Xgen/系统默认的用户名',
-    },
-    {
-      text: 'Hook参数说明',
-      link: '/Xgen/Hook参数说明',
-    },
-    {
-      text: 'xgen登录过程',
-      link: '/Xgen/xgen登录过程',
-    },
-    {
-      text: 'xgen远程onChange事件',
-      link: '/Xgen/xgen远程onChange事件',
-    },
-    {
-      text: 'Xgen多语言支持',
-      link: '/Xgen/Xgen多语言支持',
-    },
-    {
-      text: 'Form',
+      text: 'Xgen',
       collapsed: true,
       items: [
         {
-          text: 'Form使用技巧',
-          link: '/Xgen/Form/Form使用技巧',
+          text: '0.10.2与0.10.3差异',
+          link: '/ui/Xgen/0.10.2与0.10.3差异',
         },
         {
-          text: 'Form单据参考创建',
-          link: '/Xgen/Form/Form单据参考创建',
+          text: '菜单结构',
+          link: '/ui/Xgen/菜单结构',
         },
         {
-          text: 'Form里嵌套List',
-          link: '/Xgen/Form/Form里嵌套List',
+          text: '系统默认的用户名',
+          link: '/ui/Xgen/系统默认的用户名',
         },
         {
-          text: 'Form里嵌套Table',
-          link: '/Xgen/Form/Form里嵌套Table',
-        },
-      ],
-      link: '/Xgen/Form/',
-    },
-    {
-      text: 'Neo',
-      collapsed: true,
-      items: [
-        {
-          text: 'neo嵌入业务指令',
-          link: '/Xgen/Neo/neo嵌入业务指令',
-        },
-      ],
-      link: '/Xgen/Neo/',
-    },
-    {
-      text: 'Table',
-      collapsed: true,
-      items: [
-        {
-          text: 'TableA跳转到FormB',
-          link: '/Xgen/Table/TableA跳转到FormB',
+          text: 'Hook参数说明',
+          link: '/ui/Xgen/Hook参数说明',
         },
         {
-          text: 'Table_Form禁用Action',
-          link: '/Xgen/Table/Table_Form禁用Action',
+          text: 'xgen登录过程',
+          link: '/ui/Xgen/xgen登录过程',
         },
         {
-          text: 'Table上使用Tab',
-          link: '/Xgen/Table/Table上使用Tab',
+          text: 'xgen远程onChange事件',
+          link: '/ui/Xgen/xgen远程onChange事件',
         },
         {
-          text: 'Table中设置字段只读',
-          link: '/Xgen/Table/Table中设置字段只读',
+          text: 'Xgen多语言支持',
+          link: '/ui/Xgen/Xgen多语言支持',
         },
         {
-          text: 'Table使用技巧',
-          link: '/Xgen/Table/Table使用技巧',
-        },
-        {
-          text: 'Table增加查看，编辑，删除按钮',
-          link: '/Xgen/Table/Table增加查看，编辑，删除按钮',
-        },
-        {
-          text: 'Table搜索默认值',
-          link: '/Xgen/Table/Table搜索默认值',
-        },
-        {
-          text: 'Table最小化配置',
-          link: '/Xgen/Table/Table最小化配置',
-        },
-        {
-          text: 'Table界面上增加创建按钮',
-          link: '/Xgen/Table/Table界面上增加创建按钮',
-        },
-      ],
-      link: '/Xgen/Table/',
-    },
-    {
-      text: 'Xgen控件',
-      collapsed: true,
-      items: [
-        {
-          text: '菜单配置',
-          link: '/Xgen/Xgen控件/菜单配置',
-        },
-        {
-          text: '禁用编辑控件',
-          link: '/Xgen/Xgen控件/禁用编辑控件',
-        },
-        {
-          text: '控件onSelect回调',
-          link: '/Xgen/Xgen控件/控件onSelect回调',
-        },
-        {
-          text: '设置控件的必输属性',
-          link: '/Xgen/Xgen控件/设置控件的必输属性',
-        },
-        {
-          text: '使用Hook转换日期控件的值',
-          link: '/Xgen/Xgen控件/使用Hook转换日期控件的值',
-        },
-        {
-          text: '视频上传',
-          link: '/Xgen/Xgen控件/视频上传',
-        },
-        {
-          text: '图片控件',
-          link: '/Xgen/Xgen控件/图片控件',
-        },
-        {
-          text: '文件上传UploadFile',
-          link: '/Xgen/Xgen控件/文件上传UploadFile',
-        },
-        {
-          text: '远程select控件',
-          link: '/Xgen/Xgen控件/远程select控件',
-        },
-        {
-          text: 'Switch控件',
-          link: '/Xgen/Xgen控件/Switch控件',
-        },
-        {
-          text: 'Upload在List下视频样式错乱',
-          link: '/Xgen/Xgen控件/Upload在List下视频样式错乱',
-        },
-        {
-          text: 'Xgen登录界面邮件电话校验规则',
-          link: '/Xgen/Xgen控件/Xgen登录界面邮件电话校验规则',
-        },
-        {
-          text: 'Xgen自定义远程控件',
-          link: '/Xgen/Xgen控件/Xgen自定义远程控件',
-        },
-        {
-          text: 'RichText富文本控件',
+          text: 'Form',
           collapsed: true,
           items: [
             {
-              text: '使用富文本控件',
-              link: '/Xgen/Xgen控件/RichText富文本控件/使用富文本控件',
+              text: 'Form使用技巧',
+              link: '/ui/Xgen/Form/Form使用技巧',
+            },
+            {
+              text: 'Form单据参考创建',
+              link: '/ui/Xgen/Form/Form单据参考创建',
+            },
+            {
+              text: 'Form里嵌套List',
+              link: '/ui/Xgen/Form/Form里嵌套List',
+            },
+            {
+              text: 'Form里嵌套Table',
+              link: '/ui/Xgen/Form/Form里嵌套Table',
             },
           ],
-          link: '/Xgen/Xgen控件/RichText富文本控件/',
+          link: '/ui/Xgen/Form/',
+        },
+        {
+          text: 'Neo',
+          collapsed: true,
+          items: [
+            {
+              text: 'neo嵌入业务指令',
+              link: '/ui/Xgen/Neo/neo嵌入业务指令',
+            },
+          ],
+          link: '/ui/Xgen/Neo/',
+        },
+        {
+          text: 'Table',
+          collapsed: true,
+          items: [
+            {
+              text: 'TableA跳转到FormB',
+              link: '/ui/Xgen/Table/TableA跳转到FormB',
+            },
+            {
+              text: 'Table_Form禁用Action',
+              link: '/ui/Xgen/Table/Table_Form禁用Action',
+            },
+            {
+              text: 'Table上使用Tab',
+              link: '/ui/Xgen/Table/Table上使用Tab',
+            },
+            {
+              text: 'Table中设置字段只读',
+              link: '/ui/Xgen/Table/Table中设置字段只读',
+            },
+            {
+              text: 'Table使用技巧',
+              link: '/ui/Xgen/Table/Table使用技巧',
+            },
+            {
+              text: 'Table增加查看，编辑，删除按钮',
+              link: '/ui/Xgen/Table/Table增加查看，编辑，删除按钮',
+            },
+            {
+              text: 'Table搜索默认值',
+              link: '/ui/Xgen/Table/Table搜索默认值',
+            },
+            {
+              text: 'Table最小化配置',
+              link: '/ui/Xgen/Table/Table最小化配置',
+            },
+            {
+              text: 'Table界面上增加创建按钮',
+              link: '/ui/Xgen/Table/Table界面上增加创建按钮',
+            },
+          ],
+          link: '/ui/Xgen/Table/',
+        },
+        {
+          text: 'Xgen控件',
+          collapsed: true,
+          items: [
+            {
+              text: '菜单配置',
+              link: '/ui/Xgen/Xgen控件/菜单配置',
+            },
+            {
+              text: '禁用编辑控件',
+              link: '/ui/Xgen/Xgen控件/禁用编辑控件',
+            },
+            {
+              text: '控件onSelect回调',
+              link: '/ui/Xgen/Xgen控件/控件onSelect回调',
+            },
+            {
+              text: '设置控件的必输属性',
+              link: '/ui/Xgen/Xgen控件/设置控件的必输属性',
+            },
+            {
+              text: '使用Hook转换日期控件的值',
+              link: '/ui/Xgen/Xgen控件/使用Hook转换日期控件的值',
+            },
+            {
+              text: '视频上传',
+              link: '/ui/Xgen/Xgen控件/视频上传',
+            },
+            {
+              text: '图片控件',
+              link: '/ui/Xgen/Xgen控件/图片控件',
+            },
+            {
+              text: '文件上传UploadFile',
+              link: '/ui/Xgen/Xgen控件/文件上传UploadFile',
+            },
+            {
+              text: '远程select控件',
+              link: '/ui/Xgen/Xgen控件/远程select控件',
+            },
+            {
+              text: 'Switch控件',
+              link: '/ui/Xgen/Xgen控件/Switch控件',
+            },
+            {
+              text: 'Upload在List下视频样式错乱',
+              link: '/ui/Xgen/Xgen控件/Upload在List下视频样式错乱',
+            },
+            {
+              text: 'Xgen登录界面邮件电话校验规则',
+              link: '/ui/Xgen/Xgen控件/Xgen登录界面邮件电话校验规则',
+            },
+            {
+              text: 'Xgen自定义远程控件',
+              link: '/ui/Xgen/Xgen控件/Xgen自定义远程控件',
+            },
+            {
+              text: 'RichText富文本控件',
+              collapsed: true,
+              items: [
+                {
+                  text: '使用富文本控件',
+                  link: '/ui/Xgen/Xgen控件/RichText富文本控件/使用富文本控件',
+                },
+              ],
+              link: '/ui/Xgen/Xgen控件/RichText富文本控件/',
+            },
+          ],
+          link: '/ui/Xgen/Xgen控件/',
         },
       ],
-      link: '/Xgen/Xgen控件/',
+      link: '/ui/Xgen/',
     },
   ],
   '/YaoDSL/': [

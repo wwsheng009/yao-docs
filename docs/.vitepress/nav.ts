@@ -5,10 +5,6 @@ export default [
     link: '/Admin-App/index',
   },
   {
-    text: 'Amis',
-    link: '/Amis/index',
-  },
-  {
     text: 'ChatGPT',
     link: '/ChatGPT/index',
   },
@@ -17,8 +13,8 @@ export default [
     link: '/Studio/index',
   },
   {
-    text: 'Xgen',
-    link: '/Xgen/index',
+    text: 'ui',
+    link: '/ui/index',
   },
   {
     text: 'YaoDSL',

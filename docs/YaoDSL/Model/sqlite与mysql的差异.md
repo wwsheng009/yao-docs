@@ -11,7 +11,7 @@ contributors: [AbbetWang]
 
 `Switch`控件在两个数据库下使用需要差异化的配置。
 
-[`Switch`控件](../../Xgen/Xgen%E6%8E%A7%E4%BB%B6/Switch%E6%8E%A7%E4%BB%B6.md)
+[`Switch`控件](../../ui/Xgen/Xgen%E6%8E%A7%E4%BB%B6/Switch%E6%8E%A7%E4%BB%B6.md)
 
 ## 时间格式化函数
 
