@@ -35,6 +35,10 @@ export default {
           text: '5代码生成',
           link: '/Admin-App/教程/5代码生成',
         },
+        {
+          text: '6页面编辑器',
+          link: '/Admin-App/教程/6页面编辑器',
+        },
       ],
       link: '/Admin-App/教程/',
     },
@@ -197,6 +201,21 @@ export default {
     },
   ],
   '/ui/': [
+    {
+      text: 'sui',
+      collapsed: true,
+      items: [
+        {
+          text: '使用sui搭建一个博客网站',
+          link: '/ui/sui/使用sui搭建一个博客网站',
+        },
+        {
+          text: 'sui',
+          link: '/ui/sui/sui',
+        },
+      ],
+      link: '/ui/sui/',
+    },
     {
       text: 'Xgen',
       collapsed: true,
