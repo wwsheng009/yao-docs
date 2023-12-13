@@ -1,6 +1,6 @@
 # chatgpt3 中角色的设置
 
-在调用 chatgpt api 接口时，如果是使用到模型 gpt-3.5-turbo，api 的消息中可设置一个角色字段`role`。
+在调用 chatgpt api 接口时，如果是使用到模型 gpt-3.5-turbo 或是 3.5 以上版本，api 的消息中可设置一个角色字段`role`。
 
 角色`role`有三个值:user/system/assistant
 

@@ -136,6 +136,10 @@ export default {
       link: '/ChatGPT/使用ChatGPT开发YAO应用',
     },
     {
+      text: 'ai列表',
+      link: '/ChatGPT/ai列表',
+    },
+    {
       text: 'Vscode编辑器使用插件快速开发模型',
       link: '/ChatGPT/Vscode编辑器使用插件快速开发模型',
     },
@@ -235,6 +239,10 @@ export default {
         {
           text: 'Hook参数说明',
           link: '/ui/Xgen/Hook参数说明',
+        },
+        {
+          text: 'sse函数',
+          link: '/ui/Xgen/sse函数',
         },
         {
           text: 'xgen登录过程',
