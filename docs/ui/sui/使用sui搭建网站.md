@@ -1,6 +1,30 @@
 # 使用 sui 搭建博客网站
 
-首先需要在应用目录的根目录下创建一个 sui 配置定义。
+使用 sui 之前需要先了解下 sui 的整体框架与处理流程：
+
+框架：
+
+在设计时，sui 有三层结构：sui->template->page。
+
+- sui，可以配置多套 sui 页面。
+
+- template,每个 sui 又可以配置多个模板，比如按主题样式，配置蓝色，灰色等。
+
+- page,在每套模板中可以创建多个页面，页面之间可以进行引用。
+
+处理流程：
+
+- 定义 sui
+- 创建模板目录
+- 创建页面目录
+
+- 构建
+- 预览
+- 发布
+
+## 目录结构
+
+首先需要在应用目录的`suis`目录下创建一个 sui 配置定义文件。
 
 在 sui 中定义的模板的存储方式与模板存储位置
 
@@ -28,17 +52,19 @@
 
 官方后期应该会有页面编辑器配合使用。但是如果不用编辑器，也是可以直接使用这套模板工具的。
 
+每一套 sui 下面可以有多套模板,比如这里的模板是 website,每一个模板都是一个独立目录。
+
 ```sh
 ├data目录
-├── blogs
-│   └── website                     # 每一套sui模板下都有一个子目录website,
+├── blogs                           # 对应sui的配置
+│   └── website                     # 每一套sui下面可以有多套模板,比如这里的模板是website,每一个模板都是一个独立目录。
 │       ├── article                 # article页面模板
 │       │   ├── article.config
 │       │   ├── article.html
 │       │   ├── article.js
 │       │   └── article.json
 │       ├── __assets                # 页面开发过程中引用的资源
-│       │   ├── css
+│       │   ├── css                 # css文件，比如放入tailwind的css
 │       │   ├── dark
 │       │   ├── fonts
 │       │   ├── images
@@ -46,7 +72,6 @@
 │       │   ├── libs
 │       │   ├── light
 │       │   ├── main.js
-│       │   └── tailwind.min.css
 │       ├── __blocks               # 编辑器中定义的布局
 │       │   ├── ColumnsTwo
 │       │   ├── export.json
@@ -78,11 +103,52 @@
 │           └── types.ts
 ```
 
-上面目录中的`acticle`与`index`的目录可以理解为`acticle.html`与`index.html`页面的构建临时目录。
+上面目录中的`acticle`与`index`的目录可以理解为`acticle.html`与`index.html`页面的构建临时目录,其它的带有`__`下划线的目录都是辅助目录。
 
 ## 重要的文件
 
 `__document.html` 是页面的最外层模板文档，可以用于整个页面应用的框架。 在这个文档中会通过变量`{{ __page }}`来引用具体的页面，在用户访问时，会根据不同的路由替换不同的页面。
+
+```html
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>
+    Yao Sui Page
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="Tailwind CSS Saas & Software Landing Page Template" />
+  <meta name="keywords"
+    content="yao, application, tailwind css" />
+  <meta name="author" content="Shreethemes" />
+  <meta name="website" content="https://shreethemes.in" />
+  <meta name="email" content="support@shreethemes.in" />
+  <meta name="version" content="2.0.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  </link>
+
+  <!-- favicon -->
+
+  <!-- CSS -->
+
+  <!-- Main Css -->
+
+  <link rel="stylesheet" href="@assets/css/tailwind.min.css" />
+</head>
+
+<body>
+{{ __page }}
+<!-- JAVASCRIPTS -->
+
+</body>
+
+</html>
+```
 
 页面模板相关文件，这里是与`index`相关的文件
 
@@ -97,48 +163,143 @@
 
 ## 模板语法
 
-在页面的源代码中可以使用`{{}}`双括号来使用模板语法。
+### 引用
 
-- 循环：`s:for`, `s:for-item`,`s:for-index`
+在页面的源代码中可以使用`{{}}`双括号来表示动态引用变量，可以引用的变量有：
 
-- 条件：`s:if`
+- 全局变量`$global`,取的值是模板目录下的`__data.json`文件中定义的对象，如果没有此文件，会选择页面的关联变量。
+- 页面的关联变量，同名的页面对应的配置文件：`<page>.json`中的定义的对象。
+
+引用可以放在元素属性或是元素值。
 
 ```html
-<page>
-  <section>
-    <h1 class="text-3xl font-bold mb-4">Yao Blog Post List</h1>
-    <ul
-      class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-    >
-      <!-- Replace the code below with your actual post data -->
-      <li s:for="articles.data" s:for-item="article" s:for-index="idx">
-        <div class="bg-white shadow-md rounded-lg p-4">
-          <img
-            s:if="article.img != ''"
-            src="{{ article.img }}"
-            alt="Post Image"
-            class="object-cover rounded-md"
-          />
-          <a
-            href="{{ article.url }}"
-            target="_blank"
-            class="text-xl text-blue-500 font-semibold mb-2"
-            >{{ article.title }}</a
-          >
-          <p class="text-gray-600 mb-4">{{ article.description }}</p>
-          <a
-            href="{{ article.url }}"
-            target="_blank"
-            class="text-blue-500 font-semibold"
-            >Read More</a
-          >
-        </div>
-      </li>
-      <!-- Repeat the above code for each post -->
-    </ul>
-  </section>
-  <!-- JAVASCRIPTS -->
+<img src="{{ article.img }}" />
+```
+
+```html
+<p>{{ article.description }}</p>
+```
+
+### 循环
+
+与其它的页面开发技术类似，使用三个关键字实现循环输出语法：
+
+- `s:for`, 引用需要循环数据，一般是数组
+- `s:for-item`,设置循环中的 key 字段。
+- `s:for-index`,设置索引字段
+
+```html
+<!-- Replace the code below with your actual post data -->
+<li s:for="articles.data" s:for-item="article" s:for-index="idx">
+  <div class="bg-white shadow-md rounded-lg p-4">
+    <p class="text-gray-600 mb-4">{{ article.description }}</p>
+  </div>
+</li>
+```
+
+### 条件
+
+使用条件可以控制页面元素的显示与隐藏。对应的命令有：`s:if`,`s:elif`,`s:else`
+
+```html
+<section>
+  <h1 class="text-3xl font-bold mb-4">Yao Blog Post List</h1>
+  <ul
+    class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+  >
+    <!-- Replace the code below with your actual post data -->
+    <li s:for="articles.data" s:for-item="article" s:for-index="idx">
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <img
+          s:if="article.img != ''"
+          src="{{ article.img }}"
+          alt="Post Image"
+          class="object-cover rounded-md"
+        />
+        <a
+          href="{{ article.url }}"
+          target="_blank"
+          class="text-xl text-blue-500 font-semibold mb-2"
+          >{{ article.title }}</a
+        >
+        <p class="text-gray-600 mb-4">{{ article.description }}</p>
+        <a
+          href="{{ article.url }}"
+          target="_blank"
+          class="text-blue-500 font-semibold"
+          >Read More</a
+        >
+      </div>
+    </li>
+    <!-- Repeat the above code for each post -->
+  </ul>
+</section>
+<!-- JAVASCRIPTS -->
+```
+
+### 原始值
+
+在没有使用这个指令时，所有的模板绑定的变量值在输出前都会被进行 url 编码处理。
+
+使用`s:raw`指令输出子原元素的 html 原始值,比如把博客的内容保存在数据库中，在渲染时直接输出博客的内容。
+
+**注意：用户需要注意处理 s:raw 的原始信息，避免出现 xss 的攻击漏洞**
+
+```html
+<p s:raw="true">{{post.content}}</p>
+```
+
+### 页面引用
+
+使用 page 标签引用其它页面，`is="/xxx"`,这里的 `xxx` 是同一套模板中的其它页面地址
+
+```html
+<page is="/footer">
+  <slot is="link"> Link </slot>
+  <slot is="item"> Item </slot>
 </page>
+```
+
+### 插槽
+
+当使用页面引用功能时，需要解决另外一个问题，就是向子页面传递属性与插槽。
+
+插槽：`<slot>`与
+
+比如有两个页面：
+主页面：main.html,子页面 item.html，它们的定义是
+
+`main.html` 主页面引用了子页面`item`,并且传递了属性`index`，两个 slot 配置：`link/item`
+
+```html
+<div class="bg-blue-700">
+  <page is="/item" active="index">
+    <slot is="link"> Link Slot</slot>
+    <slot is="item"> Item Slot</slot>
+  </page>
+</div>
+```
+
+`item.html`,在子页面中使用`[{$prop.<prop>}]`来引用父页面传递的属性值。并且使用`[{}]`语法来接收父页面传递的 slot 配置。
+
+```html
+<div class="flex">
+  <div
+    class="[{ $prop.active=='index' ? 'text-white' : 'text-blue-200' }] w-10"
+  >
+    <a href="/index">介绍</a>
+  </div>
+
+  <div
+    class="[{ $prop.active=='signin' ? 'text-white' : 'text-blue-200' }] w-10"
+  >
+    <a href="/index">登录</a>
+  </div>
+</div>
+
+<div class="text-blue-200">[{link}]</div>
+
+<div class="text-red-200">[{item}]</div>
 ```
 
 ## 模板变量引用
@@ -240,14 +401,3 @@ type PageMock struct {
 ## 示例源代码
 
 在 yao-admin-admin 项目中实现了简单的博客[yao-amis-admin](https://github.com/wwsheng009/yao-amis-admin)。
-
-**需要注意的是** admin 项目中的 sui 部分的功能有经过特别的增强，所以并不能直接使用官方的 yao 程序来执行。增强的地方是
-
-- 增加了`s:html`指令，可以替换输出 html 代码。
-- 增加了 html 元素属性的模板替换功能。比如以下代码中的 href 属性替换在 yao 官方中并没有实现。
-
-```html
-<a href="{{ article.url }}" target="_blank" class="text-blue-500 font-semibold"
-  >Read More</a
->
-```

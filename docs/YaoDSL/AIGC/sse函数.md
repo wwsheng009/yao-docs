@@ -29,6 +29,23 @@ js 中的 cancel 函数实际上会调用 go 中的 context 的函数，取消�
 ctx, cancel := context.WithCancel(context.Background())
 ```
 
+需要注意的是在调用 ssEvent 与 cancel 时，需要在 api 关联的处理函数里直接使用，不能在 api 函数里通过调用处理器间接调用。
+比如 api 定义如下，那么 ssEvent 函数需要在处理器`scripts.chatweb.process`或是其直接调用的 js 函数中调用，而不能在处理`scripts.chatweb.process`中通过`Process("")`间接调用。原因是 ssEvent 是一个特定函数，只在固定的 streamHandle 的函数上下文中才会的生效。
+
+```json
+{
+  "path": "/chat-process",
+  "method": "POST",
+  "guard": "scripts.security.CheckChatKey",
+  "process": "scripts.chatweb.process",
+  "in": [":payload"],
+  "out": {
+    "status": 200,
+    "type": "text/event-stream; charset=utf-8"
+  }
+}
+```
+
 ## 函数 ssWrite
 
 只有 neo 请求中生效。
@@ -68,5 +85,58 @@ type Command struct {
 	ID      string `json:"id,omitempty"`
 	Name    string `json:"name,omitempty"`
 	Reqeust string `json:"request,omitempty"`
+}
+```
+
+## 解析 sse 消息
+
+```ts
+interface SSEParsedData {
+  events: string[];
+  data: string;
+}
+
+/**
+ * 转换sse消息，获取sse消息体中的data 数据，可能的格式有：
+ * event: message
+ * data:
+ *
+ * event: message
+ * data: :
+ * data:
+ * data:
+ *
+ * @param sseMessage sse消息，有可能会有多行
+ */
+function parseSSEMessage(sseMessage: string): SSEParsedData {
+  const parsedData: SSEParsedData = {
+    events: [],
+    data: '',
+  };
+
+  let lines = sseMessage.split('\n');
+  let currentType: 'event' | 'data' | null = null;
+  let previousType: 'event' | 'data' | null = null;
+
+  for (let line of lines) {
+    if (line.startsWith('event:')) {
+      currentType = 'event';
+      parsedData.events.push(line.substring('event:'.length).trim());
+    } else if (line.startsWith('data:')) {
+      if (previousType === 'data') {
+        parsedData.data += '\n'; // 加入换行符，只有在连续的data行之间
+      }
+      currentType = 'data';
+      let data = line.substring('data:'.length).trim();
+      if (data === '[DONE]') {
+        //结束标识
+        break;
+      }
+      parsedData.data += data;
+    }
+    previousType = currentType; // 更新前一个类型
+  }
+
+  return parsedData;
 }
 ```

@@ -6,3 +6,4 @@
 - [neo 命令](neo%E5%91%BD%E4%BB%A4.md)
 - [neo 聊天助手](neo%E8%81%8A%E5%A4%A9%E5%8A%A9%E6%89%8B.md)
 - [openai 处理器](openai%E5%A4%84%E7%90%86%E5%99%A8.md)
+- [sse 函数](sse%E5%87%BD%E6%95%B0.md)

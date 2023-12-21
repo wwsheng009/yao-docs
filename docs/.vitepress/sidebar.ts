@@ -210,8 +210,12 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '使用sui搭建一个博客网站',
-          link: '/ui/sui/使用sui搭建一个博客网站',
+          text: '使用builder创建sui页面',
+          link: '/ui/sui/使用builder创建sui页面',
+        },
+        {
+          text: '使用sui搭建网站',
+          link: '/ui/sui/使用sui搭建网站',
         },
         {
           text: 'sui',
@@ -239,10 +243,6 @@ export default {
         {
           text: 'Hook参数说明',
           link: '/ui/Xgen/Hook参数说明',
-        },
-        {
-          text: 'sse函数',
-          link: '/ui/Xgen/sse函数',
         },
         {
           text: 'xgen登录过程',
@@ -454,6 +454,10 @@ export default {
         {
           text: 'openai处理器',
           link: '/YaoDSL/AIGC/openai处理器',
+        },
+        {
+          text: 'sse函数',
+          link: '/YaoDSL/AIGC/sse函数',
         },
       ],
       link: '/YaoDSL/AIGC/',

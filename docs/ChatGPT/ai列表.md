@@ -6,8 +6,12 @@
 - 通义千问-阿里,https://tongyi.aliyun.com/
 - 文心一言-百度,https://yiyan.baidu.com/
 - bard-谷歌,https://bard.google.com/
-- bing ai-微软,https://www.bing.com/search?q=Bing+AI&showconv=1
 - 豆包-字节,https://www.doubao.com/
+
+## 搜索
+
+- 程序开发,https://devv.ai/
+- bing ai-微软,https://www.bing.com/search?q=Bing+AI&showconv=1
 
 ## AI 模型
 
@@ -18,6 +22,15 @@
 - Yi-34B,https://modelscope.cn/models/01ai/Yi-34B/files
 - mistral,https://mistral.ai/
 
+- 讯飞星火 3.1
+- 清华智谱 Pro,https://maas.aminer.cn/
+
+## 其它
+
+- AI 模型可视化,https://github.com/bbycroft/llm-viz
+
+- 行业模型收集,https://github.com/luban-agi/Awesome-Domain-LLM
+
 BING AI 对这几个 ai 的比较：
 
 支持聊天的 AI 模型
@@ -25,7 +38,9 @@ BING AI 对这几个 ai 的比较：
 - chagpt-openai¹⁶ 是 OpenAI 创建的人工智能驱动的聊天机器人，利用了 GPT-3 这个强大的语言模型，可以与人进行自然、流畅和有趣的对话，支持多种主题和场景，还可以生成图片和声音。
 - 通义千问 ³⁹ 是阿里云自主研发的大语言模型，能够在用户自然语言输入的基础上，通过自然语言理解和语义分析，在不同领域、任务内为用户提供服务和帮助，模型具备的能力包括但不限于：创作文字、编写代码、提供各类语言的翻译服务、进行文本润色和文本摘要等工作、扮演角色进行对话、制作图表等。
 - 文心一言 ⁵ 是百度打造出来的人工智能大语言模型，具备跨模态、跨语言的深度语义理解与生成能力，文心一言有五大能力，文学创作、商业文案创作、数理逻辑推算、中文理解、多模态生成，其在搜索问答、内容创作生成、智能办公等众多领域都有更广阔的想象空间。
-- bard-谷歌 ¹⁴ 是谷歌创建的又一个人工智能驱动的聊天机器人，这是一项对话式人工智能服务，利用了谷歌的对话应用语言模型，也被称为 LaMDA，Bard 背后的力量是 Google 的对话应用语言模型，又名 LaMDA，Bard 是基于 LaMDA 的轻量级版本，使用更少的计算能力，使其能够扩展到更多的人，并提供额外的反馈。
+
+- bard-谷歌 bard 的联天过中会使用在线数据，模型可以用到当天互联网的数据，但是结果并不是十分准确，有些结果都是瞎编。
+
 - bing ai-微软 ³⁴ 是微软推出的人工智能聊天模式，可以在 Bing 搜索引擎和 Edge 浏览器中使用，它可以像搜索引擎一样回答简单的问题，并对复杂的问题提供全面且优质的答案，它利用来自网络的信息为输入问题提供最新、高质量的回答，还可以生成图片和声音。
 - 豆包-字节 ²¹ 是字节跳动公司基于云雀模型开发的 AI 工具，提供聊天机器人、写作助手以及英语学习助手等功能，它可以回答各种问题并进行对话，帮助人们获取信息，支持网页 Web 平台，iOS 以及安卓平台，但 iOS 需要使用 TestFlight 安装。
 
