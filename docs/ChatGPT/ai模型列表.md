@@ -5,8 +5,9 @@
 - chagpt-openai,https://chat.openai.com/
 - 通义千问-阿里,https://tongyi.aliyun.com/
 - 文心一言-百度,https://yiyan.baidu.com/
-- bard-谷歌,https://bard.google.com/
+- bard-谷歌,https://bard.google.com/,有区域限制
 - 豆包-字节,https://www.doubao.com/
+- 百川智能,https://www.baichuan-ai.com/
 
 ## 搜索
 
@@ -52,3 +53,13 @@ AI 模型
 - Yi-6B³² 是零一万物开源的大语言模型，6 亿参数规模版本，在 MMLU 等评测上表现优异，该模型完全免费商用授权，可以支持多种自然语言处理任务，包括文本生成、文本分类、问答系统等等。
 - Yi-34B³² 是零一万物开源的大语言模型，34 亿参数规模版本，在 MMLU 等评测上表现卓越，该模型完全免费商用授权，可以支持多种自然语言处理任务，包括文本生成、文本分类、问答系统等等。
 - mistral⁴ 是一个基于 GPT-3 的开源语言模型，由 Mistral AI 公司开发，它可以生成各种类型的文本，包括故事、诗歌、歌词、代码、广告等，它还可以与人进行对话，回答问题，提供建议等，它支持多种语言，包括英语、中文、日语、法语、德语等。
+
+## 工具
+
+- langchain,python,LLM 编程框架,https://www.langchain.com.cn/
+- OpenAgents,pytonn,https://github.com/xlang-ai/OpenAgents
+
+## 参考
+
+[零代码入门大模型：一文全面搞懂 LangChain
+](https://zhuanlan.zhihu.com/p/656646499)

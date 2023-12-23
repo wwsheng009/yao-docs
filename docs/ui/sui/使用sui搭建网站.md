@@ -172,13 +172,44 @@
 
 引用可以放在元素属性或是元素值。
 
+在属性中替换：
+
 ```html
 <img src="{{ article.img }}" />
 ```
 
+在文本节点替换：
+
 ```html
 <p>{{ article.description }}</p>
 ```
+
+### 引用请求中的对象
+
+- 引用 query 对象
+
+使用`$query.<key>`引用 url query 查询中的对象。
+
+```json
+{
+  "value": "$query.<key>" //引用query中的内容
+}
+```
+
+- 引用 http.url 请求对象
+
+```json
+{
+  "path": "$url.path",
+  "host": "$url.host",
+  "domain": "$url.domain",
+  "scheme": "$url.scheme"
+}
+```
+
+- 其它的请求对象
+
+其它的以`$header.`,`$param.`,`$payload.`为开头的对象。
 
 ### 循环
 
@@ -264,10 +295,8 @@
 
 当使用页面引用功能时，需要解决另外一个问题，就是向子页面传递属性与插槽。
 
-插槽：`<slot>`与
-
 比如有两个页面：
-主页面：main.html,子页面 item.html，它们的定义是
+主页面：main.html,子页面 item.html，它们的定义是：
 
 `main.html` 主页面引用了子页面`item`,并且传递了属性`index`，两个 slot 配置：`link/item`
 
@@ -280,7 +309,9 @@
 </div>
 ```
 
-`item.html`,在子页面中使用`[{$prop.<prop>}]`来引用父页面传递的属性值。并且使用`[{}]`语法来接收父页面传递的 slot 配置。
+`item.html`,在子页面中：
+
+- 使用`[{$prop.<prop>}]`来引用父页面传递的属性值。
 
 ```html
 <div class="flex">
@@ -296,7 +327,11 @@
     <a href="/index">登录</a>
   </div>
 </div>
+```
 
+- 使用`[{}]`语法来接收父页面传递的 slot 配置。
+
+```html
 <div class="text-blue-200">[{link}]</div>
 
 <div class="text-red-200">[{item}]</div>
@@ -336,7 +371,7 @@
 
 比如上面的`$articles`就对应变量定义中的以下部分，它定义了一个文章列表的变量，而这个变量的值是过调用 yao 的处理器的返回值。以`$`开头变量说明需要调用处理器并返回数据。
 
-处理器的调用方式也有两种：1，没有参数的，直接配置成`key:value`的形式，需要参数的，配置成`key:object`的方式。
+处理器的调用方式也有两种：1，隐式参数传递，直接配置成`key:value`的形式
 
 ```json
 {
@@ -344,13 +379,19 @@
 }
 ```
 
-处理器调用还有另外一种形式：
-
-比如：对象本身没有包含 key 键，这里无法使用前缀`$`,这时就需要设置`__exec=true`来说明此对象是一个处理器调用。
+处理器调用还有另外一种形式，配置成`key:object`的方式。
 
 ```json
-{ "process": "scripts.article.Thumbs", "args": ["$query.show"], "__exec": true }
+{
+  "articles": {
+    "process": "scripts.article.Thumbs", //process处理器名称，必要的设置
+    "args": ["$query.show"], //处理器参数
+    "__exec": true //设置`__exec=true`来说明此对象是一个处理器调用。
+  }
+}
 ```
+
+- 使用 request 对象作为处理器的参数。
 
 在处理器中，可以通过变量的方法引用 url 参数，类似于 api 定义与使用方法。
 
@@ -360,6 +401,89 @@
 - `$header` url header 中的变量
 - `$param` url 请求参数
 - `$payload` post 请求中的 payload
+
+在调用处理器时，隐式绑定处理器的参数。
+
+```json
+{
+  "$object": "scripts.demo.process"
+}
+```
+
+或是显式绑定：
+
+```json
+{
+  "$object": {
+    "process": "scripts.demo.process",
+    "args": ["$header.key"]
+  }
+}
+```
+
+```json
+{
+  "object": {
+    "process": "scripts.demo.process",
+    "args": ["$header.key"],
+    "__exec": true
+  }
+}
+```
+
+在处理器中可以把请求中的对象绑定到处理器的参数：
+
+```go
+{
+		"param":   r.Params,//object,url请求参数
+		"query":   r.Query,//object url查询请求参数
+		"payload": map[string]interface{}{},//post请求的payload
+		"header":  r.Headers,//object 请求header信息
+		"theme":   r.Theme,//string主题信息
+		"locale":  r.Locale,//string 本地化信息
+		"url":     r.URL.Map(),//url对象。
+}
+
+```
+
+URL 子对象定义
+
+```go
+{
+	Host   string `json:"host,omitempty"`
+	Domain string `json:"domain,omitempty"`
+	Path   string `json:"path,omitempty"`
+	Scheme string `json:"scheme,omitempty"`
+	URL    string `json:"url,omitempty"`
+}
+```
+
+同样可以在数组中调用处理器
+
+```json
+{
+  "$articles": "scripts.article.Search", //有$前缀，说明是处理器
+  "$showImage": {
+    //有$前缀，说明是处理器，不需要设置__exec=true
+    "process": "scripts.article.ShowImage",
+    "args": ["$query.show"]
+  },
+  "length": 20,
+  "array": [
+    "item-1",
+    "$scripts.article.Setting", //有$前缀，说明是处理器
+    { "$images": "scripts.article.Images" }, //有$前缀，说明是处理器
+    {
+      //在数组中，没办法设置$,需要使用__exec=true
+      "process": "scripts.article.Thumbs",
+      "args": ["$query.show"],
+      "__exec": true
+    }
+  ],
+  "input": { "data": "hello world" },
+  "url": { "path": "$url.path" } //不是处理器，也可以替换绑定变量
+}
+```
 
 ## 设计器使用 mock 数据
 
@@ -401,3 +525,7 @@ type PageMock struct {
 ## 示例源代码
 
 在 yao-admin-admin 项目中实现了简单的博客[yao-amis-admin](https://github.com/wwsheng009/yao-amis-admin)。
+
+```
+
+```

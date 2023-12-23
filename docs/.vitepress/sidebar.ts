@@ -136,8 +136,8 @@ export default {
       link: '/ChatGPT/使用ChatGPT开发YAO应用',
     },
     {
-      text: 'ai列表',
-      link: '/ChatGPT/ai列表',
+      text: 'ai模型列表',
+      link: '/ChatGPT/ai模型列表',
     },
     {
       text: 'Vscode编辑器使用插件快速开发模型',
@@ -158,6 +158,10 @@ export default {
         {
           text: 'model_with_relations',
           link: '/ChatGPT/Prompts/model_with_relations',
+        },
+        {
+          text: 'Prompt工程',
+          link: '/ChatGPT/Prompts/Prompt工程',
         },
       ],
       link: '/ChatGPT/Prompts/',
