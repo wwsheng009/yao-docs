@@ -561,12 +561,12 @@ export default {
           link: '/YaoDSL/Plugin/飞书自定义登录',
         },
         {
-          text: '外部插件',
-          link: '/YaoDSL/Plugin/外部插件',
-        },
-        {
           text: 'golang grpc 插件模板',
           link: '/YaoDSL/Plugin/golang grpc 插件模板',
+        },
+        {
+          text: 'grpc插件',
+          link: '/YaoDSL/Plugin/grpc插件',
         },
       ],
       link: '/YaoDSL/Plugin/',
