@@ -8,7 +8,7 @@
 
 - 使用 Yao-Init 初始化工具构建您的第一个 Yao 项目，让自己对 Yao 有一个感性的认识。[初始化项目入口](https://github.com/wwsheng009/yao-init-0.10.3)。
 
-- 创建您的第一个模型文件。在目录/models 下参考 pet.mod.json 创建你的模型，初始阶段模型定义尽可能的简单。如果你的电脑环境可以使用 ChatGPT,可以让参考这里：[使用`ChatGPT`开发`Yao`应用](../ChatGPT/%E4%BD%BF%E7%94%A8ChatGPT%E5%BC%80%E5%8F%91YAO%E5%BA%94%E7%94%A8.md)
+- 创建您的第一个模型文件。在目录/models 下参考 pet.mod.json 创建你的模型，初始阶段模型定义尽可能的简单。如果你的电脑环境可以使用 ChatGPT,可以让参考这里：[使用`ChatGPT`开发`Yao`应用](../AI/ChatGPT/%E4%BD%BF%E7%94%A8ChatGPT%E5%BC%80%E5%8F%91YAO%E5%BA%94%E7%94%A8.md)
 
 - 完成上一步后，你得到系统自动创建的界面配置。你可以尝试手工编写[编写界面](https://yaoapps.com/doc/%E5%9F%BA%E7%A1%80/%E7%BC%96%E5%86%99%E7%95%8C%E9%9D%A2)，进行更复杂的界面功能配置。
 

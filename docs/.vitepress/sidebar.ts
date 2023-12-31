@@ -130,41 +130,52 @@ export default {
       link: '/Admin-App/Amis/',
     },
   ],
-  '/ChatGPT/': [
+  '/AI/': [
     {
-      text: '使用ChatGPT开发YAO应用',
-      link: '/ChatGPT/使用ChatGPT开发YAO应用',
+      text: '使用postgresql保存Embedding',
+      link: '/AI/使用postgresql保存Embedding',
     },
     {
       text: 'ai模型列表',
-      link: '/ChatGPT/ai模型列表',
+      link: '/AI/ai模型列表',
     },
     {
-      text: 'Vscode编辑器使用插件快速开发模型',
-      link: '/ChatGPT/Vscode编辑器使用插件快速开发模型',
-    },
-    {
-      text: 'Prompts',
+      text: 'ChatGPT',
       collapsed: true,
       items: [
         {
-          text: 'ChatGPT生成模型模板',
-          link: '/ChatGPT/Prompts/ChatGPT生成模型模板',
+          text: '使用ChatGPT开发YAO应用',
+          link: '/AI/ChatGPT/使用ChatGPT开发YAO应用',
         },
         {
-          text: 'model_without_relations',
-          link: '/ChatGPT/Prompts/model_without_relations',
+          text: 'Vscode编辑器使用插件快速开发模型',
+          link: '/AI/ChatGPT/Vscode编辑器使用插件快速开发模型',
         },
         {
-          text: 'model_with_relations',
-          link: '/ChatGPT/Prompts/model_with_relations',
-        },
-        {
-          text: 'Prompt工程',
-          link: '/ChatGPT/Prompts/Prompt工程',
+          text: 'Prompts',
+          collapsed: true,
+          items: [
+            {
+              text: 'ChatGPT生成模型模板',
+              link: '/AI/ChatGPT/Prompts/ChatGPT生成模型模板',
+            },
+            {
+              text: 'model_without_relations',
+              link: '/AI/ChatGPT/Prompts/model_without_relations',
+            },
+            {
+              text: 'model_with_relations',
+              link: '/AI/ChatGPT/Prompts/model_with_relations',
+            },
+            {
+              text: 'Prompt工程',
+              link: '/AI/ChatGPT/Prompts/Prompt工程',
+            },
+          ],
+          link: '/AI/ChatGPT/Prompts/',
         },
       ],
-      link: '/ChatGPT/Prompts/',
+      link: '/AI/ChatGPT/',
     },
   ],
   '/Studio/': [

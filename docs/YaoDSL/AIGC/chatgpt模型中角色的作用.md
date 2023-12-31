@@ -63,13 +63,23 @@ stream 模式下的数据格式：
 
 原始数据：
 
-```text
-data: {"id":"chatcmpl-8KLHFd0wez62XH6UOxs2mGV0JUD68","object":"chat.completion.chunk","created":1699859041,"model":"gpt-3.5-turbo-0613","choices":[{"index":0,"delta":{"content":"吗"},"finish_reason":null}]}
+```json
+{
+  "data": {
+    "id": "chatcmpl-8KLHFd0wez62XH6UOxs2mGV0JUD68",
+    "object": "chat.completion.chunk",
+    "created": 1699859041,
+    "model": "gpt-3.5-turbo-0613",
+    "choices": [
+      { "index": 0, "delta": { "content": "吗" }, "finish_reason": null }
+    ]
+  }
+}
 ```
 
 如果是结束,固定返回以下内容
 
-```text
+```md
 data: [DONE]
 ```
 

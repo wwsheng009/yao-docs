@@ -1,6 +1,6 @@
 # 使用`VSCODE`编辑器的插件快速开发`Yao`模型
 
-AI 时代已经到来~,`yao`通过这种元数据配置编程理念恰好适合 ChatGPT 来搞。之前有写过另外一笔记[使用`ChatGPT`开发`Yao`应用](%E4%BD%BF%E7%94%A8ChatGPT%E5%BC%80%E5%8F%91YAO%E5%BA%94%E7%94%A8.md)。使用上还是不太方便，需要手动复制大段的文字到聊天框。处理后再还需要复制一次。借助`vscode`编辑器的`ChatGPT`插件，开发起来会更加方便。
+AI 时代已经到来~,`yao`通过这种元数据配置编程理念恰好适合 ChatGPT 来搞。之前有写过另外一笔记[使用`ChatGPT`开发`Yao`应用](./使用ChatGPT开发YAO应用.md)。使用上还是不太方便，需要手动复制大段的文字到聊天框。处理后再还需要复制一次。借助`vscode`编辑器的`ChatGPT`插件，开发起来会更加方便。
 
 在起飞之前首先需要作些准备工作：
 
@@ -64,7 +64,7 @@ yao start
 
 ![](./vscode_quick_dev/vscode_create_new_model.png)
 
-- 生成的文件基本上是可以满足要求的，有些字段显示黄色，说明这个字段不符合`Yao`的`DSL`语法。删除或是忽略即可。`yao-init`项目已经配置好了[编辑器`vscode`智能提示](../Studio/%E7%BC%96%E8%BE%91%E5%99%A8vscode%E6%99%BA%E8%83%BD%E6%8F%90%E7%A4%BA.md)
+- 生成的文件基本上是可以满足要求的，有些字段显示黄色，说明这个字段不符合`Yao`的`DSL`语法。删除或是忽略即可。`yao-init`项目已经配置好了[编辑器`vscode`智能提示](../../Studio/%E7%BC%96%E8%BE%91%E5%99%A8vscode%E6%99%BA%E8%83%BD%E6%8F%90%E7%A4%BA.md)
 
 - 除了生成一个完整的模型，你还可以让`ChatGPT`参考现有的字段定义生成新的字段，这需要发挥你的聪明才智了。
 
@@ -76,7 +76,7 @@ yao start
 yao migrate
 ```
 
-使用`Studio`脚本生成`table/form`定义文件。Studio 脚本的更多使用方法参考：[自动生成 table_form 定义文件](../Studio/%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90table_form%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6.md)
+使用`Studio`脚本生成`table/form`定义文件。Studio 脚本的更多使用方法参考：[自动生成 table_form 定义文件](../../Studio/%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90table_form%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6.md)
 
 ```sh
 yao studio run init.CreateTableAndForm hospital

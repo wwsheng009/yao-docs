@@ -5,8 +5,8 @@ export default [
     link: '/Admin-App/index',
   },
   {
-    text: 'ChatGPT',
-    link: '/ChatGPT/index',
+    text: 'AI',
+    link: '/AI/index',
   },
   {
     text: 'Studio',
