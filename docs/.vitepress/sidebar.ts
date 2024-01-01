@@ -148,6 +148,10 @@ export default {
           link: '/AI/ChatGPT/使用ChatGPT开发YAO应用',
         },
         {
+          text: '使用gpt4助手创建模型定义',
+          link: '/AI/ChatGPT/使用gpt4助手创建模型定义',
+        },
+        {
           text: 'Vscode编辑器使用插件快速开发模型',
           link: '/AI/ChatGPT/Vscode编辑器使用插件快速开发模型',
         },
@@ -896,6 +900,10 @@ export default {
         {
           text: 'Mysql数据库事务',
           link: '/源代码/Xun/Mysql数据库事务',
+        },
+        {
+          text: 'PG数据库增加自定义类型',
+          link: '/源代码/Xun/PG数据库增加自定义类型',
         },
         {
           text: 'sqlite数据库bug',
