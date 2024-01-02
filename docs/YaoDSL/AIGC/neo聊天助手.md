@@ -224,7 +224,9 @@ type Command struct {
 
 ```
 
-### yao api 响应处理过程
+## yao api 响应处理过程
+
+### 登录认证
 
 聊天 token 认证处理器 guard,它的作用是从 token 中解析出用户的上下文 id,如果是在 xgen 框架中使用，这个 token 会自动的带上，如果是别的外部调用，需要手动处理。最重要的是`__sid`,这个参数可以作为与 ai 对接的上下文关联会话标识 session id。而`__global`参数是在生成 jwt 令牌时插入的数据。
 
@@ -244,3 +246,32 @@ function Chat(path, params, query, payload, headers) {
   return { __sid: data.sid, __global: data.data };
 }
 ```
+
+### 聊天会话
+
+openai 的接口请求是没有记忆聊天的历史的，这里需要使用本地数据库表保存上一次的聊天信息，在下一次的接口请求中把之前的聊天信息也带上，形成了聊天会话的效果。
+
+本地数据库表的配置名称是`conversation.table`。数据库表如果不存在，会自动的创建。
+
+### 聊天信息钩子
+
+通过配置处理器`prepare`,可以在发送数据给 openai 接口之前，读取本地的向量数据库或是其它的额外处理。
+
+这个处理器需要返回以下结构的信息
+
+```json
+[
+  {
+    "role": "system", //角色一般会设置成system，代表是一个提示信息
+    "content": ""
+  },
+  {
+    "role": "system",
+    "content": ""
+  }
+]
+```
+
+### 命令
+
+如果消息中包含了处理命令，还会检查并调用本地命令处理器。

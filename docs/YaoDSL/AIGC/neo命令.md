@@ -51,7 +51,7 @@ name: Generate test data for the table
 use: data
 # 连接器定义
 connector: gpt-3_5-turbo
-# 用户确认或是直接执行的处理器。
+# 用户确认后再执行，或是无需确认，直接执行的处理器。
 process: scripts.table.Data
 # 处理器的参数类型与说明
 args:
@@ -60,7 +60,7 @@ args:
     description: The data sets to generate
     required: true # 表示参数是必须的，如果不存在会报错
     default: []
-# 命令执行成功后，在xgen上执行的命令，比如这里数据生成后，在xgen界面上自动刷新。
+# 命令执行成功后，在xgen上执行的回调命令，比如这里数据生成后，在xgen界面上自动刷新。
 actions:
   - name: TableSearch
     type: 'Table.search'
