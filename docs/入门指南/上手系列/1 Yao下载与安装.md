@@ -1,5 +1,7 @@
 # yao 下载与安装
 
+如何安装 Yao
+
 这里说的 Yao 是指 Yao 引擎的执行程序。安装 Yao 只需要下载一个执行程序就可以了。
 
 参考[安装调试](https://yaoapps.com/doc/%E4%BB%8B%E7%BB%8D/%E5%AE%89%E8%A3%85%E8%B0%83%E8%AF%95)

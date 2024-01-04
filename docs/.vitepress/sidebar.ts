@@ -541,6 +541,10 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '定义一个业务模型',
+          link: '/YaoDSL/Model/定义一个业务模型',
+        },
+        {
           text: '定义多对一关联关系',
           link: '/YaoDSL/Model/定义多对一关联关系',
         },

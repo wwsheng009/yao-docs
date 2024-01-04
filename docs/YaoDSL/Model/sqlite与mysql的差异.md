@@ -3,7 +3,7 @@ author: Vincent Wang
 contributors: [AbbetWang]
 ---
 
-# MYSQL 与 SQLITE
+# 在 Yao 中使用 MySQL 与 SQLITE
 
 `MYSQL`与`SQLITE`数据库在某些场景有不一致的风险,开发与生产最好使用同一类型的数据库。
 
