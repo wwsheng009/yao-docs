@@ -8,18 +8,18 @@ import nav from './nav';
 import socialLinks from './link';
 import algolia from './algolia';
 
-const pages_host = process.env.PAGES_HOST;
+// const pages_host = process.env.PAGES_HOST;
 let base = '/yao-docs/';
-if (pages_host == 'CLOUDFLARE') {
-  base = '/';
-}
+// if (pages_host == 'CLOUDFLARE') {
+//   base = '/';
+// }
 
 export default withPwa(
   defineConfig({
     base: base,
     lang: 'zh-CN',
     pwa,
-    outDir: '../dist',
+    outDir: '../dist/yao-docs',
     title: name,
     description,
     lastUpdated: true,

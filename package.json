@@ -10,7 +10,7 @@
     "build:index": "tsx scripts/cleanup.ts && tsx scripts/generate_index.ts",
     "generate": "pnpm run build:index && tsx scripts/generate.ts && npm run prettier -- ./docs/.vitepress/ --write",
     "dev": "pnpm run generate && vitepress dev docs --host",
-    "build": "pnpm run generate && vitepress build docs",
+    "build": "pnpm run generate && vitepress build docs && tsx scripts/postbuild.ts",
     "serve": "vitepress serve docs",
     "lint": "eslint --cache .",
     "lint:fix": "nr lint --fix",

@@ -45,7 +45,7 @@ jobs:
       - uses: actions/configure-pages@v2
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: ./dist
+          path: ./dist/yao-docs
 
       - name: Deploy
         id: deployment
