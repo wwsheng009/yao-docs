@@ -26,7 +26,8 @@ aigc 处理器是在 yao 中实现的直接与 openai 接口交互的处理器�
   "type": "openai", //类型一定是openai
   "options": {
     "model": "gpt-3.5-turbo",
-    "key": "$ENV.OPENAI_KEY"
+    "key": "$ENV.OPENAI_KEY",
+    "proxy": "$ENV.OPENAI_AIP_HOST"
   }
 }
 ```
@@ -36,6 +37,10 @@ aigc 处理器是在 yao 中实现的直接与 openai 接口交互的处理器�
 - model 是 openai 语言模型
 
 - key 是你的 openai 接口访问 key,可以在环境变量中配置，这个 key 不要上传到 github 上，被检测出来后 key 很快就会失效。可以把 key 配置在环境变量中，再在配置文件中使用`$ENV.`语法进行引用。
+
+- proxy 使用 api.openai.com 的代理地址
+
+以上几个配置支持使用环境变量，即是可以使用`$ENV.<ENV_XXX>`来配置，特别是 OPENAI_KEY，一定要使用环境变量，避免泄露。
 
 ```go
 
