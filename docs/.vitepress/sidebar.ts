@@ -264,6 +264,10 @@ export default {
           link: '/ui/Xgen/Hook参数说明',
         },
         {
+          text: 'xgen命令汇总',
+          link: '/ui/Xgen/xgen命令汇总',
+        },
+        {
           text: 'xgen登录过程',
           link: '/ui/Xgen/xgen登录过程',
         },
@@ -279,6 +283,10 @@ export default {
           text: 'Form',
           collapsed: true,
           items: [
+            {
+              text: 'AI智能表单',
+              link: '/ui/Xgen/Form/AI智能表单',
+            },
             {
               text: 'Form使用技巧',
               link: '/ui/Xgen/Form/Form使用技巧',
