@@ -13,8 +13,8 @@ export default [
     link: '/Studio/index',
   },
   {
-    text: 'ui',
-    link: '/ui/index',
+    text: 'UI',
+    link: '/UI/index',
   },
   {
     text: 'YaoDSL',

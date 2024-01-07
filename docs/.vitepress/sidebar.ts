@@ -223,25 +223,25 @@ export default {
       link: '/Studio/Yao-admin/',
     },
   ],
-  '/ui/': [
+  '/UI/': [
     {
-      text: 'sui',
+      text: 'Sui',
       collapsed: true,
       items: [
         {
           text: '使用builder创建sui页面',
-          link: '/ui/sui/使用builder创建sui页面',
+          link: '/UI/Sui/使用builder创建sui页面',
         },
         {
           text: '使用sui搭建网站',
-          link: '/ui/sui/使用sui搭建网站',
+          link: '/UI/Sui/使用sui搭建网站',
         },
         {
           text: 'sui',
-          link: '/ui/sui/sui',
+          link: '/UI/Sui/sui',
         },
       ],
-      link: '/ui/sui/',
+      link: '/UI/Sui/',
     },
     {
       text: 'Xgen',
@@ -249,35 +249,35 @@ export default {
       items: [
         {
           text: '0.10.2与0.10.3差异',
-          link: '/ui/Xgen/0.10.2与0.10.3差异',
+          link: '/UI/Xgen/0.10.2与0.10.3差异',
         },
         {
           text: '菜单结构',
-          link: '/ui/Xgen/菜单结构',
+          link: '/UI/Xgen/菜单结构',
         },
         {
           text: '系统默认的用户名',
-          link: '/ui/Xgen/系统默认的用户名',
+          link: '/UI/Xgen/系统默认的用户名',
         },
         {
           text: 'Hook参数说明',
-          link: '/ui/Xgen/Hook参数说明',
+          link: '/UI/Xgen/Hook参数说明',
         },
         {
           text: 'xgen命令汇总',
-          link: '/ui/Xgen/xgen命令汇总',
+          link: '/UI/Xgen/xgen命令汇总',
         },
         {
           text: 'xgen登录过程',
-          link: '/ui/Xgen/xgen登录过程',
+          link: '/UI/Xgen/xgen登录过程',
         },
         {
           text: 'xgen远程onChange事件',
-          link: '/ui/Xgen/xgen远程onChange事件',
+          link: '/UI/Xgen/xgen远程onChange事件',
         },
         {
           text: 'Xgen多语言支持',
-          link: '/ui/Xgen/Xgen多语言支持',
+          link: '/UI/Xgen/Xgen多语言支持',
         },
         {
           text: 'Form',
@@ -285,26 +285,26 @@ export default {
           items: [
             {
               text: 'AI智能表单',
-              link: '/ui/Xgen/Form/AI智能表单',
+              link: '/UI/Xgen/Form/AI智能表单',
             },
             {
               text: 'Form使用技巧',
-              link: '/ui/Xgen/Form/Form使用技巧',
+              link: '/UI/Xgen/Form/Form使用技巧',
             },
             {
               text: 'Form单据参考创建',
-              link: '/ui/Xgen/Form/Form单据参考创建',
+              link: '/UI/Xgen/Form/Form单据参考创建',
             },
             {
               text: 'Form里嵌套List',
-              link: '/ui/Xgen/Form/Form里嵌套List',
+              link: '/UI/Xgen/Form/Form里嵌套List',
             },
             {
               text: 'Form里嵌套Table',
-              link: '/ui/Xgen/Form/Form里嵌套Table',
+              link: '/UI/Xgen/Form/Form里嵌套Table',
             },
           ],
-          link: '/ui/Xgen/Form/',
+          link: '/UI/Xgen/Form/',
         },
         {
           text: 'Neo',
@@ -312,10 +312,10 @@ export default {
           items: [
             {
               text: 'neo嵌入业务指令',
-              link: '/ui/Xgen/Neo/neo嵌入业务指令',
+              link: '/UI/Xgen/Neo/neo嵌入业务指令',
             },
           ],
-          link: '/ui/Xgen/Neo/',
+          link: '/UI/Xgen/Neo/',
         },
         {
           text: 'Table',
@@ -323,42 +323,42 @@ export default {
           items: [
             {
               text: 'TableA跳转到FormB',
-              link: '/ui/Xgen/Table/TableA跳转到FormB',
+              link: '/UI/Xgen/Table/TableA跳转到FormB',
             },
             {
               text: 'Table_Form禁用Action',
-              link: '/ui/Xgen/Table/Table_Form禁用Action',
+              link: '/UI/Xgen/Table/Table_Form禁用Action',
             },
             {
               text: 'Table上使用Tab',
-              link: '/ui/Xgen/Table/Table上使用Tab',
+              link: '/UI/Xgen/Table/Table上使用Tab',
             },
             {
               text: 'Table中设置字段只读',
-              link: '/ui/Xgen/Table/Table中设置字段只读',
+              link: '/UI/Xgen/Table/Table中设置字段只读',
             },
             {
               text: 'Table使用技巧',
-              link: '/ui/Xgen/Table/Table使用技巧',
+              link: '/UI/Xgen/Table/Table使用技巧',
             },
             {
               text: 'Table增加查看，编辑，删除按钮',
-              link: '/ui/Xgen/Table/Table增加查看，编辑，删除按钮',
+              link: '/UI/Xgen/Table/Table增加查看，编辑，删除按钮',
             },
             {
               text: 'Table搜索默认值',
-              link: '/ui/Xgen/Table/Table搜索默认值',
+              link: '/UI/Xgen/Table/Table搜索默认值',
             },
             {
               text: 'Table最小化配置',
-              link: '/ui/Xgen/Table/Table最小化配置',
+              link: '/UI/Xgen/Table/Table最小化配置',
             },
             {
               text: 'Table界面上增加创建按钮',
-              link: '/ui/Xgen/Table/Table界面上增加创建按钮',
+              link: '/UI/Xgen/Table/Table界面上增加创建按钮',
             },
           ],
-          link: '/ui/Xgen/Table/',
+          link: '/UI/Xgen/Table/',
         },
         {
           text: 'Xgen控件',
@@ -366,55 +366,55 @@ export default {
           items: [
             {
               text: '菜单配置',
-              link: '/ui/Xgen/Xgen控件/菜单配置',
+              link: '/UI/Xgen/Xgen控件/菜单配置',
             },
             {
               text: '禁用编辑控件',
-              link: '/ui/Xgen/Xgen控件/禁用编辑控件',
+              link: '/UI/Xgen/Xgen控件/禁用编辑控件',
             },
             {
               text: '控件onSelect回调',
-              link: '/ui/Xgen/Xgen控件/控件onSelect回调',
+              link: '/UI/Xgen/Xgen控件/控件onSelect回调',
             },
             {
               text: '设置控件的必输属性',
-              link: '/ui/Xgen/Xgen控件/设置控件的必输属性',
+              link: '/UI/Xgen/Xgen控件/设置控件的必输属性',
             },
             {
               text: '使用Hook转换日期控件的值',
-              link: '/ui/Xgen/Xgen控件/使用Hook转换日期控件的值',
+              link: '/UI/Xgen/Xgen控件/使用Hook转换日期控件的值',
             },
             {
               text: '视频上传',
-              link: '/ui/Xgen/Xgen控件/视频上传',
+              link: '/UI/Xgen/Xgen控件/视频上传',
             },
             {
               text: '图片控件',
-              link: '/ui/Xgen/Xgen控件/图片控件',
+              link: '/UI/Xgen/Xgen控件/图片控件',
             },
             {
               text: '文件上传UploadFile',
-              link: '/ui/Xgen/Xgen控件/文件上传UploadFile',
+              link: '/UI/Xgen/Xgen控件/文件上传UploadFile',
             },
             {
               text: '远程select控件',
-              link: '/ui/Xgen/Xgen控件/远程select控件',
+              link: '/UI/Xgen/Xgen控件/远程select控件',
             },
             {
               text: 'Switch控件',
-              link: '/ui/Xgen/Xgen控件/Switch控件',
+              link: '/UI/Xgen/Xgen控件/Switch控件',
             },
             {
               text: 'Upload在List下视频样式错乱',
-              link: '/ui/Xgen/Xgen控件/Upload在List下视频样式错乱',
+              link: '/UI/Xgen/Xgen控件/Upload在List下视频样式错乱',
             },
             {
               text: 'Xgen登录界面邮件电话校验规则',
-              link: '/ui/Xgen/Xgen控件/Xgen登录界面邮件电话校验规则',
+              link: '/UI/Xgen/Xgen控件/Xgen登录界面邮件电话校验规则',
             },
             {
               text: 'Xgen自定义远程控件',
-              link: '/ui/Xgen/Xgen控件/Xgen自定义远程控件',
+              link: '/UI/Xgen/Xgen控件/Xgen自定义远程控件',
             },
             {
               text: 'RichText富文本控件',
@@ -422,16 +422,16 @@ export default {
               items: [
                 {
                   text: '使用富文本控件',
-                  link: '/ui/Xgen/Xgen控件/RichText富文本控件/使用富文本控件',
+                  link: '/UI/Xgen/Xgen控件/RichText富文本控件/使用富文本控件',
                 },
               ],
-              link: '/ui/Xgen/Xgen控件/RichText富文本控件/',
+              link: '/UI/Xgen/Xgen控件/RichText富文本控件/',
             },
           ],
-          link: '/ui/Xgen/Xgen控件/',
+          link: '/UI/Xgen/Xgen控件/',
         },
       ],
-      link: '/ui/Xgen/',
+      link: '/UI/Xgen/',
     },
   ],
   '/YaoDSL/': [
@@ -643,6 +643,17 @@ export default {
         },
       ],
       link: '/YaoDSL/Store/',
+    },
+    {
+      text: 'Task',
+      collapsed: true,
+      items: [
+        {
+          text: '使用任务',
+          link: '/YaoDSL/Task/使用任务',
+        },
+      ],
+      link: '/YaoDSL/Task/',
     },
     {
       text: 'v8go',

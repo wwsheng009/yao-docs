@@ -8,5 +8,6 @@
 - [Plugin](Plugin/index)
 - [Query](Query/index)
 - [Store](Store/index)
+- [Task](Task/index)
 - [v8go](v8go/index)
 - [Widget](Widget/index)
