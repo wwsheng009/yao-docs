@@ -1,12 +1,15 @@
-# 开发过程中的一些问题与技巧收集
+# 记录Yao应用开发过程中的一些问题与经验
 
 收集的一些与 Yao 开发相关的文档，文档使用`vitepress`制作，并自动发布到`github page`上。直接访问地址：
 
 [https://wwsheng009.github.io/yao-docs](https://wwsheng009.github.io/yao-docs)
 
+cf pages 地址：
+[https://yao-docs.wwsheng.cloud](https://yao-docs.wwsheng.cloud/)
+
 ## 文档编写与构建
 
-文档使用`markdown`格式编写。存放目录`/docs`。
+文档使用`markdown`格式编写，新建的文档存放在目录`/docs`。
 
 在文档发布之前先本地构建一次检查有没有错误。
 
