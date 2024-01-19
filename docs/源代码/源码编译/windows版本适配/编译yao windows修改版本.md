@@ -4,13 +4,22 @@
 
 ## 前提条件
 
-需要安装 mingw64，需要使用 gcc 编译 v8go-0.6,安装教程请在网上搜索。
+需要安装 mingw64。下载地址：https://www.msys2.org/。
 
-https://www.mingw-w64.org/downloads/
+下载msys2-x86_64-*.exe，并安装msys2到目录`E:\msys64`，这个目录根据实际修改。
+
+在安装后，在安装目录里找到`E:\msys64\mingw64.exe`，执行程序。。
+
+在命令容器输入：`pacman -S mingw-w64-x86_64-gcc` 或是安装`pacman -S mingw-w64-x86_64-toolchain`。
+
+**一定要是mingw,不要安装其它的gcc工具**
+
+把mingw64 gcc的执行目录：`E:\msys64\mingw64\bin`写入系统环境变量目录
+
 
 ## 安装 go
 
-下载 1.20 版本的 go
+下载 1.20 以上版本的 go
 
 https://golang.google.cn/dl/
 
