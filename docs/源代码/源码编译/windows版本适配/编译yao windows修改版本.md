@@ -6,16 +6,15 @@
 
 需要安装 mingw64。下载地址：https://www.msys2.org/。
 
-下载msys2-x86_64-*.exe，并安装msys2到目录`E:\msys64`，这个目录根据实际修改。
+下载 msys2-x86_64-\*.exe，并安装 msys2 到目录`E:\msys64`，这个目录根据实际修改。
 
 在安装后，在安装目录里找到`E:\msys64\mingw64.exe`，执行程序。。
 
 在命令容器输入：`pacman -S mingw-w64-x86_64-gcc` 或是安装`pacman -S mingw-w64-x86_64-toolchain`。
 
-**一定要是mingw,不要安装其它的gcc工具**
+**一定要是 mingw,不要安装其它的 gcc 工具**
 
-把mingw64 gcc的执行目录：`E:\msys64\mingw64\bin`写入系统环境变量目录
-
+把 mingw64 gcc 的执行目录：`E:\msys64\mingw64\bin`写入系统环境变量目录
 
 ## 安装 go
 

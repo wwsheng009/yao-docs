@@ -1,19 +1,17 @@
 # Compile `Yao` App From Sources
 
-
 ## system setup
 
 don't mount the windows driver in the wsl2 system. the driver performance is very slow.
 
-
 **Notice**:this is personal version build record. offical version please refer to [Yao Document](https://yaoapps.com/doc/%E4%B8%93%E5%AE%B6/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91).
 
 check the os glibc version,the target machine's glibc version should high then app-build machine.
+
 ```sh
 ldd --version
 ldd (GNU libc) 2.17
 ```
-
 
 ## ubuntu install dev tools
 
@@ -21,9 +19,7 @@ ldd (GNU libc) 2.17
 sudo apt install gcc g++ make -y
 ```
 
-
-
-## install go 
+## install go
 
 need to install the `go 1.20` and `node 16`.
 
@@ -52,7 +48,6 @@ export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 ```sh
 go install -a -v github.com/go-bindata/go-bindata/...@latest
 ```
-
 
 ## install `node 16`
 
@@ -110,6 +105,7 @@ echo "BASE=yao" > ../xgen-v1.0/packages/xgen/.env
 if error orrurs when building the v8go
 
 message:
+
 ```sh
 /v8go/deps/linux_x86_64/libv8.a: file format not recognized; treating as linker script
 /v8go/deps/linux_x86_64/libv8.a:1: syntax error
@@ -142,7 +138,6 @@ tar -zxvf ../yao-builder-latest.tar.gz -C ../yao-builder
 rm -rf ../yao-builder-latest.tar.gz
 
 ```
-
 
 ## build the yao application.
 

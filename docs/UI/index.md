@@ -1,4 +1,4 @@
 # UI
 
-- [Sui](Sui/index)
+- [sui](sui/index)
 - [Xgen](Xgen/index)

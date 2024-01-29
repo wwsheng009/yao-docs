@@ -192,3 +192,39 @@ Query DSL 示例:
   "groups": ["industries@", "city"]
 }
 ```
+
+## 复杂的 withs 条件
+
+withs 子查询也是一个 queryParam 类型的结构。
+
+在这里实现一个复杂的子表查询条件。
+
+```json
+function getField(entity, field) {
+  const [row] = Process("models.sys.entity.get", {
+    wheres: [
+      {
+        column: "name",
+        value: entity,
+      },
+    ],
+    withs: {
+      fields: {
+        query: { //这里注意要增加一个query节点
+          wheres: [
+            {
+              column: "name",
+              value: field,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  if (row.fields.length) {
+    return row.fields[0];
+  }
+  return {};
+}
+```

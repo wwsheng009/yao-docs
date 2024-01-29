@@ -225,23 +225,23 @@ export default {
   ],
   '/UI/': [
     {
-      text: 'Sui',
+      text: 'sui',
       collapsed: true,
       items: [
         {
           text: '使用builder创建sui页面',
-          link: '/UI/Sui/使用builder创建sui页面',
+          link: '/UI/sui/使用builder创建sui页面',
         },
         {
           text: '使用sui搭建网站',
-          link: '/UI/Sui/使用sui搭建网站',
+          link: '/UI/sui/使用sui搭建网站',
         },
         {
           text: 'sui',
-          link: '/UI/Sui/sui',
+          link: '/UI/sui/sui',
         },
       ],
-      link: '/UI/Sui/',
+      link: '/UI/sui/',
     },
     {
       text: 'Xgen',
