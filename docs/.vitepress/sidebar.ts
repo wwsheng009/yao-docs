@@ -280,6 +280,28 @@ export default {
           link: '/UI/Xgen/Xgen多语言支持',
         },
         {
+          text: 'Chart',
+          collapsed: true,
+          items: [
+            {
+              text: 'Chart钩子函数',
+              link: '/UI/Xgen/Chart/Chart钩子函数',
+            },
+          ],
+          link: '/UI/Xgen/Chart/',
+        },
+        {
+          text: 'Dashboard',
+          collapsed: true,
+          items: [
+            {
+              text: 'Dashboard钩子函数',
+              link: '/UI/Xgen/Dashboard/Dashboard钩子函数',
+            },
+          ],
+          link: '/UI/Xgen/Dashboard/',
+        },
+        {
           text: 'Form',
           collapsed: true,
           items: [
@@ -303,8 +325,23 @@ export default {
               text: 'Form里嵌套Table',
               link: '/UI/Xgen/Form/Form里嵌套Table',
             },
+            {
+              text: 'Form钩子函数',
+              link: '/UI/Xgen/Form/Form钩子函数',
+            },
           ],
           link: '/UI/Xgen/Form/',
+        },
+        {
+          text: 'List',
+          collapsed: true,
+          items: [
+            {
+              text: 'List钩子函数',
+              link: '/UI/Xgen/List/List钩子函数',
+            },
+          ],
+          link: '/UI/Xgen/List/',
         },
         {
           text: 'Neo',
@@ -321,6 +358,10 @@ export default {
           text: 'Table',
           collapsed: true,
           items: [
+            {
+              text: 'Table 钩子函数',
+              link: '/UI/Xgen/Table/Table 钩子函数',
+            },
             {
               text: 'TableA跳转到FormB',
               link: '/UI/Xgen/Table/TableA跳转到FormB',
