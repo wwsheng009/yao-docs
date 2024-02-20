@@ -284,6 +284,10 @@ export default {
           collapsed: true,
           items: [
             {
+              text: '图表类型',
+              link: '/UI/Xgen/Chart/图表类型',
+            },
+            {
               text: 'Chart钩子函数',
               link: '/UI/Xgen/Chart/Chart钩子函数',
             },
