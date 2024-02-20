@@ -57,7 +57,20 @@
 
 ## hook 函数参数
 
-before 处理器的输入参数与默认处理器输入参数保持一致，before 处理器输出返回值需要与默认处理器的**输入参数**保持一致。
+before 处理器的输入参数与默认处理器输入参数保持一致，before 处理器输出返回值需要与默认处理器的**输入参数**保持一致,由于 yao 处理器的特殊性，返回值如果不是 null,都需要返回数组。
+
+```js
+function beforeSave(payload) {
+  if (!payload.public_key && !payload.private_key) {
+    const keyObj = Process('plugins.license.create');
+    payload.public_key = keyObj.public_key;
+    payload.private_key = keyObj.private_key;
+    payload.key_hash = keyObj.key_hash;
+  }
+
+  return [payload]; //返回数组
+}
+```
 
 after 处理器的输入参数是默认处理器的返回值，after 处理器输出返回值需要与默认处理器的**输出参数**保持一致。
 

@@ -382,3 +382,80 @@ neo context 的定义
     signal: chat_context.signal//用户输入的任何对象
 }
 ```
+
+## Servcie
+
+在 action 中调用 service 函数
+
+```json
+{
+  "action": [
+    {
+      "name": "CreatePse",
+      "payload": {
+        "args": ["{{id}}"], //使用{{}}的语法传入参数
+        "method": "create"
+      },
+      "type": "Service.pse" //类型为service，pse对应services/pse.js文件
+    },
+    {
+      "name": "message",
+      "type": "Common.refetch", //重新加载内容
+      "payload": {}
+    },
+    {
+      "name": "message",
+      "type": "Common.showMessage",
+      "payload": {
+        "type": "[[$CreatePse.create_pse.result]]", //使用[[$name]]引用前面的action返回结果
+        "content": "[[$CreatePse.create_pse.result]]"
+      }
+    }
+  ],
+  "icon": "icon-arrow-left",
+  "showWhenAdd": true,
+  "title": "创建pse文件"
+}
+```
+
+js 文件`services/pse.js`
+
+```js
+function create(id) {
+  return Process('flows.sapsso.pse', id);
+}
+```
+
+## Common.historyPush
+
+historyPush 的 payload 参数定义如下：
+
+```ts
+interface HistoryPush {
+  pathname: string; //需要跳转的地址
+  search?: any; //类型为对象，搜索参数，即是query参数
+  public?: boolean; //是否公共网址，默认是在spa hash地址
+  refetch?: boolean; //刷新页面
+  withFilterQuery?: boolean; //是否使用筛选查询参数,只对列表界面的filter中的action生效，查询参数会接收筛选器的参数值
+}
+```
+
+```json
+{
+  "action": [
+    {
+      "name": "exportCrt",
+      "payload": {
+        "pathname": "/api/sapsso/exportcrt.crt",
+        "public": true,
+        "search": {
+          "id": "{{id}}"
+        }
+      },
+      "type": "Common.historyPush"
+    }
+  ],
+  "showWhenAdd": true,
+  "title": "导出crt文件"
+}
+```
