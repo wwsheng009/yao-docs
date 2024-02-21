@@ -43,6 +43,17 @@ export default {
       link: '/Admin-App/教程/',
     },
     {
+      text: 'amis-admin',
+      collapsed: true,
+      items: [
+        {
+          text: 'yao-odata-excel',
+          link: '/Admin-App/amis-admin/yao-odata-excel',
+        },
+      ],
+      link: '/Admin-App/amis-admin/',
+    },
+    {
       text: 'Amis',
       collapsed: true,
       items: [
