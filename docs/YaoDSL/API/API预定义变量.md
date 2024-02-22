@@ -26,13 +26,13 @@
 
 封装处理器：
 
-- yao.table.Get
-- yao.table.Search，对应的是 Paginate 处理器
-- yao.table.Find
+- yao.table.Get,搜索数据，返回数组
+- yao.table.Search，对应的是 Paginate 处理器,在搜索数据时，进行分页处理
+- yao.table.Find，根据 id 读取数据，返回对象
 - yao.table.UpdateWhere
 - yao.table.DeleteWhere
-- yao.list.Find
-- yao.form.Find
+- yao.list.Find,查找一条数据
+- yao.form.Find,form 查找一条数据
 - models.model_id.find
 - models.model_id.get
 - models.model_id.pagnate

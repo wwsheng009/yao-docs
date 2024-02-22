@@ -53,3 +53,23 @@ function testException() {
 let Exception = Error;
 throw new Exception(`模型:${modelName}不存在`);
 ```
+
+异常测试：
+
+```js
+var test = () => {
+  var res = 1;
+  try {
+    throw new Exception('hello', 404);
+  } catch (e) {
+    res = {
+      isError: e instanceof Error,
+      message: e.message, //一定要使用e.message获取错误文本
+      code: e.code, //404
+      name: e.name, //name的格式是：Exception|<code>
+    };
+  }
+  return res;
+};
+test();
+```
