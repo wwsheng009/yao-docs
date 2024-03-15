@@ -2,6 +2,8 @@
 
 替换 Dashboard 的默认处理器,可自定义 Dashboard 处理的过程
 
+注意：在钩子函数中报错或是 error 只会记录在日志文件里，不会影响整个流程。
+
 ## action
 
 - setting 默认处理器 "yao.dashboard.Setting"
