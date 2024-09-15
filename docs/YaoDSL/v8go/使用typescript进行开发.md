@@ -125,7 +125,7 @@ API 代理接口配置文件：`apis/proxy.http.json`
 }
 ```
 
-API 代理接口处理功能文件源代码`scripts/jsproxy.ts`
+API 代理接口处理功能文件源代码`scripts/jsproxy.ts`，代理 nodejs 的接口请求。
 
 ```ts
 //代理js api请求
@@ -154,9 +154,6 @@ export function Server(payload: {
   // console.log(payload);
   // log.Info("debug served called");
   // log.Info(payload);
-
-  // JSON.stringify({'a':null,'b':undefined})
-  // '{"a":null}'
 
   let resp = {
     code: 200 as number,
@@ -241,7 +238,7 @@ export function Server(payload: {
 }
 ```
 
-接口检查文件`scripts/security.ts`。
+接口检查文件`scripts/security.ts`，用于代理 api 权限检查。
 
 ```ts
 import { Exception, Process } from './__types/yao';
@@ -284,9 +281,16 @@ function error() {
 }
 ```
 
+环境变量配置文件`.env`。需要配置环境变量，要不然 nodejs 程序会报错。
+
+```sh
+YAO_APP_PROXY_ENDPOINT=http://localhost:5099/api/proxy/call
+YAO_API_ACCESS_KEY="1234"
+```
+
 ## YAO 内置对象的引用方法
 
-在脚本文件中使用以下的语法引用类型说明
+在 ts 脚本文件中使用以下的语法引用 yao 内置对象的类型声明。
 
 ```ts
 //使用别名
@@ -299,7 +303,7 @@ import { $L, FS, http, log } from './__types/yao';
 
 ## 编辑器准备
 
-在调试之前，代码编辑器准备，这里使用的是 vscode。
+在调试之前，还需要进行代码编辑器设置，在这里使用的代码编辑器是 vscode。
 
 `.vscode/lanch.json`
 
