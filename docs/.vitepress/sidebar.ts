@@ -251,6 +251,14 @@ export default {
           text: 'sui',
           link: '/UI/sui/sui',
         },
+        {
+          text: 'suid编译文件自动插入的内容',
+          link: '/UI/sui/suid编译文件自动插入的内容',
+        },
+        {
+          text: 'sui的命令工具',
+          link: '/UI/sui/sui的命令工具',
+        },
       ],
       link: '/UI/sui/',
     },
@@ -718,6 +726,14 @@ export default {
         {
           text: '后台异常执行作业',
           link: '/YaoDSL/v8go/后台异常执行作业',
+        },
+        {
+          text: '使用ts的注意事项',
+          link: '/YaoDSL/v8go/使用ts的注意事项',
+        },
+        {
+          text: '使用typescript进行开发',
+          link: '/YaoDSL/v8go/使用typescript进行开发',
         },
         {
           text: '小心字节处理',
