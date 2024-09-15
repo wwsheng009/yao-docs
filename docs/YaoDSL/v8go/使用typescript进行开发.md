@@ -334,3 +334,46 @@ import { $L, FS, http, log } from './__types/yao';
 ## 调试
 
 调试时直接选择需要调试的文件，点击 vscode 左边的调试按钮进行调用。
+
+## 单元测试
+
+使用 ts-jest 测试工具配置单元测试。
+
+安装 ts-jest。
+
+```sh
+pnpm i --save-dev jest ts-jest @types/jest
+```
+
+ts-jest 的使用参考：https://blog.csdn.net/gitblog_00725/article/details/141150601
+
+Jest 的配置文件:`jest.config.js`如下：
+
+```js
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node', // 可选择其他环境，如jsdom for browser-like tests
+  roots: ['<rootDir>/src'], // 指定查找源码的根目录
+  extensionsToTreatAsEsm: ['.ts', '.tsx'], // 处理为ESM模块的扩展名
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest', // 配置ts-jest转译器
+  },
+  coverageDirectory: '<rootDir>/coverage', // 覆盖率报告存放位置
+  collectCoverageFrom: ['**/*.{ts,tsx}', '!**/*.d.ts'], // 指定覆盖率收集规则
+};
+```
+
+更新 package.json 文件：
+
+```json
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
+```
+
+vscode 编辑器可以安装 jest 单元测试插件。
+
+**需要注意的是：在单元测试或是调试开始之前需要启动 yao 应用。**
