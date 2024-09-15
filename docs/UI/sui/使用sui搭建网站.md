@@ -511,14 +511,14 @@ function myscript(args) {}
 
 ```js
 
-  $query
-  $url.path
-  $url.host
-  $url.domain
-  $url.scheme
-  $header
-  $param.
-  $payload.
+  // $query
+  // $url.path
+  // $url.host
+  // $url.domain
+  // $url.scheme
+  // $header
+  // $param.
+  // $payload
 
 // header对象只能使用两级引用。
 		if strings.HasPrefix(v, "$header.") {
@@ -545,13 +545,13 @@ function myscript(args) {}
 
 URL 子对象定义
 
-```json
+```go
 {
-	"Host"
-	"Domain"
-	"Path"
-	"Scheme"
-	"URL"
+	Host   string `json:"host,omitempty"`
+	Domain string `json:"domain,omitempty"`
+	Path   string `json:"path,omitempty"`
+	Scheme string `json:"scheme,omitempty"`
+	URL    string `json:"url,omitempty"`
 }
 ```
 
@@ -644,7 +644,7 @@ js 文件有以下的作用。
 
 ```html
 <!-- 父组件或是页面 -->
-<div "is"="abc"> </div>
+<div is="abc"></div>
 
 <!-- 上面引用的组件会被编译，并以单独的代码块的方式嵌入 -->
 <!-- 如果需要脚本增强处理，可导入脚本配置 -->
@@ -658,7 +658,7 @@ js 文件有以下的作用。
 ```
 
 <!-- 嵌入后的组件，有s:cn标识说明是一个组件，组件的属性使用prop:xx来设置-->
-<div "s:cn"="comp_abc" "prop:k1"="xxx1"></div>
+<div s:cn="comp_abc" prop:k1="xxx1"></div>
 
 ### `BeforeRender`Hook,在页面渲染前的处理事件钩子。
 
