@@ -395,6 +395,13 @@ pnpm add eslint @eslint/js globals typescript-eslint eslint-plugin-vue @stylisti
 npx eslint --init
 ```
 
+另外在 vscode 中也可以 prettier 进行 ts 文件格式化。
+
+```sh
+pnpm install --save-dev --save-exact prettier
+pnpm install --save-dev eslint-plugin-prettier eslint-config-prettier
+```
+
 配置文件`eslint.config.mjs`：
 
 ```js
@@ -402,7 +409,7 @@ import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
-// import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default [
   {
@@ -413,14 +420,20 @@ export default [
   pluginJs.configs.recommended,
   /** ts推荐配置 */
   ...tseslint.configs.recommended,
-  stylistic.configs.customize({
-    indent: 2,
-    quotes: 'double',
-    semi: true,
-    jsx: false,
-    braceStyle: '1tbs',
-    arrowParens: 'always',
-  }),
+  // stylistic.configs.customize({
+  //   indent: 2,
+  //   quotes: 'double',
+  //   semi: true,
+  //   jsx: false,
+  //   braceStyle: '1tbs',
+  //   arrowParens: 'always',
+  // }),
+  {
+    plugins:{
+      '@stylistic': stylistic
+    }
+  }
+
   /**
    * javascript 规则
    */
@@ -443,11 +456,9 @@ export default [
    * 会合并根目录下的prettier.config.js 文件
    * @see https://prettier.io/docs/en/options
    */
-  // eslintPluginPrettierRecommended,
+  eslintPluginPrettierRecommended,
 ];
 ```
-
-另外在 vscode 中也可以 prettier 进行 ts 文件格式化。
 
 配置文件`prettier.config.js`：
 
