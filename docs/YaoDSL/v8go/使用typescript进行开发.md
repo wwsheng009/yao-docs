@@ -56,10 +56,11 @@ yao 引擎并不直接支持 ts/js 的调试。折衷的方式是使用 nodejs �
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.5.5",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
-    "@yaoapps/client": "npm:yao-node-client@^1.0.8"
+    "@yaoapps/client": "npm:yao-node-client@^1.1.0"
   }
 }
 ```
@@ -320,6 +321,12 @@ import { $L, FS, http, log } from './__types/yao';
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
       "program": "${file}",
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register",
+        "-r",
+        "tsconfig-paths/register"
+      ],
       "preLaunchTask": "tsc: build - tsconfig.json",
       "cwd": "${workspaceFolder}",
       "outFiles": [
@@ -374,6 +381,127 @@ module.exports = {
 }
 ```
 
-vscode 编辑器可以安装 jest 单元测试插件。
+## Eslint 安装
+
+vscode 编辑器可以安装 jest 单元测试插件。使用 eslint9.0 进行语法检查。
+
+```sh
+pnpm add eslint @eslint/js globals typescript-eslint eslint-plugin-vue @stylistic/eslint-plugin
+```
+
+执行以下命令初始 eslint 配置文件。
+
+```sh
+npx eslint --init
+```
+
+配置文件`eslint.config.mjs`：
+
+```js
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import stylistic from '@stylistic/eslint-plugin';
+// import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+
+export default [
+  {
+    ignores: ['node_modules', 'dist', 'public'],
+  },
+
+  /** js推荐配置 */
+  pluginJs.configs.recommended,
+  /** ts推荐配置 */
+  ...tseslint.configs.recommended,
+  stylistic.configs.customize({
+    indent: 2,
+    quotes: 'double',
+    semi: true,
+    jsx: false,
+    braceStyle: '1tbs',
+    arrowParens: 'always',
+  }),
+  /**
+   * javascript 规则
+   */
+  {
+    files: ['**/*.{js,mjs,cjs}'],
+    rules: {
+      'no-console': 'error',
+    },
+  },
+  { languageOptions: { globals: globals.browser } },
+  /**
+   * typescript 规则
+   */
+  {
+    files: ['**/*.{ts}'],
+    rules: {},
+  },
+  /**
+   * prettier 配置
+   * 会合并根目录下的prettier.config.js 文件
+   * @see https://prettier.io/docs/en/options
+   */
+  // eslintPluginPrettierRecommended,
+];
+```
+
+另外在 vscode 中也可以 prettier 进行 ts 文件格式化。
+
+配置文件`prettier.config.js`：
+
+```js
+// prettier.config.js
+/**
+ * @type {import('prettier').Config}
+ * @see https://www.prettier.cn/docs/options.html
+ */
+module.exports = {
+  // 一行最多 80 字符
+  printWidth: 80,
+  // 使用 4 个空格缩进
+  tabWidth: 2,
+  // 不使用 tab 缩进，而使用空格
+  useTabs: false,
+  // 行尾需要有分号
+  semi: true,
+  // 使用单引号代替双引号
+  singleQuote: true,
+  // 对象的 key 仅在必要时用引号
+  quoteProps: 'as-needed',
+  // jsx 不使用单引号，而使用双引号
+  jsxSingleQuote: false,
+  // 末尾使用逗号
+  trailingComma: 'all',
+  // 大括号内的首尾需要空格 { foo: bar }
+  bracketSpacing: true,
+  // jsx 标签的反尖括号需要换行
+  jsxBracketSameLine: false,
+  // 箭头函数，只有一个参数的时候，也需要括号
+  arrowParens: 'always',
+  // 每个文件格式化的范围是文件的全部内容
+  rangeStart: 0,
+  rangeEnd: Infinity,
+  // 不需要写文件开头的 @prettier
+  requirePragma: false,
+  // 不需要自动在文件开头插入 @prettier
+  insertPragma: false,
+  // 使用默认的折行标准
+  proseWrap: 'preserve',
+  // 根据显示样式决定 html 要不要折行
+  htmlWhitespaceSensitivity: 'css',
+  // 换行符使用 lf
+  endOfLine: 'auto',
+  experimentalTernaries: false,
+  bracketSameLine: false,
+  vueIndentScriptAndStyle: false,
+  singleAttributePerLine: false,
+};
+```
+
+参考：https://juejin.cn/post/7402696141495779363
 
 **需要注意的是：在单元测试或是调试开始之前需要启动 yao 应用。**
+
+完整的参考项目地址：https://github.com/wwsheng009/yao-init
