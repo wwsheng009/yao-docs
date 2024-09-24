@@ -41,7 +41,9 @@ yao 引擎并不直接支持 ts/js 的调试。折衷的方式是使用 nodejs �
 
 应用目录下 nodejs 项目管理文件`package.json`。
 特别注意的是在安装 yao-node-client 时使用包别名。
-对应的命令：`pnpm i "@yaoapps/client@npm:yao-node-client@^1.0.8" -D`
+对应的命令：`pnpm i "@yaoapps/client@npm:yao-node-client" -D`
+
+如果需要 yao 的类型说明，还可以加上`yao-app-ts-types`,`pnpm i "@yaoapps/types@npm:yao-app-ts-types" -D`
 
 ```json
 {
@@ -60,7 +62,8 @@ yao 引擎并不直接支持 ts/js 的调试。折衷的方式是使用 nodejs �
     "tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
-    "@yaoapps/client": "npm:yao-node-client@^1.1.0"
+    "@yaoapps/client": "npm:yao-node-client@^1.1.2",
+    "@yaoapps/types": "npm:yao-app-ts-types@^1.0.8"
   }
 }
 ```

@@ -86,6 +86,14 @@ export default {
           link: '/Admin-App/Amis/适配yao的fetcher',
         },
         {
+          text: '双层弹窗获取数据',
+          link: '/Admin-App/Amis/双层弹窗获取数据',
+        },
+        {
+          text: '文件分块上传',
+          link: '/Admin-App/Amis/文件分块上传',
+        },
+        {
           text: '自定义事件检查',
           link: '/Admin-App/Amis/自定义事件检查',
         },
