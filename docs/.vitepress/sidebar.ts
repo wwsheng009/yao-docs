@@ -641,6 +641,10 @@ export default {
           link: '/YaoDSL/Model/模型字段类型',
         },
         {
+          text: '数据处理与钩子',
+          link: '/YaoDSL/Model/数据处理与钩子',
+        },
+        {
           text: '字段aes加密解密',
           link: '/YaoDSL/Model/字段aes加密解密',
         },
