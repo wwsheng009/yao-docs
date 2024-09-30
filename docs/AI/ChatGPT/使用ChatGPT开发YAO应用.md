@@ -6,12 +6,12 @@
 
 ## Step1 下载 YAO-init 项目模板并成功执行
 
-本项目提供了一个`YAO`应用程序模板。这个模板特别针对`0.10.3`进行了优化。请根据模板目录中的说明文档配置好开发环境。操作说明：[YAO 初始化程序模板](https://github.com/wwsheng009/yao-init-0.10.3)。如果你能成功的运行此项目，可以进行下一步。如果失败，说明你的电脑环境未准备好，请排查问题原因。
+本项目提供了一个`YAO`应用程序模板。这个模板特别针对`0.10.3`进行了优化。请根据模板目录中的说明文档配置好开发环境。操作说明：[YAO 初始化程序模板](https://github.com/wwsheng009/yao-init)。如果你能成功的运行此项目，可以进行下一步。如果失败，说明你的电脑环境未准备好，请排查问题原因。
 
 ```sh
-git clone https://github.com/wwsheng009/yao-init-0.10.3.git
+git clone https://github.com/wwsheng009/yao-init.git
 
-cd yao-init-0.10.3
+cd yao-init
 
 yao start
 ```

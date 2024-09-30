@@ -111,9 +111,9 @@ curl -X POST http://127.0.0.1:5077/service/model \
 
 - [Yao-admin](https://github.com/YaoApp/yao-admin),`Yao`官方开发的根据数据库结构生成`Yao应用`的应用。这个版本目前是适用于`0.10.2`版本`Yao`
 
-- [Yao-Admin-0.10.3](https://github.com/wwsheng009/yao-admin),基于官方的应用适配的`Yao 0.10.3`版本
+- [Yao-Admin](https://github.com/wwsheng009/yao-admin),基于官方的应用适配的`Yao 0.10.3`版本
 
-- [根据模型创建表格与表单](https://github.com/wwsheng009/yao-init-0.10.3/blob/main/studio/init.js)，根据模型定义生成界面配置文件。比如执行下面的代码，能根据你的模型定义生成界面`Table/Form`配置文件。需要下载安装插件脚本。
+- [根据模型创建表格与表单](https://github.com/wwsheng009/yao-init/blob/main/studio/init.js)，根据模型定义生成界面配置文件。比如执行下面的代码，能根据你的模型定义生成界面`Table/Form`配置文件。需要下载安装插件脚本。
   > ```sh
   > yao studio run init.CreateTable pet
   > ```

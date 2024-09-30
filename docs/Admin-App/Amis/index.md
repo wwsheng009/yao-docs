@@ -20,5 +20,4 @@
 - [InputTable 的数据更新](InputTable%E7%9A%84%E6%95%B0%E6%8D%AE%E6%9B%B4%E6%96%B0.md)
 - [js 写入登录 cookie](js%E5%86%99%E5%85%A5%E7%99%BB%E5%BD%95cookie.md)
 - [propsTransform](propsTransform.md)
-- [soybean-admin 路由处理](soybean-admin%E8%B7%AF%E7%94%B1%E5%A4%84%E7%90%86.md)
 - [Select 控件联动](Select%E6%8E%A7%E4%BB%B6%E8%81%94%E5%8A%A8.md)

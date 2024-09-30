@@ -1,5 +1,7 @@
 # js 后台异步执行作业
 
+当在 js 脚本需要执行一个很耗时的作业时，需要在不打断这个作业的情况下，异步检查它的执行状态。
+
 js 后台异步执行作业对象`Job`，它有三个方法：
 
 - Pending 状态检查回调函数
@@ -13,17 +15,18 @@ js 后台异步执行作业对象`Job`，它有三个方法：
 // 作业会使用golang 的协程进行调用执行
 let job = new Job('scripts.image.Post', url, payload, headers);
 
+// 作业状态检查器。
 //当作业在执行过程中会不断的检查作业状态，如果作业还没完成，就会不断的调用回调函数。
 //作业的状态回调方法Pending,方法的参数1必须是函数
 job.Pending(function () {});
 
 //可以在回调函数中使用 return false 打断状态检查。
 job.Pending(function () {
-  //有可能取不到数据
   return false;
 });
 
-//读取作业完成后返回的数据
+//读取作业完成后返回的数据，成功后删除作业
+//比如在这里是取的处理器`scripts.image.Post`的返回数量
 let image = job.Data();
 
 //取消作业
@@ -76,6 +79,9 @@ function PostAsync(api, payload, cb) {
   return image;
 }
 
+/**
+ * scripts.image.Post
+ */
 function Post(url, payload, headers) {
   let response = http.Post(url, payload, null, null, headers);
   if (response.code != 200) {

@@ -32,12 +32,12 @@ https://github.com/YaoApp/yao/actions/runs/4321507798
 
 程序的安装比较简单，把`Yao`执行程序解压后放到任何可以执行的目录即可，比如`Linux`操作系统中的`/usr/bin/`目录。
 
-### 使用`YAO-init-0.10.3`项目模板
+### 使用`YAO-init`项目模板
 
 这里提供了一个`YAO`应用程序模板。这个模板特别针对`0.10.3`进行了优化。自带了`vscode`智能提示与`studio`初始化脚本。
 
 ```sh
-git clone --depth 1 https://github.com/wwsheng009/yao-init-0.10.3.git my-yao-app
+git clone --depth 1 https://github.com/wwsheng009/yao-init.git my-yao-app
 
 cd my-yao-app
 

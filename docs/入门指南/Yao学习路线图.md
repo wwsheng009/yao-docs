@@ -6,7 +6,7 @@
 
 - 下载安装 Yao。
 
-- 使用 Yao-Init 初始化工具构建您的第一个 Yao 项目，让自己对 Yao 有一个感性的认识。[初始化项目入口](https://github.com/wwsheng009/yao-init-0.10.3)。
+- 使用 Yao-Init 初始化工具构建您的第一个 Yao 项目，让自己对 Yao 有一个感性的认识。[初始化项目入口](https://github.com/wwsheng009/yao-init)。
 
 - 创建您的第一个模型文件。在目录/models 下参考 pet.mod.json 创建你的模型，初始阶段模型定义尽可能的简单。如果你的电脑环境可以使用 ChatGPT,可以让参考这里：[使用`ChatGPT`开发`Yao`应用](../AI/ChatGPT/%E4%BD%BF%E7%94%A8ChatGPT%E5%BC%80%E5%8F%91YAO%E5%BA%94%E7%94%A8.md)
 
@@ -38,14 +38,14 @@
 
 ## Yao 项目
 
-目前官方正式的版本是 0.10.2。可以在官网的 github 上下载并学习。
+目前官方正式的版本是 0.10.3。可以在官网的 github 上下载并学习。
 
 - [yao-admin，零代码生成 yao 应用] (https://github.com/YaoApp/yao-admin)
 - [yao-wms，仓库管理系统] (https://github.com/YaoApp/yao-wms)
 
 开发版本 0.10.3,以下非官方维护。
 
-- [yao-init](https://github.com/wwsheng009/yao-init-0.10.3)，项目初始化模板
+- [yao-init](https://github.com/wwsheng009/yao-init)，项目初始化模板
 - [yao-wms](https://github.com/wwsheng009/yao-wms)，比较复杂的示例
 - [yao-chatgpt](https://github.com/wwsheng009/yao-chatgpt)，简单的示例
 - [yao-admin](https://github.com/wwsheng009/yao-admin)，增强版 yao-admin
@@ -53,5 +53,3 @@
 ## 工具
 
 - [YAO 应用 JSON-SCHEMA](https://github.com/wwsheng009/yao-app-ts-types)
-
-- [YAO 脚本调试器](https://github.com/wwsheng009/yao-app-debugger)

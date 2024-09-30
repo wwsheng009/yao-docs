@@ -2,10 +2,10 @@
 
 ## 下载工具脚本
 
-请把工具脚本[`init.js`](https://github.com/wwsheng009/yao-init-0.10.3/blob/main/studio/init.js)脚本复制到`Yao`应用的`studio`目录下。
+请把工具脚本[`init.js`](https://github.com/wwsheng009/yao-init/blob/main/studio/init.js)脚本复制到`Yao`应用的`studio`目录下。
 
 ```sh
-wget -O studio/init.js https://raw.githubusercontent.com/wwsheng009/yao-init-0.10.3/main/studio/init.js
+wget -O studio/init.js https://raw.githubusercontent.com/wwsheng009/yao-init/main/studio/init.js
 
 ```
 

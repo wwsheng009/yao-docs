@@ -42,7 +42,7 @@
 
 - initAuthRoute 初始化权限路由,在这里会判断用户的权限类型，如果是动态的，就通过接口拉取后台的数据。如果是静态的就读取本地的数据。权限的类型通过环境变量`VITE_AUTH_ROUTE_MODE`进行控制，设置成`dynamic`就是动态路由配置。
 
-静态路由是保存在目录`D:\projects\amis\soybean-admin\src\router\modules`下所有的配置文件，这个目录下的文件会自动的加载，不需要明显的引用，每一个文件都是一个根路由配置。
+静态路由是保存在目录`soybean-admin/src/router/modules`下所有的配置文件，这个目录下的文件会自动的加载，不需要明显的引用，每一个文件都是一个根路由配置。
 
 `/soybean-admin/src/store/modules/route/index.ts`
 

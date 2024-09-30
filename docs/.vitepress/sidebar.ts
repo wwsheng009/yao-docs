@@ -138,15 +138,22 @@ export default {
           link: '/Admin-App/Amis/propsTransform',
         },
         {
-          text: 'soybean-admin路由处理',
-          link: '/Admin-App/Amis/soybean-admin路由处理',
-        },
-        {
           text: 'Select控件联动',
           link: '/Admin-App/Amis/Select控件联动',
         },
       ],
       link: '/Admin-App/Amis/',
+    },
+    {
+      text: 'soybean-admin',
+      collapsed: true,
+      items: [
+        {
+          text: 'soybean-admin路由处理',
+          link: '/Admin-App/soybean-admin/soybean-admin路由处理',
+        },
+      ],
+      link: '/Admin-App/soybean-admin/',
     },
   ],
   '/AI/': [
@@ -725,6 +732,10 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '计划任务',
+          link: '/YaoDSL/Task/计划任务',
+        },
+        {
           text: '使用任务',
           link: '/YaoDSL/Task/使用任务',
         },
@@ -736,10 +747,6 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '后台异常执行作业',
-          link: '/YaoDSL/v8go/后台异常执行作业',
-        },
-        {
           text: '使用ts的注意事项',
           link: '/YaoDSL/v8go/使用ts的注意事项',
         },
@@ -750,6 +757,10 @@ export default {
         {
           text: '小心字节处理',
           link: '/YaoDSL/v8go/小心字节处理',
+        },
+        {
+          text: '在js脚本中异步执行作业',
+          link: '/YaoDSL/v8go/在js脚本中异步执行作业',
         },
         {
           text: '在js脚本中抛出异常',

@@ -121,7 +121,7 @@ rem cd ../xgen-v1.0 && pnpm install --no-frozen-lockfile && pnpm run build
 rem echo BASE=yao > ../xgen-v1.0/packages/xgen/.env
 
 rem Checkout init
-rem git clone https://github.com/wwsheng009/yao-init-0.10.3.git .tmp\yao-init
+rem git clone https://github.com/wwsheng009/yao-init.git .tmp\yao-init
 rem del /s /q .tmp\yao-init\.git
 rem del /s /q .tmp\yao-init\.gitignore
 rem del /s /q .tmp\yao-init\LICENSE

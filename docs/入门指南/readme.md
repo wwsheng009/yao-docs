@@ -16,10 +16,11 @@
 
 ## 其它工具与项目
 
+- [Yao-Amis-Admin](https://github.com/wwsheng009/yao-amis-admin)
 - [VSCode 编辑器语法校验证配置](https://github.com/wwsheng009/yao-app-ts-types)
-- [0.10.3 版本的 Yao-Init](https://github.com/wwsheng009/yao-init-0.10.3)
-- [0.10.3 版本的 Yao-WMS](https://github.com/wwsheng009/yao-wms)
-- [0.10.3 版本的 Yao-ChatGPT](https://github.com/wwsheng009/yao-chatgpt)
+- [Yao-Init](https://github.com/wwsheng009/yao-init)
+- [Yao-WMS](https://github.com/wwsheng009/yao-wms)
+- [Yao-ChatGPT](https://github.com/wwsheng009/yao-chatgpt)
 
 ## 站点主题
 
