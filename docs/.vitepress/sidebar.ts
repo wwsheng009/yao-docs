@@ -747,6 +747,10 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '使用npm库',
+          link: '/YaoDSL/v8go/使用npm库',
+        },
+        {
           text: '使用ts的注意事项',
           link: '/YaoDSL/v8go/使用ts的注意事项',
         },

@@ -1,5 +1,6 @@
 # v8go
 
+- [使用 npm 库](%E4%BD%BF%E7%94%A8npm%E5%BA%93.md)
 - [使用 ts 的注意事项](%E4%BD%BF%E7%94%A8ts%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9.md)
 - [使用 typescript 进行开发](%E4%BD%BF%E7%94%A8typescript%E8%BF%9B%E8%A1%8C%E5%BC%80%E5%8F%91.md)
 - [小心字节处理](%E5%B0%8F%E5%BF%83%E5%AD%97%E8%8A%82%E5%A4%84%E7%90%86.md)
