@@ -3,10 +3,12 @@
 pipe 与之前的 flow 流程有点类似，但是 pipe 增加了一些新的功能，使用不同的类型的节点来实现不同的功能。增加了客户端执行人机交互功能。
 
 pipe 有以下的设计结构：
+::: v-pre
 
 - 一个 pipe 由多个 node 组成，一个 node 可以包含多个子 node。
 - 每一个 node 都有输入输出。在节点中使用`$in[0]，$in[1]...` 来获取用户的输入。使用`$out[0]，$out[1]...` 来输出节点数据。
 - 根据不同的 node 类型进行不同的功能调用，支持：Yao Process，Switch，AI，User Input。
+  :::
 
   - Process：调用 Yao 处理器
   - Switch：根据条件执行不同的节点
@@ -181,11 +183,13 @@ type Context struct {
 - pipe.close <pipe_id>
 
 使用以下的处理器来调用 pipe：
+::: v-pre
 
 - `yao run pipes.<Widget.ID> [args...]`,如果用户打断了 pipe 的执行，会返回一个 pipe context id。可以使用这个 id 进行 pipe 的恢复执行。
 - `yao run pipe.run <pipe.id> [...args]`
 - `yao run pipe.Resume <Context.ID> [args...]`
 - `yao run pipe.ResumeWith <Context.ID> '::{"foo":"bar"}' [args...]`
+  :::
 
 ### 动态的创建并执行 pipe
 
@@ -198,7 +202,7 @@ type Context struct {
 
 先创建一个 pipe 的定义，这个跟文件创建的格式是一样的。调用处理器`pipe.create`。
 
-```go
+```js
 let in = ['hello world']
 let input = ['hello world']
 
@@ -209,11 +213,11 @@ let dsl = `{
 	"nodes": [
 		{
 			"name": "print",
-			"process": {"name":"utils.fmt.Print", "args": "\{\{ $in \}\}"},
+			"process": {"name":"utils.fmt.Print", "args": "{{ $in }}"},
 			"output": "print"
 		}
 	],
-	"output": {"input": "\{\{ $input \}\}" }
+	"output": {"input": "{{ $input }}" }
 }`;
 
 Process('pipe.Create', dsl, 'hello world');
@@ -221,7 +225,7 @@ Process('pipe.Create', dsl, 'hello world');
 
 使用示例 2：
 
-```go
+```js
 let in = ['hello world']
 let input = ['hello world']
 
@@ -229,15 +233,15 @@ dsl = `{
 		"whitelist": ["utils.fmt.Print"],
 		"name": "test",
 		"label": "Test",
-		"input": "\{\{ $global.placeholder \}\}",
+		"input": "{{ $global.placeholder }}",
 		"nodes": [
 			{
 				"name": "print",
-				"process": {"name":"utils.fmt.Print", "args": "\{\{ $in \}\}"},
+				"process": {"name":"utils.fmt.Print", "args": "{{ $in }}"},
 				"output": "print"
 			}
 		],
-		"output": {"input": "\{\{ $input \}\}" }
+		"output": {"input": "{{ $input }}" }
 	}`;
 
 Process('pipe.CreateWith', dsl, { placeholder: 'hello world' });
@@ -258,7 +262,7 @@ Process('pipe.CreateWith', dsl, { placeholder: 'hello world' });
 
 节点 1 配置：
 
-```json
+```js
 {
   "name": "user",
   "label": "Enter the command",
@@ -274,9 +278,9 @@ Process('pipe.CreateWith', dsl, { placeholder: 'hello world' });
 }
 ```
 
-节点 2 配置如下,使用`\{\{user.args\}\}`来引用上一个节点的输出。
+节点 2 配置如下,使用<span v-pre>`{{user.args}}`</span>来引用上一个节点的输出。
 
-```json
+```js
 {
   "input": "{{ user.args }}",
   "nodes": [
@@ -295,7 +299,7 @@ Process('pipe.CreateWith', dsl, { placeholder: 'hello world' });
 
 再看一个详细测试用例：
 
-```json
+```js
 {
   "name": "AI Translator",
   "hooks": { "progress": "scripts.pipe.onProgress" },
