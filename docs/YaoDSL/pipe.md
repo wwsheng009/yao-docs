@@ -198,7 +198,10 @@ type Context struct {
 
 先创建一个 pipe 的定义，这个跟文件创建的格式是一样的。调用处理器`pipe.create`。
 
-```js
+```go
+let in = ['hello world']
+let input = ['hello world']
+
 let dsl = `{
 	"whitelist": ["utils.fmt.Print"],
 	"name": "test",
@@ -218,7 +221,10 @@ Process('pipe.Create', dsl, 'hello world');
 
 使用示例 2：
 
-```js
+```go
+let in = ['hello world']
+let input = ['hello world']
+
 dsl = `{
 		"whitelist": ["utils.fmt.Print"],
 		"name": "test",
