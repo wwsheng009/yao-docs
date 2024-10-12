@@ -209,11 +209,11 @@ let dsl = `{
 	"nodes": [
 		{
 			"name": "print",
-			"process": {"name":"utils.fmt.Print", "args": "{{ $in }}"},
+			"process": {"name":"utils.fmt.Print", "args": "\{\{ $in \}\}"},
 			"output": "print"
 		}
 	],
-	"output": {"input": "{{ $input }}" }
+	"output": {"input": "\{\{ $input \}\}" }
 }`;
 
 Process('pipe.Create', dsl, 'hello world');
@@ -229,15 +229,15 @@ dsl = `{
 		"whitelist": ["utils.fmt.Print"],
 		"name": "test",
 		"label": "Test",
-		"input": "{{ $global.placeholder }}",
+		"input": "\{\{ $global.placeholder \}\}",
 		"nodes": [
 			{
 				"name": "print",
-				"process": {"name":"utils.fmt.Print", "args": "{{ $in }}"},
+				"process": {"name":"utils.fmt.Print", "args": "\{\{ $in \}\}"},
 				"output": "print"
 			}
 		],
-		"output": {"input": "{{ $input }}" }
+		"output": {"input": "\{\{ $input \}\}" }
 	}`;
 
 Process('pipe.CreateWith', dsl, { placeholder: 'hello world' });
@@ -274,7 +274,7 @@ Process('pipe.CreateWith', dsl, { placeholder: 'hello world' });
 }
 ```
 
-节点 2 配置如下,使用`{{user.args}}`来引用上一个节点的输出。
+节点 2 配置如下,使用`\{\{user.args\}\}`来引用上一个节点的输出。
 
 ```json
 {
