@@ -94,6 +94,14 @@ export default {
           link: '/Admin-App/Amis/文件分块上传',
         },
         {
+          text: '样式修改',
+          link: '/Admin-App/Amis/样式修改',
+        },
+        {
+          text: '引用query参数',
+          link: '/Admin-App/Amis/引用query参数',
+        },
+        {
           text: '自定义事件检查',
           link: '/Admin-App/Amis/自定义事件检查',
         },
@@ -517,6 +525,10 @@ export default {
     {
       text: '使用compute',
       link: '/YaoDSL/使用compute',
+    },
+    {
+      text: 'pipe',
+      link: '/YaoDSL/pipe',
     },
     {
       text: '处理器',

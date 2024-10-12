@@ -6,6 +6,7 @@
 
 https://github.com/YaoApp/yao/compare/main...wwsheng009:yao:main
 
+- [Feat:增加 LogLevel 支持](https://github.com/wwsheng009/yao/commit/af01fdfe74067f8511a98ecc6a58508ce61df507)
 - [Fix:修正内置模型类型判断错误](https://github.com/YaoApp/yao/commit/a087def58ae2af95b86d2d99ce6f60a381134567)
 - [Fix:修正 Compute 无法处理子对象的异常](https://github.com/YaoApp/yao/commit/d9e0b6ef1ea2175d24f2c57c0385a2e40546633a)
 - [Fix:处理器 yao.component.selectoptions 功能增强修正](https://github.com/YaoApp/yao/commit/f6637e9dc29e2e1e418d0c84c37577e10f51ab9d)

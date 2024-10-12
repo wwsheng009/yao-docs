@@ -9,6 +9,8 @@
 - [适配 yao 的 fetcher](%E9%80%82%E9%85%8Dyao%E7%9A%84fetcher.md)
 - [双层弹窗获取数据](%E5%8F%8C%E5%B1%82%E5%BC%B9%E7%AA%97%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE.md)
 - [文件分块上传](%E6%96%87%E4%BB%B6%E5%88%86%E5%9D%97%E4%B8%8A%E4%BC%A0.md)
+- [样式修改](%E6%A0%B7%E5%BC%8F%E4%BF%AE%E6%94%B9.md)
+- [引用 query 参数](%E5%BC%95%E7%94%A8query%E5%8F%82%E6%95%B0.md)
 - [自定义事件检查](%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6%E6%A3%80%E6%9F%A5.md)
 - [组件事件刷新 reload](%E7%BB%84%E4%BB%B6%E4%BA%8B%E4%BB%B6%E5%88%B7%E6%96%B0reload.md)
 - [组件查找逻辑](%E7%BB%84%E4%BB%B6%E6%9F%A5%E6%89%BE%E9%80%BB%E8%BE%91.md)
