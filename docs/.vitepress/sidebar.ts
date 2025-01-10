@@ -640,24 +640,12 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '定义一个业务模型',
-          link: '/YaoDSL/Model/定义一个业务模型',
-        },
-        {
-          text: '定义多对一关联关系',
-          link: '/YaoDSL/Model/定义多对一关联关系',
+          text: '定义Yao模型',
+          link: '/YaoDSL/Model/定义Yao模型',
         },
         {
           text: '模型处理器列表',
           link: '/YaoDSL/Model/模型处理器列表',
-        },
-        {
-          text: '模型字段校验',
-          link: '/YaoDSL/Model/模型字段校验',
-        },
-        {
-          text: '模型字段类型',
-          link: '/YaoDSL/Model/模型字段类型',
         },
         {
           text: '数据处理与钩子',

@@ -39,7 +39,7 @@ type QueryDSL struct {
 
 [Object Where 数据结构](https://yaoapps.com/doc/%E6%89%8B%E5%86%8C/QueryDSL/%E6%9F%A5%E8%AF%A2%E6%9D%A1%E4%BB%B6#Object%20Where%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
 
-特别需要注意的是字段表达式是`field`，不是`column`,这里跟 QueryParam 是不一样的。
+特别需要注意的是字段表达式是`field`，不是`column`,这里跟 `QueryParam` 是不一样的。
 
 | 字段    | 类型                  | 说明                                                                         | 必填项 |
 | ------- | --------------------- | ---------------------------------------------------------------------------- | ------ |
