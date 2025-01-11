@@ -1,24 +1,6 @@
-# YAO API
+# YAO API DSL 定义
 
-## 目录
-
-- [1. API 定义](#1-api-定义)
-  - [1.1 第一级结构](#11-第一级结构)
-  - [1.2 第二级结构](#12-第二级结构)
-- [2. 请求方法](#请求方法)
-- [3. 参数引用](#引用传入的参数)
-  - [3.1 路径参数](#31-路径参数)
-  - [3.2 查询参数](#32-查询参数)
-  - [3.3 请求体](#33-请求体)
-- [4. API Guard](#4-api-guard)
-- [5. 内置服务 API](#5-内置服务-api)
-- [6. Stream API](#6-stream-api)
-- [7. 文件上传下载](#7-文件上传下载)
-- [8. 最佳实践](#8-最佳实践)
-- [9. 常见问题](#9-常见问题)
-- [10. 版本记录](#10-版本记录)
-
-## 目录结构
+## API 定义的目录结构
 
 YAO 所有 API 定义在`apis`目录下，api 定义文件的后缀名建议使用`.http.yao`,这是一种与`jsonc`相同的文件格式，在文档中可以使用注释的`json`文件格式。
 
@@ -32,33 +14,9 @@ apis
 │   └── v4
 │       └── service.http.yao
 ├── proxy.http.yao
-└── v1
-    ├── admin
-    │   ├── account.http.yao
-    │   ├── dept.http.yao
-    │   ├── menu.http.yao
-    │   └── user.http.yao
-    ├── amis.http.yao
-    ├── app
-    │   ├── cmd.http.yao
-    │   ├── monitor.http.yao
-    │   └── system.http.yao
-    ├── blog.http.yao
-    ├── chart.http.yao
-    ├── fs.http.yao
-    └── system
-        ├── meta
-        │   ├── api.http.yao
-        │   ├── icon.http.yao
-        │   ├── model.http.yao
-        │   └── table.http.yao
-        ├── model.http.yao
-        ├── schema.http.yao
-        ├── tree.http.yao
-        └── util.http.yao
 ```
 
-## 1. API 定义
+## 1. API 定义的信息
 
 YAO API 采用两级结构定义，以下是一个完整的 API 配置示例：
 
@@ -69,6 +27,8 @@ YAO API 采用两级结构定义，以下是一个完整的 API 配置示例：
 ### 1.2 第二级结构
 
 在第二级中，定义了 API 的具体路径、请求方法、处理函数等信息。`paths`数组中包含每个 API 的详细配置。第二级中的 guard 优先级高于第一级的 guard。在 process 中可以调用所有 yao 格式的处理器。在 in 中可以指定请求参数，可以是路径参数、查询参数或请求体。在 out 中可以定义响应格式，包括 HTTP 状态码和响应类型等信息。
+
+以下是 API 定义的示例，在创建 api 文件定义时，可以参考以下内容：
 
 ```json
 {
@@ -112,7 +72,7 @@ YAO API 采用两级结构定义，以下是一个完整的 API 配置示例：
 
 ## 引用传入的参数
 
-API 中可使用以下预定义变量：
+在`path`中的`in`传入参数中可以使用以下的引用变量：
 
 | 变量           | 类型                  | 说明                               |
 | -------------- | --------------------- | ---------------------------------- |
