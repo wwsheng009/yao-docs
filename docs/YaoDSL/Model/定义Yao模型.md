@@ -22,6 +22,69 @@ Yao 模型是 Yao 框架中用于定义业务数据结构的基础组件。通�
 - `models/my/name.yao` 这个文件的模型标识为 `my.name`。
 - `models/auto/car.yao` 这个文件的模型标识为 `auto.car`。
 
+## 文件格式
+
+Yao 中模型定义总是以 `json` 格式编写，如果文件的后缀名是`.jsonc`或是`.yao`，则可以在文件中使用注释。
+
+以下是系统内置模型的示例：
+
+```json
+{
+  "name": "用户",
+  "table": {
+    "name": "admin_user",
+    "comment": "用户表",
+    "engine": "InnoDB"
+  },
+  "columns": [
+    {
+      "label": "ID",
+      "name": "id",
+      "type": "ID"
+    },
+    {
+      "label": "类型",
+      "name": "type",
+      "type": "enum",
+      "option": ["super", "admin", "staff", "user", "robot"],
+      "comment": "账号类型 super 超级管理员,admin 管理员, staff 员工, user 用户, robot 机器人",
+      "default": "user",
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "{{input}}类型错误, {{label}}应该为字符串"
+        },
+        {
+          "method": "enum",
+          "args": ["super", "admin", "staff", "user", "robot"],
+          "message": "{{input}}不在许可范围, {{label}}应该为 super/admin/staff/user/robot"
+        }
+      ]
+    }
+    // 更多字段...
+  ],
+  "relations": {},
+  "values": [
+    {
+      "name": "管理员",
+      "type": "super",
+      "email": "xiang@iqka.com",
+      "mobile": null,
+      "password": "A123456p+",
+      "status": "enabled",
+      "extra": {
+        "sex": "男"
+      }
+    }
+  ],
+  "option": {
+    "timestamps": true,
+    "soft_deletes": true
+  }
+}
+```
+
 ## 在 yao 中定义业务模型
 
 在 Yao 中，定义一个业务模型涉及以下几个关键部分：
@@ -1059,67 +1122,6 @@ Yao 提供了强大的模型迁移功能，可以自动同步模型定义到数�
 | `yao migrate`                  | 执行所有未应用的迁移     |
 | `yao migrate --reset`          | 重置，删帖所有表后再执行 |
 | `yao migrate -n model --reset` | 指定模型进行表应用变更   |
-
-## 示例 Yao 模型定义文件
-
-以一个用户信息模型为例，其定义可能如下：
-
-```json
-{
-  "name": "用户",
-  "table": {
-    "name": "admin_user",
-    "comment": "用户表",
-    "engine": "InnoDB"
-  },
-  "columns": [
-    {
-      "label": "ID",
-      "name": "id",
-      "type": "ID"
-    },
-    {
-      "label": "类型",
-      "name": "type",
-      "type": "enum",
-      "option": ["super", "admin", "staff", "user", "robot"],
-      "comment": "账号类型 super 超级管理员,admin 管理员, staff 员工, user 用户, robot 机器人",
-      "default": "user",
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "enum",
-          "args": ["super", "admin", "staff", "user", "robot"],
-          "message": "{{input}}不在许可范围, {{label}}应该为 super/admin/staff/user/robot"
-        }
-      ]
-    }
-    // 更多字段...
-  ],
-  "relations": {},
-  "values": [
-    {
-      "name": "管理员",
-      "type": "super",
-      "email": "xiang@iqka.com",
-      "mobile": null,
-      "password": "A123456p+",
-      "status": "enabled",
-      "extra": {
-        "sex": "男"
-      }
-    }
-  ],
-  "option": {
-    "timestamps": true,
-    "soft_deletes": true
-  }
-}
-```
 
 ## 模型对应的处理器
 
