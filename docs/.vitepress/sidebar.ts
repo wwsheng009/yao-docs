@@ -589,6 +589,10 @@ export default {
           link: '/YaoDSL/API/超级用户权限',
         },
         {
+          text: '定义YAO API',
+          link: '/YaoDSL/API/定义YAO API',
+        },
+        {
           text: '配置Redis保存会话',
           link: '/YaoDSL/API/配置Redis保存会话',
         },
@@ -642,10 +646,6 @@ export default {
         {
           text: '定义Yao模型',
           link: '/YaoDSL/Model/定义Yao模型',
-        },
-        {
-          text: '模型处理器列表',
-          link: '/YaoDSL/Model/模型处理器列表',
         },
         {
           text: '数据处理与钩子',

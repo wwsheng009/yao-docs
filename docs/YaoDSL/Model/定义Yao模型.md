@@ -10,6 +10,18 @@ Yao 模型是 Yao 框架中用于定义业务数据结构的基础组件。通�
 4. 建立模型间的关系
 5. 设置默认值和业务规则
 
+## 文件结构
+
+在 Yao 中，模型配置文件需要保存在应用目录的子目录 `models` 下，如果不存在此目录，需要手工创建。文件命名通常遵循 `modelname.yao` 的格式。如果模型的名称为 `user`，则文件名为 `user.yao`。
+
+模型文件的名称建议使用小写，如果存在下划线或是驼峰的名称，建议使用创建多层目录。比如 `my_name` 模型建议的文件名是 `my/name.yao`，`autoCar` 模型建议的文件名为 `auto/car.yao`。
+
+每一个模型文件在 yao 框架加载后会以文件路径与文件组成一个唯一的标识符，在程序中可以通过这个唯一标识符来引用模型。例如：
+
+- `models/user.yao` 这个文件的模型标识为 `user`。
+- `models/my/name.yao` 这个文件的模型标识为 `my.name`。
+- `models/auto/car.yao` 这个文件的模型标识为 `auto.car`。
+
 ## 在 yao 中定义业务模型
 
 在 Yao 中，定义一个业务模型涉及以下几个关键部分：
@@ -347,7 +359,7 @@ Yao 支持多种默认值设置方式：
 
 ### 2. 字段加密
 
-对于敏感数据，可以使用加密存储：
+对于密码字段，可以使用内置的加密方式来存储敏感信息，例如：
 
 ```json
 {
@@ -360,7 +372,7 @@ Yao 支持多种默认值设置方式：
 
 支持的加密方式：
 
-- AES：高级加密标准
+- AES：高级加密标准,只适用于`mysql`数据库
 - PASSWORD：单向哈希加密
 
 ### 3. 字段索引
@@ -1108,3 +1120,409 @@ Yao 提供了强大的模型迁移功能，可以自动同步模型定义到数�
   }
 }
 ```
+
+## 模型对应的处理器
+
+当一个模型被定义后，Yao 会自动为其生成一系列处理器（Process），用于执行 CRUD 操作。这些处理器的命名规则遵循一定的模式：`models.<模型ID>.<方法名>`。 例如，对于名为 `category` 的模型，其创建记录的处理器为 `models.category.create`。
+
+下面是一些常见的处理器及其参数表：
+
+备注：**`<ID>` 为 `Model Widget ID`**
+
+| 处理器                           | 参数表                                      | 返回值                     | 说明                                                                                                    |
+| -------------------------------- | ------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------- |
+| models.<ID\>.Find                | `<主键值>,<查询条件>`                       | 单条记录                   | 查询单条记录 [示例](#find)                                                                              |
+| models.<ID\>.Get                 | `<主键值>,<查询条件>`                       | 记录数组                   | 根据条件查询, 不分页 [示例](#get)                                                                       |
+| models.<ID\>.Paginate            | `<查询条件>,<当前页码>, <每页显示记录数>`   | 分页信息和记录数组         | 根据条件查询, 分页 [示例](#paginate)                                                                    |
+| models.<ID\>.Create              | `<记录>`                                    | 新记录主键值               | 创建单条记录, 返回新创建记录 ID [示例](#create)                                                         |
+| models.<ID\>.Update              | `<主键值>,<记录>`                           | null                       | 更新单条记录 [示例](#update)                                                                            |
+| models.<ID\>.Save                | `<记录>`                                    | 记录主键值                 | 保存单条记录, 不存在创建记录, 存在更新记录, 返回记录 ID [示例](#save)                                   |
+| models.<ID\>.Delete              | `<主键值>`                                  | null                       | 删除单条记录(标记删除) [示例](#delete)                                                                  |
+| models.<ID\>.Destroy             | `<主键值>`                                  | null                       | 删除单条记录(真删除) [示例](#destroy)                                                                   |
+| models.<ID\>.Insert              | `<字段名称数组>, <二维记录值数组>`          | 成功插入行数               | 插入多条记录, 返回插入行数 [示例](#insert)                                                              |
+| models.<ID\>.UpdateWhere         | `<查询条件>,<记录>`                         | 成功更新行数               | 根据条件更新记录, 返回更新行数 [示例](#updatewhere)                                                     |
+| models.<ID\>.DeleteWhere         | `<查询条件>`                                | 成功删除行数               | 根据条件删除数据, 返回删除行数(标记删除) [示例](#deletewhere)                                           |
+| models.<ID\>.DestroyWhere        | `<查询条件>`                                | 成功删除行数               | 根据条件删除数据, 返回删除行数(真删除) [示例](#destroywhere)                                            |
+| models.<ID\>.EachSave            | `<记录数组>, <记录(共有字段)>`              | 创建或更新的记录主键值数组 | 保存多条记录, 不存在创建记录, 存在更新记录, 返回记录 ID 集合 [示例](#eachsave)                          |
+| models.<ID\>.EachSaveAfterDelete | `<主键值数组>,<记录数组>, <记录(共有字段)>` | 创建或更新的记录主键值数组 | 删除一组给定 ID 的记录后，保存多条记录, 不存在创建, 存在更新, 返回 ID 集合 [示例](#eachsaveafterdelete) |
+
+## 创建数据
+
+### Create 创建数据记录
+
+创建单条记录, 返回新创建记录的主键。
+
+处理器：`models.模型标识.Create`。
+
+- 参数 1：数据记录，示例：`{"name": "用户创建","manu_id": 2,"type": "user"}`
+
+返回新创建的记录 ID。
+
+示例：
+
+```js
+const id = Process('models.category.create', {
+  parent_id: 1,
+  name: '英语',
+});
+return id;
+```
+
+### Insert 插入数据记录
+
+一次性插入多条数据记录，返回插入行数。如果单纯是插入数据，方法 Insert 会比 EachSave 快。
+
+处理器：`models.模型标识.Insert`。
+
+- 参数 1：字段清单集合，一维数组。
+- 参数 2：数据记录集合，二维数组。
+
+返回插入行数。
+
+示例：
+
+```javascript
+function Insert() {
+  return Process(
+    'models.category.insert',
+    ['parent_id', 'name'],
+    [
+      [1, '语文'],
+      [1, '地理'],
+    ],
+  );
+}
+```
+
+通常需要配合处理器`utils.arr.split`进行处理。
+
+```js
+const data = [
+  { parent_id: 1, name: '语文' },
+  { parent_id: 1, name: '地理' },
+];
+
+// 把对象数组拆分为列数组与值数组
+const { columns, values } = Process('utils.arr.split', data);
+
+return Process('models.category.insert', columns, values);
+```
+
+## 更新数据
+
+### Update
+
+根据主键 id 更新单条数据记录。
+
+处理器：`models.模型标识.Update`。
+
+- 参数 1：模型主键 id。
+- 参数 2：数据记录, 示例：`{"balance": 200}`。
+
+成功返回`null`。
+
+示例：
+
+```javascript
+function Update() {
+  return Process('models.category.update', 9, {
+    parent_id: 1,
+    name: '英语',
+  });
+}
+```
+
+### UpdateWhere
+
+根据条件更新数据记录, 返回更新行数。
+
+处理器：`models.模型标识.UpdateWhere`。
+
+- 参数 1：查询条件。
+- 参数 2：数据记录。
+
+返回更新行数。
+
+示例：
+
+```javascript
+function UpdateWhere() {
+  return Process(
+    'models.category.updatewhere',
+    {
+      wheres: [{ column: 'parent_id', value: 1 }],
+    },
+    {
+      name: '数学',
+    },
+  );
+}
+```
+
+### Save
+
+创建或更新单条记录。如数据记录中包含 id 则更新，不包含 id 则创建记录；返回创建或更新的记录 ID。
+
+处理器：`models.模型标识.Save`。
+
+- 参数 1：数据记录，示例：`{"name": "用户创建","manu_id": 2,"type": "user"}`。
+
+返回创建或更新的记录 ID。
+
+示例：
+
+```javascript
+function Save() {
+  return Process('models.category.save', {
+    parent_id: 1,
+    name: '语文',
+  });
+}
+```
+
+### EachSave
+
+批量创建或是更新多条记录, 不包含主键字段则创建记录, 存在更新记录。
+
+处理器：`models.模型标识.EachSave`。
+
+- 参数 1：必填项，待保存数据记录集合。
+- 参数 2：可选项，共有字段，写入时合并到到每条数据记录；若字段数值为 `$index` 将替换为数据记录集合的 index。
+
+返回创建或更新的记录 ID 集合。
+
+示例：
+
+```js
+const ids = Process(
+  'models.user.EachSave',
+  [{ id: 101, name: '张三' }, { name: '李四' }],
+  { manu_id: 2, balance: '$index' },
+);
+//[101, 107]
+return ids;
+```
+
+注：每次保存都会调用一次数据库操作。
+
+### EachSaveAfterDelete
+
+删除并保存数据，删除给定 ID 的记录后，保存多条记录数据, 不包含主键字段则创建记录, 存在更新记录, 返回记录 ID 集合 ，返回创建或更新的记录 ID 集合。
+
+处理器：`models.模型标识.EachSaveAfterDelete`。
+
+- 参数 1：必填项，删除的记录 ID 集合。
+- 参数 2：必填项，待保存数据记录集合。
+- 参数 3：可选项，共有字段，写入时合并到到每条数据记录；若字段数值为 `$index` 将替换为数据记录集合的 index。
+
+返回创建或更新的记录 ID 集合。
+
+示例：
+
+```js
+const ids = Process(
+  'models.user.EachSaveAfterDelete',
+  [1, 2, 3],
+  [{ id: 101, name: '张三' }, { name: '李四' }],
+  { manu_id: 2, balance: '$index' },
+);
+//[101, 107]
+return ids;
+```
+
+## 删除数据
+
+### Delete
+
+根据 id 删除数据，如模型定义时未开启 `soft_deletes` 则真删除数据记录。
+
+处理器：`models.模型标识.Delete`。
+
+- 参数 1：数据记录 id。
+
+成功返回`null`。
+
+示例：
+
+```javascript
+function deletes() {
+  return Process('models.category.delete', 10);
+}
+```
+
+### DeleteWhere
+
+根据条件删除数据。
+
+如模型定义时未开启 `soft_deletes` 则真删除数据记录。
+
+处理器：`models.模型标识.DeleteWhere`。
+
+- 参数 1：查询条件, 示例：`{"wheres":[{"column":"name", "value":"张三"}]}`。
+
+返回删除行数。
+
+```javascript
+function Deletewhere() {
+  return Process('models.category.deletewhere', {
+    wheres: [{ column: 'parent_id', value: 4 }],
+  });
+}
+```
+
+### Destroy
+
+根据主键 id 真删除单条数据记录。
+
+处理器：`models.模型标识.Destroy`。
+
+- 参数 1：模型主键 id。
+
+成功返回`null`。
+
+示例：
+
+```javascript
+function Destroy() {
+  return Process('models.category.destroy', 9);
+}
+```
+
+### DestroyWhere
+
+根据条件真删除数据。
+
+处理器：`models.模型标识.DestroyWhere`。
+
+- 参数 1：查询条件，示例：`{"wheres":[{"column":"name", "value":"张三"}]}`。
+
+返回删除行数。
+
+示例：
+
+```javascript
+function Destroywhere() {
+  return Process('models.category.destroywhere', {
+    wheres: [{ column: 'parent_id', value: 4 }],
+  });
+}
+```
+
+## 查找数据
+
+### find
+
+根据主键 id 查询单条记录。
+
+处理器：`models.模型标识.Find`。
+
+- 参数 1：模型主键。
+- 参数 2：查询条件。
+
+返回数据记录对象。
+
+AES 字段自动解密。 关联模型作为一个独立字段，字段名称为关联关系名称； hasOne 关联为数据记录 Object , hasMany 关联为数据记录数组 Array\<Object\>,如果存在多个 hasMany 有会异常。
+
+示例：
+
+```javascript
+function Find() {
+  return Process('models.user.find', 1, {
+    withs: { manu: {}, mother: {}, addresses: {} },
+  });
+}
+```
+
+### get
+
+根据条件查询数据记录, 返回符合条件的结果集。相关于 SQL 中的 select,使用比较频繁的处理器。
+
+处理器：`models.模型标识.Get`。
+
+- 参数 1，查询条件, 示例：`{"wheres":[{"column":"name", "value":"张三"}],"withs":{"manu":{}}}`，查询条件使用是 [QueryParam](../Query/QueryParam%E8%AF%AD%E6%B3%95.md) 结构。
+
+返回符合条件的的数据记录（Key-Value 结构 Object)集合。AES 字段自动解密。 关联模型作为一个独立字段，字段名称为关联关系名称； hasOne 关联为数据记录 Object , hasMany 关联为数据记录数组 Array\<Object\>。
+
+需要注意：如果存在多个 hasMany 有会异常。
+
+示例：
+
+```javascript
+function Get() {
+  return Process('models.category.get', {
+    wheres: [{ column: 'parent_id', value: null }],
+  });
+}
+```
+
+这个处理器返回的结果类型是数组，所以只搜索每一条数据时可以这样使用
+
+```js
+//直接返回[0],而不会报错
+return Process('models.ai.setting.Get', {
+  wheres: [
+    {
+      Column: 'default',
+      Value: true,
+    },
+    {
+      Column: 'deleted_at',
+      Value: null,
+    },
+  ],
+})[0];
+
+//使用解构的方法
+const [user] = Process('models.admin.user.get', {
+  wheres: [
+    { column: 'mobile', value: account },
+    { column: 'status', value: '启用' },
+    { method: 'orwhere', column: 'email', value: account },
+  ],
+  limit: 1,
+});
+```
+
+### Paginate
+
+根据条件查询数据记录, 返回带有分页信息的数据对象。
+
+处理器：`models.模型标识.Paginate`。
+
+- 参数 1：查询条件。
+- 参数 2：当前页码。
+- 参数 3：每页记录数量。
+
+返回带有分页信息的数据对象，**Object Paginate 数据结构**：
+
+| 字段     | 类型                | 说明                          |
+| -------- | ------------------- | ----------------------------- |
+| data     | Array\<Object Row\> | 数据记录集合                  |
+| next     | Integer             | 下一页，如没有下一页返回 `-1` |
+| prev     | Integer             | 上一页，如没有上一页返回 `-1` |
+| page     | Integer             | 当前页码                      |
+| pagesize | Integer             | 每页记录数量                  |
+| pagecnt  | Integer             | 总页数                        |
+| total    | Integer             | 总记录数                      |
+
+示例：
+
+```javascript
+function Paginate() {
+  return Process(
+    'models.user.Paginate',
+    {
+      select: ['id', 'name', 'mobile', 'status', 'extra'],
+      withs: { manu: {}, mother: {}, addresses: {} },
+      wheres: [{ column: 'status', value: 'enabled' }],
+      limit: 2,
+    },
+    1,
+    2,
+  );
+}
+```
+
+## 总结
+
+此文档介绍了 Yao 模型的定义，还有模型数据操作的处理器。目前大多数的 ai 模型并不了解 yao 的模型定义，可以在使用这些 ai 模型时，引用此文档来作为一个参考。
