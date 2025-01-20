@@ -84,7 +84,7 @@
 │       │   ├── Box
 │       │   ├── Card
 │       │   └── Nav
-│       ├── __data.json           # 下定义在页面中引用的数据定义
+│       ├── __data.json           # 全局数据定义，在页面中使用$global来引用
 │       ├── __document.html       # 模板页面
 │       ├── template.json         # 模板配置
 │       ├── __build.backend.ts         # 构建时的ts文件
@@ -160,6 +160,77 @@
 </html>
 ```
 
+### template.json
+
+示例：
+
+```json
+{
+  "name": "Yao Official Website",
+  "description": "The official website of Yao.",
+  "themes": [
+    { "label": "Light", "value": "light" },
+    { "label": "Dark", "value": "dark" }
+  ],
+  "locales": [
+    { "label": "English", "value": "en-us", "default": true },
+    { "label": "简体中文", "value": "zh-cn" },
+    { "label": "繁體中文", "value": "zh-hk" },
+    { "label": "日本語", "value": "ja-jp" }
+  ],
+  "translator": "scripts.translator.Default",
+  "scripts": {
+    "before:build": [
+      { "type": "process", "content": "scripts.build.Before" },
+      {
+        "type": "command",
+        "content": "npx tailwindcss -i ./__assets/css/tailwind.css -o ./__assets/css/tailwind.min.css --minify"
+      }
+    ],
+    "after:build": [{ "type": "process", "content": "scripts.build.After" }],
+
+    "build:complete": [
+      { "type": "process", "content": "scripts.build.Complete" }
+    ]
+  }
+}
+```
+
+```go
+// Template is the struct for the template
+type Template struct {
+	Version      int              `json:"version"` // 模板版本
+	ID           string           `json:"id"` // 模板ID
+	Name         string           `json:"name"`// 模板名称
+	Descrption   string           `json:"description"`// 模板描述
+	Screenshots  []string         `json:"screenshots"`// 模板截图
+	Themes       []SelectOption   `json:"themes"`// 主题 可以使处理器`yao run sui.theme.get sui_id template_id`获取
+	Locales      []SelectOption   `json:"locales"`// 语言
+	Scripts      *TemplateScirpts `json:"scripts,omitempty"`// 模板脚本
+	Translator   string           `json:"translator,omitempty"`// 翻译器
+}
+
+// SelectOption is the struct for the select option
+type SelectOption struct {
+	Label   string `json:"label"`
+	Value   string `json:"value"`
+	Default bool   `json:"default"`
+}
+
+// TemplateScirpts is the struct for the template scripts
+type TemplateScirpts struct {
+	BeforeBuild   []*TemplateScript `json:"before:build,omitempty"`   // Run before build
+	AfterBuild    []*TemplateScript `json:"after:build,omitempty"`    // Run after build
+	BuildComplete []*TemplateScript `json:"build:complete,omitempty"` // Run build complete
+}
+
+// TemplateScript is the struct for the template script
+type TemplateScript struct {
+	Type    string `json:"type"`
+	Content string `json:"content"`
+}
+```
+
 页面模板相关文件，这里是与`index`相关的文件
 
 ```sh
@@ -184,12 +255,16 @@
 
 ## 模板语法
 
+当定义好模板后，需要使用数据来进行填充。数据有多个来源：
+
+- 用户请求 request 中的参数。
+- 全局变量`$global`,取的值是模板目录下的`__data.json`文件中定义的对象，如果没有此文件，会选择页面的关联变量。此部分的数据是静态的，不可再修改。
+- 页面的关联变量，同名的页面对应的配置文件：`<page>.json`中的定义的对象，这里可以使用处理器实时获取数据。
+- 页面中的`Set`标签配置的数据。
+
 ### 引用
 
 在页面的源代码中可以使用`{{}}`双括号来表示动态引用变量，可以引用的变量有：
-
-- 全局变量`$global`,取的值是模板目录下的`__data.json`文件中定义的对象，如果没有此文件，会选择页面的关联变量。
-- 页面的关联变量，同名的页面对应的配置文件：`<page>.json`中的定义的对象。
 
 引用可以放在元素属性或是元素值。
 
@@ -205,17 +280,17 @@
 <p>{{ article.description }}</p>
 ```
 
-可以在模板中引用的对象。
+可以在模板中引用的全局对象：
 
 ```js
 data['$payload'] = r.Payload;
 data['$query'] = r.Query;
 data['$param'] = r.Params;
 data['$cookie'] = cookies;
-data['$url'] = r.URL;
-data['$theme'] = r.Theme;
-data['$locale'] = r.Locale;
-data['$timezone'] = GetSystemTimezone();
+data['$url'] = r.URL; //请求地址
+data['$theme'] = r.Theme; //主题
+data['$locale'] = r.Locale; //语言
+data['$timezone'] = GetSystemTimezone(); //时区
 data['$direction'] = 'ltr';
 data['$global']; //其它全局对象，从<page>.json文件复制而来。
 ```
@@ -381,6 +456,22 @@ data['$global']; //其它全局对象，从<page>.json文件复制而来。
 <div class="text-red-200">[{item}]</div>
 ```
 
+## 组件导入
+
+组件导入的功能跟子页面引用一样的，但是使用了不同的语法描述。
+
+```html
+<import s:as="Anchor" s:from="/flowbite/components/anchor"></import>
+
+<Anchor
+  href="{{ '/docs/' + item.link }}"
+  color="{{ $param.name == item.link ? 'primary' : 'dark' }}"
+  class="mb-2 {{ $param.name == item.link ? 'active' : '' }}"
+>
+  <span class="font-bold text-sm"> {{ item.title }} </span>
+</Anchor>
+```
+
 ## 模板变量引用
 
 上面的 html 模板文件中的变量来自另外一个文件中的定义。比如首页的页面的目录是`index`,对应的变量定义文件为`index/index.json`。
@@ -389,45 +480,123 @@ data['$global']; //其它全局对象，从<page>.json文件复制而来。
 
 没有使用`$`作为前缀的是静态数量定义。
 
-- key 以$作为开始，调用脚本
-- key 没有以$作为开始，一般变量
+- key 以`$`作为开始，调用后端处理或是 Yao 处理器
+- key 没有以`$`作为开始，一般变量
 - 子对象是一个数组，如果`$query.`,`$url.`,`$header.`作为前缀,说明是引用值。
 
 ```json
 {
-  "$articles": "scripts.article.Search",
+  "$articles": "scripts.article.Search", //key有$前缀，说明是处理器
   "$showImage": {
+    //有$前缀，说明是处理器，不需要设置__exec=true
     "process": "scripts.article.ShowImage",
     "args": ["$query.show"]
   },
   "length": 20,
   "array": [
     "item-1",
-    "$scripts.article.Setting",
-    { "$images": "scripts.article.Images" },
+    "$scripts.article.Setting", //有$前缀，说明是处理器
+    { "$images": "scripts.article.Images" }, //有$前缀，说明是处理器
     {
+      //在数组中，没办法设置$,需要使用__exec=true
       "process": "scripts.article.Thumbs",
       "args": ["$query.show"],
       "__exec": true
     }
   ],
-  "input": { "data": "hello world" }
+  "input": { "data": "hello world" },
+  "url": { "path": "$url.path" } //不是处理器，也可以替换绑定变量
 }
 ```
 
-### 模板中的处理器调用
+### 调用 Yao 处理器
 
-比如上面的`$articles`就对应变量定义中的以下部分，它定义了一个文章列表的变量，而这个变量的值是过调用 yao 的处理器的返回值。以`$`开头变量说明需要调用处理器并返回数据。
-
-处理器的调用方式也有两种：1，隐式参数传递，直接配置成`key:value`的形式
+比如上面的`$articles`就对应变量定义中的以下部分，它定义了一个文章列表的变量，而这个变量的值是过调用 yao 的处理器的返回值。Key 或是 Value 以`$`开头说明需要调用 Yao 处理器并返回数据。
 
 ```json
 {
-  "$articles": "scripts.blog.site.getPostList"
+  "$articles": "scripts.blog.site.getPostList", //方式一
+  "articles": "$scripts.blog.site.getPostList" //方式二，两种方式都可以
 }
 ```
 
-处理器调用还有另外一种形式，配置成`key:object`的方式。
+处理器的调用方式也有两种：1，隐式参数传递，直接配置成`key:value`的形式
+
+#### 使用 request 对象作为处理器的参数。
+
+```json
+{
+  "$articles": "scripts.blog.site.getPostList" //方式一,隐式参数传递request对象
+}
+```
+
+没有显式的指定处理器参数 args,会有一个默认的参数 request,request 对象定义：
+
+```ts
+/**
+ * Namespace defining types and interfaces for SUI Templating Engine.
+ */
+export declare namespace sui {
+  /**
+   * Represents a request structure in the Sui framework.
+   */
+  export interface Request {
+    /** The HTTP method of the request, e.g., "GET" or "POST". */
+    method: string;
+    /** The root URL for accessing assets, optional. */
+    asset_root?: string;
+    /** The referer URL, indicating the source of the request. */
+    referer?: string;
+    /** Payload data sent with the request. */
+    payload?: Record<string, any>;
+    /** Query parameters in the request URL as key-value pairs. */
+    query?: Record<string, string[]>;
+    /** Path parameters extracted from the URL. */
+    params?: Record<string, string>;
+    /** Headers included in the request as key-value pairs. */
+    headers?: Record<string, string[]>;
+    /** The body of the request, containing any payload data. */
+    body?: any;
+    /** Details about the request URL. */
+    url?: URL;
+    /** Session ID for the request, optional. */
+    sid?: string;
+    /** The theme preference associated with the request, optional. */
+    theme?: string;
+    /** The locale setting for the request, optional. */
+    locale?: string;
+  }
+
+  /**
+   * Represents the structure of a request URL in the Sui framework.
+   */
+  export interface URL {
+    /** The host of the request, e.g., "www.example.com". */
+    host?: string;
+    /** The domain of the request, e.g., "example.com". */
+    domain?: string;
+    /** The path of the request, e.g., "/path/to/route". */
+    path?: string;
+    /** The scheme of the request, e.g., "http" or "https". */
+    scheme?: string;
+    /** The full URL of the request. */
+    url?: string;
+  }
+}
+```
+
+#### 显式参数传递
+
+处理器调用还有另外一种形式，配置成`key:object`的方式，显式参数传递。
+
+在处理器中，可以通过变量的方法引用 url 参数，类似于 api 定义与使用方法。
+
+可以使用`$query`引用 url 查询参数。
+
+- `$query` url 请求参数
+- `$header` url header 中的变量
+- `$param` url 请求参数
+- `$payload` post 请求中的 payload
 
 ```json
 {
@@ -438,55 +607,6 @@ data['$global']; //其它全局对象，从<page>.json文件复制而来。
   }
 }
 ```
-
-如果处理器的名称以`@`开头，并且存在后台脚本，会调用后台页面关联的.backend.ts 脚本。ts/js 脚本的优先级会比一般的处理器的优先级要高。并且这里使用 js 脚本在效率上会比一般处理器高。
-
-比如存在`index/index.backend.js`文件，文件内容如下：
-
-```js
-function myscript(args) {}
-```
-
-简洁模式，处理器名称以`@`开头。
-
-```json
-{
-  "$object": "@myscript"
-}
-```
-
-或是完整定义模式。
-
-```json
-{
-  "articles": {
-    "process": "@myscript", //process处理器名称，必要的设置
-    "args": ["$query.show"], //处理器参数
-    "__exec": true //设置`__exec=true`来说明此对象是一个处理器调用。
-  }
-}
-```
-
-- 使用 request 对象作为处理器的参数。
-
-在处理器中，可以通过变量的方法引用 url 参数，类似于 api 定义与使用方法。
-
-在处理器中可以使用`$query`引用 url 查询参数。
-
-- `$query` url 请求参数
-- `$header` url header 中的变量
-- `$param` url 请求参数
-- `$payload` post 请求中的 payload
-
-在调用处理器时，隐式绑定处理器的参数,处理器名称以`$`开头
-
-```json
-{
-  "$object": "$scripts.demo.process"
-}
-```
-
-或是显式绑定：
 
 ```json
 {
@@ -507,27 +627,17 @@ function myscript(args) {}
 }
 ```
 
-在处理器中可以把请求中的对象绑定到处理器的参数，可以在处理器参数中通过`$`来引用请求中的全局对象。
+另外可以引用其它对象。
 
 ```js
-
-  // $query
-  // $url.path
-  // $url.host
-  // $url.domain
-  // $url.scheme
-  // $header
-  // $param.
-  // $payload
-
-// header对象只能使用两级引用。
-		if strings.HasPrefix(v, "$header.") {
-			key := strings.TrimPrefix(v, "$header.")
-			if r.Headers.Has(key) {
-				return r.Headers.Get(key), nil
-			}
-			return "", nil
-		}
+// $query
+// $url.path
+// $url.host
+// $url.domain
+// $url.scheme
+// $header
+// $param.
+// $payload
 ```
 
 ```go
@@ -555,52 +665,150 @@ URL 子对象定义
 }
 ```
 
-同样可以在数组中调用处理器
+### 调用后端脚本
+
+如果处理器的名称以`@`开头，并且存在后台脚本，会调用后台页面关联的`.backend.ts` 脚本。ts/js 脚本的优先级会比一般的处理器的优先级要高。
+
+组件与关联脚本存放在同一个目录下，逻辑会比较清晰。
+
+比如存在`index/index.backend.js`文件，文件内容如下：
+
+```js
+function myscript(args) {}
+```
+
+定义模式。
 
 ```json
 {
-  "$articles": "scripts.article.Search", //有$前缀，说明是处理器
-  "$showImage": {
-    //有$前缀，说明是处理器，不需要设置__exec=true
-    "process": "scripts.article.ShowImage",
-    "args": ["$query.show"]
-  },
-  "length": 20,
-  "array": [
-    "item-1",
-    "$scripts.article.Setting", //有$前缀，说明是处理器
-    { "$images": "scripts.article.Images" }, //有$前缀，说明是处理器
-    {
-      //在数组中，没办法设置$,需要使用__exec=true
-      "process": "scripts.article.Thumbs",
-      "args": ["$query.show"],
-      "__exec": true
-    }
-  ],
-  "input": { "data": "hello world" },
-  "url": { "path": "$url.path" } //不是处理器，也可以替换绑定变量
+  "articles": {
+    "process": "@myscript", //process处理器名称，必要的设置
+    "args": ["$query.show"], //处理器参数
+    "__exec": true //设置`__exec=true`来说明此对象是一个处理器调用。
+  }
 }
 ```
 
-如果没有显式的指定处理器参数 args,会有一个默认的参数 request.
-request 对象定义：
+简洁模式，默认使用 request 对象作为参数。
 
-```go
-type Request struct {
-	Method    string                 `json:"method"`
-	AssetRoot string                 `json:"asset_root,omitempty"`
-	Referer   string                 `json:"referer,omitempty"`
-	Payload   map[string]interface{} `json:"payload,omitempty"`
-	Query     url.Values             `json:"query,omitempty"`
-	Params    map[string]string      `json:"params,omitempty"`
-	Headers   url.Values             `json:"headers,omitempty"`
-	Body      interface{}            `json:"body,omitempty"`
-	URL       ReqeustURL             `json:"url,omitempty"`
-	Sid       string                 `json:"sid,omitempty"`
-	Theme     any                    `json:"theme,omitempty"`
-	Locale    any                    `json:"locale,omitempty"`
-	Script    *Script                `json:"-"`
+```json
+{
+  "$catalog": "@Catalog"
 }
+```
+
+此时函数的参数是 request 对象。
+
+```ts
+function Catalog(r: sui.Request) {
+  const route = parseRoute(r);
+  const ignoreCache = r.query?.refresh?.[0] === 'true' || false;
+  return GetCatalog(route.root, route.name, route.locale, ignoreCache);
+}
+```
+
+## 使用 Set 数据
+
+在模板中，可以使用`s:set` 或是`set` 标签,属性`value`来设置页面数据。这部分代码会在编译后保存，但是在页面输出时，set 配置数据被读取后，会删除`s:set`标签内容。它的作用跟页面关联的`json`配置文件作用一样。
+
+比如，以下的页面配置也会应用到模板中。
+
+```html
+...
+
+<!-- 简单类型数据 -->
+<s:set name="weight" value="{% weight %}"></s:set>
+<s:set name="icon" value="{% icon %}"></s:set>
+<!-- json object 对象 -->
+<s:set
+  name="sizes"
+  value="{{ { 
+          'xs': 'text-xs', 
+          'sm': 'text-sm', 
+          'base': 'text-base',
+          'lg': 'text-lg', 
+          'xl': 'text-xl',
+          'none': ''
+      } }}"
+></s:set>
+
+<!-- 在模板中，可以使用set name来引用set中的配置数据 -->
+<a
+  id="{{ id }}"
+  name="{{ name }}"
+  title="{{ title }}"
+  class="cursor-pointer hover:transition hover:duration-200 hover:ease-in-out
+          {{ icon != '' ? 'flex items-center justify-start' : 'inline-block' }}
+          {{ size != '' ? sizes[size] : sizes.base }}
+      "
+  href="{{ href }}"
+  target="{{ target != '' ? target : '_self' }}"
+  button
+>
+  <i s:if="icon != ''" class="material outlined me-1"> {{icon}} </i>
+  <children></children>
+</a>
+```
+
+## 组件事件处理
+
+为了响应页面上的组件的事件，比如用户的点击事件等。
+
+在`.backend.ts`文件中定义事件处理函数。
+
+在页面上使用`s:on-`来绑定事件处理函数。
+
+```html
+<li
+  s:for="categories"
+  class="
+      px-1 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-200
+      hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer
+      border-b-2 
+      {{ item.name == articles.category ? 'text-primary-500 dark:text-primary-400  border-primary-500 dark:border-primary-400' : 'border-transparent ' }}
+    "
+  s:data-category="{{ item.name }}"
+  s:on-click="LoadCategory"
+  category
+>
+  {{ item.name }}
+</li>
+```
+
+```ts
+/**
+ * When category is changed, load articles
+ * @param event
+ * @param data
+ */
+self.LoadCategory = async function (event: MouseEvent, data: EventData) {
+  // Active and inactive class
+  const active =
+    'text-primary-500 dark:text-primary-400 border-primary-500 dark:border-primary-400';
+  const inactive = 'border-transparent';
+
+  // Prevent default behavior ( href redirect )
+  event.preventDefault();
+
+  // Get category and store it
+  const category = data.category || null;
+  self.store.Set('category', category);
+
+  // Change item style
+  $Query('[category]').each((el) => {
+    el.removeClass(active).addClass(inactive);
+    // Current category
+    if ($Store(el.element as HTMLElement).Get('category') === category) {
+      el.removeClass(inactive).addClass(active);
+    }
+  });
+
+  // Load articles
+  const articles = await $Backend('/blog').Call('GetArticles', category, 1);
+
+  // Render articles
+  await self.render('articles', { articles });
+};
 ```
 
 ## 设计器使用 mock 数据
@@ -634,31 +842,90 @@ type PageMock struct {
 }
 ```
 
-## 脚本
+## 前端访问入口地址脚本
 
-可以 js 或是 ts 文件中定制页面关联的 js 脚本，ts 脚本会自动的转换成 js 文件。
+为了增强组件在浏览器的交互功能，可以在同一个目录下创建一个同名的 js 或是 ts 文件。如果是 ts 脚本会自动的编译成 js 文件。
+
+```sh
+├── index                 # 页面模板index
+│   ├── index.config      # page mock配置
+│   ├── index.css         # 样式
+│   ├── index.html        # page 源代码
+│   ├── index.js          # js脚本
+│   ├── index.ts          # ts脚本,优先级比js高
+│   └── index.json        # 模板相关数据定义，可以配置处理器调用
+```
 
 js 文件有以下的作用。
 
 针对于组件进行增强处理，比如一个组件元素有属性"s:cn"的标识，说明是一个 html 组件。此时会在查找带有`script[name=imports]`标签的脚本。
 
-```html
-<!-- 父组件或是页面 -->
-<div is="abc"></div>
+有脚本中编写的代码会以固定的模析编译成一与组件关联的 js 脚本。
 
-<!-- 上面引用的组件会被编译，并以单独的代码块的方式嵌入 -->
-<!-- 如果需要脚本增强处理，可导入脚本配置 -->
-<script name="imports" type="json">
-  {
-    //comp1 组件名称
-    //myscript 组件的路由
-    "comp_abc": "myscript"
-  }
-</script>
+每一个组件的代码都会在页面加载时自动执行。
+
+```js
+// 组件的定义,comp_name是组件唯一的名称。
+function comp_name(component){
+
+  // 这里会自动的引用在`.backend.ts`文件中定义的常量对象Constants。可以理解为前后端共享的变量。
+  // 在前端的js代码中可以使用self.Constants进行引用
+  this.Constants = {};
+
+  this.root = %s;//component 或是document.body,
+	const __self = this;
+
+  this.store = new __sui_store(this.root);//组件数据读取与设置
+
+	this.state = new __sui_state(this);//事件处理
+
+  this.props = new __sui_props(this.root);//读取组件的属性
+
+  //把html对象转换成Query对象
+	this.$root = new __Query(this.root);//组件选择器
+
+  //查找html组件，返回Query对象
+	this.find = function (selector) {
+		return new __Query(__self.root).find(selector);
+	};
+  //查找html组件
+	this.query = function (selector) {
+		return __self.root.querySelector(selector);
+	}
+  //查找html组件
+	this.queryAll = function (selector) {
+		return __self.root.querySelectorAll(selector);
+	}
+  //远程渲染
+	this.render = function(name, data, option) {
+		const r = new __Render(__self, option);
+  		return r.Exec(name, data);
+	};
+  //事件分发
+	this.emit = function (name, data) {
+		const event = new CustomEvent(name, { detail: data });
+		__self.root.dispatchEvent(event);
+	};
+
+	//%s,用户的在backend.ts中定义的代码。在组件js中可以使用上面定义的函数与定义。
+
+	if (this.root.getAttribute("initialized") != 'true') {
+		__self.root.setAttribute("initialized", 'true');
+		__self.root.addEventListener("state:change", function (event) {
+			const name = this.getAttribute("s:cn");
+			const target = event.detail.target;
+			const key = event.detail.key;
+			const value = event.detail.value;
+			const component = new window[name](this);//this是指当前的函数
+			const state = new __sui_state(component);
+			state.Set(key, value, target)
+		});
+    // 只运行一次的初始化函数
+		__self.once && __self.once();
+	}
+
+}
 ```
-
-<!-- 嵌入后的组件，有s:cn标识说明是一个组件，组件的属性使用prop:xx来设置-->
-<div s:cn="comp_abc" prop:k1="xxx1"></div>
 
 ### `BeforeRender`Hook,在页面渲染前的处理事件钩子。
 
@@ -774,3 +1041,13 @@ guard 处理器可以使用以下的参数：
 ## 示例源代码
 
 在 yao-admin-admin 项目中实现了简单的博客[yao-amis-admin](https://github.com/wwsheng009/yao-amis-admin)。
+
+## 调试模式
+
+在页面请求时，添加`__debug=true`参数 或是是`__sui_print_data=true`参数，会开启调试模式。调试模式会禁用页面缓存。浏览器会自动的在控制台输入页面数据`console.log(__sui_data)`。
+
+## 禁用缓存
+
+- 在页面请求时，添加 `__sui_disable_cache=true`参数，会禁用页面缓存。
+- 请求抬头中包含配置项 `Cache-Control = "no-cache"` 同样会禁用缓存。
+- 页面请求时，添加`__debug=true`参数，会开启调试模式。调试模式会禁用页面缓存。
