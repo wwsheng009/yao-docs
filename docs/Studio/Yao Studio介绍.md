@@ -1,12 +1,10 @@
 # Yao Studio 介绍
 
+**此功能已停用**
+
 `Yao`未提供`Yao Studio`图形化拖拉拽的界面。但是有`Studio 命令`/`Studio API`。
 
 `Studio`脚本拥有最高的执行权限`(root)`。可以操作应用目录下所有的数据文件与脚本文件。利用这一点，可以进行代码生成代码的操作。
-
-## `Studio`目录
-
-Yao 应用目录下有一个`/studio`的目录，`Studio`函数与命令只能调用这个目录下的`js`脚本。在`studio`目录下的`js`脚本可以访问[文件系统](https://yaoapps.com/doc/%E6%89%8B%E5%86%8C/JSAPI/FileSystem)所有的命名空间：` system`，`dsl`，`script `。
 
 ```js
 //system	/data/app/data	应用数据

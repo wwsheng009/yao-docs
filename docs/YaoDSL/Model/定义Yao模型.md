@@ -741,8 +741,6 @@ yao/yao-app-sources/gou/validation.go
 
 ## Yao 模型中的关联关系
 
-先看看文档说明：[数据模型关联](https://yaoapps.com/doc/%E8%BF%9B%E9%98%B6/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E5%85%B3%E8%81%94)
-
 理解两个模型之间的关联关系的关键点在于理解模型中的`relations`定义。特别是这两个字段：
 
 - `key` 用于关联映射 (关联数据模型.key = 当前数据模型.foreign)
@@ -1150,7 +1148,7 @@ Yao 提供了强大的模型迁移功能，可以自动同步模型定义到数�
 
 ## 创建数据
 
-### Create 创建数据记录
+### Create
 
 创建单条记录, 返回新创建记录的主键。
 
@@ -1170,7 +1168,7 @@ const id = Process('models.category.create', {
 return id;
 ```
 
-### Insert 插入数据记录
+### Insert
 
 一次性插入多条数据记录，返回插入行数。如果单纯是插入数据，方法 Insert 会比 EachSave 快。
 

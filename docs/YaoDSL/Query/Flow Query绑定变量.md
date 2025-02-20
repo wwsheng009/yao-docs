@@ -50,8 +50,9 @@ func (exp *Expression) parseExpField(s string) error {
 }
 ```
 
+:::v-pre
 `?:`理解为`sql`中的`?`参数，不过`?:`是动态的`SQL`绑定参数，可以绑定`flow`中的`in`参数,这个跟一般的`flow`传入绑定参数`{{$in}}`是两个不同的东西。
-
+:::
 比如下面的`flow`定义中，希望动态修改`wheres`条件中的`op`。这是无效的操作，`YAO`框架只会解析字段`value`对应的动态参数，而不会解析其它字段的动态参数。
 
 ```json

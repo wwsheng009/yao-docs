@@ -2,8 +2,6 @@
 
 在 JSAPI 中的参数需要使用 QueryDSL 的语法。
 
-(QueryDSL)[https://yaoapps.com/doc/%E6%89%8B%E5%86%8C/QueryDSL/%E4%BB%8B%E7%BB%8D]
-
 **注意：Where 条件的定义不要跟 QueryParam 搞混了**
 
 ## Get 方法

@@ -1,18 +1,26 @@
 # aigc 处理器
 
-aigc 处理器是在 yao 中实现的直接与 openai 接口交互的处理器。通过配置 openai 连接器与 openai 请求规则。能把 openai 接口转换成 yao 处理器，可以与其它的 yao 功能串联起来。
+aigc 处理器是在 Yao 中实现的直接与 OpenAI 接口交互的处理器。通过配置 OpenAI 连接器与请求规则，可以将 OpenAI 接口转换成 Yao 处理器，从而与其它 Yao 功能无缝串联。
 
 ## 适用版本
 
 0.10.3 或以上
 
-使用方法：
+## 主要功能
+
+- 支持多种 OpenAI 模型配置
+- 灵活的提示词系统
+- 环境变量配置，安全性高
+- 支持代理设置
+- 可与其他 Yao 功能集成
+
+## 使用步骤
 
 ## 配置 OPENAI 连接器。
 
 在应用目录下的 connectors 目录中创建连接器配置文件，配置文件的后缀为`.conn.yao`。
 
-> 0.10.3 版本可以支持 jsonc 的格式的配置文件,后缀为.jsonc 或是.yao，即可以在 json 文本中写入注释。
+> 0.10.3 以上的版本可以支持 jsonc 的格式的配置文件,后缀为.jsonc 或是.yao，即可以在 json 文本中写入注释。
 
 `connectors/gpt-3_5-turbo.conn.yao`
 
@@ -32,15 +40,15 @@ aigc 处理器是在 yao 中实现的直接与 openai 接口交互的处理器�
 }
 ```
 
-配置文件的语法。最重要是的配置 options 中的 model 与 key
+配置文件中最重要的是 options 中的配置项：
 
-- model 是 openai 语言模型
+- `model`：OpenAI 语言模型，如 gpt-3.5-turbo、gpt-4 等
 
-- key 是你的 openai 接口访问 key,可以在环境变量中配置，这个 key 不要上传到 github 上，被检测出来后 key 很快就会失效。可以把 key 配置在环境变量中，再在配置文件中使用`$ENV.`语法进行引用。
+- `key`：OpenAI API 密钥。强烈建议使用环境变量配置，避免密钥泄露。在配置文件中使用 `$ENV.` 语法引用环境变量，如 `$ENV.OPENAI_KEY`
 
-- proxy 使用 api.openai.com 的代理地址
+- `proxy`：API 代理地址。默认为 api.openai.com，如果需要使用代理服务，可以在这里配置。同时，如果需要使用 openai 类型的代理，使用此字段来配置基本 url。比如：`http://URL_ADDRESS/v1`
 
-以上几个配置支持使用环境变量，即是可以使用`$ENV.<ENV_XXX>`来配置，特别是 OPENAI_KEY，一定要使用环境变量，避免泄露。
+所有配置项都支持使用环境变量（`$ENV.<ENV_NAME>`），这样可以更好地管理敏感信息，避免意外泄露。特别是 API 密钥，必须使用环境变量配置。
 
 ```go
 
@@ -62,13 +70,41 @@ type Options struct {
 }
 ```
 
+## 示例：
+
+```json
+{
+  "label": "Model v3",
+  "type": "openai",
+  "options": {
+    "model": "deepseek-r1-distill-llama-70b",
+    "key": "$ENV.BAILIAN_KEY",
+    "proxy": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+  }
+}
+```
+
+连接 deepseek。
+
+```json
+{
+  "label": "Model v3",
+  "type": "openai",
+  "options": {
+    "model": "deepseek-reasoner",
+    "key": "$ENV.DEEPSEEK_KEY",
+    "proxy": "https://api.deepseek.com"
+  }
+}
+```
+
 ## 配置 openai 请求规则
 
 在 app 目录下创建`aigcs`子目录（如果不存在）,在子目录下创建 ai 访问配置文件。
 
 配置文件：`aigcs\translate.ai.yml`
 
-比如这里使用的 connector 是上面配置的`gpt-3_5-turbo`。`prompts`是指连接 openai 时的初始化指令，提示词的内容按不同的模型有不同的格式。这里配置是的`chatgpt3.5-turbo`模型与对应的提示词规则。
+这个示例使用了上面配置的 `gpt-3_5-turbo` 连接器。`prompts` 字段用于设置与 OpenAI 模型的初始化指令，不同模型可能需要不同格式的提示词。以下是一个翻译助手的配置示例，使用 GPT-3.5-Turbo 模型：
 
 ```yaml
 # Translate to English

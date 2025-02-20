@@ -1,7 +1,5 @@
 # QueryParam 语法
 
-[复杂数据查询](https://yaoapps.com/doc/%E8%BF%9B%E9%98%B6/%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2)
-
 ## QueryParam 使用场景
 
 QueryParam 的其中一个典型的场景是直接转换 url 中的查询参数。

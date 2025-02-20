@@ -6,7 +6,29 @@ QueryDSL 是 yao 的一个非常重要的功能，一定要掌握。
 
 ## QueryDSL 结构定义
 
-官方文档说明：[QueryDSL](https://yaoapps.com/doc/%E6%89%8B%E5%86%8C/QueryDSL/%E4%BB%8B%E7%BB%8D)。
+Query DSL(Domain Specific Language) 用来描述数据查询条件以及数据结构，适用基于数据库实现的数据分析引擎。
+
+## Object QueryDSL 数据结构
+
+| 字段      | 类型                      | 说明                                                                                                                                         | 必填项 |
+| --------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| select    | Array\<Field Expression\> | 选择字段列表                                                                                                                                 | 是     |
+| from      | String                    | 查询数据表名称或数据模型                                                                                                                     | 否     |
+| wheres    | Array\<Object Where\>     | 数据查询条件                                                                                                                                 | 否     |
+| orders    | Array\<Object Order\>     | 排序条件                                                                                                                                     | 否     |
+| offset    | Int                       | 记录开始位置                                                                                                                                 | 否     |
+| limit     | Int                       | 读取数据的数量                                                                                                                               | 否     |
+| page      | Int                       | 分页查询当前页面页码                                                                                                                         | 否     |
+| pagesize  | Int                       | 每页读取记录数量                                                                                                                             | 否     |
+| data-only | Bool                      | 设定为 `true`, 查询结果为 Array\<Object Record\>; 默认为 `false`, 查询结果为 Array\<Object Paginate\>, 仅在设定 `page` 或 `pagesize`时有效。 | 否     |
+| groups    | Array\<Object Group\>     | 聚合字段和统计层级设置。                                                                                                                     | 否     |
+| havings   | Array\<Object Having\>    | 聚合查询结果筛选, 仅在设定 `groups` 时有效。                                                                                                 | 否     |
+| unions    | Array\<Object QueryDSL\>  | 联合查询。多个查询将结果合并为一张表                                                                                                         | 否     |
+| query     | Object QueryDSL           | 子查询。按 QueryDSL 描述查询逻辑，生成一张二维数据表或数值。                                                                                 | 否     |
+| joins     | Array\<Object Join\>      | 表连接。连接数据量较大的数据表时 **不推荐使用**。                                                                                            | 否     |
+| sql       | Object SQL                | SQL 语句。**非必要，勿使用**。                                                                                                               | 否     |
+| comment   | String                    | 查询条件注释，用于帮助理解查询条件逻辑和在开发平台中呈现。                                                                                   | 否     |
+| withs     | Object                    | 关联关系现。                                                                                                                                 | 否     |
 
 go 类型声明
 
@@ -36,8 +58,6 @@ type QueryDSL struct {
 ```
 
 ## Object Where 数据结构
-
-[Object Where 数据结构](https://yaoapps.com/doc/%E6%89%8B%E5%86%8C/QueryDSL/%E6%9F%A5%E8%AF%A2%E6%9D%A1%E4%BB%B6#Object%20Where%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
 
 特别需要注意的是字段表达式是`field`，不是`column`,这里跟 `QueryParam` 是不一样的。
 
@@ -295,6 +315,69 @@ function Tree(data) {
   return data;
 }
 ```
+
+## Object Where 数据结构
+
+| 字段    | 类型                  | 说明                                                                         | 必填项 |
+| ------- | --------------------- | ---------------------------------------------------------------------------- | ------ |
+| field   | Field Expression      | 字段表达式，不支持设置别名 `as`                                              | 是     |
+| value   | Any                   | 匹配数值。如果数据类型为 `Field Expression`, 用 `{}` 包括，如 `{updated_at}` | 否     |
+| op      | String                | 匹配关系运算符。许可值 `=`,`like`,`in`,`>` 等，默认为 `=`                    | 否     |
+| or      | Bool                  | `true` 查询条件逻辑关系为 `or`, 默认为 `false` 查询条件逻辑关系为 `and`      | 否     |
+| wheres  | Array\<Object Where\> | 分组查询。用于 `condition 1` `and` ( `condition 2` OR `condition 3`) 的场景  | 否     |
+| query   | Object QueryDSL       | 子查询；如设定 `query` 则忽略 `value` 数值。                                 | 否     |
+| comment | String                | 查询条件注释，用于帮助理解查询条件逻辑和在开发平台中呈现。                   | 否     |
+
+## 查询方法
+
+| 查询方法 | 说明                                  |
+| -------- | ------------------------------------- |
+| where    | WHERE 字段 = 数值, WHERE 字段 >= 数值 |
+| orwhere  | ... OR WHERE 字段 = 数值              |
+
+## 匹配关系运算符
+
+| 运算符    | 说明                             |
+| --------- | -------------------------------- |
+| `=`       | 默认值 等于 WHERE 字段 = 数值    |
+| `>`       | 大于 WHERE 字段 > 数值           |
+| `>=`      | 大于等于 WHERE 字段 >= 数值      |
+| `<`       | 小于 WHERE 字段 < 数值           |
+| `<=`      | 小于等于 WHERE 字段 <= 数值      |
+| `like`    | 匹配 WHERE 字段 like 数值        |
+| `match`   | 模糊匹配 WHERE 字段 match 数值   |
+| `null`    | 为空 WHERE 字段 IS NULL          |
+| `notnull` | 不为空 WHERE 字段 IS NOT NULL    |
+| `in`      | 列表包含 WHERE 字段 IN (数值...) |
+
+| 匹配关系 | 说明                             |
+| -------- | -------------------------------- |
+| eq       | 默认值 等于 WHERE 字段 = 数值    |
+| like     | 匹配 WHERE 字段 like 数值        |
+| gt       | 大于 WHERE 字段 > 数值           |
+| ge       | 大于等于 WHERE 字段 >= 数值      |
+| lt       | 小于 WHERE 字段 < 数值           |
+| le       | 小于等于 WHERE 字段 <= 数值      |
+| null     | 为空 WHERE 字段 IS NULL          |
+| notnull  | 不为空 WHERE 字段 IS NOT NULL    |
+| in       | 列表包含 WHERE 字段 IN (数值...) |
+| ne       | 不等于                           |
+
+## 在 SELECT 语句中使用的聚合函数
+
+| 函数             | 参数表                                  | 说明                   | SELECT 示例                                              | 数值                        |
+| ---------------- | --------------------------------------- | ---------------------- | -------------------------------------------------------- | --------------------------- |
+| SUM()            | [`Field Expression`]                    | 求和                   | `:SUM(amount)` , `:SUM(DISTINCT amount)`                 | `350`, `250`                |
+| COUNT()          | [`Field Expression`]                    | 记录行数               | `:COUNT(id)`,`:COUNT(amount)`, `:COUNT(DISTINCT amount)` | `4`,`4`, `2`                |
+| AVG()            | [`Field Expression`]                    | 平均数                 | `:AVG(amount)`, `:AVG(DISTINCT amount)`                  | `87.5000`, `125.0000`       |
+| MIN()            | [`Field Expression`]                    | 最小值                 | `:MIN(amount)`                                           | `50`                        |
+| MAX()            | [`Field Expression`]                    | 最大值                 | `:MAX(amount)`                                           | `200`                       |
+| STDDEV_POP()     | [`Field Expression`]                    | 总体标准差             | `:STDDEV_POP(amount)`                                    | `64.9519052838329`          |
+| STDDEV_SAMP()    | [`Field Expression`]                    | 样品标准差             | `:STDDEV_SAMP(amount)`                                   | `75`                        |
+| VAR_POP()        | [`Field Expression`]                    | 总体方差               | `:VAR_POP(amount)`                                       | `4218.75`                   |
+| VAR_SAMP()       | [`Field Expression`]                    | 样品方差               | `:VAR_SAMP(amount)`                                      | `5625`                      |
+| JSON_ARRAYAGG()  | [`Field Expression`]                    | 合并为一个 JSON Array  | `:JSON_ARRAYAGG(amount)`                                 | `[50, 50, 50, 200]`         |
+| JSON_OBJECTAGG() | [`Field Expression`,`Field Expression`] | 合并为一个 JSON Object | `:JSON_OBJECTAGG(city,price)`                            | `{"上海": 200, "北京": 50}` |
 
 ## 版本变更
 

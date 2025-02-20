@@ -4,7 +4,7 @@
 
 don't mount the windows driver in the wsl2 system. the driver performance is very slow.
 
-**Notice**:this is personal version build record. offical version please refer to [Yao Document](https://yaoapps.com/doc/%E4%B8%93%E5%AE%B6/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91).
+**Notice**:this is personal version build record.
 
 check the os glibc version,the target machine's glibc version should high then app-build machine.
 

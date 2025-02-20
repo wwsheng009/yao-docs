@@ -4,8 +4,6 @@
 
 `QueryParam`的主要使用场景是转换`url api`中的查询参数为数据库`sql`条件。一个`QueryParam`对象代表了一个 url 查询请求对象。
 
-[URL Query String 与 QueryParam 对照表](https://yaoapps.com/doc/%E6%89%8B%E5%86%8C/Widgets/API#URL%20Query%20String%20%E4%B8%8E%20QueryParam%20%E5%AF%B9%E7%85%A7%E8%A1%A8)
-
 `QueryParam`的源代码学习：`/gou/query.url.go`
 
 比如下面的`url`包含了一个`where`查询条件：`http://localhost:5099/api/pet/search?where.kind.match=狗`
@@ -116,7 +114,3 @@ func URLToQueryParam(values url.Values) QueryParam {
   ]
 }
 ```
-
-## 参考
-
-`QueryDSL`的文档请参考官网说明[QueryDSL](https://yaoapps.com/doc/%E6%89%8B%E5%86%8C/QueryDSL/%E4%BB%8B%E7%BB%8D)。

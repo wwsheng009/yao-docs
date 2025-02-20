@@ -170,10 +170,6 @@ export default {
       link: '/AI/使用postgresql保存Embedding',
     },
     {
-      text: 'ai模型列表',
-      link: '/AI/ai模型列表',
-    },
-    {
       text: 'ChatGPT',
       collapsed: true,
       items: [
@@ -257,278 +253,10 @@ export default {
       link: '/Studio/Yao-admin/',
     },
   ],
-  '/UI/': [
-    {
-      text: 'sui',
-      collapsed: true,
-      items: [
-        {
-          text: '使用builder创建sui页面',
-          link: '/UI/sui/使用builder创建sui页面',
-        },
-        {
-          text: '使用sui搭建网站',
-          link: '/UI/sui/使用sui搭建网站',
-        },
-        {
-          text: 'sui',
-          link: '/UI/sui/sui',
-        },
-        {
-          text: 'suid编译文件自动插入的内容',
-          link: '/UI/sui/suid编译文件自动插入的内容',
-        },
-        {
-          text: 'sui的命令工具',
-          link: '/UI/sui/sui的命令工具',
-        },
-      ],
-      link: '/UI/sui/',
-    },
-    {
-      text: 'Xgen',
-      collapsed: true,
-      items: [
-        {
-          text: '0.10.2与0.10.3差异',
-          link: '/UI/Xgen/0.10.2与0.10.3差异',
-        },
-        {
-          text: '菜单结构',
-          link: '/UI/Xgen/菜单结构',
-        },
-        {
-          text: '系统默认的用户名',
-          link: '/UI/Xgen/系统默认的用户名',
-        },
-        {
-          text: 'Hook参数说明',
-          link: '/UI/Xgen/Hook参数说明',
-        },
-        {
-          text: 'xgen命令汇总',
-          link: '/UI/Xgen/xgen命令汇总',
-        },
-        {
-          text: 'xgen登录过程',
-          link: '/UI/Xgen/xgen登录过程',
-        },
-        {
-          text: 'xgen远程onChange事件',
-          link: '/UI/Xgen/xgen远程onChange事件',
-        },
-        {
-          text: 'Xgen多语言支持',
-          link: '/UI/Xgen/Xgen多语言支持',
-        },
-        {
-          text: 'Chart',
-          collapsed: true,
-          items: [
-            {
-              text: '图表类型',
-              link: '/UI/Xgen/Chart/图表类型',
-            },
-            {
-              text: 'Chart钩子函数',
-              link: '/UI/Xgen/Chart/Chart钩子函数',
-            },
-          ],
-          link: '/UI/Xgen/Chart/',
-        },
-        {
-          text: 'Dashboard',
-          collapsed: true,
-          items: [
-            {
-              text: 'Dashboard钩子函数',
-              link: '/UI/Xgen/Dashboard/Dashboard钩子函数',
-            },
-          ],
-          link: '/UI/Xgen/Dashboard/',
-        },
-        {
-          text: 'Form',
-          collapsed: true,
-          items: [
-            {
-              text: 'AI智能表单',
-              link: '/UI/Xgen/Form/AI智能表单',
-            },
-            {
-              text: 'Form使用技巧',
-              link: '/UI/Xgen/Form/Form使用技巧',
-            },
-            {
-              text: 'Form单据参考创建',
-              link: '/UI/Xgen/Form/Form单据参考创建',
-            },
-            {
-              text: 'Form里嵌套List',
-              link: '/UI/Xgen/Form/Form里嵌套List',
-            },
-            {
-              text: 'Form里嵌套Table',
-              link: '/UI/Xgen/Form/Form里嵌套Table',
-            },
-            {
-              text: 'Form钩子函数',
-              link: '/UI/Xgen/Form/Form钩子函数',
-            },
-          ],
-          link: '/UI/Xgen/Form/',
-        },
-        {
-          text: 'List',
-          collapsed: true,
-          items: [
-            {
-              text: 'List钩子函数',
-              link: '/UI/Xgen/List/List钩子函数',
-            },
-          ],
-          link: '/UI/Xgen/List/',
-        },
-        {
-          text: 'Neo',
-          collapsed: true,
-          items: [
-            {
-              text: 'neo嵌入业务指令',
-              link: '/UI/Xgen/Neo/neo嵌入业务指令',
-            },
-          ],
-          link: '/UI/Xgen/Neo/',
-        },
-        {
-          text: 'Table',
-          collapsed: true,
-          items: [
-            {
-              text: 'Table 钩子函数',
-              link: '/UI/Xgen/Table/Table 钩子函数',
-            },
-            {
-              text: 'TableA跳转到FormB',
-              link: '/UI/Xgen/Table/TableA跳转到FormB',
-            },
-            {
-              text: 'Table_Form禁用Action',
-              link: '/UI/Xgen/Table/Table_Form禁用Action',
-            },
-            {
-              text: 'Table上使用Tab',
-              link: '/UI/Xgen/Table/Table上使用Tab',
-            },
-            {
-              text: 'Table中设置字段只读',
-              link: '/UI/Xgen/Table/Table中设置字段只读',
-            },
-            {
-              text: 'Table使用技巧',
-              link: '/UI/Xgen/Table/Table使用技巧',
-            },
-            {
-              text: 'Table增加查看，编辑，删除按钮',
-              link: '/UI/Xgen/Table/Table增加查看，编辑，删除按钮',
-            },
-            {
-              text: 'Table搜索默认值',
-              link: '/UI/Xgen/Table/Table搜索默认值',
-            },
-            {
-              text: 'Table最小化配置',
-              link: '/UI/Xgen/Table/Table最小化配置',
-            },
-            {
-              text: 'Table界面上增加创建按钮',
-              link: '/UI/Xgen/Table/Table界面上增加创建按钮',
-            },
-          ],
-          link: '/UI/Xgen/Table/',
-        },
-        {
-          text: 'Xgen控件',
-          collapsed: true,
-          items: [
-            {
-              text: '菜单配置',
-              link: '/UI/Xgen/Xgen控件/菜单配置',
-            },
-            {
-              text: '禁用编辑控件',
-              link: '/UI/Xgen/Xgen控件/禁用编辑控件',
-            },
-            {
-              text: '控件onSelect回调',
-              link: '/UI/Xgen/Xgen控件/控件onSelect回调',
-            },
-            {
-              text: '设置控件的必输属性',
-              link: '/UI/Xgen/Xgen控件/设置控件的必输属性',
-            },
-            {
-              text: '使用Hook转换日期控件的值',
-              link: '/UI/Xgen/Xgen控件/使用Hook转换日期控件的值',
-            },
-            {
-              text: '视频上传',
-              link: '/UI/Xgen/Xgen控件/视频上传',
-            },
-            {
-              text: '图片控件',
-              link: '/UI/Xgen/Xgen控件/图片控件',
-            },
-            {
-              text: '文件上传UploadFile',
-              link: '/UI/Xgen/Xgen控件/文件上传UploadFile',
-            },
-            {
-              text: '远程select控件',
-              link: '/UI/Xgen/Xgen控件/远程select控件',
-            },
-            {
-              text: 'Switch控件',
-              link: '/UI/Xgen/Xgen控件/Switch控件',
-            },
-            {
-              text: 'Upload在List下视频样式错乱',
-              link: '/UI/Xgen/Xgen控件/Upload在List下视频样式错乱',
-            },
-            {
-              text: 'Xgen登录界面邮件电话校验规则',
-              link: '/UI/Xgen/Xgen控件/Xgen登录界面邮件电话校验规则',
-            },
-            {
-              text: 'Xgen自定义远程控件',
-              link: '/UI/Xgen/Xgen控件/Xgen自定义远程控件',
-            },
-            {
-              text: 'RichText富文本控件',
-              collapsed: true,
-              items: [
-                {
-                  text: '使用富文本控件',
-                  link: '/UI/Xgen/Xgen控件/RichText富文本控件/使用富文本控件',
-                },
-              ],
-              link: '/UI/Xgen/Xgen控件/RichText富文本控件/',
-            },
-          ],
-          link: '/UI/Xgen/Xgen控件/',
-        },
-      ],
-      link: '/UI/Xgen/',
-    },
-  ],
   '/YaoDSL/': [
     {
-      text: '使用compute',
-      link: '/YaoDSL/使用compute',
-    },
-    {
-      text: 'pipe',
-      link: '/YaoDSL/pipe',
+      text: '环境变量',
+      link: '/YaoDSL/环境变量',
     },
     {
       text: '处理器',
@@ -539,8 +267,56 @@ export default {
           link: '/YaoDSL/处理器/处理器列表',
         },
         {
+          text: '会话数据',
+          link: '/YaoDSL/处理器/会话数据',
+        },
+        {
+          text: '加密解密',
+          link: '/YaoDSL/处理器/加密解密',
+        },
+        {
+          text: '日期处理',
+          link: '/YaoDSL/处理器/日期处理',
+        },
+        {
+          text: '使用处理器',
+          link: '/YaoDSL/处理器/使用处理器',
+        },
+        {
+          text: '数据图表',
+          link: '/YaoDSL/处理器/数据图表',
+        },
+        {
+          text: '数据处理',
+          link: '/YaoDSL/处理器/数据处理',
+        },
+        {
+          text: '数据导入',
+          link: '/YaoDSL/处理器/数据导入',
+        },
+        {
+          text: '数据表格',
+          link: '/YaoDSL/处理器/数据表格',
+        },
+        {
+          text: '网络请求',
+          link: '/YaoDSL/处理器/网络请求',
+        },
+        {
+          text: '文件处理',
+          link: '/YaoDSL/处理器/文件处理',
+        },
+        {
+          text: '应用引擎',
+          link: '/YaoDSL/处理器/应用引擎',
+        },
+        {
           text: 'Array转树形结构',
           link: '/YaoDSL/处理器/Array转树形结构',
+        },
+        {
+          text: 'Log',
+          link: '/YaoDSL/处理器/Log',
         },
       ],
       link: '/YaoDSL/处理器/',
@@ -621,6 +397,10 @@ export default {
           link: '/YaoDSL/API/API引用上下文变量',
         },
         {
+          text: 'API接口介绍',
+          link: '/YaoDSL/API/API接口介绍',
+        },
+        {
           text: 'API预定义变量',
           link: '/YaoDSL/API/API预定义变量',
         },
@@ -640,6 +420,25 @@ export default {
       link: '/YaoDSL/API/',
     },
     {
+      text: 'Flow',
+      collapsed: true,
+      items: [
+        {
+          text: '编写数据流',
+          link: '/YaoDSL/Flow/编写数据流',
+        },
+        {
+          text: '流程控制',
+          link: '/YaoDSL/Flow/流程控制',
+        },
+        {
+          text: '数据流Flow',
+          link: '/YaoDSL/Flow/数据流Flow',
+        },
+      ],
+      link: '/YaoDSL/Flow/',
+    },
+    {
       text: 'Model',
       collapsed: true,
       items: [
@@ -648,8 +447,28 @@ export default {
           link: '/YaoDSL/Model/定义Yao模型',
         },
         {
+          text: '模型删除数据',
+          link: '/YaoDSL/Model/模型删除数据',
+        },
+        {
+          text: '模型新增数据',
+          link: '/YaoDSL/Model/模型新增数据',
+        },
+        {
+          text: '模型更新数据',
+          link: '/YaoDSL/Model/模型更新数据',
+        },
+        {
           text: '数据处理与钩子',
           link: '/YaoDSL/Model/数据处理与钩子',
+        },
+        {
+          text: '数据模型介绍',
+          link: '/YaoDSL/Model/数据模型介绍',
+        },
+        {
+          text: '数据模型关联',
+          link: '/YaoDSL/Model/数据模型关联',
         },
         {
           text: '字段aes加密解密',
@@ -661,6 +480,17 @@ export default {
         },
       ],
       link: '/YaoDSL/Model/',
+    },
+    {
+      text: 'Pipe',
+      collapsed: true,
+      items: [
+        {
+          text: 'pipe管道',
+          link: '/YaoDSL/Pipe/pipe管道',
+        },
+      ],
+      link: '/YaoDSL/Pipe/',
     },
     {
       text: 'Plugin',
@@ -685,6 +515,14 @@ export default {
       text: 'Query',
       collapsed: true,
       items: [
+        {
+          text: '查询数据',
+          link: '/YaoDSL/Query/查询数据',
+        },
+        {
+          text: '复杂数据查询',
+          link: '/YaoDSL/Query/复杂数据查询',
+        },
         {
           text: '在url中使用QueryParam',
           link: '/YaoDSL/Query/在url中使用QueryParam',
@@ -721,6 +559,10 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '使用缓存',
+          link: '/YaoDSL/Store/使用缓存',
+        },
+        {
           text: 'Mongo配置',
           link: '/YaoDSL/Store/Mongo配置',
         },
@@ -728,16 +570,47 @@ export default {
       link: '/YaoDSL/Store/',
     },
     {
+      text: 'SUI',
+      collapsed: true,
+      items: [
+        {
+          text: '使用builder创建sui页面',
+          link: '/YaoDSL/SUI/使用builder创建sui页面',
+        },
+        {
+          text: '使用sui搭建网站',
+          link: '/YaoDSL/SUI/使用sui搭建网站',
+        },
+        {
+          text: 'sui介绍',
+          link: '/YaoDSL/SUI/sui介绍',
+        },
+        {
+          text: 'sui的命令工具',
+          link: '/YaoDSL/SUI/sui的命令工具',
+        },
+        {
+          text: 'sui编译文件自动插入的内容',
+          link: '/YaoDSL/SUI/sui编译文件自动插入的内容',
+        },
+      ],
+      link: '/YaoDSL/SUI/',
+    },
+    {
       text: 'Task',
       collapsed: true,
       items: [
+        {
+          text: '并发任务',
+          link: '/YaoDSL/Task/并发任务',
+        },
         {
           text: '计划任务',
           link: '/YaoDSL/Task/计划任务',
         },
         {
-          text: '使用任务',
-          link: '/YaoDSL/Task/使用任务',
+          text: '异步任务',
+          link: '/YaoDSL/Task/异步任务',
         },
       ],
       link: '/YaoDSL/Task/',
@@ -796,6 +669,253 @@ export default {
       ],
       link: '/YaoDSL/Widget/',
     },
+    {
+      text: 'Xgen',
+      collapsed: true,
+      items: [
+        {
+          text: '0.10.2与0.10.3差异',
+          link: '/YaoDSL/Xgen/0.10.2与0.10.3差异',
+        },
+        {
+          text: '菜单结构',
+          link: '/YaoDSL/Xgen/菜单结构',
+        },
+        {
+          text: '使用compute',
+          link: '/YaoDSL/Xgen/使用compute',
+        },
+        {
+          text: '系统默认的用户名',
+          link: '/YaoDSL/Xgen/系统默认的用户名',
+        },
+        {
+          text: 'Hook参数说明',
+          link: '/YaoDSL/Xgen/Hook参数说明',
+        },
+        {
+          text: 'xgen命令汇总',
+          link: '/YaoDSL/Xgen/xgen命令汇总',
+        },
+        {
+          text: 'xgen登录过程',
+          link: '/YaoDSL/Xgen/xgen登录过程',
+        },
+        {
+          text: 'xgen远程onChange事件',
+          link: '/YaoDSL/Xgen/xgen远程onChange事件',
+        },
+        {
+          text: 'Xgen多语言支持',
+          link: '/YaoDSL/Xgen/Xgen多语言支持',
+        },
+        {
+          text: 'Chart',
+          collapsed: true,
+          items: [
+            {
+              text: '分析图表',
+              link: '/YaoDSL/Xgen/Chart/分析图表',
+            },
+            {
+              text: '图表类型',
+              link: '/YaoDSL/Xgen/Chart/图表类型',
+            },
+            {
+              text: 'Chart钩子函数',
+              link: '/YaoDSL/Xgen/Chart/Chart钩子函数',
+            },
+          ],
+          link: '/YaoDSL/Xgen/Chart/',
+        },
+        {
+          text: 'Dashboard',
+          collapsed: true,
+          items: [
+            {
+              text: 'Dashboard钩子函数',
+              link: '/YaoDSL/Xgen/Dashboard/Dashboard钩子函数',
+            },
+          ],
+          link: '/YaoDSL/Xgen/Dashboard/',
+        },
+        {
+          text: 'Form',
+          collapsed: true,
+          items: [
+            {
+              text: 'AI智能表单',
+              link: '/YaoDSL/Xgen/Form/AI智能表单',
+            },
+            {
+              text: 'Form使用技巧',
+              link: '/YaoDSL/Xgen/Form/Form使用技巧',
+            },
+            {
+              text: 'Form单据参考创建',
+              link: '/YaoDSL/Xgen/Form/Form单据参考创建',
+            },
+            {
+              text: 'Form里嵌套List',
+              link: '/YaoDSL/Xgen/Form/Form里嵌套List',
+            },
+            {
+              text: 'Form里嵌套Table',
+              link: '/YaoDSL/Xgen/Form/Form里嵌套Table',
+            },
+            {
+              text: 'Form钩子函数',
+              link: '/YaoDSL/Xgen/Form/Form钩子函数',
+            },
+          ],
+          link: '/YaoDSL/Xgen/Form/',
+        },
+        {
+          text: 'List',
+          collapsed: true,
+          items: [
+            {
+              text: 'List钩子函数',
+              link: '/YaoDSL/Xgen/List/List钩子函数',
+            },
+          ],
+          link: '/YaoDSL/Xgen/List/',
+        },
+        {
+          text: 'Neo',
+          collapsed: true,
+          items: [
+            {
+              text: 'neo嵌入业务指令',
+              link: '/YaoDSL/Xgen/Neo/neo嵌入业务指令',
+            },
+          ],
+          link: '/YaoDSL/Xgen/Neo/',
+        },
+        {
+          text: 'Table',
+          collapsed: true,
+          items: [
+            {
+              text: '数据表格',
+              link: '/YaoDSL/Xgen/Table/数据表格',
+            },
+            {
+              text: 'Table 钩子函数',
+              link: '/YaoDSL/Xgen/Table/Table 钩子函数',
+            },
+            {
+              text: 'TableA跳转到FormB',
+              link: '/YaoDSL/Xgen/Table/TableA跳转到FormB',
+            },
+            {
+              text: 'Table_Form禁用Action',
+              link: '/YaoDSL/Xgen/Table/Table_Form禁用Action',
+            },
+            {
+              text: 'Table上使用Tab',
+              link: '/YaoDSL/Xgen/Table/Table上使用Tab',
+            },
+            {
+              text: 'Table中设置字段只读',
+              link: '/YaoDSL/Xgen/Table/Table中设置字段只读',
+            },
+            {
+              text: 'Table使用技巧',
+              link: '/YaoDSL/Xgen/Table/Table使用技巧',
+            },
+            {
+              text: 'Table增加查看，编辑，删除按钮',
+              link: '/YaoDSL/Xgen/Table/Table增加查看，编辑，删除按钮',
+            },
+            {
+              text: 'Table搜索默认值',
+              link: '/YaoDSL/Xgen/Table/Table搜索默认值',
+            },
+            {
+              text: 'Table最小化配置',
+              link: '/YaoDSL/Xgen/Table/Table最小化配置',
+            },
+            {
+              text: 'Table界面上增加创建按钮',
+              link: '/YaoDSL/Xgen/Table/Table界面上增加创建按钮',
+            },
+          ],
+          link: '/YaoDSL/Xgen/Table/',
+        },
+        {
+          text: 'Xgen控件',
+          collapsed: true,
+          items: [
+            {
+              text: '菜单配置',
+              link: '/YaoDSL/Xgen/Xgen控件/菜单配置',
+            },
+            {
+              text: '禁用编辑控件',
+              link: '/YaoDSL/Xgen/Xgen控件/禁用编辑控件',
+            },
+            {
+              text: '控件onSelect回调',
+              link: '/YaoDSL/Xgen/Xgen控件/控件onSelect回调',
+            },
+            {
+              text: '设置控件的必输属性',
+              link: '/YaoDSL/Xgen/Xgen控件/设置控件的必输属性',
+            },
+            {
+              text: '使用Hook转换日期控件的值',
+              link: '/YaoDSL/Xgen/Xgen控件/使用Hook转换日期控件的值',
+            },
+            {
+              text: '视频上传',
+              link: '/YaoDSL/Xgen/Xgen控件/视频上传',
+            },
+            {
+              text: '图片控件',
+              link: '/YaoDSL/Xgen/Xgen控件/图片控件',
+            },
+            {
+              text: '文件上传UploadFile',
+              link: '/YaoDSL/Xgen/Xgen控件/文件上传UploadFile',
+            },
+            {
+              text: '远程select控件',
+              link: '/YaoDSL/Xgen/Xgen控件/远程select控件',
+            },
+            {
+              text: 'Switch控件',
+              link: '/YaoDSL/Xgen/Xgen控件/Switch控件',
+            },
+            {
+              text: 'Upload在List下视频样式错乱',
+              link: '/YaoDSL/Xgen/Xgen控件/Upload在List下视频样式错乱',
+            },
+            {
+              text: 'Xgen登录界面邮件电话校验规则',
+              link: '/YaoDSL/Xgen/Xgen控件/Xgen登录界面邮件电话校验规则',
+            },
+            {
+              text: 'Xgen自定义远程控件',
+              link: '/YaoDSL/Xgen/Xgen控件/Xgen自定义远程控件',
+            },
+            {
+              text: 'RichText富文本控件',
+              collapsed: true,
+              items: [
+                {
+                  text: '使用富文本控件',
+                  link: '/YaoDSL/Xgen/Xgen控件/RichText富文本控件/使用富文本控件',
+                },
+              ],
+              link: '/YaoDSL/Xgen/Xgen控件/RichText富文本控件/',
+            },
+          ],
+          link: '/YaoDSL/Xgen/Xgen控件/',
+        },
+      ],
+      link: '/YaoDSL/Xgen/',
+    },
   ],
   '/入门指南/': [
     {
@@ -809,6 +929,65 @@ export default {
     {
       text: 'Yao简单介绍',
       link: '/入门指南/Yao简单介绍',
+    },
+    {
+      text: '基础',
+      collapsed: true,
+      items: [
+        {
+          text: '安装配置',
+          link: '/入门指南/基础/安装配置',
+        },
+        {
+          text: '编写API接口',
+          link: '/入门指南/基础/编写API接口',
+        },
+        {
+          text: '编写图表',
+          link: '/入门指南/基础/编写图表',
+        },
+        {
+          text: '编写界面',
+          link: '/入门指南/基础/编写界面',
+        },
+        {
+          text: '创建数据模型',
+          link: '/入门指南/基础/创建数据模型',
+        },
+        {
+          text: '逻辑编排',
+          link: '/入门指南/基础/逻辑编排',
+        },
+        {
+          text: '使用Widgets',
+          link: '/入门指南/基础/使用Widgets',
+        },
+        {
+          text: '使用处理器',
+          link: '/入门指南/基础/使用处理器',
+        },
+        {
+          text: '文件上传',
+          link: '/入门指南/基础/文件上传',
+        },
+        {
+          text: '应用目录结构',
+          link: '/入门指南/基础/应用目录结构',
+        },
+        {
+          text: '应用语言包',
+          link: '/入门指南/基础/应用语言包',
+        },
+        {
+          text: 'YAO命令',
+          link: '/入门指南/基础/YAO命令',
+        },
+        {
+          text: 'YAO编程基础',
+          link: '/入门指南/基础/YAO编程基础',
+        },
+      ],
+      link: '/入门指南/基础/',
     },
     {
       text: '进阶系列',

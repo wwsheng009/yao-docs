@@ -47,8 +47,6 @@ curl http://127.0.0.1:5099/api/v1/book
 [{"author":"1212","id":1,"publisher":"1212","title":"1212"},{"author":"12","id":3,"publisher":"12","title":"12"}]
 ```
 
-API 详细的说明参考官方文档：[API](https://yaoapps.com/doc/%E6%89%8B%E5%86%8C/Widgets/API)
-
 ## 总结
 
 在 API 定义中使用现成的处理器，快速开发 API 接口。

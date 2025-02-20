@@ -28,8 +28,6 @@ pnpm run build
 
 ## 编译后端
 
-参考[源码编译](https://yaoapps.com/doc/%E4%B8%93%E5%AE%B6/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91)
-
 需要把以下的子项目都下载到同一个目录，yao 是主项目，其它的项目是依赖项。
 
 ```sh

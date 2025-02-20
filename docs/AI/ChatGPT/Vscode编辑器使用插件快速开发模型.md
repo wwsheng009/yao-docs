@@ -5,36 +5,37 @@ AI 时代已经到来~,`yao`通过这种元数据配置编程理念恰好适合 
 在起飞之前首先需要作些准备工作：
 
 - 准备好你的网络，需要能访问`OPENAI`网站的接口，这个是首要条件。
-- `0.10.3`版本的`Yao`应用程序。
+- 开发版本的`Yao`应用程序。
 - 宇宙最强的的编辑器`Vscode`。
 
 ## Yao 开发环境准备
 
-### 安装`0.10.3`开发版本的`Yao`
+### 安装开发版本的`Yao`
 
-在以下地址下载开发版本 0.10.3 开发版本，根据自己的电脑 OS，打开对应的 URL，找到一个最新的 release
+根据你的操作系统，从以下地址下载最新的开发版本：
 
-Linux:
+- **Linux 用户**：
 
-https://github.com/YaoApp/yao/actions/workflows/release-linux.yml
+  - 下载地址：[Linux Release](https://github.com/YaoApp/yao/actions/workflows/release-linux.yml)
+  - 在 Actions 页面找到最新的成功构建
 
-示例:
+- **MacOS 用户**：
 
-https://github.com/YaoApp/yao/actions/runs/4321507316
+  - 下载地址：[MacOS Release](https://github.com/YaoApp/yao/actions/workflows/release-macos.yml)
+  - 在 Actions 页面找到最新的成功构建
 
-MacOS:
+- **Windows 用户**：
+  - 可以使用 WSL2 安装 Linux 版本
 
-https://github.com/YaoApp/yao/actions/workflows/release-macos.yml
+安装步骤：
 
-示例：
-
-https://github.com/YaoApp/yao/actions/runs/4321507798
-
-程序的安装比较简单，把`Yao`执行程序解压后放到任何可以执行的目录即可，比如`Linux`操作系统中的`/usr/bin/`目录。
+1. 下载并解压 Yao 执行程序
+2. 将程序放置在系统 PATH 环境变量包含的目录中（如 Linux 的`/usr/bin/`）
+3. 确保文件具有可执行权限
 
 ### 使用`YAO-init`项目模板
 
-这里提供了一个`YAO`应用程序模板。这个模板特别针对`0.10.3`进行了优化。自带了`vscode`智能提示与`studio`初始化脚本。
+这里提供了一个`YAO`应用程序模板。自带了`vscode`智能提示与`studio`初始化脚本。
 
 ```sh
 git clone --depth 1 https://github.com/wwsheng009/yao-init.git my-yao-app
@@ -80,10 +81,9 @@ yao migrate
 
 ```sh
 yao studio run init.CreateTableAndForm hospital
-
 ```
 
-成功后的提示
+执行成功后会看到类似以下提示：
 
 ```sh
 Studio Run: init.CreateTableAndForm
@@ -94,27 +94,58 @@ args[0]: hospital
 "已生成最小化配置Form:"
 "forms/hospital.form.json"
 "需要生成全配置Form,请再执行一次"
---------------------------------------
-init.CreateTableAndForm Response
---------------------------------------
-null
---------------------------------------
 ✨DONE✨
 ```
 
-如果没有启动 yao，现在执行命令
+### 启动并访问应用
+
+1. 如果没有启动 yao，执行以下命令：
 
 ```sh
 yao start
 ```
 
-浏览器访问：`http://127.0.0.1:5099/admin/login/admin`
+2. 使用浏览器访问管理界面：
 
-用户名: xiang@iqka.com
-密码: A123456p+
+   - 访问地址：`http://127.0.0.1:5099/admin/login/admin`
+   - 默认用户名：`xiang@iqka.com`
+   - 默认密码：`A123456p+`
 
-登录后你就能访问以下地址：
+3. 登录后访问新创建的模型管理页面：
+   `http://127.0.0.1:5099/admin/x/Table/hospital`
 
-`http://http://127.0.0.1:5099/admin/x/Table/hospital`
+## 进阶使用技巧
 
-## 恭喜你成功创建了一个新的`CURD`程序
+### 优化界面配置
+
+你可以使用以下提示词让 ChatGPT 帮助优化界面：
+
+```
+# 优化表格显示
+optimize the table configuration with:
+- Add search fields
+- Add filters
+- Customize column display
+
+# 优化表单布局
+optimize the form configuration with:
+- Organize fields into groups
+- Add validations
+- Improve layout
+```
+
+### 添加自定义功能
+
+可以让 ChatGPT 帮助添加更多功能：
+
+```
+# 添加自定义按钮
+add a custom action button that:
+[描述按钮功能]
+
+# 添加数据处理脚本
+create a process script that:
+[描述处理逻辑]
+```
+
+## 恭喜你成功创建了一个新的`CRUD`程序！
