@@ -181,7 +181,7 @@ function GetFilesUnderFolder(folderPath: string, fileExtensions: string[]) {
 
   const containsMdFile = items_list.some((str) => str.endsWith('.md'));
   if (!containsMdFile && !subfolderCount) {
-    console.log(`${folderPath} Don't cantain any folder or md file!`);
+    // console.log(`${folderPath} Don't cantain any folder or md file!`);
     return [];
   }
 

@@ -6,6 +6,26 @@ function CleanUp(suffix: string) {
   deleteFilesWithBakSuffix(BaseDocPath, suffix);
 }
 
+// 检查目录及其子目录是否包含 .md 文件
+function hasMarkdownFiles(dirPath: string): boolean {
+  const files = fs.readdirSync(dirPath);
+
+  for (const file of files) {
+    const filePath = path.join(dirPath, file);
+    const stat = fs.statSync(filePath);
+
+    if (stat.isDirectory()) {
+      if (hasMarkdownFiles(filePath)) {
+        return true;
+      }
+    } else if (file.endsWith('.md') && file !== 'index.md') {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 // 定义删除函数
 function deleteFilesWithBakSuffix(dirPath: string, suffix: string) {
   if (dirPath.startsWith('.vitepress')) {
@@ -13,31 +33,39 @@ function deleteFilesWithBakSuffix(dirPath: string, suffix: string) {
   }
 
   const match = suffix || '.bak';
-  // console.log(extension, ext);
-  // 获取目录下的所有文件和子目录
   const files = fs.readdirSync(dirPath);
-  // 循环遍历每个文件和子目录
-  files
-    .filter(
-      (file) => path.join(dirPath, file) !== path.join(BaseDocPath, 'index.md'),
-    )
-    .forEach((file) => {
-      const filePath = path.join(dirPath, file);
-      const stat = fs.statSync(filePath);
-      // 如果是目录，则递归删除子目录中的文件
-      if (stat.isDirectory()) {
-        deleteFilesWithBakSuffix(filePath, suffix);
-      } else {
-        // 如果是后缀为.bak的文件，则删除
-        if (file.endsWith(match)) {
-          fs.unlinkSync(filePath);
-        }
-        // console.log(`Deleted file: ${filePath}`)
+
+  // 检查目录是否只包含 index.md
+  const hasOnlyIndexMd = files.length === 1 && files[0] === 'index.md';
+  const indexMdPath = path.join(dirPath, 'index.md');
+
+  // 遍历处理文件和目录
+  files.forEach((file) => {
+    const filePath = path.join(dirPath, file);
+    const stat = fs.statSync(filePath);
+
+    if (stat.isDirectory()) {
+      // 递归处理子目录
+      deleteFilesWithBakSuffix(filePath, suffix);
+
+      // 检查子目录是否为空
+      const subFiles = fs.readdirSync(filePath);
+      if (subFiles.length === 0) {
+        fs.rmdirSync(filePath);
       }
-    });
-  // // 删除空目录
-  // fs.rmdirSync(dirPath);
-  // console.log(`Deleted directory: ${dirPath}`);
+    }
+  });
+
+  // 如果目录中只有 index.md，且匹配删除条件，则删除它
+  // 或者如果目录及其子目录中没有其他 .md 文件，也删除 index.md
+  if (
+    (hasOnlyIndexMd && match === 'index.md') ||
+    (match === 'index.md' &&
+      !hasMarkdownFiles(dirPath) &&
+      fs.existsSync(indexMdPath))
+  ) {
+    fs.unlinkSync(indexMdPath);
+  }
 }
 
 // CleanUp();

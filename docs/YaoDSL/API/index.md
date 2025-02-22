@@ -1,16 +1,19 @@
 # API
 
-- [超级用户权限](%E8%B6%85%E7%BA%A7%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90.md)
-- [定义 YAO API](%E5%AE%9A%E4%B9%89YAO%20API.md)
-- [配置 Redis 保存会话](%E9%85%8D%E7%BD%AERedis%E4%BF%9D%E5%AD%98%E4%BC%9A%E8%AF%9D.md)
-- [刷新 token](%E5%88%B7%E6%96%B0token.md)
-- [文件上传下载接口](%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%8E%A5%E5%8F%A3.md)
-- [自定义用户登陆 login api](%E8%87%AA%E5%AE%9A%E4%B9%89%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86login%20api.md)
+<!-- links begin -->
+
+- [超级用户权限](超级用户权限.md)
+- [定义 YAO API](定义YAO%20API.md)
+- [配置 Redis 保存会话](配置Redis保存会话.md)
+- [刷新 token](刷新token.md)
+- [文件上传下载接口](文件上传下载接口.md)
+- [自定义用户登陆 login api](自定义用户登陆login%20api.md)
 - [API Guard](API%20Guard.md)
-- [API 会话 session 保持](API%E4%BC%9A%E8%AF%9Dsession%E4%BF%9D%E6%8C%81.md)
-- [API 引用上下文变量](API%E5%BC%95%E7%94%A8%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8F%98%E9%87%8F.md)
-- [API 接口介绍](API%E6%8E%A5%E5%8F%A3%E4%BB%8B%E7%BB%8D.md)
-- [API 预定义变量](API%E9%A2%84%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F.md)
-- [service 接口](service%E6%8E%A5%E5%8F%A3.md)
-- [stream api 接口](stream%20api%E6%8E%A5%E5%8F%A3.md)
-- [stream http 客户端请求](stream%20http%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%B7%E6%B1%82.md)
+- [API 会话 session 保持](API会话session保持.md)
+- [API 引用上下文变量](API引用上下文变量.md)
+- [API 接口介绍](API接口介绍.md)
+- [API 预定义变量](API预定义变量.md)
+- [service 接口](service接口.md)
+- [stream api 接口](stream%20api接口.md)
+- [stream http 客户端请求](stream%20http客户端请求.md)
+<!-- links end -->

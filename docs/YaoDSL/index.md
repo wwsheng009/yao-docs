@@ -1,7 +1,9 @@
 # YaoDSL
 
-- [环境变量](%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F.md)
-- [处理器](%E5%A4%84%E7%90%86%E5%99%A8/index)
+<!-- links begin -->
+
+- [环境变量](环境变量.md)
+- [处理器](处理器/index)
 - [AIGC](AIGC/index)
 - [API](API/index)
 - [Flow](Flow/index)
@@ -16,3 +18,4 @@
 - [v8go](v8go/index)
 - [Widget](Widget/index)
 - [Xgen](Xgen/index)
+<!-- links end -->

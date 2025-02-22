@@ -9,8 +9,6 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "preserveValueImports": true,
-    "importsNotUsedAsValues": "error",
     "jsx": "preserve",
     "lib": ["ESNext", "dom", "ES2021.String"]
   },

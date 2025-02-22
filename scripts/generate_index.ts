@@ -42,7 +42,6 @@ function checkAndCreateIndex(folderp: string) {
     .map((file_obj) => {
       const file = file_obj.path;
       const fileName = path.basename(file);
-
       if (file_obj.type === 'folder') {
         const files = GetFilesUnderFolder(file, FileExtensions);
         if (files.length === 0) {
@@ -56,7 +55,12 @@ function checkAndCreateIndex(folderp: string) {
         if (!fs.existsSync(f)) {
           return null;
         }
-        return `- [${fileName}](${encodeURIComponent(fileName)}/index)`;
+        // 对文件名中的特殊字符进行URL编码，保留中文字符
+        const encodedFileName = fileName.replace(
+          /[\s\(\)\[\]\{\}\'\"\`\~\!\@\#\$\%\^\&\*\+\=\|\\\<\>\?\,\.\;\/]/g,
+          (match) => encodeURIComponent(match),
+        );
+        return `- [${fileName}](${encodedFileName}/index)`;
       } else {
         if (IgnoreIndexFiles.includes(fileName)) {
           return null;
@@ -64,12 +68,18 @@ function checkAndCreateIndex(folderp: string) {
 
         const nameWithoutExt = path.parse(fileName).name;
         const fileExt = path.extname(file);
-        if (FileExtensions.includes(fileExt))
-          return `- [${nameWithoutExt}](${encodeURIComponent(fileName)})`;
+        if (FileExtensions.includes(fileExt)) {
+          // 对文件名中的特殊字符进行URL编码，保留中文字符
+          const encodedFileName = fileName.replace(
+            /[\s\(\)\[\]\{\}\'\"\`\~\!\@\#\$\%\^\&\*\+\=\|\\\<\>\?\,\.\;\/]/g,
+            (match) => encodeURIComponent(match),
+          );
+          return `- [${nameWithoutExt}](${encodedFileName})`;
+        }
       }
       return null;
     })
-    .filter((link) => link); // filter out undefined links
+    .filter((link) => link != null); // filter out undefined links
 
   const folerBase = path.basename(folder);
   if (fileLinks.length === 0) {
@@ -77,20 +87,39 @@ function checkAndCreateIndex(folderp: string) {
   }
 
   // create README markdown content
-  const readmeContent = `# ${folerBase}\n\n${fileLinks.join('\n')}`;
+  const linksContent = `<!-- links begin -->
+${fileLinks.join('\n')}
+<!-- links end -->`;
 
-  let indexFile1 = 'index.md';
-  let indexPath = path.join(folder, indexFile1); // replace with your desired README path
+  const readmeContent = `# ${folerBase}
+
+${linksContent}`;
+
+  const indexFile1 = 'index.md';
+  const indexPath = path.join(folder, indexFile1); // replace with your desired README path
 
   // 如果已经存在，判断是否相同
   if (fs.existsSync(indexPath)) {
-    const file2 = fs.readFileSync(indexPath, 'utf-8');
-    if (readmeContent === file2) {
-      return;
+    const existingContent = fs.readFileSync(indexPath, 'utf-8');
+    const linkPattern = /<!-- links begin -->([\s\S]*?)<!-- links end -->/;
+    const hasLinks = linkPattern.test(existingContent);
+
+    let newContent = '';
+    if (hasLinks) {
+      // 替换已存在的链接部分
+      newContent = existingContent.replace(linkPattern, linksContent);
     } else {
-      indexFile1 = `_index.md`;
-      indexPath = path.join(folder, indexFile1);
+      // 在文件末尾添加链接
+      newContent = existingContent.trim() + '\n\n' + linksContent;
     }
+
+    if (newContent === existingContent) {
+      return;
+    }
+
+    fs.writeFileSync(indexPath, newContent);
+    console.log(`${indexFile1} file updated at ${folder}`);
+    return;
   }
   // write README file
   fs.writeFile(indexPath, readmeContent, (err) => {

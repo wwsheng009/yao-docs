@@ -16,7 +16,7 @@
 | `$session.字段名称`    | `Any`                | Session 会话字段数，支持多级访问。如 $session.user.name , $session.manus.0.name 值 |
 | `$file.字段名称`       | `Object File`        | 上传临时文件结构                                                                   |
 
-`session`的设置逻辑可参考[自定义用户登录 API](./%E8%87%AA%E5%AE%9A%E4%B9%89%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86login%20api.md)
+`session`的设置逻辑可参考[自定义用户登录 API](./自定义用户登陆login%20api.md)
 
 需要特别关注`:query-param/:params`，yao 框架会根据 url 中的查询条件转换成 QueryParam 对象。
 
