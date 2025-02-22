@@ -1,8 +1,9 @@
 name: algolia
 on:
-  push:
-    paths:
-      - 'docs/**/*.md'
+  workflow_run:
+    workflows: ["Deploy"]
+    types:
+      - completed
 jobs:
   algolia:
     runs-on: ubuntu-latest

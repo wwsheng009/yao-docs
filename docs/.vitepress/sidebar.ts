@@ -493,6 +493,17 @@ export default {
       link: '/YaoDSL/Pipe/',
     },
     {
+      text: 'Plan',
+      collapsed: true,
+      items: [
+        {
+          text: '计划组件',
+          link: '/YaoDSL/Plan/计划组件',
+        },
+      ],
+      link: '/YaoDSL/Plan/',
+    },
+    {
       text: 'Plugin',
       collapsed: true,
       items: [

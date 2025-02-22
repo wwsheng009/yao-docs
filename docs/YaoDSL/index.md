@@ -7,6 +7,7 @@
 - [Flow](Flow/index)
 - [Model](Model/index)
 - [Pipe](Pipe/index)
+- [Plan](Plan/index)
 - [Plugin](Plugin/index)
 - [Query](Query/index)
 - [Store](Store/index)

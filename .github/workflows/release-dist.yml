@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Version tags"
+  workflow_run:
+    workflows: ["Deploy"]
+    types:
+      - completed
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18.x" # specify your Node.js version
+          cache: pnpm
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build Project
+        run: pnpm run build
+
+      - name: List All Files
+        run: ls -lrt ./dist/yao-docs
+
+      - name: Zip dist folder
+        run: |
+          cd dist/yao-docs
+          zip -r ../../yao-docs.zip .
+
+      - name: Get version from package.json
+        id: package-version
+        run: echo "::set-output name=VERSION::$(jq -r .version package.json)"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.package-version.outputs.VERSION }}
+          release_name: Release-${{ steps.package-version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./yao-docs.zip
+          asset_name: yao-docs-${{ steps.package-version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
