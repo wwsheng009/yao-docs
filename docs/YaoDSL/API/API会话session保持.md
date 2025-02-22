@@ -119,7 +119,7 @@ login token 会返回到客户端，客户端在访问 API 时自动的把 token
     },
     {
       "name": "JWT",
-      "process": "xiang.helper.JWTMake",
+      "process": "utils.jwt.Make",
       "args": [
         "{{$res.User.0.id}}",
         {},

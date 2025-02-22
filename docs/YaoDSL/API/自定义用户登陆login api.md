@@ -84,7 +84,7 @@
     },
     {
       "name": "JWT",
-      "process": "xiang.helper.JWTMake",
+      "process": "utils.jwt.Make",
       "args": [
         "{{$res.User.0.id}}",
         {},

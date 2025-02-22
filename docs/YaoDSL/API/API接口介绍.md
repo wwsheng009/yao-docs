@@ -1,6 +1,6 @@
 # API 接口
 
-Yao 当前支持 RESTFul API 描述 MQTT、Socket、WEB Socket API 描述内测中; 用于数据归集对接、即时通信、IoT 等类型的项目。
+Yao 当前支持 RESTFul API/Stream API，用于数据归集对接、即时通信、IoT 等类型的项目。
 
 ## 命名规范
 
@@ -23,12 +23,9 @@ Yao 当前支持 RESTFul API 描述 MQTT、Socket、WEB Socket API 描述内测�
 
 ## 各协议规范文档
 
-| 协议名称 | 文档地址                      |
-| -------- | ----------------------------- |
-| http     | [RESTFul API](#RESTFul%20API) |
-| mqtt     | MQTT API **尚未实现**         |
-| sock     | Socket API (内测中)           |
-| ws       | WEB Socket API (内测中)       |
+| 协议名称 | 文档地址 |
+| -------- | -------- |
+| http     |          |
 
 ## RESTFul API
 
