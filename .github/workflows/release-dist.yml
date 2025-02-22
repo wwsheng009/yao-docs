@@ -39,32 +39,48 @@ jobs:
       - name: List All Files
         run: ls -lrt ./dist
 
+      - name: Get version from package.json
+        id: package-version
+        run: |
+          VERSION="$(jq -r .version package.json)"
+          echo VERSION=$VERSION >> $GITHUB_ENV
+
       - name: Zip dist folder
         run: |
           cd dist
-          zip -r ../yao-docs.zip .
+          zip -q -r ../yao-docs-${{ env.VERSION }}.zip .
 
-      - name: Get version from package.json
-        id: package-version
-        run: echo "::set-output name=VERSION::$(jq -r .version package.json)"
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ steps.package-version.outputs.VERSION }}
+      #     release_name: Release-${{ steps.package-version.outputs.VERSION }}
+      #     draft: false
+      #     prerelease: false
+
+      # - name: Upload Release Asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./yao-docs.zip
+      #     asset_name: yao-docs-${{ steps.package-version.outputs.VERSION }}.zip
+      #     asset_content_type: application/zip
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: yao-docs-${{ env.VERSION }}
+          files: |
+            yao-docs-${{ env.VERSION }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.package-version.outputs.VERSION }}
-          release_name: Release-${{ steps.package-version.outputs.VERSION }}
-          draft: false
-          prerelease: false
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./yao-docs.zip
-          asset_name: yao-docs-${{ steps.package-version.outputs.VERSION }}.zip
-          asset_content_type: application/zip
+      - name: Get Release URL
+        run: |
+          echo "Release URL: ${{ steps.create_release.outputs.upload_url }}"
