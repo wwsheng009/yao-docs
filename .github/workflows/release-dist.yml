@@ -19,6 +19,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get version from package.json
+        id: package-version
+        run: |
+          VERSION="$(jq -r .version package.json)"
+          echo VERSION=$VERSION
+          echo VERSION=$VERSION >> $GITHUB_ENV
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -39,11 +46,6 @@ jobs:
       - name: List All Files
         run: ls -lrt ./dist
 
-      - name: Get version from package.json
-        id: package-version
-        run: |
-          VERSION="$(jq -r .version package.json)"
-          echo VERSION=$VERSION >> $GITHUB_ENV
 
       - name: Zip dist folder
         run: |
