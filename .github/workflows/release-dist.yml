@@ -37,12 +37,12 @@ jobs:
         run: pnpm run build
 
       - name: List All Files
-        run: ls -lrt ./dist/yao-docs
+        run: ls -lrt ./dist
 
       - name: Zip dist folder
         run: |
-          cd dist/yao-docs
-          zip -r ../../yao-docs.zip .
+          cd dist
+          zip -r ../yao-docs.zip .
 
       - name: Get version from package.json
         id: package-version
