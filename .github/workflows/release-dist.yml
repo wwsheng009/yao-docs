@@ -30,6 +30,12 @@ jobs:
           node-version: 18.x
           cache: pnpm
 
+      - name: Setup
+        run: npm i -g @antfu/ni
+
+      - name: Install
+        run: nci
+
       - name: Install Dependencies
         run: pnpm install
 
