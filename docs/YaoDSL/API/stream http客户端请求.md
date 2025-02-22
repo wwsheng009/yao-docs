@@ -14,7 +14,7 @@ yao http.Stream 用于进行异步 sse 请求。
 http.Stream('POST', url, handler, RequestBody, null, {
   Accept: 'text/event-stream; charset=utf-8',
   'Content-Type': 'application/json',
-  Authorization: `Bearer ` + setting.api_token,
+  Authorization: `Bearer ` + setting.api_token
 });
 ```
 

@@ -19,8 +19,8 @@ function Transaction(items) {
   const q = new Query();
   q.Run({
     sql: {
-      stmt: 'START TRANSACTION;',
-    },
+      stmt: 'START TRANSACTION;'
+    }
   });
 
   let hasError = false;
@@ -37,14 +37,14 @@ function Transaction(items) {
   if (hasError) {
     q.Run({
       sql: {
-        stmt: 'ROLLBACK;',
-      },
+        stmt: 'ROLLBACK;'
+      }
     });
   } else {
     q.Run({
       sql: {
-        stmt: 'COMMIT;',
-      },
+        stmt: 'COMMIT;'
+      }
     });
     console.log(`data saved,commit`);
   }
@@ -58,20 +58,20 @@ function testCase() {
   const q = new Query();
   q.Run({
     sql: {
-      stmt: 'delete from yao_demo_pet;',
-    },
+      stmt: 'delete from yao_demo_pet;'
+    }
   });
 
   const dataOk = [
     { name: 'item1', stay: 1, cost: 10 },
     { name: 'item2', stay: 12, cost: 120 },
-    { name: 'item3', stay: 13, cost: 220 },
+    { name: 'item3', stay: 13, cost: 220 }
   ];
   //should failed
   const dataShouldFail = [
     { name: 'item4', stay: 12, cost: 10 },
     { name: 'item5', stay: 12 },
-    { name: 'item6', cost: 20 },
+    { name: 'item6', cost: 20 }
   ];
 
   Transaction(dataOk);

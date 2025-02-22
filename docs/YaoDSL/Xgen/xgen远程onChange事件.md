@@ -83,16 +83,16 @@ function OnChange(query) {
   setting['fields']['form']['位置']['edit']['props']['options'] = [
     {
       label: '上单',
-      value: '上单',
+      value: '上单'
     },
     {
       label: '中单',
-      value: '中单',
+      value: '中单'
     },
     {
       label: '打野',
-      value: '打野',
-    },
+      value: '打野'
+    }
   ];
   // 错误检测
   if (setting && setting.code && setting.message) {
@@ -101,7 +101,7 @@ function OnChange(query) {
 
   return {
     data: data, // 更新消费金额数据, 消费金额
-    setting: setting,
+    setting: setting
   };
 }
 ```

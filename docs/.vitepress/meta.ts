@@ -18,14 +18,14 @@ export const docsVersion = version;
 /* eslint-disable prefer-regex-literals */
 export const githubSourceContentRegex = new RegExp(
   '^https://(((raw|user-images|camo).githubusercontent.com))/.*',
-  'i',
+  'i'
 );
 export const googleFontRegex = new RegExp(
   '^https://fonts.googleapis.com/.*',
-  'i',
+  'i'
 );
 export const googleStaticFontRegex = new RegExp(
   '^https://fonts.gstatic.com/.*',
-  'i',
+  'i'
 );
 export const jsdelivrCDNRegex = new RegExp('^https://cdn.jsdelivr.net/.*', 'i');

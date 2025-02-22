@@ -420,9 +420,9 @@ function Models(name, DSL) {
     table: { name: 'dyform' },
     columns: [
       { label: 'DYFORM ID', name: 'id', type: 'ID' },
-      { label: 'SN', name: 'sn', type: 'string', length: 20, unique: true },
+      { label: 'SN', name: 'sn', type: 'string', length: 20, unique: true }
     ],
-    indexes: [],
+    indexes: []
   };
 }
 

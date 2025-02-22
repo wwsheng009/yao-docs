@@ -2,30 +2,30 @@
 export default [
   {
     text: 'Admin-App',
-    link: '/Admin-App/index',
+    link: '/Admin-App/index'
   },
   {
     text: 'AI',
-    link: '/AI/index',
+    link: '/AI/index'
   },
   {
     text: 'Studio',
-    link: '/Studio/index',
+    link: '/Studio/index'
   },
   {
     text: 'YaoDSL',
-    link: '/YaoDSL/index',
+    link: '/YaoDSL/index'
   },
   {
     text: '入门指南',
-    link: '/入门指南/index',
+    link: '/入门指南/index'
   },
   {
     text: '流程图',
-    link: '/流程图/index',
+    link: '/流程图/index'
   },
   {
     text: '源代码',
-    link: '/源代码/index',
-  },
+    link: '/源代码/index'
+  }
 ];

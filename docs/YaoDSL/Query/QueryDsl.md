@@ -109,7 +109,7 @@ function Test1(id) {
   const query = new Query('default');
   //use statement
   const data = query.Get({
-    sql: { stmt: 'SELECT id,name FROM yao_demo_pet WHERE id = ?', args: [id] },
+    sql: { stmt: 'SELECT id,name FROM yao_demo_pet WHERE id = ?', args: [id] }
   });
   return data;
 }
@@ -125,7 +125,7 @@ function DD() {
     select: ['id', 'name', 'name as label', 'id as value', 'parent_id'],
     wheres: [{ ':deleted_at': '删除', '=': null }],
     from: 'category',
-    limit: 1000,
+    limit: 1000
   });
 }
 ```
@@ -140,7 +140,7 @@ function GetSelect() {
   const res = query.Get({
     wheres: [{ ':deleted_at': '删除', '=': null }],
     select: ['id as value', 'name as label'],
-    from: 'company',
+    from: 'company'
   });
   return res;
 }
@@ -154,7 +154,7 @@ function GetSelect() {
   const res = query.Get({
     wheres: [{ field: 'deleted_at', comment: '删除', op: '=', value: null }],
     select: ['id as value', 'name as label'],
-    from: 'company',
+    from: 'company'
   });
   return res;
 }
@@ -182,7 +182,7 @@ function test(id) {
     from: '$pet',
     wheres: [{ ':kind': '类型', '=': id }],
     orders: 'created_at desc',
-    limit: 10,
+    limit: 10
   });
 }
 ```
@@ -206,7 +206,7 @@ var res = qb.Paginate({
     'category.id as category_id',
     'category.name as category_name',
     'warehouse.id as warehouse_id',
-    'warehouse.name as warehouse_name',
+    'warehouse.name as warehouse_name'
   ],
   from: 'stock',
   joins: [
@@ -215,25 +215,25 @@ var res = qb.Paginate({
       left: true,
       from: 'warehouse',
       key: 'warehouse.id',
-      foreign: 'stock.warehouse_id',
+      foreign: 'stock.warehouse_id'
     },
     {
       left: true,
       from: 'material',
       key: 'material.id',
-      foreign: 'sku.material_id',
+      foreign: 'sku.material_id'
     },
     {
       left: true,
       from: 'category',
       key: 'category.id',
-      foreign: 'material.category_id',
-    },
+      foreign: 'material.category_id'
+    }
   ],
   wheres: wheres,
   orders: 'stock.uptime desc',
   pagesize: pagesize,
-  page: page,
+  page: page
 });
 ```
 
@@ -249,13 +249,13 @@ function Tree(data) {
     if (wheres[i].column == 'name') {
       search.push({
         ':plan.name': '名称',
-        like: '%' + wheres[i].value + '%',
+        like: '%' + wheres[i].value + '%'
       });
     }
     if (wheres[i].column == 'project_id') {
       search.push({
         ':plan.project_id': '项目',
-        in: [wheres[i].value],
+        in: [wheres[i].value]
       });
     }
   }
@@ -281,7 +281,7 @@ function Tree(data) {
       'plan.parent_id',
       'plan.progress',
       'plan.department',
-      'project.name as project_name', //关联表字段
+      'project.name as project_name' //关联表字段
     ],
     wheres: search,
     from: 'plan',
@@ -290,10 +290,10 @@ function Tree(data) {
         left: true,
         from: 'project as project',
         key: 'project.id',
-        foreign: 'plan.project_id',
-      },
+        foreign: 'plan.project_id'
+      }
     ],
-    limit: 1000,
+    limit: 1000
   });
   for (var j in cate) {
     if (cate[j].users) {
@@ -307,10 +307,10 @@ function Tree(data) {
   }
   res = Process('xiang.helper.ArrayTree', cate, {
     parent: 'parent_id',
-    empty: null,
+    empty: null
   });
   var data = {
-    data: res,
+    data: res
   };
   return data;
 }

@@ -4,7 +4,7 @@ import { computed, onErrorCaptured, ref } from 'vue';
 const props = defineProps<{ pkg: string; path: string }>();
 
 const demoPath = computed(
-  () => props.pkg && (props.path ? `/${props.pkg}/${props.path}` : ''),
+  () => props.pkg && (props.path ? `/${props.pkg}/${props.path}` : '')
 );
 const error = ref({});
 

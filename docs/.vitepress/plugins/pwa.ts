@@ -7,7 +7,7 @@ import {
   googleFontRegex,
   googleStaticFontRegex,
   jsdelivrCDNRegex,
-  name,
+  name
 } from '../meta';
 
 /**
@@ -20,7 +20,7 @@ export const pwa: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
   // include all static assets under public/
   includeAssets: fg.sync('**/*.{png,svg,gif,ico,txt}', {
-    cwd: resolve(__dirname, '../../public'),
+    cwd: resolve(__dirname, '../../public')
   }),
   manifest: {
     id: '/',
@@ -32,19 +32,19 @@ export const pwa: Partial<VitePWAOptions> = {
       {
         src: '/images/icons/apple-touch-120x120.png',
         sizes: '120x120',
-        type: 'image/png',
+        type: 'image/png'
       },
       {
         src: '/images/icons/android-chrome-192x192.png',
         sizes: '192x192',
-        type: 'image/png',
+        type: 'image/png'
       },
       {
         src: '/images/icons/android-chrome-512x512.png',
         sizes: '512x512',
-        type: 'image/png',
-      },
-    ],
+        type: 'image/png'
+      }
+    ]
   },
   workbox: {
     navigateFallbackDenylist: [/^\/new$/],
@@ -58,12 +58,12 @@ export const pwa: Partial<VitePWAOptions> = {
           cacheName: 'google-font-style-cache',
           expiration: {
             maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
           },
           cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
+            statuses: [0, 200]
+          }
+        }
       },
       {
         urlPattern: googleStaticFontRegex,
@@ -72,12 +72,12 @@ export const pwa: Partial<VitePWAOptions> = {
           cacheName: 'google-fonts-cache',
           expiration: {
             maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
           },
           cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
+            statuses: [0, 200]
+          }
+        }
       },
       {
         urlPattern: jsdelivrCDNRegex,
@@ -86,12 +86,12 @@ export const pwa: Partial<VitePWAOptions> = {
           cacheName: 'jsdelivr-cdn-cache',
           expiration: {
             maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
           },
           cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
+            statuses: [0, 200]
+          }
+        }
       },
       {
         urlPattern: githubSourceContentRegex,
@@ -100,13 +100,13 @@ export const pwa: Partial<VitePWAOptions> = {
           cacheName: 'githubusercontent-images-cache',
           expiration: {
             maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
           },
           cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
-      },
-    ],
-  },
+            statuses: [0, 200]
+          }
+        }
+      }
+    ]
+  }
 };

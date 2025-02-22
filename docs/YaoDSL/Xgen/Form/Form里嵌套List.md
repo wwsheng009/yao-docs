@@ -189,7 +189,7 @@ function AfterSave(id, payload) {
 
     // 保存物品清单
     var res = Process('models.plan.item.EachSaveAfterDelete', deletes, data, {
-      plan_id: id,
+      plan_id: id
     });
     if (res.code && res.code > 300) {
       console.log('Plan:AfterSave Error:', res);
@@ -230,7 +230,7 @@ function MakeSN(id) {
 function BeforeDeletePlan(id) {
   // console.log("delete Plan with id:", id);
   let rows = Process('models.plan.item.DeleteWhere', {
-    wheres: [{ column: 'plan_id', value: id }],
+    wheres: [{ column: 'plan_id', value: id }]
   });
 
   //remembe to return the id in array format

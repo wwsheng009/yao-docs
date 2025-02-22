@@ -129,7 +129,7 @@ window.$app.Event.emit('app/getField', {
   name: item.name, //字段名称，表单字段名称
   bind: item.bind, //字段绑定的对象，数据库字段
   text: target.value, //用户的提问
-  config: item, //当前字段配置
+  config: item //当前字段配置
 });
 ```
 
@@ -156,7 +156,7 @@ function WriteAutoInput(
   context: ChatContext, // 上下文信息
   messages: ChatMessage[], // 历史消息
   response: ResponseMessage, // 机器人的回复流
-  content?: string, // 完整的回复内容
+  content?: string // 完整的回复内容
 ): ResponseMessage[] {
   const { namespace, signal } = context;
   if (content === undefined) {
@@ -172,9 +172,9 @@ function WriteAutoInput(
           type: 'Common.emitEvent',
           payload: {
             key: `${namespace}/setFieldsValue`,
-            value: data,
-          },
-        },
+            value: data
+          }
+        }
       ];
 
       response.confirm = true;

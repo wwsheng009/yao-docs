@@ -1,20 +1,20 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
-import UnoCSS from 'unocss/vite';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform';
 
 export default defineConfig(async () => {
+  const UnoCSS = (await import('unocss/vite')).default;
   return {
     server: {
       hmr: {
-        overlay: false,
+        overlay: false
       },
       fs: {
-        allow: [resolve(__dirname, '..')],
-      },
+        allow: [resolve(__dirname, '..')]
+      }
     },
     plugins: [
       // custom
@@ -25,18 +25,18 @@ export default defineConfig(async () => {
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
         resolvers: [
           IconsResolver({
-            componentPrefix: '',
-          }),
+            componentPrefix: ''
+          })
         ],
         dts: './.vitepress/components.d.ts',
-        transformer: 'vue3',
+        transformer: 'vue3'
       }),
       Icons({
         compiler: 'vue3',
         autoInstall: true,
-        defaultStyle: 'display: inline-block',
+        defaultStyle: 'display: inline-block'
       }),
-      UnoCSS(),
-    ],
+      UnoCSS()
+    ]
   };
 });

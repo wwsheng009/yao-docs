@@ -3,13 +3,13 @@ export default {
   '/': [
     {
       text: 'contributing',
-      link: 'contributing',
-    },
+      link: 'contributing'
+    }
   ],
   '/Admin-App/': [
     {
       text: 'amis-yao-admin',
-      link: '/Admin-App/amis-yao-admin',
+      link: '/Admin-App/amis-yao-admin'
     },
     {
       text: '教程',
@@ -17,30 +17,30 @@ export default {
       items: [
         {
           text: '1项目介绍',
-          link: '/Admin-App/教程/1项目介绍',
+          link: '/Admin-App/教程/1项目介绍'
         },
         {
           text: '2项目安装',
-          link: '/Admin-App/教程/2项目安装',
+          link: '/Admin-App/教程/2项目安装'
         },
         {
           text: '3模型管理',
-          link: '/Admin-App/教程/3模型管理',
+          link: '/Admin-App/教程/3模型管理'
         },
         {
           text: '4数据维护',
-          link: '/Admin-App/教程/4数据维护',
+          link: '/Admin-App/教程/4数据维护'
         },
         {
           text: '5代码生成',
-          link: '/Admin-App/教程/5代码生成',
+          link: '/Admin-App/教程/5代码生成'
         },
         {
           text: '6页面编辑器',
-          link: '/Admin-App/教程/6页面编辑器',
-        },
+          link: '/Admin-App/教程/6页面编辑器'
+        }
       ],
-      link: '/Admin-App/教程/',
+      link: '/Admin-App/教程/'
     },
     {
       text: 'amis-admin',
@@ -48,10 +48,10 @@ export default {
       items: [
         {
           text: 'yao-odata-excel',
-          link: '/Admin-App/amis-admin/yao-odata-excel',
-        },
+          link: '/Admin-App/amis-admin/yao-odata-excel'
+        }
       ],
-      link: '/Admin-App/amis-admin/',
+      link: '/Admin-App/amis-admin/'
     },
     {
       text: 'Amis',
@@ -59,98 +59,98 @@ export default {
       items: [
         {
           text: '表单控件列表',
-          link: '/Admin-App/Amis/表单控件列表',
+          link: '/Admin-App/Amis/表单控件列表'
         },
         {
           text: '表达式',
-          link: '/Admin-App/Amis/表达式',
+          link: '/Admin-App/Amis/表达式'
         },
         {
           text: '弹出框的两种方式',
-          link: '/Admin-App/Amis/弹出框的两种方式',
+          link: '/Admin-App/Amis/弹出框的两种方式'
         },
         {
           text: '控件字段状态的几状方法',
-          link: '/Admin-App/Amis/控件字段状态的几状方法',
+          link: '/Admin-App/Amis/控件字段状态的几状方法'
         },
         {
           text: '使用amis需要注意的地方',
-          link: '/Admin-App/Amis/使用amis需要注意的地方',
+          link: '/Admin-App/Amis/使用amis需要注意的地方'
         },
         {
           text: '事件动作中的reload',
-          link: '/Admin-App/Amis/事件动作中的reload',
+          link: '/Admin-App/Amis/事件动作中的reload'
         },
         {
           text: '适配yao的fetcher',
-          link: '/Admin-App/Amis/适配yao的fetcher',
+          link: '/Admin-App/Amis/适配yao的fetcher'
         },
         {
           text: '双层弹窗获取数据',
-          link: '/Admin-App/Amis/双层弹窗获取数据',
+          link: '/Admin-App/Amis/双层弹窗获取数据'
         },
         {
           text: '文件分块上传',
-          link: '/Admin-App/Amis/文件分块上传',
+          link: '/Admin-App/Amis/文件分块上传'
         },
         {
           text: '样式修改',
-          link: '/Admin-App/Amis/样式修改',
+          link: '/Admin-App/Amis/样式修改'
         },
         {
           text: '引用query参数',
-          link: '/Admin-App/Amis/引用query参数',
+          link: '/Admin-App/Amis/引用query参数'
         },
         {
           text: '自定义事件检查',
-          link: '/Admin-App/Amis/自定义事件检查',
+          link: '/Admin-App/Amis/自定义事件检查'
         },
         {
           text: '组件事件刷新reload',
-          link: '/Admin-App/Amis/组件事件刷新reload',
+          link: '/Admin-App/Amis/组件事件刷新reload'
         },
         {
           text: '组件查找逻辑',
-          link: '/Admin-App/Amis/组件查找逻辑',
+          link: '/Admin-App/Amis/组件查找逻辑'
         },
         {
           text: 'amis fetcher的工作原理',
-          link: '/Admin-App/Amis/amis fetcher的工作原理',
+          link: '/Admin-App/Amis/amis fetcher的工作原理'
         },
         {
           text: 'amis与yao集成',
-          link: '/Admin-App/Amis/amis与yao集成',
+          link: '/Admin-App/Amis/amis与yao集成'
         },
         {
           text: 'amis关键字',
-          link: '/Admin-App/Amis/amis关键字',
+          link: '/Admin-App/Amis/amis关键字'
         },
         {
           text: 'dialog组件',
-          link: '/Admin-App/Amis/dialog组件',
+          link: '/Admin-App/Amis/dialog组件'
         },
         {
           text: 'font-awesome',
-          link: '/Admin-App/Amis/font-awesome',
+          link: '/Admin-App/Amis/font-awesome'
         },
         {
           text: 'InputTable的数据更新',
-          link: '/Admin-App/Amis/InputTable的数据更新',
+          link: '/Admin-App/Amis/InputTable的数据更新'
         },
         {
           text: 'js写入登录cookie',
-          link: '/Admin-App/Amis/js写入登录cookie',
+          link: '/Admin-App/Amis/js写入登录cookie'
         },
         {
           text: 'propsTransform',
-          link: '/Admin-App/Amis/propsTransform',
+          link: '/Admin-App/Amis/propsTransform'
         },
         {
           text: 'Select控件联动',
-          link: '/Admin-App/Amis/Select控件联动',
-        },
+          link: '/Admin-App/Amis/Select控件联动'
+        }
       ],
-      link: '/Admin-App/Amis/',
+      link: '/Admin-App/Amis/'
     },
     {
       text: 'soybean-admin',
@@ -158,16 +158,16 @@ export default {
       items: [
         {
           text: 'soybean-admin路由处理',
-          link: '/Admin-App/soybean-admin/soybean-admin路由处理',
-        },
+          link: '/Admin-App/soybean-admin/soybean-admin路由处理'
+        }
       ],
-      link: '/Admin-App/soybean-admin/',
-    },
+      link: '/Admin-App/soybean-admin/'
+    }
   ],
   '/AI/': [
     {
       text: '使用postgresql保存Embedding',
-      link: '/AI/使用postgresql保存Embedding',
+      link: '/AI/使用postgresql保存Embedding'
     },
     {
       text: 'ChatGPT',
@@ -175,15 +175,15 @@ export default {
       items: [
         {
           text: '使用ChatGPT开发YAO应用',
-          link: '/AI/ChatGPT/使用ChatGPT开发YAO应用',
+          link: '/AI/ChatGPT/使用ChatGPT开发YAO应用'
         },
         {
           text: '使用gpt4助手创建模型定义',
-          link: '/AI/ChatGPT/使用gpt4助手创建模型定义',
+          link: '/AI/ChatGPT/使用gpt4助手创建模型定义'
         },
         {
           text: 'Vscode编辑器使用插件快速开发模型',
-          link: '/AI/ChatGPT/Vscode编辑器使用插件快速开发模型',
+          link: '/AI/ChatGPT/Vscode编辑器使用插件快速开发模型'
         },
         {
           text: 'Prompts',
@@ -191,51 +191,51 @@ export default {
           items: [
             {
               text: 'ChatGPT生成模型模板',
-              link: '/AI/ChatGPT/Prompts/ChatGPT生成模型模板',
+              link: '/AI/ChatGPT/Prompts/ChatGPT生成模型模板'
             },
             {
               text: 'model_without_relations',
-              link: '/AI/ChatGPT/Prompts/model_without_relations',
+              link: '/AI/ChatGPT/Prompts/model_without_relations'
             },
             {
               text: 'model_with_relations',
-              link: '/AI/ChatGPT/Prompts/model_with_relations',
+              link: '/AI/ChatGPT/Prompts/model_with_relations'
             },
             {
               text: 'Prompt工程',
-              link: '/AI/ChatGPT/Prompts/Prompt工程',
-            },
+              link: '/AI/ChatGPT/Prompts/Prompt工程'
+            }
           ],
-          link: '/AI/ChatGPT/Prompts/',
-        },
+          link: '/AI/ChatGPT/Prompts/'
+        }
       ],
-      link: '/AI/ChatGPT/',
-    },
+      link: '/AI/ChatGPT/'
+    }
   ],
   '/Studio/': [
     {
       text: '编辑器vscode智能提示',
-      link: '/Studio/编辑器vscode智能提示',
+      link: '/Studio/编辑器vscode智能提示'
     },
     {
       text: '如何修改管理员用户密码',
-      link: '/Studio/如何修改管理员用户密码',
+      link: '/Studio/如何修改管理员用户密码'
     },
     {
       text: '自动生成table_form定义文件',
-      link: '/Studio/自动生成table_form定义文件',
+      link: '/Studio/自动生成table_form定义文件'
     },
     {
       text: 'vscode调试yao',
-      link: '/Studio/vscode调试yao',
+      link: '/Studio/vscode调试yao'
     },
     {
       text: 'yao run 命令中的特殊字符',
-      link: '/Studio/yao run 命令中的特殊字符',
+      link: '/Studio/yao run 命令中的特殊字符'
     },
     {
       text: 'Yao Studio介绍',
-      link: '/Studio/Yao Studio介绍',
+      link: '/Studio/Yao Studio介绍'
     },
     {
       text: 'Yao-admin',
@@ -243,20 +243,20 @@ export default {
       items: [
         {
           text: 'yao-admin 根据数据库生成管理后台',
-          link: '/Studio/Yao-admin/yao-admin 根据数据库生成管理后台',
+          link: '/Studio/Yao-admin/yao-admin 根据数据库生成管理后台'
         },
         {
           text: 'yao-admin 的前提条件',
-          link: '/Studio/Yao-admin/yao-admin 的前提条件',
-        },
+          link: '/Studio/Yao-admin/yao-admin 的前提条件'
+        }
       ],
-      link: '/Studio/Yao-admin/',
-    },
+      link: '/Studio/Yao-admin/'
+    }
   ],
   '/YaoDSL/': [
     {
       text: '环境变量',
-      link: '/YaoDSL/环境变量',
+      link: '/YaoDSL/环境变量'
     },
     {
       text: '处理器',
@@ -264,62 +264,62 @@ export default {
       items: [
         {
           text: '处理器列表',
-          link: '/YaoDSL/处理器/处理器列表',
+          link: '/YaoDSL/处理器/处理器列表'
         },
         {
           text: '会话数据',
-          link: '/YaoDSL/处理器/会话数据',
+          link: '/YaoDSL/处理器/会话数据'
         },
         {
           text: '加密解密',
-          link: '/YaoDSL/处理器/加密解密',
+          link: '/YaoDSL/处理器/加密解密'
         },
         {
           text: '日期处理',
-          link: '/YaoDSL/处理器/日期处理',
+          link: '/YaoDSL/处理器/日期处理'
         },
         {
           text: '使用处理器',
-          link: '/YaoDSL/处理器/使用处理器',
+          link: '/YaoDSL/处理器/使用处理器'
         },
         {
           text: '数据图表',
-          link: '/YaoDSL/处理器/数据图表',
+          link: '/YaoDSL/处理器/数据图表'
         },
         {
           text: '数据处理',
-          link: '/YaoDSL/处理器/数据处理',
+          link: '/YaoDSL/处理器/数据处理'
         },
         {
           text: '数据导入',
-          link: '/YaoDSL/处理器/数据导入',
+          link: '/YaoDSL/处理器/数据导入'
         },
         {
           text: '数据表格',
-          link: '/YaoDSL/处理器/数据表格',
+          link: '/YaoDSL/处理器/数据表格'
         },
         {
           text: '网络请求',
-          link: '/YaoDSL/处理器/网络请求',
+          link: '/YaoDSL/处理器/网络请求'
         },
         {
           text: '文件处理',
-          link: '/YaoDSL/处理器/文件处理',
+          link: '/YaoDSL/处理器/文件处理'
         },
         {
           text: '应用引擎',
-          link: '/YaoDSL/处理器/应用引擎',
+          link: '/YaoDSL/处理器/应用引擎'
         },
         {
           text: 'Array转树形结构',
-          link: '/YaoDSL/处理器/Array转树形结构',
+          link: '/YaoDSL/处理器/Array转树形结构'
         },
         {
           text: 'Log',
-          link: '/YaoDSL/处理器/Log',
-        },
+          link: '/YaoDSL/处理器/Log'
+        }
       ],
-      link: '/YaoDSL/处理器/',
+      link: '/YaoDSL/处理器/'
     },
     {
       text: 'AIGC',
@@ -327,34 +327,34 @@ export default {
       items: [
         {
           text: 'aigc处理器',
-          link: '/YaoDSL/AIGC/aigc处理器',
+          link: '/YaoDSL/AIGC/aigc处理器'
         },
         {
           text: 'chatgpt模型中角色的作用',
-          link: '/YaoDSL/AIGC/chatgpt模型中角色的作用',
+          link: '/YaoDSL/AIGC/chatgpt模型中角色的作用'
         },
         {
           text: 'neo_api接口',
-          link: '/YaoDSL/AIGC/neo_api接口',
+          link: '/YaoDSL/AIGC/neo_api接口'
         },
         {
           text: 'neo命令',
-          link: '/YaoDSL/AIGC/neo命令',
+          link: '/YaoDSL/AIGC/neo命令'
         },
         {
           text: 'neo聊天助手',
-          link: '/YaoDSL/AIGC/neo聊天助手',
+          link: '/YaoDSL/AIGC/neo聊天助手'
         },
         {
           text: 'openai处理器',
-          link: '/YaoDSL/AIGC/openai处理器',
+          link: '/YaoDSL/AIGC/openai处理器'
         },
         {
           text: 'sse函数',
-          link: '/YaoDSL/AIGC/sse函数',
-        },
+          link: '/YaoDSL/AIGC/sse函数'
+        }
       ],
-      link: '/YaoDSL/AIGC/',
+      link: '/YaoDSL/AIGC/'
     },
     {
       text: 'API',
@@ -362,62 +362,62 @@ export default {
       items: [
         {
           text: '超级用户权限',
-          link: '/YaoDSL/API/超级用户权限',
+          link: '/YaoDSL/API/超级用户权限'
         },
         {
           text: '定义YAO API',
-          link: '/YaoDSL/API/定义YAO API',
+          link: '/YaoDSL/API/定义YAO API'
         },
         {
           text: '配置Redis保存会话',
-          link: '/YaoDSL/API/配置Redis保存会话',
+          link: '/YaoDSL/API/配置Redis保存会话'
         },
         {
           text: '刷新token',
-          link: '/YaoDSL/API/刷新token',
+          link: '/YaoDSL/API/刷新token'
         },
         {
           text: '文件上传下载接口',
-          link: '/YaoDSL/API/文件上传下载接口',
+          link: '/YaoDSL/API/文件上传下载接口'
         },
         {
           text: '自定义用户登陆login api',
-          link: '/YaoDSL/API/自定义用户登陆login api',
+          link: '/YaoDSL/API/自定义用户登陆login api'
         },
         {
           text: 'API Guard',
-          link: '/YaoDSL/API/API Guard',
+          link: '/YaoDSL/API/API Guard'
         },
         {
           text: 'API会话session保持',
-          link: '/YaoDSL/API/API会话session保持',
+          link: '/YaoDSL/API/API会话session保持'
         },
         {
           text: 'API引用上下文变量',
-          link: '/YaoDSL/API/API引用上下文变量',
+          link: '/YaoDSL/API/API引用上下文变量'
         },
         {
           text: 'API接口介绍',
-          link: '/YaoDSL/API/API接口介绍',
+          link: '/YaoDSL/API/API接口介绍'
         },
         {
           text: 'API预定义变量',
-          link: '/YaoDSL/API/API预定义变量',
+          link: '/YaoDSL/API/API预定义变量'
         },
         {
           text: 'service接口',
-          link: '/YaoDSL/API/service接口',
+          link: '/YaoDSL/API/service接口'
         },
         {
           text: 'stream api接口',
-          link: '/YaoDSL/API/stream api接口',
+          link: '/YaoDSL/API/stream api接口'
         },
         {
           text: 'stream http客户端请求',
-          link: '/YaoDSL/API/stream http客户端请求',
-        },
+          link: '/YaoDSL/API/stream http客户端请求'
+        }
       ],
-      link: '/YaoDSL/API/',
+      link: '/YaoDSL/API/'
     },
     {
       text: 'Flow',
@@ -425,18 +425,18 @@ export default {
       items: [
         {
           text: '编写数据流',
-          link: '/YaoDSL/Flow/编写数据流',
+          link: '/YaoDSL/Flow/编写数据流'
         },
         {
           text: '流程控制',
-          link: '/YaoDSL/Flow/流程控制',
+          link: '/YaoDSL/Flow/流程控制'
         },
         {
           text: '数据流Flow',
-          link: '/YaoDSL/Flow/数据流Flow',
-        },
+          link: '/YaoDSL/Flow/数据流Flow'
+        }
       ],
-      link: '/YaoDSL/Flow/',
+      link: '/YaoDSL/Flow/'
     },
     {
       text: 'Model',
@@ -444,42 +444,42 @@ export default {
       items: [
         {
           text: '定义Yao模型',
-          link: '/YaoDSL/Model/定义Yao模型',
+          link: '/YaoDSL/Model/定义Yao模型'
         },
         {
           text: '模型删除数据',
-          link: '/YaoDSL/Model/模型删除数据',
+          link: '/YaoDSL/Model/模型删除数据'
         },
         {
           text: '模型新增数据',
-          link: '/YaoDSL/Model/模型新增数据',
+          link: '/YaoDSL/Model/模型新增数据'
         },
         {
           text: '模型更新数据',
-          link: '/YaoDSL/Model/模型更新数据',
+          link: '/YaoDSL/Model/模型更新数据'
         },
         {
           text: '数据处理与钩子',
-          link: '/YaoDSL/Model/数据处理与钩子',
+          link: '/YaoDSL/Model/数据处理与钩子'
         },
         {
           text: '数据模型介绍',
-          link: '/YaoDSL/Model/数据模型介绍',
+          link: '/YaoDSL/Model/数据模型介绍'
         },
         {
           text: '数据模型关联',
-          link: '/YaoDSL/Model/数据模型关联',
+          link: '/YaoDSL/Model/数据模型关联'
         },
         {
           text: '字段aes加密解密',
-          link: '/YaoDSL/Model/字段aes加密解密',
+          link: '/YaoDSL/Model/字段aes加密解密'
         },
         {
           text: 'sqlite与mysql的差异',
-          link: '/YaoDSL/Model/sqlite与mysql的差异',
-        },
+          link: '/YaoDSL/Model/sqlite与mysql的差异'
+        }
       ],
-      link: '/YaoDSL/Model/',
+      link: '/YaoDSL/Model/'
     },
     {
       text: 'Pipe',
@@ -487,10 +487,10 @@ export default {
       items: [
         {
           text: 'pipe管道',
-          link: '/YaoDSL/Pipe/pipe管道',
-        },
+          link: '/YaoDSL/Pipe/pipe管道'
+        }
       ],
-      link: '/YaoDSL/Pipe/',
+      link: '/YaoDSL/Pipe/'
     },
     {
       text: 'Plan',
@@ -498,10 +498,10 @@ export default {
       items: [
         {
           text: '计划组件',
-          link: '/YaoDSL/Plan/计划组件',
-        },
+          link: '/YaoDSL/Plan/计划组件'
+        }
       ],
-      link: '/YaoDSL/Plan/',
+      link: '/YaoDSL/Plan/'
     },
     {
       text: 'Plugin',
@@ -509,18 +509,18 @@ export default {
       items: [
         {
           text: '飞书自定义登录',
-          link: '/YaoDSL/Plugin/飞书自定义登录',
+          link: '/YaoDSL/Plugin/飞书自定义登录'
         },
         {
           text: 'golang grpc 插件模板',
-          link: '/YaoDSL/Plugin/golang grpc 插件模板',
+          link: '/YaoDSL/Plugin/golang grpc 插件模板'
         },
         {
           text: 'grpc插件',
-          link: '/YaoDSL/Plugin/grpc插件',
-        },
+          link: '/YaoDSL/Plugin/grpc插件'
+        }
       ],
-      link: '/YaoDSL/Plugin/',
+      link: '/YaoDSL/Plugin/'
     },
     {
       text: 'Query',
@@ -528,42 +528,42 @@ export default {
       items: [
         {
           text: '查询数据',
-          link: '/YaoDSL/Query/查询数据',
+          link: '/YaoDSL/Query/查询数据'
         },
         {
           text: '复杂数据查询',
-          link: '/YaoDSL/Query/复杂数据查询',
+          link: '/YaoDSL/Query/复杂数据查询'
         },
         {
           text: '在url中使用QueryParam',
-          link: '/YaoDSL/Query/在url中使用QueryParam',
+          link: '/YaoDSL/Query/在url中使用QueryParam'
         },
         {
           text: 'Flow Query绑定变量',
-          link: '/YaoDSL/Query/Flow Query绑定变量',
+          link: '/YaoDSL/Query/Flow Query绑定变量'
         },
         {
           text: 'Flow处理器与JSAPI区别',
-          link: '/YaoDSL/Query/Flow处理器与JSAPI区别',
+          link: '/YaoDSL/Query/Flow处理器与JSAPI区别'
         },
         {
           text: 'JSAPI',
-          link: '/YaoDSL/Query/JSAPI',
+          link: '/YaoDSL/Query/JSAPI'
         },
         {
           text: 'QueryDsl',
-          link: '/YaoDSL/Query/QueryDsl',
+          link: '/YaoDSL/Query/QueryDsl'
         },
         {
           text: 'QueryParam与QueryDSL',
-          link: '/YaoDSL/Query/QueryParam与QueryDSL',
+          link: '/YaoDSL/Query/QueryParam与QueryDSL'
         },
         {
           text: 'QueryParam语法',
-          link: '/YaoDSL/Query/QueryParam语法',
-        },
+          link: '/YaoDSL/Query/QueryParam语法'
+        }
       ],
-      link: '/YaoDSL/Query/',
+      link: '/YaoDSL/Query/'
     },
     {
       text: 'Store',
@@ -571,14 +571,14 @@ export default {
       items: [
         {
           text: '使用缓存',
-          link: '/YaoDSL/Store/使用缓存',
+          link: '/YaoDSL/Store/使用缓存'
         },
         {
           text: 'Mongo配置',
-          link: '/YaoDSL/Store/Mongo配置',
-        },
+          link: '/YaoDSL/Store/Mongo配置'
+        }
       ],
-      link: '/YaoDSL/Store/',
+      link: '/YaoDSL/Store/'
     },
     {
       text: 'SUI',
@@ -586,26 +586,26 @@ export default {
       items: [
         {
           text: '使用builder创建sui页面',
-          link: '/YaoDSL/SUI/使用builder创建sui页面',
+          link: '/YaoDSL/SUI/使用builder创建sui页面'
         },
         {
           text: '使用sui搭建网站',
-          link: '/YaoDSL/SUI/使用sui搭建网站',
+          link: '/YaoDSL/SUI/使用sui搭建网站'
         },
         {
           text: 'sui介绍',
-          link: '/YaoDSL/SUI/sui介绍',
+          link: '/YaoDSL/SUI/sui介绍'
         },
         {
           text: 'sui的命令工具',
-          link: '/YaoDSL/SUI/sui的命令工具',
+          link: '/YaoDSL/SUI/sui的命令工具'
         },
         {
           text: 'sui编译文件自动插入的内容',
-          link: '/YaoDSL/SUI/sui编译文件自动插入的内容',
-        },
+          link: '/YaoDSL/SUI/sui编译文件自动插入的内容'
+        }
       ],
-      link: '/YaoDSL/SUI/',
+      link: '/YaoDSL/SUI/'
     },
     {
       text: 'Task',
@@ -613,18 +613,18 @@ export default {
       items: [
         {
           text: '并发任务',
-          link: '/YaoDSL/Task/并发任务',
+          link: '/YaoDSL/Task/并发任务'
         },
         {
           text: '计划任务',
-          link: '/YaoDSL/Task/计划任务',
+          link: '/YaoDSL/Task/计划任务'
         },
         {
           text: '异步任务',
-          link: '/YaoDSL/Task/异步任务',
-        },
+          link: '/YaoDSL/Task/异步任务'
+        }
       ],
-      link: '/YaoDSL/Task/',
+      link: '/YaoDSL/Task/'
     },
     {
       text: 'v8go',
@@ -632,38 +632,38 @@ export default {
       items: [
         {
           text: '使用npm库',
-          link: '/YaoDSL/v8go/使用npm库',
+          link: '/YaoDSL/v8go/使用npm库'
         },
         {
           text: '使用ts的注意事项',
-          link: '/YaoDSL/v8go/使用ts的注意事项',
+          link: '/YaoDSL/v8go/使用ts的注意事项'
         },
         {
           text: '使用typescript进行开发',
-          link: '/YaoDSL/v8go/使用typescript进行开发',
+          link: '/YaoDSL/v8go/使用typescript进行开发'
         },
         {
           text: '小心字节处理',
-          link: '/YaoDSL/v8go/小心字节处理',
+          link: '/YaoDSL/v8go/小心字节处理'
         },
         {
           text: '在js脚本中异步执行作业',
-          link: '/YaoDSL/v8go/在js脚本中异步执行作业',
+          link: '/YaoDSL/v8go/在js脚本中异步执行作业'
         },
         {
           text: '在js脚本中抛出异常',
-          link: '/YaoDSL/v8go/在js脚本中抛出异常',
+          link: '/YaoDSL/v8go/在js脚本中抛出异常'
         },
         {
           text: '在yao中使用外部库',
-          link: '/YaoDSL/v8go/在yao中使用外部库',
+          link: '/YaoDSL/v8go/在yao中使用外部库'
         },
         {
           text: 'Promise',
-          link: '/YaoDSL/v8go/Promise',
-        },
+          link: '/YaoDSL/v8go/Promise'
+        }
       ],
-      link: '/YaoDSL/v8go/',
+      link: '/YaoDSL/v8go/'
     },
     {
       text: 'Widget',
@@ -671,14 +671,14 @@ export default {
       items: [
         {
           text: '自定义Widget',
-          link: '/YaoDSL/Widget/自定义Widget',
+          link: '/YaoDSL/Widget/自定义Widget'
         },
         {
           text: '自定义Widget升级版',
-          link: '/YaoDSL/Widget/自定义Widget升级版',
-        },
+          link: '/YaoDSL/Widget/自定义Widget升级版'
+        }
       ],
-      link: '/YaoDSL/Widget/',
+      link: '/YaoDSL/Widget/'
     },
     {
       text: 'Xgen',
@@ -686,39 +686,39 @@ export default {
       items: [
         {
           text: '0.10.2与0.10.3差异',
-          link: '/YaoDSL/Xgen/0.10.2与0.10.3差异',
+          link: '/YaoDSL/Xgen/0.10.2与0.10.3差异'
         },
         {
           text: '菜单结构',
-          link: '/YaoDSL/Xgen/菜单结构',
+          link: '/YaoDSL/Xgen/菜单结构'
         },
         {
           text: '使用compute',
-          link: '/YaoDSL/Xgen/使用compute',
+          link: '/YaoDSL/Xgen/使用compute'
         },
         {
           text: '系统默认的用户名',
-          link: '/YaoDSL/Xgen/系统默认的用户名',
+          link: '/YaoDSL/Xgen/系统默认的用户名'
         },
         {
           text: 'Hook参数说明',
-          link: '/YaoDSL/Xgen/Hook参数说明',
+          link: '/YaoDSL/Xgen/Hook参数说明'
         },
         {
           text: 'xgen命令汇总',
-          link: '/YaoDSL/Xgen/xgen命令汇总',
+          link: '/YaoDSL/Xgen/xgen命令汇总'
         },
         {
           text: 'xgen登录过程',
-          link: '/YaoDSL/Xgen/xgen登录过程',
+          link: '/YaoDSL/Xgen/xgen登录过程'
         },
         {
           text: 'xgen远程onChange事件',
-          link: '/YaoDSL/Xgen/xgen远程onChange事件',
+          link: '/YaoDSL/Xgen/xgen远程onChange事件'
         },
         {
           text: 'Xgen多语言支持',
-          link: '/YaoDSL/Xgen/Xgen多语言支持',
+          link: '/YaoDSL/Xgen/Xgen多语言支持'
         },
         {
           text: 'Chart',
@@ -726,18 +726,18 @@ export default {
           items: [
             {
               text: '分析图表',
-              link: '/YaoDSL/Xgen/Chart/分析图表',
+              link: '/YaoDSL/Xgen/Chart/分析图表'
             },
             {
               text: '图表类型',
-              link: '/YaoDSL/Xgen/Chart/图表类型',
+              link: '/YaoDSL/Xgen/Chart/图表类型'
             },
             {
               text: 'Chart钩子函数',
-              link: '/YaoDSL/Xgen/Chart/Chart钩子函数',
-            },
+              link: '/YaoDSL/Xgen/Chart/Chart钩子函数'
+            }
           ],
-          link: '/YaoDSL/Xgen/Chart/',
+          link: '/YaoDSL/Xgen/Chart/'
         },
         {
           text: 'Dashboard',
@@ -745,10 +745,10 @@ export default {
           items: [
             {
               text: 'Dashboard钩子函数',
-              link: '/YaoDSL/Xgen/Dashboard/Dashboard钩子函数',
-            },
+              link: '/YaoDSL/Xgen/Dashboard/Dashboard钩子函数'
+            }
           ],
-          link: '/YaoDSL/Xgen/Dashboard/',
+          link: '/YaoDSL/Xgen/Dashboard/'
         },
         {
           text: 'Form',
@@ -756,30 +756,30 @@ export default {
           items: [
             {
               text: 'AI智能表单',
-              link: '/YaoDSL/Xgen/Form/AI智能表单',
+              link: '/YaoDSL/Xgen/Form/AI智能表单'
             },
             {
               text: 'Form使用技巧',
-              link: '/YaoDSL/Xgen/Form/Form使用技巧',
+              link: '/YaoDSL/Xgen/Form/Form使用技巧'
             },
             {
               text: 'Form单据参考创建',
-              link: '/YaoDSL/Xgen/Form/Form单据参考创建',
+              link: '/YaoDSL/Xgen/Form/Form单据参考创建'
             },
             {
               text: 'Form里嵌套List',
-              link: '/YaoDSL/Xgen/Form/Form里嵌套List',
+              link: '/YaoDSL/Xgen/Form/Form里嵌套List'
             },
             {
               text: 'Form里嵌套Table',
-              link: '/YaoDSL/Xgen/Form/Form里嵌套Table',
+              link: '/YaoDSL/Xgen/Form/Form里嵌套Table'
             },
             {
               text: 'Form钩子函数',
-              link: '/YaoDSL/Xgen/Form/Form钩子函数',
-            },
+              link: '/YaoDSL/Xgen/Form/Form钩子函数'
+            }
           ],
-          link: '/YaoDSL/Xgen/Form/',
+          link: '/YaoDSL/Xgen/Form/'
         },
         {
           text: 'List',
@@ -787,10 +787,10 @@ export default {
           items: [
             {
               text: 'List钩子函数',
-              link: '/YaoDSL/Xgen/List/List钩子函数',
-            },
+              link: '/YaoDSL/Xgen/List/List钩子函数'
+            }
           ],
-          link: '/YaoDSL/Xgen/List/',
+          link: '/YaoDSL/Xgen/List/'
         },
         {
           text: 'Neo',
@@ -798,10 +798,10 @@ export default {
           items: [
             {
               text: 'neo嵌入业务指令',
-              link: '/YaoDSL/Xgen/Neo/neo嵌入业务指令',
-            },
+              link: '/YaoDSL/Xgen/Neo/neo嵌入业务指令'
+            }
           ],
-          link: '/YaoDSL/Xgen/Neo/',
+          link: '/YaoDSL/Xgen/Neo/'
         },
         {
           text: 'Table',
@@ -809,50 +809,50 @@ export default {
           items: [
             {
               text: '数据表格',
-              link: '/YaoDSL/Xgen/Table/数据表格',
+              link: '/YaoDSL/Xgen/Table/数据表格'
             },
             {
               text: 'Table 钩子函数',
-              link: '/YaoDSL/Xgen/Table/Table 钩子函数',
+              link: '/YaoDSL/Xgen/Table/Table 钩子函数'
             },
             {
               text: 'TableA跳转到FormB',
-              link: '/YaoDSL/Xgen/Table/TableA跳转到FormB',
+              link: '/YaoDSL/Xgen/Table/TableA跳转到FormB'
             },
             {
               text: 'Table_Form禁用Action',
-              link: '/YaoDSL/Xgen/Table/Table_Form禁用Action',
+              link: '/YaoDSL/Xgen/Table/Table_Form禁用Action'
             },
             {
               text: 'Table上使用Tab',
-              link: '/YaoDSL/Xgen/Table/Table上使用Tab',
+              link: '/YaoDSL/Xgen/Table/Table上使用Tab'
             },
             {
               text: 'Table中设置字段只读',
-              link: '/YaoDSL/Xgen/Table/Table中设置字段只读',
+              link: '/YaoDSL/Xgen/Table/Table中设置字段只读'
             },
             {
               text: 'Table使用技巧',
-              link: '/YaoDSL/Xgen/Table/Table使用技巧',
+              link: '/YaoDSL/Xgen/Table/Table使用技巧'
             },
             {
               text: 'Table增加查看，编辑，删除按钮',
-              link: '/YaoDSL/Xgen/Table/Table增加查看，编辑，删除按钮',
+              link: '/YaoDSL/Xgen/Table/Table增加查看，编辑，删除按钮'
             },
             {
               text: 'Table搜索默认值',
-              link: '/YaoDSL/Xgen/Table/Table搜索默认值',
+              link: '/YaoDSL/Xgen/Table/Table搜索默认值'
             },
             {
               text: 'Table最小化配置',
-              link: '/YaoDSL/Xgen/Table/Table最小化配置',
+              link: '/YaoDSL/Xgen/Table/Table最小化配置'
             },
             {
               text: 'Table界面上增加创建按钮',
-              link: '/YaoDSL/Xgen/Table/Table界面上增加创建按钮',
-            },
+              link: '/YaoDSL/Xgen/Table/Table界面上增加创建按钮'
+            }
           ],
-          link: '/YaoDSL/Xgen/Table/',
+          link: '/YaoDSL/Xgen/Table/'
         },
         {
           text: 'Xgen控件',
@@ -860,55 +860,55 @@ export default {
           items: [
             {
               text: '菜单配置',
-              link: '/YaoDSL/Xgen/Xgen控件/菜单配置',
+              link: '/YaoDSL/Xgen/Xgen控件/菜单配置'
             },
             {
               text: '禁用编辑控件',
-              link: '/YaoDSL/Xgen/Xgen控件/禁用编辑控件',
+              link: '/YaoDSL/Xgen/Xgen控件/禁用编辑控件'
             },
             {
               text: '控件onSelect回调',
-              link: '/YaoDSL/Xgen/Xgen控件/控件onSelect回调',
+              link: '/YaoDSL/Xgen/Xgen控件/控件onSelect回调'
             },
             {
               text: '设置控件的必输属性',
-              link: '/YaoDSL/Xgen/Xgen控件/设置控件的必输属性',
+              link: '/YaoDSL/Xgen/Xgen控件/设置控件的必输属性'
             },
             {
               text: '使用Hook转换日期控件的值',
-              link: '/YaoDSL/Xgen/Xgen控件/使用Hook转换日期控件的值',
+              link: '/YaoDSL/Xgen/Xgen控件/使用Hook转换日期控件的值'
             },
             {
               text: '视频上传',
-              link: '/YaoDSL/Xgen/Xgen控件/视频上传',
+              link: '/YaoDSL/Xgen/Xgen控件/视频上传'
             },
             {
               text: '图片控件',
-              link: '/YaoDSL/Xgen/Xgen控件/图片控件',
+              link: '/YaoDSL/Xgen/Xgen控件/图片控件'
             },
             {
               text: '文件上传UploadFile',
-              link: '/YaoDSL/Xgen/Xgen控件/文件上传UploadFile',
+              link: '/YaoDSL/Xgen/Xgen控件/文件上传UploadFile'
             },
             {
               text: '远程select控件',
-              link: '/YaoDSL/Xgen/Xgen控件/远程select控件',
+              link: '/YaoDSL/Xgen/Xgen控件/远程select控件'
             },
             {
               text: 'Switch控件',
-              link: '/YaoDSL/Xgen/Xgen控件/Switch控件',
+              link: '/YaoDSL/Xgen/Xgen控件/Switch控件'
             },
             {
               text: 'Upload在List下视频样式错乱',
-              link: '/YaoDSL/Xgen/Xgen控件/Upload在List下视频样式错乱',
+              link: '/YaoDSL/Xgen/Xgen控件/Upload在List下视频样式错乱'
             },
             {
               text: 'Xgen登录界面邮件电话校验规则',
-              link: '/YaoDSL/Xgen/Xgen控件/Xgen登录界面邮件电话校验规则',
+              link: '/YaoDSL/Xgen/Xgen控件/Xgen登录界面邮件电话校验规则'
             },
             {
               text: 'Xgen自定义远程控件',
-              link: '/YaoDSL/Xgen/Xgen控件/Xgen自定义远程控件',
+              link: '/YaoDSL/Xgen/Xgen控件/Xgen自定义远程控件'
             },
             {
               text: 'RichText富文本控件',
@@ -916,30 +916,30 @@ export default {
               items: [
                 {
                   text: '使用富文本控件',
-                  link: '/YaoDSL/Xgen/Xgen控件/RichText富文本控件/使用富文本控件',
-                },
+                  link: '/YaoDSL/Xgen/Xgen控件/RichText富文本控件/使用富文本控件'
+                }
               ],
-              link: '/YaoDSL/Xgen/Xgen控件/RichText富文本控件/',
-            },
+              link: '/YaoDSL/Xgen/Xgen控件/RichText富文本控件/'
+            }
           ],
-          link: '/YaoDSL/Xgen/Xgen控件/',
-        },
+          link: '/YaoDSL/Xgen/Xgen控件/'
+        }
       ],
-      link: '/YaoDSL/Xgen/',
-    },
+      link: '/YaoDSL/Xgen/'
+    }
   ],
   '/入门指南/': [
     {
       text: 'readme',
-      link: '/入门指南/readme',
+      link: '/入门指南/readme'
     },
     {
       text: 'Yao学习路线图',
-      link: '/入门指南/Yao学习路线图',
+      link: '/入门指南/Yao学习路线图'
     },
     {
       text: 'Yao简单介绍',
-      link: '/入门指南/Yao简单介绍',
+      link: '/入门指南/Yao简单介绍'
     },
     {
       text: '基础',
@@ -947,58 +947,58 @@ export default {
       items: [
         {
           text: '安装配置',
-          link: '/入门指南/基础/安装配置',
+          link: '/入门指南/基础/安装配置'
         },
         {
           text: '编写API接口',
-          link: '/入门指南/基础/编写API接口',
+          link: '/入门指南/基础/编写API接口'
         },
         {
           text: '编写图表',
-          link: '/入门指南/基础/编写图表',
+          link: '/入门指南/基础/编写图表'
         },
         {
           text: '编写界面',
-          link: '/入门指南/基础/编写界面',
+          link: '/入门指南/基础/编写界面'
         },
         {
           text: '创建数据模型',
-          link: '/入门指南/基础/创建数据模型',
+          link: '/入门指南/基础/创建数据模型'
         },
         {
           text: '逻辑编排',
-          link: '/入门指南/基础/逻辑编排',
+          link: '/入门指南/基础/逻辑编排'
         },
         {
           text: '使用Widgets',
-          link: '/入门指南/基础/使用Widgets',
+          link: '/入门指南/基础/使用Widgets'
         },
         {
           text: '使用处理器',
-          link: '/入门指南/基础/使用处理器',
+          link: '/入门指南/基础/使用处理器'
         },
         {
           text: '文件上传',
-          link: '/入门指南/基础/文件上传',
+          link: '/入门指南/基础/文件上传'
         },
         {
           text: '应用目录结构',
-          link: '/入门指南/基础/应用目录结构',
+          link: '/入门指南/基础/应用目录结构'
         },
         {
           text: '应用语言包',
-          link: '/入门指南/基础/应用语言包',
+          link: '/入门指南/基础/应用语言包'
         },
         {
           text: 'YAO命令',
-          link: '/入门指南/基础/YAO命令',
+          link: '/入门指南/基础/YAO命令'
         },
         {
           text: 'YAO编程基础',
-          link: '/入门指南/基础/YAO编程基础',
-        },
+          link: '/入门指南/基础/YAO编程基础'
+        }
       ],
-      link: '/入门指南/基础/',
+      link: '/入门指南/基础/'
     },
     {
       text: '进阶系列',
@@ -1006,18 +1006,18 @@ export default {
       items: [
         {
           text: '后台执行',
-          link: '/入门指南/进阶系列/后台执行',
+          link: '/入门指南/进阶系列/后台执行'
         },
         {
           text: '使用会话保存信息',
-          link: '/入门指南/进阶系列/使用会话保存信息',
+          link: '/入门指南/进阶系列/使用会话保存信息'
         },
         {
           text: 'yao源代码安装',
-          link: '/入门指南/进阶系列/yao源代码安装',
-        },
+          link: '/入门指南/进阶系列/yao源代码安装'
+        }
       ],
-      link: '/入门指南/进阶系列/',
+      link: '/入门指南/进阶系列/'
     },
     {
       text: '上手系列',
@@ -1025,94 +1025,94 @@ export default {
       items: [
         {
           text: '1 Yao下载与安装',
-          link: '/入门指南/上手系列/1 Yao下载与安装',
+          link: '/入门指南/上手系列/1 Yao下载与安装'
         },
         {
           text: '2 创建第一个Yao应用',
-          link: '/入门指南/上手系列/2 创建第一个Yao应用',
+          link: '/入门指南/上手系列/2 创建第一个Yao应用'
         },
         {
           text: '3 增加模型定义',
-          link: '/入门指南/上手系列/3 增加模型定义',
+          link: '/入门指南/上手系列/3 增加模型定义'
         },
         {
           text: '4 生成数据库表',
-          link: '/入门指南/上手系列/4 生成数据库表',
+          link: '/入门指南/上手系列/4 生成数据库表'
         },
         {
           text: '5 配置表格',
-          link: '/入门指南/上手系列/5 配置表格',
+          link: '/入门指南/上手系列/5 配置表格'
         },
         {
           text: '6 配置表单',
-          link: '/入门指南/上手系列/6 配置表单',
+          link: '/入门指南/上手系列/6 配置表单'
         },
         {
           text: '7 配置外部API',
-          link: '/入门指南/上手系列/7 配置外部API',
+          link: '/入门指南/上手系列/7 配置外部API'
         },
         {
           text: '8 处理器',
-          link: '/入门指南/上手系列/8 处理器',
+          link: '/入门指南/上手系列/8 处理器'
         },
         {
           text: '9 数据增删改查',
-          link: '/入门指南/上手系列/9 数据增删改查',
-        },
+          link: '/入门指南/上手系列/9 数据增删改查'
+        }
       ],
-      link: '/入门指南/上手系列/',
-    },
+      link: '/入门指南/上手系列/'
+    }
   ],
   '/流程图/': [
     {
       text: '查询参数QueryParam',
-      link: '/流程图/查询参数QueryParam',
+      link: '/流程图/查询参数QueryParam'
     },
     {
       text: '任务Task处理',
-      link: '/流程图/任务Task处理',
+      link: '/流程图/任务Task处理'
     },
     {
       text: '数据库schema',
-      link: '/流程图/数据库schema',
+      link: '/流程图/数据库schema'
     },
     {
       text: '数据库xun架构',
-      link: '/流程图/数据库xun架构',
+      link: '/流程图/数据库xun架构'
     },
     {
       text: '数据库更新流程',
-      link: '/流程图/数据库更新流程',
+      link: '/流程图/数据库更新流程'
     },
     {
       text: '数据库读取流程',
-      link: '/流程图/数据库读取流程',
+      link: '/流程图/数据库读取流程'
     },
     {
       text: '用户登录流程会话',
-      link: '/流程图/用户登录流程会话',
+      link: '/流程图/用户登录流程会话'
     },
     {
       text: '自定义widget',
-      link: '/流程图/自定义widget',
+      link: '/流程图/自定义widget'
     },
     {
       text: 'api请求过程',
-      link: '/流程图/api请求过程',
+      link: '/流程图/api请求过程'
     },
     {
       text: 'yao migrate',
-      link: '/流程图/yao migrate',
+      link: '/流程图/yao migrate'
     },
     {
       text: 'Yao 架构概览',
-      link: '/流程图/Yao 架构概览',
-    },
+      link: '/流程图/Yao 架构概览'
+    }
   ],
   '/源代码/': [
     {
       text: 'Github Commit List',
-      link: '/源代码/Github Commit List',
+      link: '/源代码/Github Commit List'
     },
     {
       text: '源码编译',
@@ -1120,11 +1120,11 @@ export default {
       items: [
         {
           text: '0.10.3-pre To 0.10.3-dev',
-          link: '/源代码/源码编译/0.10.3-pre To 0.10.3-dev',
+          link: '/源代码/源码编译/0.10.3-pre To 0.10.3-dev'
         },
         {
           text: '编译yao源代码',
-          link: '/源代码/源码编译/编译yao源代码',
+          link: '/源代码/源码编译/编译yao源代码'
         },
         {
           text: 'windows版本适配',
@@ -1132,17 +1132,17 @@ export default {
           items: [
             {
               text: '编译yao windows修改版本',
-              link: '/源代码/源码编译/windows版本适配/编译yao windows修改版本',
+              link: '/源代码/源码编译/windows版本适配/编译yao windows修改版本'
             },
             {
               text: 'windows pack功能适配',
-              link: '/源代码/源码编译/windows版本适配/windows pack功能适配',
-            },
+              link: '/源代码/源码编译/windows版本适配/windows pack功能适配'
+            }
           ],
-          link: '/源代码/源码编译/windows版本适配/',
-        },
+          link: '/源代码/源码编译/windows版本适配/'
+        }
       ],
-      link: '/源代码/源码编译/',
+      link: '/源代码/源码编译/'
     },
     {
       text: 'Gou',
@@ -1150,26 +1150,26 @@ export default {
       items: [
         {
           text: '加密处理器调用错误',
-          link: '/源代码/Gou/加密处理器调用错误',
+          link: '/源代码/Gou/加密处理器调用错误'
         },
         {
           text: '两个HasMany问题',
-          link: '/源代码/Gou/两个HasMany问题',
+          link: '/源代码/Gou/两个HasMany问题'
         },
         {
           text: '数据库Schema默认值转换异常',
-          link: '/源代码/Gou/数据库Schema默认值转换异常',
+          link: '/源代码/Gou/数据库Schema默认值转换异常'
         },
         {
           text: 'jsapi中的undefined转换',
-          link: '/源代码/Gou/jsapi中的undefined转换',
+          link: '/源代码/Gou/jsapi中的undefined转换'
         },
         {
           text: 'Null值转换成Int类型值时panic',
-          link: '/源代码/Gou/Null值转换成Int类型值时panic',
-        },
+          link: '/源代码/Gou/Null值转换成Int类型值时panic'
+        }
       ],
-      link: '/源代码/Gou/',
+      link: '/源代码/Gou/'
     },
     {
       text: 'Kun',
@@ -1177,10 +1177,10 @@ export default {
       items: [
         {
           text: 'console_log无法输出正确格式',
-          link: '/源代码/Kun/console_log无法输出正确格式',
-        },
+          link: '/源代码/Kun/console_log无法输出正确格式'
+        }
       ],
-      link: '/源代码/Kun/',
+      link: '/源代码/Kun/'
     },
     {
       text: 'Xgen',
@@ -1188,18 +1188,18 @@ export default {
       items: [
         {
           text: 'xgen List控件保存数据时数据被清空',
-          link: '/源代码/Xgen/xgen List控件保存数据时数据被清空',
+          link: '/源代码/Xgen/xgen List控件保存数据时数据被清空'
         },
         {
           text: 'xgen remoteSearch',
-          link: '/源代码/Xgen/xgen remoteSearch',
+          link: '/源代码/Xgen/xgen remoteSearch'
         },
         {
           text: 'xgen 批量上传功能',
-          link: '/源代码/Xgen/xgen 批量上传功能',
-        },
+          link: '/源代码/Xgen/xgen 批量上传功能'
+        }
       ],
-      link: '/源代码/Xgen/',
+      link: '/源代码/Xgen/'
     },
     {
       text: 'Xun',
@@ -1207,22 +1207,22 @@ export default {
       items: [
         {
           text: '数据库连接配置',
-          link: '/源代码/Xun/数据库连接配置',
+          link: '/源代码/Xun/数据库连接配置'
         },
         {
           text: 'Mysql数据库事务',
-          link: '/源代码/Xun/Mysql数据库事务',
+          link: '/源代码/Xun/Mysql数据库事务'
         },
         {
           text: 'PG数据库增加自定义类型',
-          link: '/源代码/Xun/PG数据库增加自定义类型',
+          link: '/源代码/Xun/PG数据库增加自定义类型'
         },
         {
           text: 'sqlite数据库bug',
-          link: '/源代码/Xun/sqlite数据库bug',
-        },
+          link: '/源代码/Xun/sqlite数据库bug'
+        }
       ],
-      link: '/源代码/Xun/',
+      link: '/源代码/Xun/'
     },
     {
       text: 'Yao',
@@ -1230,18 +1230,18 @@ export default {
       items: [
         {
           text: '处理器yao.component.selectoptions修正',
-          link: '/源代码/Yao/处理器yao.component.selectoptions修正',
+          link: '/源代码/Yao/处理器yao.component.selectoptions修正'
         },
         {
           text: 'Compute 处理器无法处理关联表',
-          link: '/源代码/Yao/Compute 处理器无法处理关联表',
+          link: '/源代码/Yao/Compute 处理器无法处理关联表'
         },
         {
           text: 'yao 应用打包功能pack',
-          link: '/源代码/Yao/yao 应用打包功能pack',
-        },
+          link: '/源代码/Yao/yao 应用打包功能pack'
+        }
       ],
-      link: '/源代码/Yao/',
-    },
-  ],
+      link: '/源代码/Yao/'
+    }
+  ]
 };

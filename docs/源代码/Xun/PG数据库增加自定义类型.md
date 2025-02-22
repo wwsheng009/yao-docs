@@ -45,6 +45,8 @@
   "name": "documents",
   "relations": {}
 }
+
+
 // yao migrate -n documents --reset
 ```
 

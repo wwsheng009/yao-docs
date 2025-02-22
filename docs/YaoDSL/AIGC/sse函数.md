@@ -111,7 +111,7 @@ interface SSEParsedData {
 function parseSSEMessage(sseMessage: string): SSEParsedData {
   const parsedData: SSEParsedData = {
     events: [],
-    data: '',
+    data: ''
   };
 
   let lines = sseMessage.split('\n');

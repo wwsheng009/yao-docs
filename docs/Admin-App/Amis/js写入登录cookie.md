@@ -21,7 +21,7 @@ function adoptor(payload, response, api) {
     document.cookie = `token=${escape(data.token)};${expires};path=/`;
     sessionStorage.setItem(
       'xgen:token',
-      JSON.stringify({ type: 'String', value: escape(data.token) }),
+      JSON.stringify({ type: 'String', value: escape(data.token) })
     );
     //studio
     newDate.setTime(data.studio.expires_at * 1000);
@@ -29,13 +29,13 @@ function adoptor(payload, response, api) {
     document.cookie = `studio=${escape(data.studio.token)};${expires};path=/`;
     sessionStorage.setItem(
       'studio',
-      JSON.stringify({ type: 'String', value: data.studio }),
+      JSON.stringify({ type: 'String', value: data.studio })
     );
   }
   return {
     status: 0,
     msg: '请求成功',
-    data: data,
+    data: data
   };
 }
 ```
@@ -54,21 +54,21 @@ function adoptor(payload, response, api) {
     document.cookie = `token=${escape(payload.data.token)};${expires};path=/`;
     sessionStorage.setItem(
       'xgen:token',
-      JSON.stringify({ type: 'String', value: escape(payload.data.token) }),
+      JSON.stringify({ type: 'String', value: escape(payload.data.token) })
     );
     //studio
     document.cookie = `studio=${escape(
-      payload.data.studio.token,
+      payload.data.studio.token
     )};${expires};path=/`;
     sessionStorage.setItem(
       'studio',
-      JSON.stringify({ type: 'String', value: payload.data.studio }),
+      JSON.stringify({ type: 'String', value: payload.data.studio })
     );
   }
   return {
     status: 0,
     msg: '请求成功',
-    data: payload.data,
+    data: payload.data
   };
 }
 ```

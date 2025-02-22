@@ -17,7 +17,7 @@ export function fastGlobSync(type: string, dir: string, ignore: string[] = []) {
     onlyDirectories: type === 'dir',
     onlyFiles: type === 'file',
     cwd: dir,
-    ignore: ['_*', 'dist', 'node_modules', ...ignore],
+    ignore: ['_*', 'dist', 'node_modules', ...ignore]
   });
   files.sort();
   return files;
@@ -49,7 +49,7 @@ const getSidebar = (dir: string, title: string | undefined) => {
         items: [] as {
           text: string;
           link: string;
-        }[],
+        }[]
       };
       mdFiles.forEach((file) => {
         if (file.endsWith('.md')) {
@@ -59,7 +59,7 @@ const getSidebar = (dir: string, title: string | undefined) => {
           }
           const item = {
             text: file.slice(0, -3),
-            link: prePath,
+            link: prePath
           };
           sidebar.items.push(item);
         }
@@ -71,7 +71,7 @@ const getSidebar = (dir: string, title: string | undefined) => {
     const sidebar = {
       text: title,
       collapsed: false,
-      items: [] as SizbarItem[],
+      items: [] as SizbarItem[]
     };
     mdFiles
       .filter((e) => e !== 'index.md')
@@ -89,7 +89,7 @@ const getSidebar = (dir: string, title: string | undefined) => {
             .trim();
           const item = {
             text: mdTitle || file.slice(0, -3),
-            link: prePath,
+            link: prePath
           };
           sidebar.items.push(item);
         }

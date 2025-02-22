@@ -2,5 +2,5 @@
 
 <!-- links begin -->
 
-- [pipe 管道](pipe管道.md)
+- [pipe管道](pipe管道.md)
 <!-- links end -->

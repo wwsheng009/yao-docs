@@ -97,7 +97,7 @@ fetcher: ({ url, method, data, config, headers }) => {
     let payload = {
       status: !response.data.code ? 0 : response.data.code,
       msg: response.data.message ? response.data.message : '',
-      data: response.data,
+      data: response.data
     };
     response.data = payload;
     // 在这个回调函数中返回一个新的 Promise 对象

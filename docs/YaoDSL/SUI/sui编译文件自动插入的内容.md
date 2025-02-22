@@ -60,7 +60,7 @@ Yao.prototype.Fetch = async function (
   params,
   data,
   headers,
-  isblob,
+  isblob
 ) {};
 /** 获取Token */
 Yao.prototype.Token = function () {};
@@ -469,7 +469,7 @@ function __sui_state(component) {
         target: target,
         stopPropagation: function () {
           target.setAttribute('state-propagation', 'true');
-        },
+        }
       };
       // Call the state change handler，watch中的函数会有两个参数，第一个参数是新的值，第二个参数是状态对象，可以理解成事件对象。
       await handler(value, stateObj);
@@ -488,7 +488,7 @@ function __sui_state(component) {
 
       // Dispatch the state change custom event to parent component
       const event = new CustomEvent('state:change', {
-        detail: { key: key, value: value, target: component.root },
+        detail: { key: key, value: value, target: component.root }
       });
       parent.dispatchEvent(event);
     }
@@ -654,7 +654,7 @@ sui lib 内容，主要是 js 脚本。
       $query: { x: ['1223'] },
       $cookie: {
         TOKEN:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic2lkIjoiMWYzZTMxNjQtYjM1ZS00MWU4LTkwZGUtNjZkOWM1ZjgxOTMxIiwiZGF0YSI6e30sImF1ZCI6IllhbyBQcm9jZXNzIHV0aWxzLmp3dC5NYWtlIiwiZXhwIjoxNzEwOTU3OTUwLCJqdGkiOiIxIiwiaWF0IjoxNzEwOTI5MTUwLCJpc3MiOiJ4aWFuZzoxIiwibmJmIjoxNzEwOTI5MTUwLCJzdWIiOiJVc2VyIFRva2VuIn0.P3pTPWn9jF__3vjo9-u7m66j9H_1IcC2zLNMCi4V8BE',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic2lkIjoiMWYzZTMxNjQtYjM1ZS00MWU4LTkwZGUtNjZkOWM1ZjgxOTMxIiwiZGF0YSI6e30sImF1ZCI6IllhbyBQcm9jZXNzIHV0aWxzLmp3dC5NYWtlIiwiZXhwIjoxNzEwOTU3OTUwLCJqdGkiOiIxIiwiaWF0IjoxNzEwOTI5MTUwLCJpc3MiOiJ4aWFuZzoxIiwibmJmIjoxNzEwOTI5MTUwLCJzdWIiOiJVc2VyIFRva2VuIn0.P3pTPWn9jF__3vjo9-u7m66j9H_1IcC2zLNMCi4V8BE'
       },
       $theme: null,
       $locale: null,
@@ -666,9 +666,9 @@ sui lib 内容，主要是 js 脚本。
         domain: 'localhost',
         path: '/demo/index',
         scheme: 'http',
-        url: 'http://localhost:5099/demo/index',
+        url: 'http://localhost:5099/demo/index'
       },
-      $direction: 'ltr',
+      $direction: 'ltr'
     };
   } catch (e) {
     console.log('init data error:', e);
@@ -735,7 +735,7 @@ self.LoadCategory = async function (
   detail: {
     rootElement: HtmlElement; //即是本组件
     targetElement: HtmlElement; // 点击的元素,事件源
-  },
+  }
 ) {
   // Active and inactive class
   const active =
@@ -779,7 +779,7 @@ self.LoadCategory = async function (
 self.onItemClick = (
   event: Event,
   data: Record<string, any>,
-  detail: Record<string, any>,
+  detail: Record<string, any>
 ) => {
   debugger;
   event.stopPropagation();
@@ -799,7 +799,7 @@ self.onItemClick = (
   if (item.selected) {
     unselectItem(detail.targetElement);
     self.root.dispatchEvent(
-      new CustomEvent('item-click', { detail: { ...item, selected: false } }),
+      new CustomEvent('item-click', { detail: { ...item, selected: false } })
     );
     return;
   }
@@ -807,7 +807,7 @@ self.onItemClick = (
   // Multiple mode item unselected
   selectItem(detail.targetElement);
   self.root.dispatchEvent(
-    new CustomEvent('item-click', { detail: { ...item, select: true } }),
+    new CustomEvent('item-click', { detail: { ...item, select: true } })
   );
   return;
 };
@@ -830,7 +830,7 @@ function __sui_event_handler(
   jsonKeys,
   target,
   root,
-  handler: Function,
+  handler: Function
 ) {
   const data = {};
   target = target || null;
@@ -856,7 +856,7 @@ function __sui_event_handler(
   handler &&
     handler(event, data, {
       rootElement: root,
-      targetElement: target,
+      targetElement: target
     });
 }
 
@@ -955,7 +955,7 @@ async function __sui_render(
   component: Component | string,
   name: string,
   data: Record<string, any>,
-  option?: RenderOption,
+  option?: RenderOption
 ): Promise<string> {
   const comp = // 获取组件，可以传入组件名称
     // sui_component
@@ -1016,7 +1016,7 @@ async function __sui_render(
   }
   const headers = {
     'Content-Type': 'application/json',
-    Cookie: document.cookie,
+    Cookie: document.cookie
   };
 
   // Native post request to the server

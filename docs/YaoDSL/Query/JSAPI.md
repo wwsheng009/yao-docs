@@ -13,7 +13,7 @@ function Get() {
   var query = new Query('query-test');
   var data = query.Get({
     select: ['id', 'name'],
-    from: 'queryobj_test',
+    from: 'queryobj_test'
   });
   return data;
 }
@@ -26,7 +26,7 @@ function Test1(id) {
   const query = new Query('default');
   //use statement
   const data = query.Get({
-    sql: { stmt: 'SELECT id,name FROM yao_demo_pet WHERE id = ?', args: [id] },
+    sql: { stmt: 'SELECT id,name FROM yao_demo_pet WHERE id = ?', args: [id] }
   });
   return data;
 }
@@ -41,7 +41,7 @@ function First() {
   var query = new Query('query-test');
   var data = query.First({
     select: ['id', 'name'],
-    from: 'queryobj_test',
+    from: 'queryobj_test'
   });
   return data;
 }
@@ -56,7 +56,7 @@ function Paginate() {
   var query = new Query('query-test');
   var data = query.Paginate({
     select: ['id', 'name'],
-    from: 'queryobj_test',
+    from: 'queryobj_test'
   });
   return data;
 }
@@ -72,7 +72,7 @@ function Run() {
   var data = query.Run({
     select: ['id', 'name'],
     from: 'queryobj_test',
-    limit: 1,
+    limit: 1
   });
   return data;
 }
@@ -85,7 +85,7 @@ function Test3(id) {
   const query = new Query('default');
   //use query.Run
   const data = query.Run({
-    sql: { stmt: 'SELECT id,name FROM yao_demo_pet WHERE id = ?', args: [id] },
+    sql: { stmt: 'SELECT id,name FROM yao_demo_pet WHERE id = ?', args: [id] }
   });
   return data;
 }

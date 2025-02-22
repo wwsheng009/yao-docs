@@ -66,18 +66,18 @@ function chat() {
       {
         name: 'SearchTable',
         type: 'Table.search',
-        payload: {},
+        payload: {}
       },
       {
         name: 'HistoryPush',
         type: 'Comman.historyPush',
         payload: {
-          pathname: '/x/Form/hero/1/edit',
-        },
-      },
+          pathname: '/x/Form/hero/1/edit'
+        }
+      }
     ],
     confirm: true, //会提示消息包含业务指令，是否执行？
-    done: true, //确认此次对话已经完成
+    done: true //确认此次对话已经完成
   });
 
   //

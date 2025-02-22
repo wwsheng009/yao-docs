@@ -25,7 +25,7 @@ type ArrayTreeOption struct {
 ```js
 res = Process('xiang.helper.ArrayTree', cate, {
   parent: 'parent_id',
-  empty: null,
+  empty: null
 });
 ```
 

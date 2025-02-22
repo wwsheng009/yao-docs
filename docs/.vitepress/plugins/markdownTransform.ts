@@ -5,7 +5,7 @@ import type { Plugin } from 'vite';
 export function MarkdownTransform(): Plugin {
   return {
     name: 'yaodocs-md-transform',
-    enforce: 'pre',
+    order: 'pre',
     async transform(code, id) {
       if (!id.match(/\.md\b/)) {
         return null;
@@ -13,7 +13,7 @@ export function MarkdownTransform(): Plugin {
       // convert links to relative
       code = code.replace(
         /https?:\/\/github\.com\/wwsheng009\/yao-docs\//g,
-        '/',
+        '/'
       );
       const [_name, i] = id.split('/').slice(-2);
 
@@ -31,7 +31,7 @@ export function MarkdownTransform(): Plugin {
       // );
 
       return code;
-    },
+    }
   };
 }
 
@@ -44,6 +44,6 @@ export async function getDocsMarkdown() {
   const footer = `${ContributorsSection}\n${CopyRightSection}`;
 
   return {
-    footer,
+    footer
   };
 }

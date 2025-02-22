@@ -7,7 +7,7 @@ const { frontmatter } = useData();
 
 const contributorsArr = [
   frontmatter.value?.author,
-  ...(frontmatter.value.contributors || []),
+  ...(frontmatter.value.contributors || [])
 ].filter((x) => x);
 const contributors = ref(contributorsArr);
 

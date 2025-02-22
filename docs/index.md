@@ -6,8 +6,8 @@ titleTemplate: 学习笔记
 
 hero:
   name: 分享
-  text: 让学习Yao变得更容易
-  tagline: 学习，总结，分享，提升。
+  text: 努力学习，天天向上
+  tagline: 学习，总结，分享，成长
   actions:
     - theme: brand
       text: 开始学习

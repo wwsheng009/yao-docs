@@ -134,12 +134,12 @@ function Password(payload) {
     wheres: [
       {
         field: 'name',
-        value: username,
+        value: username
       },
-      { or: true, field: 'email', value: username },
+      { or: true, field: 'email', value: username }
     ],
     from: '$admin.user',
-    limit: 1,
+    limit: 1
   });
 
   if (!user) {
@@ -150,7 +150,7 @@ function Password(payload) {
     const password_validate = Process(
       'utils.pwd.Verify',
       password,
-      user.password,
+      user.password
     );
     if (password_validate !== true) {
       return Process('scripts.return.Error', '', '400', '密码不正确');
@@ -164,7 +164,7 @@ function Password(payload) {
   delete userPayload.password;
   const jwtOptions = {
     timeout: timeout,
-    sid: sessionId,
+    sid: sessionId
   };
   const jwtClaims = { user_name: user.name };
   const jwt = Process('utils.jwt.Make', user.id, jwtClaims, jwtOptions);
@@ -177,7 +177,7 @@ function Password(payload) {
     user: userPayload,
     menus: Process('flows.app.menu'),
     token: jwt.token,
-    expires_at: jwt.expires_at,
+    expires_at: jwt.expires_at
   });
 }
 ```
@@ -192,7 +192,7 @@ function Success(data) {
     code: 0,
     message: 'ok',
     type: 'success',
-    result: data,
+    result: data
   };
 }
 //scripts.return.Error "密码不正确","403","密码不正确"
@@ -209,7 +209,7 @@ function Error(data, code, message) {
     code: vcode,
     message: vmessage,
     type: 'error',
-    result: data,
+    result: data
   };
 }
 ```

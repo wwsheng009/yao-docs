@@ -78,12 +78,12 @@ export default defineConfig({
   output: {
     dir: 'public/components',
     preserveModules: true,
-    format: 'systemjs',
+    format: 'systemjs'
   },
   external: ['antd', 'react', 'react-dom', 'react/jsx-runtime'],
 
   // When using tsyringe, this item needs to be set
-  context: 'false',
+  context: 'false'
 });
 ```
 
@@ -97,7 +97,7 @@ import config, { plugins } from './rollup.common';
 
 export default defineConfig({
   ...config,
-  plugins: [...plugins, swc()],
+  plugins: [...plugins, swc()]
 });
 ```
 
@@ -118,11 +118,11 @@ export default defineConfig({
     swc(),
     minify(
       defineRollupSwcMinifyOption({
-        compress: { drop_console: false },
-      }),
+        compress: { drop_console: false }
+      })
     ),
-    del({ targets: 'dist/*' }),
-  ],
+    del({ targets: 'dist/*' })
+  ]
 });
 ```
 
@@ -227,7 +227,7 @@ System.set('app:react/jsx-runtime', { ...JsxRuntime });
 System.set('app:react-dom', { default: ReactDom, __useDefault: true });
 System.set('app:react-dom/client', {
   default: ReactDomClient,
-  __useDefault: true,
+  __useDefault: true
 });
 
 System.set('app:antd', { ...antd }); //注册所有的antd控件
@@ -238,8 +238,8 @@ System.addImportMap({
     'react/jsx-runtime': 'app:react/jsx-runtime',
     'react-dom': 'app:react-dom',
     'react-dom/client': 'app:react-dom/client',
-    antd: 'app:antd', //增加antd外部依赖的映射,只有这样，生成的远程控件才能找到对应的控件
-  },
+    antd: 'app:antd' //增加antd外部依赖的映射,只有这样，生成的远程控件才能找到对应的控件
+  }
 });
 ```
 

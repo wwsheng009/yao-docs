@@ -67,7 +67,7 @@ function AfterSave(id) {
 
   // 可以增加其它筛选条件
   var payload = Process('models.<模型名称>.Find', id, {
-    select: ['id', 'name', 'user_sn', 'photo', 'status'],
+    select: ['id', 'name', 'user_sn', 'photo', 'status']
   });
 
   // 一般都返回id

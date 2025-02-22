@@ -7,7 +7,7 @@ import mediumZoom from 'medium-zoom';
 import {
   registerAnalytics,
   siteIds,
-  trackPageview,
+  trackPageview
 } from './plugins/baidutongji';
 import googleAnalytics from './plugins/googleAnalytics';
 import './styles/main.css';
@@ -21,7 +21,7 @@ const theme: Theme = {
   ...DefaultTheme,
   enhanceApp({ router }: EnhanceAppContext) {
     googleAnalytics({
-      id: 'G-0F3DLK5BSG',
+      id: 'G-0F3DLK5BSG'
     });
     if (inBrowser) {
       registerAnalytics(siteIds);
@@ -47,9 +47,9 @@ const theme: Theme = {
     });
     watch(
       () => route.path,
-      () => nextTick(() => initZoom()),
+      () => nextTick(() => initZoom())
     );
-  },
+  }
 };
 
 export default theme;

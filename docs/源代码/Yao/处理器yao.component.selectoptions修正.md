@@ -14,7 +14,7 @@ function Test() {
     model: 'material.category',
     search: '电',
     value: 'id',
-    wheres: '{"column":"id","op":"ne","value":"4"}',
+    wheres: '{"column":"id","op":"ne","value":"4"}'
   };
 
   const data = Search(param);
@@ -30,8 +30,8 @@ function Search(param) {
     JSON.stringify({
       column: 'name',
       op: 'match',
-      value: param.search,
-    }),
+      value: param.search
+    })
   ];
 
   // 使用对象数组
@@ -40,8 +40,8 @@ function Search(param) {
     {
       column: 'name',
       op: 'match',
-      value: param.search,
-    },
+      value: param.search
+    }
   ];
 
   param.wheres = wheres_object;

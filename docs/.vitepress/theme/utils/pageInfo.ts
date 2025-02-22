@@ -12,7 +12,7 @@ export const getEnWordCount = (content: string): number =>
   getWords(content)?.reduce<number>(
     (accumulator, word) =>
       accumulator + (word.trim() === '' ? 0 : word.trim().split(/\s+/u).length),
-    0,
+    0
   ) || 0;
 
 export const getCnWordCount = (content: string): number =>
@@ -24,7 +24,7 @@ export const getWordNumber = (content: string): number =>
 export const getReadingTime = (
   content: string,
   cnWordPerMinute = 350,
-  enwordPerMinute = 160,
+  enwordPerMinute = 160
 ): PageInfo => {
   const count = getWordNumber(content || '');
   const words = count >= 1000 ? `${Math.round(count / 100) / 10}k` : count;
@@ -37,6 +37,6 @@ export const getReadingTime = (
 
   return {
     readTime,
-    words,
+    words
   };
 };

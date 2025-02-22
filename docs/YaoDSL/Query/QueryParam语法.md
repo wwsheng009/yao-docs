@@ -40,10 +40,10 @@ return Process(
     select: ['id', 'name', 'mobile', 'status', 'extra'],
     withs: { manu: {}, mother: {}, addresses: {} },
     wheres: [{ column: 'status', value: 'enabled' }],
-    limit: 2,
+    limit: 2
   },
   1,
-  2,
+  2
 );
 ```
 

@@ -66,7 +66,7 @@ var test = () => {
       isError: e instanceof Error,
       message: e.message, //一定要使用e.message获取错误文本
       code: e.code, //404
-      name: e.name, //name的格式是：Exception|<code>
+      name: e.name //name的格式是：Exception|<code>
     };
   }
   return res;

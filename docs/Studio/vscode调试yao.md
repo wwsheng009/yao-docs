@@ -73,20 +73,20 @@ pnpm run dev
 export const proxy = {
   '/api': {
     target: 'http://_dev.com:5099',
-    changeOrigin: true,
+    changeOrigin: true
   },
   '/components': {
     target: 'http://_dev.com:5099',
-    changeOrigin: true,
+    changeOrigin: true
   },
   '/assets': {
     target: 'http://_dev.com:5099',
-    changeOrigin: true,
+    changeOrigin: true
   },
   '/iframe': {
     target: 'http://_dev.com:5099',
-    changeOrigin: true,
-  },
+    changeOrigin: true
+  }
 };
 ```
 

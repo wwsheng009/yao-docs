@@ -77,7 +77,7 @@ if (action.actionType === 'reload') {
     undefined,
     undefined,
     dataMergeMode === 'override',
-    action.args,
+    action.args
   );
 }
 ```
@@ -135,9 +135,9 @@ const actionData =
     ? omit(
         {
           ...args, // 兼容历史（动作配置与数据混在一起的情况）
-          ...(afterMappingData ?? {}),
+          ...(afterMappingData ?? {})
         },
-        getOmitActionProp(action.actionType),
+        getOmitActionProp(action.actionType)
       )
     : afterMappingData;
 
@@ -153,11 +153,11 @@ const actionResult = await actionInstrance.run(
     ...action,
     args,
     data: action.actionType === 'reload' ? actionData : data, // 如果是刷新动作，则只传action.data
-    ...key,
+    ...key
   },
   renderer,
   event,
-  mergeData,
+  mergeData
 );
 ```
 

@@ -14,7 +14,7 @@ module.exports = {
   // jsx 不使用单引号，而使用双引号
   jsxSingleQuote: false,
   // 末尾使用逗号
-  trailingComma: 'all',
+  trailingComma: 'none',
   // 大括号内的首尾需要空格 { foo: bar }
   bracketSpacing: true,
   // jsx 标签的反尖括号需要换行
@@ -33,5 +33,5 @@ module.exports = {
   // 根据显示样式决定 html 要不要折行
   htmlWhitespaceSensitivity: 'css',
   // 换行符使用 lf
-  endOfLine: 'auto',
+  endOfLine: 'auto'
 };

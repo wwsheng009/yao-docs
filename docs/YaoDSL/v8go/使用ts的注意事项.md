@@ -28,7 +28,7 @@ export class FS {
 }
 
 export const time = {
-  Sleep(ms: number) {},
+  Sleep(ms: number) {}
 };
 ```
 
@@ -113,7 +113,7 @@ export class FS {
 }
 
 export const time = {
-  Sleep(ms: number) {},
+  Sleep(ms: number) {}
 };
 ```
 

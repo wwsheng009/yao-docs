@@ -55,7 +55,7 @@ const connectorId = 'gpt-3_5-turbo';
 
 const messages = [
   { role: 'system', content: 'you are ai assistant' },
-  { role: 'user', content: 'Write an article about internet' },
+  { role: 'user', content: 'Write an article about internet' }
 ];
 const options = { max_tokens: 2 };
 
@@ -75,6 +75,6 @@ Process(
     console.log('ai message:', chatMessage);
 
     ssEvent('messages', content); //如果在api接口处理中，可以使用ssEvent向api接口写入ss消息
-  },
+  }
 );
 ```

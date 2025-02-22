@@ -1,8 +1,8 @@
 const socialLinks = [
   {
     icon: 'github',
-    link: 'https://github.com/wwsheng009',
-  },
+    link: 'https://github.com/wwsheng009'
+  }
 ];
 
 export default socialLinks;

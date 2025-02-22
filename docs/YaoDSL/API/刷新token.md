@@ -58,8 +58,8 @@ function TokenRefresh() {
     {}, // 自定义数据载荷
     {
       timeout: 3600, // token有效期(秒)
-      sid: sid, // 会话ID
-    },
+      sid: sid // 会话ID
+    }
   );
 
   // 更新会话信息
@@ -105,7 +105,7 @@ function ValidateToken(path, params, query, payload, headers) {
   // 返回会话信息
   return {
     __sid: data.sid, // 会话ID
-    __global: data.data, // 全局数据
+    __global: data.data // 全局数据
   };
 }
 ```

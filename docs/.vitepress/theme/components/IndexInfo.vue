@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { VPTeamPage, VPTeamPageTitle, VPTeamMembers } from 'vitepress/theme';
+// import { VPTeamPage, VPTeamPageTitle, VPTeamMembers } from 'vitepress/theme';
 
 const members = [
   {
     avatar: 'https://www.github.com/wwsheng009.png',
     name: 'Vincent Wang',
     title: 'open source developer.',
-    links: [{ icon: 'github', link: 'https://github.com/wwsheng009' }],
-  },
+    links: [{ icon: 'github', link: 'https://github.com/wwsheng009' }]
+  }
 ];
 </script>
 <template>

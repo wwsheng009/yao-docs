@@ -54,14 +54,14 @@ function edjsHTML() {
           return `<iframe width="${t.width}" height="${t.height}" src="${t.embed}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         default:
           throw new Error(
-            'Only Youtube and Vime Embeds are supported right now.',
+            'Only Youtube and Vime Embeds are supported right now.'
           );
       }
-    },
+    }
   };
   function r(e) {
     return new Error(
-      `[31m The Parser function of type "${e}" is not defined. \n\n  Define your custom parser functions as: [34mhttps://github.com/pavittarx/editorjs-html#extend-for-custom-blocks [0m`,
+      `[31m The Parser function of type "${e}" is not defined. \n\n  Define your custom parser functions as: [34mhttps://github.com/pavittarx/editorjs-html#extend-for-custom-blocks [0m`
     );
   }
   const n = function (e) {
@@ -81,7 +81,7 @@ function edjsHTML() {
         const o = n(i).validate({ blocks: t });
         if (o.length) {
           throw new Error(
-            `Parser Functions missing for blocks: ${o.toString()}`,
+            `Parser Functions missing for blocks: ${o.toString()}`
           );
         }
         for (var a = [], u = 0; u < t.length; u++) {
@@ -102,7 +102,7 @@ function edjsHTML() {
         return t.filter((e) => {
           return !r.includes(e);
         });
-      },
+      }
     };
   };
   return n;
@@ -116,7 +116,7 @@ function edjsHTML() {
  */
 function EdJsToHtml(data, converters) {
   const editorjs_data = {
-    blocks: data,
+    blocks: data
   };
   // 可以自定义转换函数
   const edjsParser = edjsHTML()(converters);
@@ -140,10 +140,10 @@ function test() {
         items: [
           { content: '222', items: [] },
           { content: '23123', items: [] },
-          { items: [], content: '1231' },
-        ],
-      },
+          { items: [], content: '1231' }
+        ]
+      }
     },
-    { id: 'tOt5YiHPW7', type: 'paragraph', data: { text: '1' } },
+    { id: 'tOt5YiHPW7', type: 'paragraph', data: { text: '1' } }
   ]);
 }

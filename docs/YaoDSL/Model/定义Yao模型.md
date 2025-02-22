@@ -1163,7 +1163,7 @@ Yao 提供了强大的模型迁移功能，可以自动同步模型定义到数�
 ```js
 const id = Process('models.category.create', {
   parent_id: 1,
-  name: '英语',
+  name: '英语'
 });
 return id;
 ```
@@ -1188,8 +1188,8 @@ function Insert() {
     ['parent_id', 'name'],
     [
       [1, '语文'],
-      [1, '地理'],
-    ],
+      [1, '地理']
+    ]
   );
 }
 ```
@@ -1199,7 +1199,7 @@ function Insert() {
 ```js
 const data = [
   { parent_id: 1, name: '语文' },
-  { parent_id: 1, name: '地理' },
+  { parent_id: 1, name: '地理' }
 ];
 
 // 把对象数组拆分为列数组与值数组
@@ -1227,7 +1227,7 @@ return Process('models.category.insert', columns, values);
 function Update() {
   return Process('models.category.update', 9, {
     parent_id: 1,
-    name: '英语',
+    name: '英语'
   });
 }
 ```
@@ -1250,11 +1250,11 @@ function UpdateWhere() {
   return Process(
     'models.category.updatewhere',
     {
-      wheres: [{ column: 'parent_id', value: 1 }],
+      wheres: [{ column: 'parent_id', value: 1 }]
     },
     {
-      name: '数学',
-    },
+      name: '数学'
+    }
   );
 }
 ```
@@ -1275,7 +1275,7 @@ function UpdateWhere() {
 function Save() {
   return Process('models.category.save', {
     parent_id: 1,
-    name: '语文',
+    name: '语文'
   });
 }
 ```
@@ -1297,7 +1297,7 @@ function Save() {
 const ids = Process(
   'models.user.EachSave',
   [{ id: 101, name: '张三' }, { name: '李四' }],
-  { manu_id: 2, balance: '$index' },
+  { manu_id: 2, balance: '$index' }
 );
 //[101, 107]
 return ids;
@@ -1324,7 +1324,7 @@ const ids = Process(
   'models.user.EachSaveAfterDelete',
   [1, 2, 3],
   [{ id: 101, name: '张三' }, { name: '李四' }],
-  { manu_id: 2, balance: '$index' },
+  { manu_id: 2, balance: '$index' }
 );
 //[101, 107]
 return ids;
@@ -1365,7 +1365,7 @@ function deletes() {
 ```javascript
 function Deletewhere() {
   return Process('models.category.deletewhere', {
-    wheres: [{ column: 'parent_id', value: 4 }],
+    wheres: [{ column: 'parent_id', value: 4 }]
   });
 }
 ```
@@ -1403,7 +1403,7 @@ function Destroy() {
 ```javascript
 function Destroywhere() {
   return Process('models.category.destroywhere', {
-    wheres: [{ column: 'parent_id', value: 4 }],
+    wheres: [{ column: 'parent_id', value: 4 }]
   });
 }
 ```
@@ -1428,7 +1428,7 @@ AES 字段自动解密。 关联模型作为一个独立字段，字段名称为
 ```javascript
 function Find() {
   return Process('models.user.find', 1, {
-    withs: { manu: {}, mother: {}, addresses: {} },
+    withs: { manu: {}, mother: {}, addresses: {} }
   });
 }
 ```
@@ -1450,7 +1450,7 @@ function Find() {
 ```javascript
 function Get() {
   return Process('models.category.get', {
-    wheres: [{ column: 'parent_id', value: null }],
+    wheres: [{ column: 'parent_id', value: null }]
   });
 }
 ```
@@ -1463,13 +1463,13 @@ return Process('models.ai.setting.Get', {
   wheres: [
     {
       Column: 'default',
-      Value: true,
+      Value: true
     },
     {
       Column: 'deleted_at',
-      Value: null,
-    },
-  ],
+      Value: null
+    }
+  ]
 })[0];
 
 //使用解构的方法
@@ -1477,9 +1477,9 @@ const [user] = Process('models.admin.user.get', {
   wheres: [
     { column: 'mobile', value: account },
     { column: 'status', value: '启用' },
-    { method: 'orwhere', column: 'email', value: account },
+    { method: 'orwhere', column: 'email', value: account }
   ],
-  limit: 1,
+  limit: 1
 });
 ```
 
@@ -1515,10 +1515,10 @@ function Paginate() {
       select: ['id', 'name', 'mobile', 'status', 'extra'],
       withs: { manu: {}, mother: {}, addresses: {} },
       wheres: [{ column: 'status', value: 'enabled' }],
-      limit: 2,
+      limit: 2
     },
     1,
-    2,
+    2
   );
 }
 ```

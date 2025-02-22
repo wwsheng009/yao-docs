@@ -87,7 +87,7 @@ import {
   Query,
   Store,
   Studio,
-  WebSocket,
+  WebSocket
 } from '@yaoapps/client';
 
 export {
@@ -100,7 +100,7 @@ export {
   Query,
   Store,
   Studio,
-  WebSocket,
+  WebSocket
 };
 ```
 
@@ -163,7 +163,7 @@ export function Server(payload: {
     code: 200 as number,
     message: '' as string,
     // error: null as Error, //undefined不会出现在返回json key中
-    data: null as any,
+    data: null as any
   };
   try {
     const type = payload.type;
@@ -260,7 +260,7 @@ export function CheckAccessKey(
   params: any,
   queries: { [x: string]: any[] },
   payload: any,
-  headers: { [x: string]: any },
+  headers: { [x: string]: any }
 ) {
   var token;
   let auth = headers['Authorization'];
@@ -367,10 +367,10 @@ module.exports = {
   extensionsToTreatAsEsm: ['.ts', '.tsx'], // 处理为ESM模块的扩展名
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest', // 配置ts-jest转译器
+    '^.+\\.(ts|tsx)$': 'ts-jest' // 配置ts-jest转译器
   },
   coverageDirectory: '<rootDir>/coverage', // 覆盖率报告存放位置
-  collectCoverageFrom: ['**/*.{ts,tsx}', '!**/*.d.ts'], // 指定覆盖率收集规则
+  collectCoverageFrom: ['**/*.{ts,tsx}', '!**/*.d.ts'] // 指定覆盖率收集规则
 };
 ```
 
@@ -510,7 +510,7 @@ module.exports = {
   experimentalTernaries: false,
   bracketSameLine: false,
   vueIndentScriptAndStyle: false,
-  singleAttributePerLine: false,
+  singleAttributePerLine: false
 };
 ```
 

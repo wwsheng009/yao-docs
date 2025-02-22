@@ -27,10 +27,10 @@ yao 本身已经内置了 neo ai 聊天接口。
 ```js
 const es = new EventSource(
   `${neo_api}?content=${encodeURIComponent(
-    message.text,
+    message.text
   )}&context=${encodeURIComponent(
-    JSON.stringify(message.context),
-  )}&token=${encodeURIComponent(getToken())}${studio_token}`,
+    JSON.stringify(message.context)
+  )}&token=${encodeURIComponent(getToken())}${studio_token}`
 );
 ```
 

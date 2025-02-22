@@ -170,7 +170,7 @@
 const [context, setContext] = useState<App.Context>({
   namespace: '',
   primary: '',
-  data_item: {},
+  data_item: {}
 });
 ```
 
@@ -182,7 +182,7 @@ const [context, setContext] = useState<App.Context>({
 const [field, setField] = useState<App.Field>({
   name: '',
   bind: '',
-  config: {} as Common.FieldDetail,
+  config: {} as Common.FieldDetail
 });
 ```
 

@@ -32,7 +32,7 @@
 function Bar(...args) {
   return {
     message: $L('Another yao application') + ' (Cloud Function: foo.Bar)',
-    args: args,
+    args: args
   };
 }
 ```

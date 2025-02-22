@@ -157,14 +157,14 @@ function AutoMake(name) {
 function makeForm(name, title) {
   return JSON.stringify({
     name: title,
-    action: { bind: { model: name } },
+    action: { bind: { model: name } }
   });
 }
 
 function makeTable(name, title) {
   return JSON.stringify({
     name: title,
-    action: { bind: { model: name } },
+    action: { bind: { model: name } }
   });
 }
 
@@ -177,10 +177,10 @@ function makeFlow(name, title) {
       {
         name: title,
         process: `models.${name}.Find`,
-        args: ['{{$in[0]}}', { select: ['id', 'name'] }],
-      },
+        args: ['{{$in[0]}}', { select: ['id', 'name'] }]
+      }
     ],
-    output: `{{$res.${title}}}`,
+    output: `{{$res.${title}}}`
   });
 }
 
@@ -197,9 +197,9 @@ function makeApi(name, title) {
         method: 'GET',
         process: `flows.query.${name}`,
         in: ['$param.id'],
-        out: { status: 200, type: 'application/json' },
-      },
-    ],
+        out: { status: 200, type: 'application/json' }
+      }
+    ]
   });
 }
 ```

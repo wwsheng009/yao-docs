@@ -87,7 +87,7 @@ export default {
   output: {
     file: './dist/bound.esm.js',
     sourcemap: false,
-    format: 'esm',
+    format: 'esm'
   },
 
   plugins: [
@@ -98,14 +98,14 @@ export default {
       entries: [
         {
           find: '@',
-          replacement: path.resolve(__dirname, 'src'),
-        },
-      ],
+          replacement: path.resolve(__dirname, 'src')
+        }
+      ]
     }),
     typescript({ module: 'commonjs' }),
-    commonjs({ include: 'node_modules/**' }),
+    commonjs({ include: 'node_modules/**' })
   ],
-  external: [], //不要打包的库匹配
+  external: [] //不要打包的库匹配
 };
 ```
 

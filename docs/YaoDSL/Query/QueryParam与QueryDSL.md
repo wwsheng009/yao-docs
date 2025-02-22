@@ -58,7 +58,7 @@ function GetSelect() {
     //=是操作符
     wheres: [{ ':deleted_at': '删除', '=': null }],
     select: ['id as value', 'name as label'],
-    from: 'company',
+    from: 'company'
   });
   return res;
 }
