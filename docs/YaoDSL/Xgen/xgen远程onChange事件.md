@@ -6,7 +6,7 @@
 
 演示：通过字段选项值修改界面的布局。
 
-![](../../public/imgs/form_on_change_event.gif)
+![](./images/form_on_change_event.gif)
 
 哪些地方可以用 onChange 事件：
 

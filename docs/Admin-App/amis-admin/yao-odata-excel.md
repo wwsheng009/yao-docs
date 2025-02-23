@@ -8,7 +8,7 @@ odata-api 接口作为 Amis-yao-admin 项目的一部分，安装好项目后，
 以下是在 EXCEL 中的操作步骤。
 
 在 Excel 中的数据页签找到新建查询菜单，找到从其它源->从 OData 源。
-![alt text](images/odata/1.png)
+![alt text](./images/odata/1.png)
 
 在弹出对话框中输入网址，网址由两部分组成：
 
@@ -19,33 +19,33 @@ odata-api 接口作为 Amis-yao-admin 项目的一部分，安装好项目后，
 第二部分：模型标识，比如 system.menu
 `http://localhost:5099/api/odata/v2/service/system.menu`
 
-![alt text](images/odata/2.png)
+![alt text](./images/odata/2.png)
 
 比如这个站点的测试地址是：http://fun.wwsheng.cloud:5099/api/odata/v2/service/system.menu
-![alt text](images/odata/3.png)
+![alt text](./images/odata/3.png)
 由于 API 接口作了身份检查，所以第一次连接会失败，这时需要点击取消
-![alt text](images/odata/4.png)
+![alt text](./images/odata/4.png)
 回到数据菜单，找到数据源设置
-![alt text](images/odata/5.png)
+![alt text](./images/odata/5.png)
 选择刚才连接的地址，选中，并点击下面的编辑权限设置。
-![alt text](images/odata/6.png)
+![alt text](./images/odata/6.png)
 
 点击基本菜单。输入用户名密码，比如这里输入 yao 的默认用户名密码，再保存。
 用户名：
 xiang@iqka.com
 密码：
 A123456p+
-![alt text](images/odata/7.png)
+![alt text](./images/odata/7.png)
 再重新设置一次数据源
-![alt text](images/odata/8.png)
+![alt text](./images/odata/8.png)
 输入数据源，点击确定，这次不会再有提示。
-![alt text](images/odata/9.png)
+![alt text](./images/odata/9.png)
 
 成功看到系统的预览数据，点击加载后会直接加载到 excel sheet 中。
-![alt text](images/odata/10.png)
+![alt text](./images/odata/10.png)
 
 数据的刷新，重加载，只要在 excel sheet 上右键菜单上点击刷新即可拉取最新的数据。
-![alt text](images/odata/11.png)
+![alt text](./images/odata/11.png)
 
 针对一个接口，用户登录验证只需要操作一次即可。
 

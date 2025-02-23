@@ -120,7 +120,7 @@
 
 完成以上的操作，就可以在 Form 看到一个列表控件。控件中的行项目可以拖动调整顺序。
 
-![list in form](../../../public/imgs/xgen-form-list.png)
+![list in form](./images/xgen-form-list.png)
 
 ## Step3 保存数据。
 

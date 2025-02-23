@@ -272,7 +272,7 @@ tail -n 100 logs/application.log
 添加测试文件
 
 ```bash
-echo '<html><strong>It works!</strong></html>' > /data/app/data/test.html
+echo '<html>**It works!**</html>' > /data/app/data/test.html
 ```
 
 ```bash
@@ -360,7 +360,7 @@ curl -vv http://127.0.0.1:5099/api/product/download?name=/test.html
 添加测试文件
 
 ```bash
-echo '<html><strong>It works!</strong></html>' > /data/app/data/test.html
+echo '<html>**It works!**</html>' > /data/app/data/test.html
 ```
 
 ```bash

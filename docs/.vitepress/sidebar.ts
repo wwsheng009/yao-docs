@@ -170,6 +170,10 @@ export default {
       link: '/AI/使用postgresql保存Embedding'
     },
     {
+      text: 'merged',
+      link: '/AI/merged'
+    },
+    {
       text: 'ChatGPT',
       collapsed: true,
       items: [
@@ -320,6 +324,21 @@ export default {
         }
       ],
       link: '/YaoDSL/处理器/'
+    },
+    {
+      text: 'AIAgent',
+      collapsed: true,
+      items: [
+        {
+          text: '回调函数',
+          link: '/YaoDSL/AIAgent/回调函数'
+        },
+        {
+          text: 'AI助手',
+          link: '/YaoDSL/AIAgent/AI助手'
+        }
+      ],
+      link: '/YaoDSL/AIAgent/'
     },
     {
       text: 'AIGC',
@@ -611,10 +630,6 @@ export default {
       text: 'Task',
       collapsed: true,
       items: [
-        {
-          text: '并发任务',
-          link: '/YaoDSL/Task/并发任务'
-        },
         {
           text: '计划任务',
           link: '/YaoDSL/Task/计划任务'

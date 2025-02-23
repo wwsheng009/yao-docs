@@ -7,7 +7,7 @@
   "repository": "https://github.com/wwsheng009/yao-docs",
   "main": "index.js",
   "scripts": {
-    "build:index": "node --import tsx scripts/cleanup.ts && node --import tsx scripts/generate_index.ts",
+    "build:index": "pnpm run compile && node --import tsx scripts/cleanup.ts && node --import tsx scripts/generate_index.ts",
     "generate": "pnpm run build:index && node --import tsx scripts/generate.ts && npm run prettier -- ./docs/.vitepress/ --write",
     "dev": "pnpm run generate && vitepress dev docs --host",
     "build": "pnpm run generate && vitepress build docs && node --import tsx scripts/postbuild.ts",
@@ -19,7 +19,8 @@
     "prettier": "npx prettier docs --check",
     "prettier:fix": "npm run prettier -- --write",
     "format": "prettier --check --write docs",
-    "format:fail": "prettier --check docs"
+    "format:fail": "prettier --check docs",
+    "compile": "node --import tsx scripts/compile_md.ts"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",

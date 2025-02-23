@@ -16,7 +16,7 @@ import {
  * @see https://vite-plugin-pwa.netlify.app/
  */
 export const pwa: Partial<VitePWAOptions> = {
-  outDir: '../dist',
+  outDir: '../dist/yao-docs',
   registerType: 'autoUpdate',
   // include all static assets under public/
   includeAssets: fg.sync('**/*.{png,svg,gif,ico,txt}', {
@@ -35,7 +35,7 @@ export const pwa: Partial<VitePWAOptions> = {
         type: 'image/png'
       },
       {
-        src: '/images/icons/android-chrome-192x192.png',
+        src: '/images/icons/xgen-form-list.png',
         sizes: '192x192',
         type: 'image/png'
       },
@@ -47,6 +47,7 @@ export const pwa: Partial<VitePWAOptions> = {
     ]
   },
   workbox: {
+    maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // Set to 10 MiB to handle larger assets
     navigateFallbackDenylist: [/^\/new$/],
     globPatterns: ['**/*.{js,css,webp,png,svg,gif,ico,woff2}'],
     navigateFallback: null,

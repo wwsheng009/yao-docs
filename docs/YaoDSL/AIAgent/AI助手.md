@@ -184,7 +184,7 @@ assistants
 
 #### Create
 
-Create钩子函数用于在助手被第一次调用时触发:
+Create钩子函数用于在助手被第一次调用时触发数:
 
 ```ts
 /**

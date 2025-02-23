@@ -31,7 +31,6 @@ export default (async () => {
         root: { label: '简体中文', lang: 'zh-CN' }
       },
       themeConfig: {
-        logo: './yaodocs-logo.svg',
         outline: 'deep',
         docFooter: {
           prev: '上一篇',
