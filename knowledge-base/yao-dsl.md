@@ -1,4 +1,4 @@
-# merged
+# yao-dsl
 
 <!-- YAO-DOC-MERGE-PROCESSED -->
 
@@ -483,87 +483,7 @@ aigc 处理器是在 Yao 中实现的直接与 OpenAI 接口交互的处理器�
 
 ### 使用步骤
 
-### 配置 OPENAI 连接器。
-
-在应用目录下的 connectors 目录中创建连接器配置文件，配置文件的后缀为`.conn.yao`。
-
-> 0.10.3 以上的版本可以支持 jsonc 的格式的配置文件,后缀为.jsonc 或是.yao，即可以在 json 文本中写入注释。
-
-`connectors/gpt-3_5-turbo.conn.yao`
-
-**类型一定要设置成 openai**
-
-```json
-{
-  "LANG": "1.0.0",
-  "VERSION": "1.0.0", //版本
-  "label": "Model gpt-3.5-turbo", //说明
-  "type": "openai", //类型一定是openai
-  "options": {
-    "model": "gpt-3.5-turbo",
-    "key": "$ENV.OPENAI_KEY",
-    "proxy": "$ENV.OPENAI_AIP_HOST"
-  }
-}
-```
-
-配置文件中最重要的是 options 中的配置项：
-
-- `model`：OpenAI 语言模型，如 gpt-3.5-turbo、gpt-4 等
-
-- `key`：OpenAI API 密钥。强烈建议使用环境变量配置，避免密钥泄露。在配置文件中使用 `$ENV.` 语法引用环境变量，如 `$ENV.OPENAI_KEY`
-
-- `proxy`：API 代理地址。默认为 api.openai.com，如果需要使用代理服务，可以在这里配置。同时，如果需要使用 openai 类型的代理，使用此字段来配置基本 url。比如：`http://URL_ADDRESS/v1`
-
-所有配置项都支持使用环境变量（`$ENV.<ENV_NAME>`），这样可以更好地管理敏感信息，避免意外泄露。特别是 API 密钥，必须使用环境变量配置。
-
-```go
-
-// DSL the connector DSL
-type DSL struct {
-	ID      string                 `json:"-"`
-	Type    string                 `json:"type"`
-	Name    string                 `json:"name,omitempty"`
-	Label   string                 `json:"label,omitempty"`
-	Version string                 `json:"version,omitempty"`
-	Options map[string]interface{} `json:"options,omitempty"`
-}
-
-// Options the redis connector option
-type Options struct {
-	Proxy string `json:"proxy,omitempty"`//如果不是使用https://api.openai.com，可以在这里设置openai的访问地址
-	Model string `json:"model,omitempty"`//openai模型
-	Key   string `json:"key"`//openai 接口访问密钥
-}
-```
-
-### 示例：
-
-```json
-{
-  "label": "Model v3",
-  "type": "openai",
-  "options": {
-    "model": "deepseek-r1-distill-llama-70b",
-    "key": "$ENV.BAILIAN_KEY",
-    "proxy": "https://dashscope.aliyuncs.com/compatible-mode/v1"
-  }
-}
-```
-
-连接 deepseek。
-
-```json
-{
-  "label": "Model v3",
-  "type": "openai",
-  "options": {
-    "model": "deepseek-reasoner",
-    "key": "$ENV.DEEPSEEK_KEY",
-    "proxy": "https://api.deepseek.com"
-  }
-}
-```
+在connectors目录创建OpenAI 连接器配置文件。
 
 ### 配置 openai 请求规则
 
@@ -571,7 +491,7 @@ type Options struct {
 
 配置文件：`aigcs\translate.ai.yml`
 
-这个示例使用了上面配置的 `gpt-3_5-turbo` 连接器。`prompts` 字段用于设置与 OpenAI 模型的初始化指令，不同模型可能需要不同格式的提示词。以下是一个翻译助手的配置示例，使用 GPT-3.5-Turbo 模型：
+这个示例使用了配置的 `gpt-3_5-turbo` 连接器。`prompts` 字段用于设置与 OpenAI 模型的初始化指令，不同模型可能需要不同格式的提示词。以下是一个翻译助手的配置示例，使用 GPT-3.5-Turbo 模型：
 
 ```yaml
 ## Translate to English
@@ -1027,7 +947,7 @@ optional:
 
 ### 配置聊天 api guard
 
-参考![](../YaoDSL/AIGC/neo聊天助手.md)
+参考![](../docs/YaoDSL/AIGC/neo聊天助手.md)
 
 ### neo 助手初始化过程
 
@@ -1286,61 +1206,11 @@ HTTPS_PROXY="socks5://0.0.0.0:10808"
 
 #### 配置 openai connector
 
-openai 连接器可以参考![](../YaoDSL/AIGC/aigc处理器.md)
+openai 连接器可以参考![](../docs/YaoDSL/AIGC/aigc处理器.md)
 
 #### 配置 数据库 connector
 
-在使用 Neo 过程中，会产生聊天历史记录。通过设置数据库连接器，可以把 neo 聊天历史保存在别的数据库中。
-
-如果是把会话数据操作在默认的数据库连接中，可以不配置连接器，或是设置`connector=default`。
-
-在 Yao 启动初始化时，Yao 自动在数据库中初始化一张数据库表。
-
-连接 mysql 配置
-
-```json
-{
-  "LANG": "1.0.0",
-  "VERSION": "1.0.0",
-  "label": "MySQL 8.0 TEST",
-  "type": "mysql",
-  "version": "8.0.26",
-  "options": {
-    "db": "test",
-    "charset": "utf8mb4",
-    "parseTime": true,
-    "hosts": [
-      {
-        "host": "$ENV.MYSQL_TEST_HOST",
-        "port": "$ENV.MYSQL_TEST_PORT",
-        "user": "$ENV.MYSQL_TEST_USER",
-        "pass": "$ENV.MYSQL_TEST_PASS",
-        "primary": true
-      },
-      {
-        "host": "$ENV.MYSQL_TEST_HOST",
-        "port": "$ENV.MYSQL_TEST_PORT",
-        "user": "$ENV.MYSQL_TEST_USER",
-        "pass": "$ENV.MYSQL_TEST_PASS"
-      }
-    ]
-  }
-}
-```
-
-连接 sqlite 配置
-
-```json
-{
-  "LANG": "1.0.0",
-  "VERSION": "1.0.0",
-  "label": "SQLite TEST",
-  "type": "sqlite3",
-  "options": {
-    "file": "$ENV.SQLITE_DB"
-  }
-}
-```
+数据连接器配置![](../docs/YaoDSL/Connector/连接器.md)
 
 #### 配置 neo
 
@@ -1583,7 +1453,7 @@ openai 连接器类型定义:`\gou\connector\openai\openai.go`
 - options,选项,类型为 json,可以加入 openai 模型的微调参数。
 - callback,回调函数，类型为 golang 函数或是 js 函数,回调函数的参数是返回的是聊天内容文本。如果存在回调函数，可以用于 ss 异步消息场景。
 
-![](../YaoDSL/AIGC/chatgpt模型中角色的作用.md)
+![](../docs/YaoDSL/AIGC/chatgpt模型中角色的作用.md)
 
 处理器示例：
 
@@ -2035,7 +1905,7 @@ session 有以下的处理器:
 
 在 flow 中使用 session
 当使用 Session start 设置 SID 时,整个 Flow 都使用了同一个 sid
-![yao-api-session](../YaoDSL/API/session/yao_session_flow中使用会话.jpg)
+![yao-api-session](../docs/YaoDSL/API/session/yao_session_flow中使用会话.jpg)
 
 ```go
     if node.Process != "" {
@@ -2054,7 +1924,7 @@ session 有以下的处理器:
 
 session 信息处理流转图
 
-![session 信息处理流转图](../流程图/png/yao_session_用户登录流程会话.drawio.png)
+![session 信息处理流转图](../docs/流程图/png/yao_session_用户登录流程会话.drawio.png)
 
 用户登录后，会生成一个会话 id，使用这个 id 生成 token,在服务器的 session 保存用户 id 与用户的相关信息。
 
@@ -2556,7 +2426,7 @@ API 将通过路由 `/api/<group>/<path>`访问, 请求成功响应 `out` 中定
 | `$session.字段名称`    | `Any`                | Session 会话字段数，支持多级访问。如 $session.user.name , $session.manus.0.name 值 |
 | `$file.字段名称`       | `Object File`        | 上传临时文件结构                                                                   |
 
-`session`的设置逻辑可参考![](..%5CYaoDSL%5CAPI%5C%E8%87%AA%E5%AE%9A%E4%B9%89%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86login%20api.md)
+`session`的设置逻辑可参考![](..%5Cdocs%5CYaoDSL%5CAPI%5C%E8%87%AA%E5%AE%9A%E4%B9%89%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86login%20api.md)
 
 需要特别关注`:query-param/:params`，yao 框架会根据 url 中的查询条件转换成 QueryParam 对象。
 
@@ -2581,7 +2451,7 @@ API 将通过路由 `/api/<group>/<path>`访问, 请求成功响应 `out` 中定
 - models.model_id.DestroyWhere
 
 即是所有使用 queryparam 对象类型的处理器都可以直接在 http api 定义中进行引用,具体请参考：
-![](../YaoDSL/Query/QueryParam语法.md)
+![](../docs/YaoDSL/Query/QueryParam语法.md)
 
 源代码：
 
@@ -3933,6 +3803,456 @@ OK
 
 ```
 
+## mongo
+
+### 在environment中配置mongo连接信息
+
+基本配置：
+
+```json
+"name": "mongo",
+"label": "mongo",
+"version": "1.0.0",
+"type": "mongo"
+"options": {
+  "hosts": [{
+    "host": "mongo",
+    "port": 27017,//默认
+    "user": "",//required
+    "pass": ""//required
+  }],
+  "params": {},
+  "user": "",
+  "db": "",
+  "timeout": 10000
+}
+```
+
+### 配置项支持引用环境变量配置：
+
+```json
+"name": "mongo",
+"label": "mongo",
+"version": "1.0.0",
+"type": "mongo"
+"options": {
+  "hosts": [{
+    "host": "$ENV.MONGO_HOST",
+    "port": "$ENV.MONGO_PORT",
+    "user": "$ENV.MONGO_USER",
+    "pass": "$ENV.MONGO_PASS"
+  }],
+  "params": {},
+  "user": "",
+  "db": "$ENV.MONGO_DB",
+  "timeout": "$ENV.MONGO_TIMEOUT"
+}
+```
+
+在目录 `connectors` 下创建一个 `Products.conn.yao` 文件，内容如下。需要特别注意有部分的设置：
+
+- 数据库名称配置。这需要在`options`里配置的 db 名，需要和 mongodb 里配置的 db 名一致。
+
+- Collection 名称的配置，它的配置名称是`connector`配置文件的 ID。在这个示例中它的 ID 是`Products`,取`.mongo.yao`前面的信息。这里的 `Products` 对应 mongodb 中的 `collection`.`Products` 名称。如果在数据库中 Collection 不存在，会自动的创建。
+
+- 用户名密码，需要设置数据库访问的用户名密码，这个是必须要设置的，不能使用空用户名或是空密码。
+
+如果有多个 collection,每一个 collection 创建一个配置文件。
+
+```json
+{
+  "LANG": "1.0.0",
+  "VERSION": "1.0.0",
+  "label": "Mongo TEST",
+  "type": "mongo",
+  "options": {
+    "db": "odataserver", //配置数据库名称
+    "hosts": [
+      {
+        "host": "$ENV.MONGO_TEST_HOST",
+        "port": "$ENV.MONGO_TEST_PORT",
+        "user": "$ENV.MONGO_TEST_USER",
+        "pass": "$ENV.MONGO_TEST_PASS"
+      }
+    ],
+    "params": { "maxPoolSize": 20, "w": "majority" } //配置其它参数
+  }
+}
+```
+
+在环境变量文件.env 中配置连接信息
+
+```sh
+MONGO_TEST_HOST=127.0.0.1
+MONGO_TEST_PORT=27017
+MONGO_TEST_USER="admin"
+MONGO_TEST_PASS="admin"
+```
+
+另外需要注意的是，这里的 mongodb 是用于 key-value 的存储，YAO 会自动的为`Collection`创建一个`key`的**唯一**索引。保存的数据结构为以下结构,所以`Collection`数据结构中一定要有一个唯一的 key 值。
+
+```json
+{
+  "key": "",
+  "value": ""
+}
+```
+
+所以它只适用于 key-value 数据结构，并不适用于其它的结构数据保存。
+
+## OPENAI连接器
+
+### 配置 OPENAI 连接器。
+
+在应用目录下的 connectors 目录中创建连接器配置文件，配置文件的后缀为`.conn.yao`。
+
+> 0.10.3 以上的版本可以支持 jsonc 的格式的配置文件,后缀为.jsonc 或是.yao，即可以在 json 文本中写入注释。
+
+`connectors/gpt-3_5-turbo.conn.yao`
+
+**类型一定要设置成 openai**
+
+```json
+{
+  "version": "1.0.0", //版本
+  "label": "Model gpt-3.5-turbo", //说明
+  "type": "openai", //类型一定是openai
+  "options": {
+    "model": "gpt-3.5-turbo",
+    "key": "$ENV.OPENAI_KEY",
+    "proxy": "$ENV.OPENAI_AIP_HOST"
+  }
+}
+```
+
+配置文件中最重要的是 options 中的配置项：
+
+- `model`：OpenAI 语言模型，如 gpt-3.5-turbo、gpt-4 等。在配置文件中使用 `$ENV.` 语法引用环境变量，如 `$ENV.OPENAI_MODEL`
+
+- `key`：OpenAI API 密钥。强烈建议使用环境变量配置，避免密钥泄露。在配置文件中使用 `$ENV.` 语法引用环境变量，如 `$ENV.OPENAI_KEY`
+
+- `proxy`：API 代理地址。默认为 api.openai.com，如果需要使用代理服务，可以在这里配置。同时，如果需要使用 openai 类型的代理，使用此字段来配置基本 url。比如：`http://URL_ADDRESS/v1`
+
+以上三个配置项都支持使用环境变量（`$ENV.<ENV_NAME>`），这样可以更好地管理敏感信息，避免意外泄露。特别是 API 密钥，建议使用环境变量配置。
+
+```go
+
+// DSL the connector DSL
+type DSL struct {
+	ID      string                 `json:"-"`
+	Type    string                 `json:"type"`
+	Name    string                 `json:"name,omitempty"`
+	Label   string                 `json:"label,omitempty"`
+	Version string                 `json:"version,omitempty"`
+	Options map[string]interface{} `json:"options,omitempty"`
+}
+
+// Options the redis connector option
+type Options struct {
+	Proxy string `json:"proxy,omitempty"`//如果不是使用https://api.openai.com，可以在这里设置openai的访问地址
+	Model string `json:"model,omitempty"`//openai模型
+	Key   string `json:"key"`//openai 接口访问密钥
+}
+```
+
+### 示例：
+
+```json
+{
+  "label": "Model v3",
+  "type": "openai",
+  "options": {
+    "model": "deepseek-r1-distill-llama-70b",
+    "key": "$ENV.BAILIAN_KEY",
+    "proxy": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+  }
+}
+```
+
+连接 deepseek。
+
+```json
+{
+  "label": "Model v3",
+  "type": "openai",
+  "options": {
+    "model": "deepseek-reasoner", //可以使用$ENV.DEEPSEEK_MODEL替换
+    "key": "$ENV.DEEPSEEK_KEY",
+    "proxy": "https://api.deepseek.com"
+  }
+}
+```
+
+## redis连接器
+
+### 在environment中配置redis连接信息
+
+redis主要是用于保存会话信息。
+
+```sh
+YAO_SESSION_STORE="redis"
+YAO_SESSION_HOST="redis"
+YAO_SESSION_PORT="6379"
+YAO_SESSION_PASSWORD=
+YAO_SESSION_USERNAME=
+```
+
+### 在connectors中配置redis连接信息
+
+配置项如下：
+
+```json
+{
+  "name": "redis",
+  "label": "redis",
+  "version": "1.0.0",
+  "type": "redis",
+  "options": {
+    "host": "redis",
+    "port": 6379, //默认
+    "user": "",
+    "pass": "",
+    "timeout": 10000, //默认5
+    "db": "" //默认0
+  }
+}
+```
+
+配置项支持引用环境变量配置：
+
+```json
+{
+  "name": "redis",
+  "label": "redis",
+  "version": "1.0.0",
+  "type": "redis",
+  "options": {
+    "host": "$ENV.YAO_SESSION_HOST",
+    "port": "$ENV.YAO_SESSION_PORT",
+    "user": "$ENV.YAO_SESSION_USERNAME",
+    "pass": "$ENV.YAO_SESSION_PASSWORD",
+    "timeout": "$ENV.YAO_SESSION_TIMEOUT",
+    "db": "$ENV.YAO_SESSION_DB"
+  }
+}
+```
+
+## 不同数据库连接配置
+
+### 支持的数据库列表
+
+- sqlite
+- mysql
+- postgres 隐藏的支持的数据库
+- hdb SAP HANA[定制数据库]
+
+最常用的是 mysql 与 sqlite，在 xgen 配置界面上也只能找到这两个。
+
+yao 针对于 mysql 与 sqlite 在源代码上会有一些优化。比如使用 mysql 作为数据库，可以在查询中使用 json 查询表达式。
+
+数据库的默认连接配置需要配置环境变量 `YAO_DB_DRIVER` 与 `YAO_DB_PRIMARY`.
+
+- `YAO_DB_DRIVER` 数据库类型
+- `YAO_DB_PRIMARY` 数据库 dsn 连接字符串
+
+一般会把这两个环境变量写在文件.env 里。
+
+Yao 引擎在系统初始化时会把连接配置存入到全局连接池中，作为应用程序的默认连接。为了与其它的 connector 作区别，这个默认数据库的配置的名称是`default`.
+
+#### 读写分离
+
+数据库的读写分离是通过配置环境变量来实现的。比如像 mysql 数据库，可以配置两个数据库进行主分复制的架构设置，主库用于用户的写入操作。从库用于用户的查询操作，用于减轻数据库压力。
+
+主从数据库的数据库类型`YAO_DB_DRIVER`需要是一样的。比如都是 MYSQL.
+
+同时，`YAO_DB_PRIMARY`与`YAO_DB_SECONDARY`都支持配置多个数据库连接配置，使用|分割。
+
+当在执行写入，删除，更新操作时，需要使用支持可写的主库连接。当在 Query 中进行数据查询时，会优先使用从库连接。如果不存在主库，会使用从库连接。不能两个都没有配置。
+
+如果主库或是从库存在多个数据库连接，会随机选择一个连接。
+
+不同的数据库的环境变量示例：
+
+#### sqlite
+
+```sh
+YAO_DB_DRIVER="sqlite3"
+YAO_DB_PRIMARY="db/yao.db"
+```
+
+#### mysql
+
+```sh
+YAO_DB_DRIVER=mysql
+YAO_DB_PRIMARY="root:123456@tcp(172.18.3.234:33306)/yao_ai?charset=utf8mb4&parseTime=True&loc=Local"
+```
+
+#### postgres
+
+不再 yao setup 界面里，但是 xun 是支持 pg 的。
+
+```sh
+YAO_DB_DRIVER=postgres
+YAO_DB_PRIMARY="postgres://xun:123456@db-server:5096/xun?sslmode=disable&search_path=xun"
+```
+
+#### hdb
+
+sap hana database,这个是本人作的适配器，不在官方版本中。
+
+```sh
+YAO_DB_DRIVER=hdb
+YAO_DB_PRIMARY="hdb://HANA_READONLY:Hana@readonly123@172.18.3.30:30015?defaultSchema=HANA_READONLY"
+```
+
+### 通过 connector 配置
+
+在一个 yao 应用中，除了上面使用环境变量设置默认的连接外，还可以使用 `connector` 设置其它的数据库连接。
+
+在应用目录 connectors 目录下创建配置。
+
+sqlite3 connector 配置文件`connectors/sqlite3.conn.json`
+
+```json
+{
+  "version": "1.0.0",
+  "label": "SQLite TEST",
+  "type": "sqlite3",
+  "options": {
+    "file": "$ENV.SQLITE_DB"
+  }
+}
+```
+
+mysql connector 配置文件`connectors/mysql.conn.json`
+
+设置主库，在 connector 的配置中把 host 的 primary 设置为 true,比如`options.hosts[0].primary`设置 true。
+
+数据库连接可以设置多个，如果存在多个连接，使用时会随机挑选一个。
+
+注意：需要同时配置主库与从库连接。
+
+```json
+{
+  "LANG": "1.0.0",
+  "VERSION": "1.0.0",
+  "label": "MySQL 8.0 TEST",
+  "type": "mysql", //类型，官方只支持支持sqlite3,mysql,扩展支持postgres,hdb
+  "version": "8.0.26",
+  "options": {
+    "db": "test",
+    "charset": "utf8mb4",
+    "parseTime": true,
+    "hosts": [
+      {
+        "host": "$ENV.MYSQL_TEST_HOST",
+        "port": "$ENV.MYSQL_TEST_PORT",
+        "user": "$ENV.MYSQL_TEST_USER",
+        "pass": "$ENV.MYSQL_TEST_PASS",
+        "primary": true //主库
+      },
+      {
+        "host": "$ENV.MYSQL_TEST_HOST",
+        "port": "$ENV.MYSQL_TEST_PORT",
+        "user": "$ENV.MYSQL_TEST_USER",
+        "pass": "$ENV.MYSQL_TEST_PASS"
+      }
+    ]
+  }
+}
+```
+
+connector 配置文件支持使用环境变量来配置用户密码等敏感的信息。
+
+### 读写分离
+
+yao 支持多个数据库连接，通过配置 `connector` 来实现读写分离。
+
+同时 `connector` 配置也是支持读写分离的配置，参考上面的`YAO_DB_PRIMARY`与`YAO_DB_SECONDARY`进行`connector`配置。
+
+- 在 flows 的 query 查询中,在 flows 定义中可以使用 `engine` 指定不同的数据库`connector`连接,而一般是使用 default 连接，default 连接是指环境变量中配置的数据库。
+
+`flows/tests/session.flow.yao`
+
+```json
+{
+  "name": "Session",
+  "version": "1.0.0",
+  "description": "Session TestFlow",
+  "nodes": [
+    {
+      "name": "User",
+      "engine": "query-test",
+      "query": {
+        // "debug": true,
+        "select": ["id", "name", "type"],
+        "from": "$user",
+        "wheres": [{ ":id": "用户ID", "=": "?:$res.ID" }],
+        "first": true
+      }
+    }
+  ],
+  "output": {
+    "User": "{{$res.User}}"
+  }
+}
+```
+
+- jsapi，在 jsapi 中可以在初始化 Query 对象时指定不同的 `connector`,默认为空时将使用 default 连接。
+
+```js
+var query = new Query('default'); //可以指定不同的数据库connector
+var money_count = query.Get({
+  wheres: [{ ':deleted_at': '删除', '=': null }],
+  select: [':SUM(total_money) as num'],
+  from: 'account'
+});
+```
+
+> query 查询默认是使用的从库的只读连接，如果没有从库配置，就会使用默认的主库连接配置。
+
+### migrate 命令使用不同的 `connector`
+
+yao 可以在 model 定义中配置 `connector` 连接不同的数据库。针对一个模型设置不同的 `connector` 会在执行 `migrate` 时把数据库创建在别的数据库中。
+
+注意读写分离是针对整个数据库，而不是针对某个表。默认的数据库连接只有一个，这里可以可以配置上面的 js 中 Query 对象的 engine 来指定不同的数据库连接。或是使用 flow 的 engine 指定不同的数据库连接。
+
+`mod.json`
+
+```json
+{
+  "name": "test",
+  "connector": "mysql",
+  "table": {
+    "name": "test"
+  },
+  "columns": [{
+    ...
+  }]
+}
+```
+
+### 总结
+
+- 在 Yao 中，支持多数据库连接配置,使用`connector`来配置。也支持主从库配置，使用 primary 与 second 来区别。
+- 在 Yao 中，支持同一类型数据库，也即是同一类型的`connector`读写分离。
+- 主从库配置的两个连接的数据库数据结构上是一致的。那些需要同时写入与读取的表需要在两个数据库中同时存在才可以。
+- 读写分离是按 SQL 的执行方式来区分的。比如读取数据会使用从库，而写入就必须需要在主库中执行。当一个`connector`配置了从库，读取分离是自动在程序中根据 sql 的操作自动处理。
+- 在 Yao 中，默认的`connector`是数据库`YAO_DB_DRIVER` 与 `YAO_DB_PRIMARY`的配置。
+- 需要注意读写分离与`connector`的区别，一个是连接不同的数据库，另外一个是在同一个数据库源中设置读写分离。
+- 数据库`migrate`操作默认是只针对主数据库，并不会影响从库，如果需要特别的把一个表结构同步到从为，需要在`model`定义中配置`connector`。
+- 如果两个数据库的表数据库不一样,可以理解为异构数据库，不要使用主从库配置。而是使用`connector`配置，并在`flow`中使用`engine`指定不同的`connector`，或是在 JSAPI 中使用`Query`对象的`engine`指定不同的`connector`。
+
+## 连接器
+
+连接器有以下类型：
+
+- ![](../docs/YaoDSL/Connector/数据库连接器.md)
+- ![](../docs/YaoDSL/Connector/redis.md)
+- [MongoDB连接器](./MongoDB.md)
+- ![](../docs/YaoDSL/Connector/OpenAI连接器.md)
+- MoAPI连接器
+
 ## 数据流规范
 
 数据流(`Flow`)用来编排数据查询逻辑，可以作为处理 (`process`) 来使用，引用方式为 `flows.<数据流名称>` 。
@@ -4711,7 +5031,7 @@ contributors: [AbbetWang]
 
 `Switch`控件在两个数据库下使用需要差异化的配置。
 
-![](../YaoDSL/Xgen/Xgen控件/Switch控件.md)
+![](../docs/YaoDSL/Xgen/Xgen控件/Switch控件.md)
 
 ### 时间格式化函数
 
@@ -6327,7 +6647,7 @@ function Find() {
 
 处理器：`models.模型标识.Get`。
 
-- 参数 1，查询条件, 示例：`{"wheres":[{"column":"name", "value":"张三"}],"withs":{"manu":{}}}`，查询条件使用是 ![](../YaoDSL/Query/QueryParam语法.md) 结构。
+- 参数 1，查询条件, 示例：`{"wheres":[{"column":"name", "value":"张三"}],"withs":{"manu":{}}}`，查询条件使用是 ![](../docs/YaoDSL/Query/QueryParam语法.md) 结构。
 
 返回符合条件的的数据记录（Key-Value 结构 Object)集合。AES 字段自动解密。 关联模型作为一个独立字段，字段名称为关联关系名称； hasOne 关联为数据记录 Object , hasMany 关联为数据记录数组 Array\<Object\>。
 
@@ -6396,280 +6716,559 @@ const [user] = Process('models.admin.user.get', {
 示例：
 
 ```javascript
+/**
+ * 用户数据分页查询函数
+ * 演示如何使用Yao的models.user.Paginate处理器进行分页数据查询
+ *
+ * @returns {Object} 返回带有分页信息的用户数据对象，包含数据集合和分页信息
+ */
 function Paginate() {
   return Process(
-    'models.user.Paginate',
+    'models.user.Paginate', // 调用user模型的Paginate处理器
     {
-      select: ['id', 'name', 'mobile', 'status', 'extra'],
-      withs: { manu: {}, mother: {}, addresses: {} },
-      wheres: [{ column: 'status', value: 'enabled' }],
-      limit: 2
+      select: ['id', 'name', 'mobile', 'status', 'extra'], // 指定需要查询的字段列表
+      withs: {
+        manu: {}, // 关联查询制造商信息
+        mother: {}, // 关联查询母公司信息
+        addresses: {} // 关联查询地址信息
+      },
+      wheres: [
+        { column: 'status', value: 'enabled' } // 查询条件：仅查询状态为"enabled"的用户
+      ],
+      limit: 2 // 限制结果集中的记录数量为2条
     },
-    1,
-    2
+    1, // 当前页码：第1页
+    2 // 每页记录数量：每页2条记录
   );
 }
 ```
 
 ### 总结
 
-此文档介绍了 Yao 模型的定义，还有模型数据操作的处理器。目前大多数的 ai 模型并不了解 yao 的模型定义，可以在使用这些 ai 模型时，引用此文档来作为一个参考。
+此文档介绍了 Yao 模型的定义，还有模型数据操作的处理器。
 
-## 数据处理器与钩子
+## 数据处理器与钩子（Data Processors and Hooks）
 
-Yao 在数据读取与处理方面提供了很多现成的处理器与 API 入口。
+### 概述
 
-### 模型相关
+Yao 是一个低代码开发框架，提供了丰富的数据处理能力。本文档详细介绍了 Yao 在模型数据读取与处理方面提供的处理器（Processors）与 API 入口，以及相关的钩子（Hooks）机制。
 
-操作模型, 相当于操作表数据, 需要有 model id。
+数据处理器是 Yao 框架中用于操作数据的函数集合，而钩子则允许开发者在数据处理的不同阶段插入自定义逻辑。
 
-- models.\<MODEL_ID\>.find, 按 id 查询单条记录
-- models.\<MODEL_ID\>.get, 根据条件查询, 不分页
-- models.\<MODEL_ID\>.paginate, 根据条件查询, 分页
-- models.\<MODEL_ID\>.selectoption, 获取模型中某一个字段满足条件的选项列表值, 主要用于前端的下拉控件。
+### 核心概念
 
-- models.\<MODEL_ID\>.create, 创建单条记录, 返回新创建记录 ID
-- models.\<MODEL_ID\>.update, 更新单条记录
-- models.\<MODEL_ID\>.save, 保存单条记录, 不存在创建记录, 存在更新记录, 返回记录 ID
-- models.\<MODEL_ID\>.delete, 删除单条记录(标记删除)
-- models.\<MODEL_ID\>.destroy, 删除单条记录(真删除)
-- models.\<MODEL_ID\>.insert, 批量一次性保存
-- models.\<MODEL_ID\>.updatewhere, 根据条件更新记录, 返回更新行数
-- models.\<MODEL_ID\>.deletewhere, 按条件软件删除
-- models.\<MODEL_ID\>.destroywhere, 按条件硬删除
-- models.\<MODEL_ID\>.eachsave, 批量逐条保存
-- models.\<MODEL_ID\>.eachsaveafterdelete, 删除一组给定 ID 的记录后, 保存多条记录, 不存在创建, 存在更新, 返回 ID 集合
+- **处理器（Processor）**：预定义的函数，用于执行特定操作（如查询、创建、更新等）
+- **模型（Model）**：对应数据库表的结构定义
+- **钩子（Hook）**：在数据处理前后执行的自定义函数，分为 `before` 和 `after` 两种
+- **MODEL_ID**：模型的唯一标识符，用于在处理器中引用特定模型
 
-- models.\<MODEL_ID\>.migrate, 更新模型配置到数据库, 可强制删除表数据
-- models.\<MODEL_ID\>.load, 从文件配置或是源代码中加载模型配置
-- models.\<MODEL_ID\>.reload, 重新加载模型的文件配置
-- models.\<MODEL_ID\>.read, 读取模型的元信息
-- models.\<MODEL_ID\>.exists, 检查模型是否存在
+### 模型处理器（Model Processors）
 
-### 表单数据处理
+操作模型相当于操作数据库表，每个操作都需要指定模型的 ID（MODEL_ID）。下面按功能分类列出所有模型处理器：
 
-表单处理器的第一个参数是表单 ID。同一个模型可以存在多个表单。
+#### 查询操作
 
-需要注意的时 before 钩子函数返回值一定要是数组。
+```javascript
+// 示例：按ID查询用户
+const user = Process('models.user.find', 1); // 查询ID为1的用户
+```
 
-- yao.form.create, 对应`models.<MODEL_ID>.Create`, 钩子处理器: `before:create`,`after:create`
-- yao.form.delete, 对应`models.<MODEL_ID>.Delete`, 钩子处理器: `before:delete`,`after:delete`
-- yao.form.find, 对应`models.<MODEL_ID>.Find`, 钩子处理器: `before:find`,`after:find`
-- yao.form.save, 对应`models.<MODEL_ID>.Save`, 钩子处理器: `before:save`,`after:save`
-- yao.form.update, 对应`models.<MODEL_ID>.Update`, 钩子处理器: `before:update`,`after:update`
+- **models.MODEL_ID.find**：按主键ID查询单条记录
 
-- yao.form.upload
-- yao.form.download
+  - 参数：主键值
+  - 返回：单条记录对象
 
-- yao.form.xgen
-- yao.form.setting
-- yao.form.component
+- **models.MODEL_ID.get**：根据条件查询多条记录，不分页
 
-- yao.form.load, 从文件或是源代码加载表单配置
-- yao.form.reload, 重新加载表单配置
-- yao.form.unload, 从内存中卸载表单配置
-- yao.form.read, 读取表单配置
-- yao.form.exists, 检查表单配置是否存在
+  - 参数：查询条件、字段选择等
+  - 返回：记录数组
 
-表单对应的 api 列表：
+- **models.MODEL_ID.paginate**：根据条件查询，支持分页
 
-- /api/\_\_yao/form/:id/setting
-- /api/\_\_yao/form/:id/component/:xpath/:method
-- /api/\_\_yao/form/:id/upload/:xpath/:method
-- /api/\_\_yao/form/:id/download/:field
-- /api/\_\_yao/form/:id/find/:primary
-- /api/\_\_yao/form/:id/save
-- /api/\_\_yao/form/:id/create
-- /api/\_\_yao/form/:id/insert
-- /api/\_\_yao/form/:id/delete/:primary
+  - 参数：页码、每页数量、查询条件等
+  - 返回：分页结果对象（包含数据和分页信息）
 
-### 表格处理
+- **models.MODEL_ID.selectoption**：获取字段的选项列表，常用于前端下拉菜单
+  - 参数：字段名、查询条件等
+  - 返回：选项数组
 
-表格处理器的第一个参数是表格 ID。同一个模型可以存在多个表格配置。
+#### 创建与更新操作
 
-需要注意的时 before 钩子函数返回值一定要是数组。
+```javascript
+// 示例：创建新用户
+const userId = Process('models.user.create', { name: '张三', age: 25 });
+```
 
-- yao.table.create, 对应`models.<MODEL_ID>.Create`, 钩子处理器: `after:create`,`after:create`
-- yao.table.save, 对应`models.<MODEL_ID>.Save`, 钩子处理器: `after:save`,`after:save`
-- yao.table.insert, 对应`models.<MODEL_ID>.Insert`, 钩子处理器: `after:insert`,`after:insert`
+- **models.MODEL_ID.create**：创建单条记录
 
-- yao.table.find, 对应`models.<MODEL_ID>.Find`, 钩子处理器: `after:find`,`after:find`
-- yao.table.get, 对应`models.<MODEL_ID>.Get`, 钩子处理器: `after:get`,`after:get`
-- yao.table.search, 对应`models.<MODEL_ID>.Paginate`, 钩子处理器: `after:search`,`after:search`
+  - 参数：记录数据对象
+  - 返回：新创建记录的ID
 
-- yao.table.update, 对应`models.<MODEL_ID>.Update`, 钩子处理器: `after:update`,`after:update`
-- yao.table.updatein, 按 id 列表更新, 作了二次封装再调用 model 处理器`models.<MODEL_ID>.UpdateWhere`, 参数 1 为单一主键或是多个主键以逗号拼接对应, 钩子处理器: `after:update-in`,`after:update-in`
-- yao.table.updatewhere, 对应`models.<MODEL_ID>.UpdateWhere`, 按条件更新, 钩子处理器: `after:before-where`,`after:update-where`
+- **models.MODEL_ID.update**：更新单条记录
 
-- yao.table.delete, 对应`models.<MODEL_ID>.Delete`, 钩子处理器: `after:delete`,`after:delete`
-- yao.table.deletein, 按 id 列表更新, 作了二次封装再调用 model 处理器`models.<MODEL_ID>.DeleteWhere`, 钩子处理器: `after:delete-in`,`after:delete-in`
-- yao.table.deletewhere, 对应`models.<MODEL_ID>.DeleteWhere`, 按条件更新, 钩子处理器: `after:delete-where`,`after:delete-where`
+  - 参数：主键值、更新数据对象
+  - 返回：更新后的记录ID
 
-- yao.table.setting, 读取表格设置
-- yao.table.download, 下载文件, 注意有后缀名白名单
-- yao.table.export, 按查询条件导出数据到 Excel 文件, 可指定每次读取的数量。
-- yao.table.component, 读取 xgen 配置组件的实际值
-- yao.table.upload, 文件上传
-- yao.table.xgen, 读取表格配置的 xgen ui 配置
+- **models.MODEL_ID.save**：保存单条记录（不存在则创建，存在则更新）
 
-- yao.table.load, 从文件或是源代码加载表格配置
-- yao.table.reload, 重新加载表格配置
-- yao.table.unload, 从内存中卸载表格配置
-- yao.table.read, 读取表格配置
-- yao.table.exists, 检查表格配置是否存在
+  - 参数：记录数据对象（需包含主键）
+  - 返回：记录ID
 
-表格对应的 api 列表：
+- **models.MODEL_ID.insert**：批量一次性保存多条记录
 
-- /api/\_\_yao/table/:id/setting
-- /api/\_\_yao/table/:id/component/:xpath/:method
-- /api/\_\_yao/table/:id/upload/:xpath/:method
-- /api/\_\_yao/table/:id/download/:field
-- /api/\_\_yao/table/:id/search
-- /api/\_\_yao/table/:id/get
-- /api/\_\_yao/table/:id/find/:primary
-- /api/\_\_yao/table/:id/save
-- /api/\_\_yao/table/:id/create
-- /api/\_\_yao/table/:id/insert
-- /api/\_\_yao/table/:id/update/:primary
-- /api/\_\_yao/table/:id/update/in
-- /api/\_\_yao/table/:id/update/where
-- /api/\_\_yao/table/:id/delete/:primary
-- /api/\_\_yao/table/:id/delete/in
-- /api/\_\_yao/table/:id/delete/where
+  - 参数：记录数据对象数组
+  - 返回：操作影响的行数
 
-## 数据模型
+- **models.MODEL_ID.updatewhere**：根据条件批量更新记录
 
-Yao 可以读取数据模型定义，实现数据迁移、元数据原子操作、元数据输入校验和元数据管理后台。元数据原子操作方法被映射为处理器(`process`)，支持模型间数据关系映射，可在数据流（`Flow`）和接口(`API`)中访问查询。如采用`golang`语言开发业务插件(`Plugin`)，可以使用 Package `Gou` 访问模型的各个方法, 后续将提供 `NodeJS` 等语言 SDK。
+  - 参数：查询条件、更新数据对象
+  - 返回：更新的行数
 
-### 1 命名规范
+- **models.MODEL_ID.eachsave**：批量逐条保存记录
 
-数据模型描述文件是以 **小写英文字母** 命名的 JSON 文本文件 `<name>.mod.json`
+  - 参数：记录数据对象数组
+  - 返回：保存的记录ID数组
 
-| 文件夹 (相对应用模型根目录) | 文件名        | 模型名称             | Process (在 API /Flow 中引用)         |
-| --------------------------- | ------------- | -------------------- | ------------------------------------- |
-| /                           | name.mod.json | `name`               | `models.name.<process>`               |
-| /group/                     | name.mod.json | `gorup.name`         | `models.gorup.name.<process>`         |
-| /group1/group2/             | name.mod.json | `gorup1.gorup2.name` | `models.gorup1.group2.name.<process>` |
+- **models.MODEL_ID.eachsaveafterdelete**：先删除指定ID的记录，再批量保存
+  - 参数：要删除的ID数组、要保存的记录数组
+  - 返回：保存的记录ID数组
 
-### 2 文档结构
+#### 删除操作
 
-数据模型定义文档，由基础信息、数据表、字段定义、索引定义、关系映射、默认数据和配置部分构成。[查看完整示例](#5.%20完整示例)
+```javascript
+// 示例：删除用户
+Process('models.user.delete', 1); // 软删除ID为1的用户
+```
 
-```json
-{
-  "name": "用户",
-  "table": {},
-  "columns": [],
-  "indexes": [],
-  "relations": {},
-  "values": [],
-  "option": {}
+- **models.MODEL_ID.delete**：软删除单条记录（标记删除）
+
+  - 参数：主键值
+  - 返回：删除结果
+
+- **models.MODEL_ID.destroy**：硬删除单条记录（物理删除）
+
+  - 参数：主键值
+  - 返回：删除结果
+
+- **models.MODEL_ID.deletewhere**：根据条件软删除记录
+
+  - 参数：查询条件
+  - 返回：删除的行数
+
+- **models.MODEL_ID.destroywhere**：根据条件硬删除记录
+  - 参数：查询条件
+  - 返回：删除的行数
+
+#### 模型管理操作
+
+- **models.MODEL_ID.migrate**：将模型配置同步到数据库（创建或更新表结构）
+
+  - 参数：是否强制删除表数据
+  - 返回：迁移结果
+
+- **models.MODEL_ID.load**：从文件或源代码加载模型配置
+
+  - 参数：配置路径或对象
+  - 返回：加载结果
+
+- **models.MODEL_ID.reload**：重新加载模型配置
+
+  - 参数：无
+  - 返回：加载结果
+
+- **models.MODEL_ID.read**：读取模型元信息
+
+  - 参数：无
+  - 返回：模型配置信息
+
+- **models.MODEL_ID.exists**：检查模型是否存在
+  - 参数：无
+  - 返回：布尔值
+
+### 表单处理器（Form Processors）
+
+表单处理器用于处理与表单相关的数据操作。表单处理器的第一个参数始终是表单ID。值得注意的是，同一个模型可以对应多个不同的表单配置。
+
+> **重要提示**：在表单处理器中，`before` 钩子函数的返回值必须是数组类型。
+
+#### 数据操作处理器
+
+```javascript
+// 示例：通过表单创建用户
+Process('yao.form.create', 'user', { name: '李四', age: 30 });
+```
+
+- **yao.form.create**：创建记录
+
+  - 对应：`models.<MODEL_ID>.Create`
+  - 钩子：`before:create`, `after:create`
+
+- **yao.form.delete**：删除记录
+
+  - 对应：`models.<MODEL_ID>.Delete`
+  - 钩子：`before:delete`, `after:delete`
+
+- **yao.form.find**：查询单条记录
+
+  - 对应：`models.<MODEL_ID>.Find`
+  - 钩子：`before:find`, `after:find`
+
+- **yao.form.save**：保存记录
+
+  - 对应：`models.<MODEL_ID>.Save`
+  - 钩子：`before:save`, `after:save`
+
+- **yao.form.update**：更新记录
+  - 对应：`models.<MODEL_ID>.Update`
+  - 钩子：`before:update`, `after:update`
+
+#### 文件处理器
+
+- **yao.form.upload**：文件上传处理
+- **yao.form.download**：文件下载处理
+
+#### UI与配置处理器
+
+- **yao.form.xgen**：生成表单的前端配置
+- **yao.form.setting**：读取表单设置
+- **yao.form.component**：处理表单组件的操作
+
+#### 配置管理处理器
+
+- **yao.form.load**：从文件或源代码加载表单配置
+- **yao.form.reload**：重新加载表单配置
+- **yao.form.unload**：从内存中卸载表单配置
+- **yao.form.read**：读取表单配置
+- **yao.form.exists**：检查表单配置是否存在
+
+#### 表单API端点
+
+表单对应的RESTful API端点列表：
+
+| API路径                                        | 说明           |
+| ---------------------------------------------- | -------------- |
+| `/api/__yao/form/:id/setting`                  | 获取表单设置   |
+| `/api/__yao/form/:id/component/:xpath/:method` | 操作表单组件   |
+| `/api/__yao/form/:id/upload/:xpath/:method`    | 表单文件上传   |
+| `/api/__yao/form/:id/download/:field`          | 表单文件下载   |
+| `/api/__yao/form/:id/find/:primary`            | 按主键查询记录 |
+| `/api/__yao/form/:id/save`                     | 保存记录       |
+| `/api/__yao/form/:id/create`                   | 创建记录       |
+| `/api/__yao/form/:id/insert`                   | 批量插入记录   |
+| `/api/__yao/form/:id/delete/:primary`          | 删除记录       |
+
+### 表格处理器（Table Processors）
+
+表格处理器用于处理与表格相关的数据操作。表格处理器的第一个参数始终是表格ID。同一个模型可以对应多个不同的表格配置。
+
+> **重要提示**：在表格处理器中，`before` 钩子函数的返回值必须是数组类型。
+
+#### 创建操作处理器
+
+```javascript
+// 示例：通过表格批量创建记录
+Process('yao.table.insert', 'users', [
+  { name: '王五', age: 28 },
+  { name: '赵六', age: 32 }
+]);
+```
+
+- **yao.table.create**：创建单条记录
+
+  - 对应：`models.<MODEL_ID>.Create`
+  - 钩子：`before:create`, `after:create`
+
+- **yao.table.save**：保存单条记录
+
+  - 对应：`models.<MODEL_ID>.Save`
+  - 钩子：`before:save`, `after:save`
+
+- **yao.table.insert**：批量插入记录
+  - 对应：`models.<MODEL_ID>.Insert`
+  - 钩子：`before:insert`, `after:insert`
+
+#### 查询操作处理器
+
+```javascript
+// 示例：表格搜索
+const results = Process('yao.table.search', 'users', {
+  page: 1,
+  pagesize: 20,
+  where: [['age', '>', 25]]
+});
+```
+
+- **yao.table.find**：按主键查询单条记录
+
+  - 对应：`models.<MODEL_ID>.Find`
+  - 钩子：`before:find`, `after:find`
+
+- **yao.table.get**：按条件查询多条记录
+
+  - 对应：`models.<MODEL_ID>.Get`
+  - 钩子：`before:get`, `after:get`
+
+- **yao.table.search**：分页查询
+  - 对应：`models.<MODEL_ID>.Paginate`
+  - 钩子：`before:search`, `after:search`
+
+#### 更新操作处理器
+
+- **yao.table.update**：更新单条记录
+
+  - 对应：`models.<MODEL_ID>.Update`
+  - 钩子：`before:update`, `after:update`
+
+- **yao.table.updatein**：按ID列表批量更新记录
+
+  - 内部调用：`models.<MODEL_ID>.UpdateWhere`
+  - 参数1：主键值（单个或逗号分隔的多个）
+  - 钩子：`before:update-in`, `after:update-in`
+
+- **yao.table.updatewhere**：按条件更新记录
+  - 对应：`models.<MODEL_ID>.UpdateWhere`
+  - 钩子：`before:update-where`, `after:update-where`
+
+#### 删除操作处理器
+
+- **yao.table.delete**：删除单条记录
+
+  - 对应：`models.<MODEL_ID>.Delete`
+  - 钩子：`before:delete`, `after:delete`
+
+- **yao.table.deletein**：按ID列表批量删除
+
+  - 内部调用：`models.<MODEL_ID>.DeleteWhere`
+  - 钩子：`before:delete-in`, `after:delete-in`
+
+- **yao.table.deletewhere**：按条件删除记录
+  - 对应：`models.<MODEL_ID>.DeleteWhere`
+  - 钩子：`before:delete-where`, `after:delete-where`
+
+#### 特殊功能处理器
+
+- **yao.table.setting**：读取表格设置
+- **yao.table.download**：下载文件（注意：文件后缀名有白名单限制）
+- **yao.table.export**：导出数据到Excel文件
+
+  - 可指定每次读取的数据量
+  - 支持按查询条件筛选导出数据
+
+- **yao.table.component**：读取XGen组件的实际值
+- **yao.table.upload**：处理文件上传
+- **yao.table.xgen**：读取表格的XGen UI配置
+
+#### 配置管理处理器
+
+- **yao.table.load**：从文件或源代码加载表格配置
+- **yao.table.reload**：重新加载表格配置
+- **yao.table.unload**：从内存中卸载表格配置
+- **yao.table.read**：读取表格配置
+- **yao.table.exists**：检查表格配置是否存在
+
+#### 表格API端点
+
+表格对应的RESTful API端点列表：
+
+| API路径                                         | 说明                 |
+| ----------------------------------------------- | -------------------- |
+| `/api/__yao/table/:id/setting`                  | 获取表格设置         |
+| `/api/__yao/table/:id/component/:xpath/:method` | 操作表格组件         |
+| `/api/__yao/table/:id/upload/:xpath/:method`    | 表格文件上传         |
+| `/api/__yao/table/:id/download/:field`          | 表格文件下载         |
+| `/api/__yao/table/:id/search`                   | 分页查询             |
+| `/api/__yao/table/:id/get`                      | 按条件查询（不分页） |
+| `/api/__yao/table/:id/find/:primary`            | 按主键查询记录       |
+| `/api/__yao/table/:id/save`                     | 保存记录             |
+| `/api/__yao/table/:id/create`                   | 创建记录             |
+| `/api/__yao/table/:id/insert`                   | 批量插入记录         |
+| `/api/__yao/table/:id/update/:primary`          | 更新单条记录         |
+| `/api/__yao/table/:id/update/in`                | 按ID列表批量更新     |
+| `/api/__yao/table/:id/update/where`             | 按条件更新           |
+| `/api/__yao/table/:id/delete/:primary`          | 删除单条记录         |
+| `/api/__yao/table/:id/delete/in`                | 按ID列表批量删除     |
+| `/api/__yao/table/:id/delete/where`             | 按条件删除           |
+
+### 钩子函数的使用
+
+钩子函数是在数据操作前后执行的自定义处理逻辑。Yao提供了两种类型的钩子：
+
+1. **before钩子**：在数据操作前执行，可用于数据验证、转换等
+2. **after钩子**：在数据操作后执行，可用于后处理、触发其他操作等
+
+#### 示例：表单钩子函数
+
+```javascript
+// 用户表单的before:create钩子
+function BeforeCreate(payload) {
+  // 处理输入数据
+  if (!payload.password) {
+    payload.password = '默认密码';
+  }
+
+  // 重要：必须返回数组
+  return [payload];
+}
+
+// 用户表单的after:create钩子
+function AfterCreate(id, payload) {
+  // 创建后的操作，如发送通知
+  Process('scripts.notification.send', id, '用户创建成功');
+  return id;
 }
 ```
 
-| 字段      | 类型                  | 说明         | 必填项 |
-| --------- | --------------------- | ------------ | ------ |
-| name      | String                | 模型中文名称 | 是     |
-| table     | Object                | 数据表定义   | 是     |
-| columns   | Array\<Object\>       | 字段定义     | 是     |
-| indexes   | Array\<Object\>       | 索引定义     | 是     |
-| relations | \[key:String\]:Object | 关系映射     | 否     |
-| values    | Array\<Object\>       | 默认数据     | 否     |
-| option    | Object                | 配置选型     | 否     |
+#### 钩子函数注意事项
 
-#### 2.1 基础信息
+- `before` 钩子的返回值必须是数组类型
+- 钩子函数可以通过配置文件中的 `hooks` 节点进行定义
+- 钩子可用于实现数据验证、权限检查、数据转换等功能
 
-基础信息包含 `name` 、 `description` 、`version` 等字段，主要用于在开发平台中呈现检索。
+### 总结
+
+Yao 框架提供了丰富的数据处理能力，通过处理器和钩子机制，可以灵活地实现各种数据操作和业务逻辑。开发者可以根据不同的场景选择适合的处理器，并使用钩子函数扩展自定义功能。
+
+## 数据模型
+
+### 目录
+
+- [1. 概述](#1-概述)
+- [2. 命名规范](#2-命名规范)
+- [3. 文档结构](#3-文档结构)
+  - [3.1 基础信息](#31-基础信息)
+  - [3.2 数据表](#32-数据表-table)
+  - [3.3 字段定义](#33-字段定义-columns)
+  - [3.4 索引定义](#34-索引定义-indexes)
+  - [3.5 关系映射](#35-关系映射-relations)
+  - [3.6 默认数据](#36-默认数据-values)
+  - [3.7 配置选项](#37-配置选项-option)
+- [4. 查询参数](#4-查询参数-queryparam)
+- [5. 处理器](#5-处理器process)
+- [6. 完整示例](#6-完整示例)
+
+### 1. 概述
+
+Yao 数据模型是应用的核心组件，它使系统能够：
+
+- **自动数据迁移**：根据模型定义创建和更新数据库表结构
+- **元数据原子操作**：提供标准化的数据操作方法
+- **数据校验**：基于模型定义进行输入数据的合法性验证
+- **自动管理后台**：生成数据管理界面
+
+数据模型将操作方法映射为处理器(`process`)，可在数据流（`Flow`）和接口(`API`)中直接调用。对于使用`golang`开发的业务插件，可通过`Gou`包访问模型方法。
+
+### 2. 命名规范
+
+数据模型使用**小写英文字母**命名的JSON文件：`<name>.mod.json`
+
+| 文件位置        | 文件名        | 模型名称             | 处理器调用方式                        |
+| --------------- | ------------- | -------------------- | ------------------------------------- |
+| /               | name.mod.json | `name`               | `models.name.<process>`               |
+| /group/         | name.mod.json | `group.name`         | `models.group.name.<process>`         |
+| /group1/group2/ | name.mod.json | `group1.group2.name` | `models.group1.group2.name.<process>` |
+
+### 3. 文档结构
+
+数据模型定义文件包含以下主要部分：
+
+```json
+{
+  "name": "用户", // 模型中文名称
+  "table": {}, // 数据表定义
+  "columns": [], // 字段定义
+  "indexes": [], // 索引定义
+  "relations": {}, // 关系映射
+  "values": [], // 默认数据
+  "option": {} // 配置选项
+}
+```
+
+| 字段      | 类型                  | 说明         | 必填 |
+| --------- | --------------------- | ------------ | ---- |
+| name      | String                | 模型中文名称 | ✓    |
+| table     | Object                | 数据表定义   | ✓    |
+| columns   | Array\<Object\>       | 字段定义     | ✓    |
+| indexes   | Array\<Object\>       | 索引定义     | ✓    |
+| relations | \[key:String\]:Object | 关系映射     | ✗    |
+| values    | Array\<Object\>       | 默认数据     | ✗    |
+| option    | Object                | 配置选项     | ✗    |
+
+#### 3.1 基础信息
+
+基础信息用于描述模型的元数据，便于在开发平台中管理和检索。
 
 ```json
 {
   "name": "用户",
   "version": "1.0.0",
   "description": "网站用户元数据模型",
-  "table": {},
-  "columns": [],
-  "indexes": []
+  "author": "开发者姓名",
+  "email": "developer@example.com",
+  "license": "MIT"
 }
 ```
 
-| 字段        | 类型   | 说明                                                                                    | 必填项 |
-| ----------- | ------ | --------------------------------------------------------------------------------------- | ------ |
-| name        | String | 中文名称                                                                                | 是     |
-| version     | String | 版本号 x.x.x 遵循 [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) 规范 | 是     |
-| tun         | String | 象传智慧共享仓库 `Tun` (tun.iqka.com) 地址 如：`microcity/petstore/user`                | 否     |
-| description | String | 数据模型详细介绍                                                                        | 否     |
-| author      | String | 数据模型作者                                                                            | 否     |
-| email       | String | 数据模型作者联系方式                                                                    | 否     |
-| license     | String | 数据模型共享协议如 MIT                                                                  | 否     |
-| homepage    | String | 数据模型提供者官网                                                                      | 否     |
+| 字段        | 类型   | 说明                                                          | 必填 |
+| ----------- | ------ | ------------------------------------------------------------- | ---- |
+| name        | String | 中文名称                                                      | ✓    |
+| version     | String | 遵循[语义化版本](https://semver.org/spec/v2.0.0.html)的版本号 | ✓    |
+| description | String | 详细介绍                                                      | ✗    |
+| author      | String | 作者                                                          | ✗    |
+| email       | String | 联系方式                                                      | ✗    |
+| license     | String | 共享协议                                                      | ✗    |
+| homepage    | String | 官网                                                          | ✗    |
+| tun         | String | 象传智慧共享仓库地址，如`microcity/petstore/user`             | ✗    |
 
-#### 2.2 数据表 `table`
+#### 3.2 数据表 `table`
 
-数据表格包含 `name`、`comment` 等字段，定义模型存储在数据库中的数据表名称、注释等信息。支持 `MySQL`, `PostgreSQL`、`SQLite`等 `Xun Database` 或第三方提供驱动的数据库。
+定义模型对应的数据库表结构。
 
 ```json
 {
   "table": {
-    "name": "user",
-    "comment": "用户表",
-    "engine": "InnoDB"
+    "name": "user", // 表名
+    "comment": "用户表", // 表注释
+    "engine": "InnoDB" // 数据表引擎(MySQL)
   }
 }
 ```
 
-| 字段    | 类型   | 说明                                              | 必填项 |
-| ------- | ------ | ------------------------------------------------- | ------ |
-| name    | String | 数据表名称                                        | 是     |
-| comment | String | 数据表注释中文名                                  | 否     |
-| engine  | String | 数据表引擎（MySQL ONLY) 许可值 `InnoDB`, `MyISAM` | 否     |
+| 字段    | 类型   | 说明                                      | 必填 |
+| ------- | ------ | ----------------------------------------- | ---- |
+| name    | String | 数据表名称                                | ✓    |
+| comment | String | 数据表注释                                | ✗    |
+| engine  | String | 表引擎(MySQL)，可选值：`InnoDB`、`MyISAM` | ✗    |
 
-#### 2.3 字段定义 `columns`
+#### 3.3 字段定义 `columns`
 
-一个模型可以包含多个字段定义，每个字段定义包含 `label`、`name`、`type`、 `validations` 等信息。
+字段定义包含模型的各个属性及其验证规则。
 
 ```json
 {
   "columns": [
-    { "label": "ID", "name": "id", "type": "ID" },
     {
-      "label": "厂商",
-      "name": "manu_id",
-      "type": "bigInteger",
-      "length": 50,
-      "comment": "所属厂商",
-      "nullable": true,
-      "index": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["integer"],
-          "message": "{{input}}类型错误, {{label}}应为数字"
-        },
-        {
-          "method": "min",
-          "args": [0],
-          "message": "{{label}}应大于0"
-        }
-      ]
+      "label": "ID",
+      "name": "id",
+      "type": "ID"
     },
     {
-      "label": "手机号",
-      "name": "mobile",
+      "label": "用户名",
+      "name": "username",
       "type": "string",
       "length": 50,
-      "comment": "手机号",
-      "index": true,
-      "crypt": "AES",
+      "comment": "登录用户名",
+      "nullable": false,
+      "unique": true,
       "validations": [
         {
           "method": "typeof",
           "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
+          "message": "用户名必须是字符串"
         },
         {
-          "method": "pattern",
-          "args": ["^1[3-9]\\d{9}$"],
-          "message": "{{input}}格式错误"
+          "method": "minLength",
+          "args": [3],
+          "message": "用户名至少需要3个字符"
         }
       ]
     }
@@ -6677,440 +7276,400 @@ Yao 可以读取数据模型定义，实现数据迁移、元数据原子操作�
 }
 ```
 
-| 字段        | 类型                   | 说明                                                                                        | 必填项 |
-| ----------- | ---------------------- | ------------------------------------------------------------------------------------------- | ------ |
-| name        | String                 | 字段名称，对应数据表中字段名称                                                              | 是     |
-| type        | String                 | 字段类型，                                                                                  | 是     |
-| label       | String                 | 字段显示名称，用于在管理表单，开发平台等成场景下呈现                                        | 是     |
-| comment     | String                 | 字段注释，对应数据表中字段注释                                                              | 否     |
-| title       | String                 | 字段标题，可用于开发平台中呈现                                                              | 否     |
-| description | String                 | 字段介绍，可用于开发平台中呈现                                                              | 否     |
-| length      | Integer                | 字段长度，对 `string` 等类型字段有效                                                        | 否     |
-| precision   | Integer                | 字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效                                    | 否     |
-| scale       | Integer                | 字段小数位位数，对 `float`、`decimal` 等类型字段有效                                        | 否     |
-| option      | Array\<String\>        | 字段许可值，对 `enum` 类型字段有效                                                          | 否     |
-| default     | String\|Integer\|Float | 字段默认值                                                                                  | 否     |
-| default_raw | String                 | 字段默认值，支持数据库函数，如 `NOW()` default 和 default_raw 同时存在 default_raw 优先级高 | 否     |
-| crypt       | String                 | 字段加密存储方式(MySQL Only)。许可值 `AES`, `PASSWORD`                                      | 否     |
-| nullable    | Bool                   | 字段是否可以为空，默认为 false                                                              | 否     |
-| index       | Bool                   | 字段是否为索引，默认为 false                                                                | 否     |
-| unique      | Bool                   | 字段是否为唯一索引，默认为 false , 如为 true 无需同时将 `index` 设置为 true                 | 否     |
-| primary     | Bool                   | 字段是否为主键，每张表至多一个主键字段。默认为 false                                        | 否     |
-| validations | Array\<Object\>        | 字段校验规则                                                                                | 否     |
+##### 字段基本属性
 
-##### 字段类型
+| 字段        | 类型            | 说明                                | 必填 |
+| ----------- | --------------- | ----------------------------------- | ---- |
+| name        | String          | 字段名称                            | ✓    |
+| type        | String          | 字段类型                            | ✓    |
+| label       | String          | 显示名称                            | ✓    |
+| comment     | String          | 字段注释                            | ✗    |
+| length      | Integer         | 字段长度(适用于string等类型)        | ✗    |
+| precision   | Integer         | 数值总位数(适用于float等)           | ✗    |
+| scale       | Integer         | 小数位位数(适用于float等)           | ✗    |
+| option      | Array\<String\> | 枚举类型选项                        | ✗    |
+| default     | 任意            | 默认值                              | ✗    |
+| default_raw | String          | 原始默认值(支持SQL函数)             | ✗    |
+| nullable    | Boolean         | 是否可为空(默认false)               | ✗    |
+| index       | Boolean         | 是否为索引(默认false)               | ✗    |
+| unique      | Boolean         | 是否为唯一索引(默认false)           | ✗    |
+| primary     | Boolean         | 是否为主键(默认false)               | ✗    |
+| crypt       | String          | 加密方式，可选值：`AES`、`PASSWORD` | ✗    |
+| validations | Array\<Object\> | 验证规则                            | ✗    |
 
-| 类型                 | 说明                           | 可选参数             | MySQL 字段类型                         |
-| -------------------- | ------------------------------ | -------------------- | -------------------------------------- |
-| string               | 字符串                         | `length`             | VARCHAR(`length` )                     |
-| char                 | 字符                           | `length`             | CHAR (`length` )                       |
-| text                 | 文本                           |                      | TEXT                                   |
-| mediumText           | 中文本                         |                      | MEDIUMTEXT                             |
-| longText             | 长文本                         |                      | LONGTEXT                               |
-| binary               | 二进制数据                     |                      | VARBINARY                              |
-| date                 | 日期                           |                      | DATE                                   |
-| datetime             | 日期时间                       | `length`             | DATETIME                               |
-| datetimeTz           | 带时区的日期时间               | `length`             | DATETIME                               |
-| time                 | 时间                           | `length`             | TIME                                   |
-| timeTz               | 带时区的时间                   | `length`             | TIME                                   |
-| timestamp            | 时间戳                         | `length`             | TIMESTAMP                              |
-| timestampTz          | 带时区的时间戳                 | `length`             | TIMESTAMP                              |
-| tinyInteger          | 微整型                         |                      | TINYINT                                |
-| tinyIncrements       | 无符号微整型+自增              |                      | TINYINT UNSIGNED AUTO_INCREMENT        |
-| unsignedTinyInteger  | 无符号微整型                   |                      | TINYINT UNSIGNED                       |
-| smallInteger         | 小整型                         |                      | SMALLINT                               |
-| smallIncrements      | 无符号小整型+自增              |                      | SMALLINT UNSIGNED AUTO_INCREMENT       |
-| unsignedSmallInteger | 无符号小整型                   |                      | SMALLINT UNSIGNED                      |
-| integer              | 整型                           |                      | INT                                    |
-| increments           | 无符号整型+自增                |                      | INT UNSIGNED AUTO_INCREMENT            |
-| unsignedInteger      | 无符号整型                     |                      | INT UNSIGNED                           |
-| bigInteger           | 长整型                         |                      | BIGINT                                 |
-| bigIncrements        | 无符号长整型+自增              |                      | BIGINT UNSIGNED AUTO_INCREMENT         |
-| unsignedBigInteger   | 无符号长整型                   |                      | BIGINT UNSIGNED                        |
-| id                   | 长整型+自增                    |                      | BIGINT UNSIGNED AUTO_INCREMENT         |
-| ID                   | 长整型+自增(同 id)             |                      | BIGINT UNSIGNED AUTO_INCREMENT         |
-| decimal              | 小数(一般用于存储货币)         | `precision`、`scale` | DECIMAL(`precision`,`scale`)           |
-| unsignedDecimal      | 无符号小数 (一般用于存储货币)  | `precision`、`scale` | DECIMAL (`precision`,`scale`) UNSIGNED |
-| float                | 浮点数                         | `precision`、`scale` | FLOAT (`precision`,`scale`)            |
-| unsignedFloat        | 无符号浮点数                   | `precision`、`scale` | FLOAT (`precision`,`scale`) UNSIGNED   |
-| double               | 双精度                         | `precision`、`scale` | DOUBLE (`precision`,`scale`)           |
-| unsignedDouble       | 无符号双精度                   | `precision`、`scale` | DOUBLE (`precision`,`scale`) UNSIGNED  |
-| boolean              | 布尔型                         |                      | BOOLEAN                                |
-| enum                 | 枚举型                         | `option`             | ENUM(`option...`)                      |
-| json                 | JSON 文本                      |                      | JSON                                   |
-| JSON                 | JSON 文本(同 json)             |                      | JSON                                   |
-| jsonb                | JSON (二进制格式存储)          |                      | JSON                                   |
-| JSONB                | JSON (二进制格式存储 同 jsonb) |                      | JSON                                   |
-| uuid                 | UUID 格式字符串                |                      | VARCHAR(36)                            |
-| ipAddress            | IP 地址                        |                      | INT                                    |
-| macAddress           | MAC 地址                       |                      | BIGINT                                 |
-| year                 | 年份                           |                      | SMALLINT                               |
+##### 字段类型对照表
 
-##### 校验方法
+| 类型      | 说明       | 参数             | MySQL对应类型                  |
+| --------- | ---------- | ---------------- | ------------------------------ |
+| string    | 字符串     | length           | VARCHAR(length)                |
+| text      | 文本       | -                | TEXT                           |
+| integer   | 整型       | -                | INT                            |
+| ID/id     | 自增长整型 | -                | BIGINT UNSIGNED AUTO_INCREMENT |
+| float     | 浮点数     | precision, scale | FLOAT(precision,scale)         |
+| decimal   | 精确小数   | precision, scale | DECIMAL(precision,scale)       |
+| boolean   | 布尔型     | -                | BOOLEAN                        |
+| enum      | 枚举型     | option           | ENUM(option...)                |
+| date      | 日期       | -                | DATE                           |
+| datetime  | 日期时间   | -                | DATETIME                       |
+| timestamp | 时间戳     | -                | TIMESTAMP                      |
+| json/JSON | JSON数据   | -                | JSON                           |
 
-一个字段可以包含多条校验规则，每条校验规则可以选用 `min`,`max`, `pattern`, `typeof` 等校验方法。
+> 完整字段类型列表请参考文档后面的详细说明
+
+##### 数据验证规则
+
+验证规则用于在数据创建和更新时检查字段值的合法性。
 
 ```json
 {
-  "columns": [
+  "validations": [
     {
-      "label": "手机号",
-      "name": "mobile",
-      "type": "string",
-      "length": 50,
-      "comment": "手机号",
-      "index": true,
-      "crypt": "AES",
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "pattern",
-          "args": ["^1[3-9]\\d{9}$"],
-          "message": "{{input}}格式错误"
-        }
-      ]
+      "method": "typeof", // 验证方法
+      "args": ["string"], // 方法参数
+      "message": "必须是字符串" // 错误提示
     }
   ]
 }
 ```
 
-**校验规则定义**
-:::v-pre
-| 字段 | 类型 | 说明 | 必填项 |
-| ------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| method | String | 校验方法名称，可选值 `typeof`, `pattern` 等 | 是 |
-| args | Array\<String\|Integer\|Float\> | 校验方法参数，例如 `[20]`, `["^1[3-9]\\d{9}$"]` | 否 |
-| message | String | 如校验不通过，返回的错误提示。支持使用 `{{<name>}}` 引用字段信息, 如`{{label}}`将被替换为字段 `label`中定义的数值; `{{input}}` 被替换为用户输入数值。 | 否 |
-:::
+| 验证方法  | 参数         | 说明         | 示例                                               |
+| --------- | ------------ | ------------ | -------------------------------------------------- |
+| typeof    | [类型]       | 检查数据类型 | `{"method":"typeof", "args":["integer"]}`          |
+| min       | [最小值]     | 最小值检查   | `{"method":"min", "args":[0]}`                     |
+| max       | [最大值]     | 最大值检查   | `{"method":"max", "args":[100]}`                   |
+| enum      | [选项...]    | 枚举值检查   | `{"method":"enum", "args":["enabled","disabled"]}` |
+| pattern   | [正则表达式] | 正则匹配     | `{"method":"pattern", "args":["^1[3-9]\\d{9}$"]}`  |
+| minLength | [长度]       | 最小长度     | `{"method":"minLength", "args":[6]}`               |
+| maxLength | [长度]       | 最大长度     | `{"method":"maxLength", "args":[18]}`              |
+| email     | []           | 邮箱格式     | `{"method":"email", "args":[]}`                    |
+| mobile    | [地区]       | 手机号格式   | `{"method":"mobile", "args":["cn"]}`               |
 
-##### 校验方法清单
+错误消息支持模板变量：
 
-| 校验方法  | 参数                                                                                | 说明     | 示例                                                                  |
-| --------- | ----------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------- |
-| typeof    | `[<String>]` 许可值 `string`, `integer`, `float`, `number`, `datetime`, `timestamp` | 数值类型 | `{"method":"typeof", "args":["integer"]}`                             |
-| min       | `[<Integer\|Float>]`                                                                | 最小值   | `{"method":"min", "args":[20]}`                                       |
-| max       | `[<Integer\|Float>]`                                                                | 最大值   | `{"method":"max", "args":[0.618]}`                                    |
-| enum      | `[String...]`                                                                       | 枚举选项 | `{"method":"enum", "args":["enabled", "disabled"]}`                   |
-| pattern   | `[String]`                                                                          | 正则匹配 | `{"method":"pattern", "args":["^1[3-9]\\d{9}$"]}`                     |
-| minLength | `[<Integer>]`                                                                       | 最小长度 | `{"method":"minLength", "args":[20]}`                                 |
-| maxLength | `[<Integer>]`                                                                       | 最大长度 | `{"method":"maxLength", "args":[100]}`                                |
-| email     | `[]`                                                                                | 邮箱     | `{"method":"email", "args":[]}`                                       |
-| mobile    | `[<String>]` 区域列表(可选), 默认为 `cn` 许可值 `cn`,`us`                           | 手机号   | `{"method":"mobile", "args":[]}` `{"method":"mobile", "args":["us"]}` |
+- `{{input}}` - 用户输入的值
+- `{{label}}` - 字段标签
 
-##### 加密方式
+##### 字段加密
 
-当前支持 `AES` 和 `PASSWORD` 两种字段数值加密存储算法，其中 `AES` 仅支持 MySQL 数据库。
+支持两种加密方式保护敏感数据：
 
-| 加密算法   | 说明                               | 是否可逆 |
-| ---------- | ---------------------------------- | -------- |
-| `AES`      | AES 加密，需设定 `XIANG_DB_AESKEY` | 是       |
-| `PASSWORD` | PASSWORD HASH 加密                 | 否       |
+| 加密方式 | 说明                                     | 可逆性 |
+| -------- | ---------------------------------------- | ------ |
+| AES      | AES加密(需设置环境变量`XIANG_DB_AESKEY`) | 可逆   |
+| PASSWORD | 密码哈希加密                             | 不可逆 |
 
-##### 保留字
+#### 3.4 索引定义 `indexes`
 
-以下名称不能用于字段名称。
-
-| 保留字           | 说明                         |
-| ---------------- | ---------------------------- |
-| created_at       | 用于记录创建时间戳           |
-| updated_at       | 用于记录更新时间戳           |
-| deleted_at       | 用于记录软删除标记           |
-| \_\_restore_data | 用于软删除时备份唯一字段数值 |
-
-#### 2.4 索引定义 `indexes`
-
-一个数据模型，可以包含多个索引。对于单一索引，推荐在字段定义时，使用 `index` 、 `unique` 和 `primary` 修饰符定义，对于复合索引或全文检索索引，在 `indexes` 中定义。
+索引用于提高查询性能和保证数据唯一性。
 
 ```json
 {
   "indexes": [
     {
-      "comment": "厂商用户",
-      "name": "manu_id_mobile_unique",
-      "columns": ["manu_id", "mobile"],
-      "type": "unique"
-    },
-    {
-      "comment": "简历全文检索",
-      "name": "resume_fulltext",
-      "columns": ["resume"],
-      "type": "fulltext"
+      "name": "user_email_mobile_unique", // 索引名称
+      "type": "unique", // 索引类型
+      "columns": ["email", "mobile"], // 索引字段
+      "comment": "用户邮箱和手机号唯一" // 索引说明
     }
   ]
 }
 ```
 
-| 字段    | 类型            | 说明                                                                                 | 必填项 |
-| ------- | --------------- | ------------------------------------------------------------------------------------ | ------ |
-| name    | String          | 索引名称。**命名规范为 字段 1\_字段 2\_字段 n\_索引类型**                            | 是     |
-| type    | String          | 索引类型 许可值 `index` 索引, `unique` 唯一索引, `primary` 主键, `fulltext` 全文检索 | 是     |
-| columns | Array\<String\> | 关联字段名称列表（顺序有关) `["字段 1","字段 2"]` 与 `["字段 2","字段 1"]` 不同      | 是     |
-| comment | String          | 索引注释                                                                             | 否     |
+| 字段    | 类型            | 说明                                               | 必填 |
+| ------- | --------------- | -------------------------------------------------- | ---- |
+| name    | String          | 索引名称(建议格式：字段1*字段2*...\_索引类型)      | ✓    |
+| type    | String          | 索引类型：`index`、`unique`、`primary`、`fulltext` | ✓    |
+| columns | Array\<String\> | 索引字段名称列表(顺序有关)                         | ✓    |
+| comment | String          | 索引注释                                           | ✗    |
 
-#### 2.5 关系映射 `relations`
+#### 3.5 关系映射 `relations`
 
-**当前关系映射部分为 beta 版本, 可能会依据用户使用反馈，调整数据结构**
-
-数据模型支持一对一、一对多两种关系映射，可以通过定义映射关系将多个数据模型关联，查询时使用`with`参数即可同时返回关联模型数据。
-
-| 映射关系名称 | 关系   | 说明                           |
-| ------------ | ------ | ------------------------------ |
-| `hasOne`     | 一对一 | 模型 A 与模型 B 通过一对一关联 |
-| `hasMany`    | 一对多 | 模型 A 与模型 B 通过一对多关联 |
-
-关联关系使用 `[key:String]:Object Relation` 数据结构定义 ( `{"关联名称1":{}, "关联名称2":{}}`, 关联名称为 **小写英文字母** )
-
-在模型文件 `user.json` 中定义
+关系映射定义模型之间的关联关系，支持一对一、一对多、多对多等多种映射方式。
 
 ```json
 {
   "relations": {
-    "manu": {
-      "type": "hasOne",
-      "model": "manu",
-      "key": "id",
-      "foreign": "manu_id",
-      "query": { "select": ["name", "short_name", "type"] }
-    },
-    "addresses": {
-      "type": "hasMany",
-      "model": "address",
-      "key": "user_id",
-      "foreign": "id",
+    "profile": {
+      // 关联名称
+      "type": "hasOne", // 关系类型
+      "model": "user_profile", // 关联模型
+      "key": "user_id", // 关联模型的关联字段
+      "foreign": "id", // 当前模型的关联字段
       "query": {
-        "select": ["province", "city", "location", "status"],
-        "pagesize": 20
+        // 默认查询参数
+        "select": ["avatar", "bio"]
       }
-    },
-    "mother": {
-      "type": "hasOneThrough",
-      "links": [
-        {
-          "type": "hasOne",
-          "model": "friends",
-          "key": "user_id",
-          "foreign": "user.id",
-          "query": {
-            "select": ["status", "type", "friend_id"],
-            "wheres": [
-              {
-                "column": "type",
-                "value": "monther"
-              }
-            ]
-          }
-        },
-        {
-          "type": "hasOne",
-          "model": "user",
-          "key": "id",
-          "foreign": "user_mother_friends.friend_id",
-          "query": {
-            "select": ["name", "id", "status", "type", "secret", "extra"],
-            "withs": {
-              "manu": {},
-              "roles": {},
-              "address": {}
-            }
-          }
-        }
-      ]
-    },
-    "roles": {
-      "type": "hasManyThrough",
-      "links": [
-        {
-          "type": "hasMany",
-          "model": "user_roles",
-          "key": "user_id",
-          "foreign": "id",
-          "query": {
-            "select": ["status"],
-            "pagesize": 20
-          }
-        },
-        {
-          "type": "hasOne",
-          "model": "role",
-          "key": "id",
-          "foreign": "role_id",
-          "query": {
-            "select": ["name", "label", "permission"]
-          }
-        }
-      ]
     }
   }
 }
 ```
 
-**`Object Relation`**
+##### 关系类型
 
-| 字段    | 类型                     | 说明                                                                             | 必填项 |
-| ------- | ------------------------ | -------------------------------------------------------------------------------- | ------ |
-| type    | String                   | 关系类型 许可值 `hasOne`, `hasOneThrough` , `hasMany` , `hasManyThrough`         | 是     |
-| key     | String                   | 关联模型的关联字段名称                                                           | 否     |
-| model   | String                   | 关联模型名称                                                                     | 否     |
-| foreign | String                   | 当前模型的关联字段名称                                                           | 否     |
-| query   | Object QueryParam        | 关系查询参数默认值。如在查询时未指定关联查询参数，则替使用在模型中定义的查询参数 | 否     |
-| links   | Array\<Object Relation\> | `hasOneThrough` 或 `hasManyThrough` 多表关联关系定义                             | 否     |
+| 关系类型       | 说明       | 用途                 |
+| -------------- | ---------- | -------------------- |
+| hasOne         | 一对一关系 | 用户-资料、产品-详情 |
+| hasMany        | 一对多关系 | 用户-订单、文章-评论 |
+| hasOneThrough  | 跨表一对一 | 复杂的间接关联       |
+| hasManyThrough | 跨表一对多 | 用户-角色-权限       |
 
-##### 2.5.1 `hasOne` 一对一
+##### 关系定义字段
 
-数据模型 `user` 数据表结构如下:
+| 字段    | 类型            | 说明             | 必填         |
+| ------- | --------------- | ---------------- | ------------ |
+| type    | String          | 关系类型         | ✓            |
+| model   | String          | 关联模型名称     | ✓ (简单关系) |
+| key     | String          | 关联模型关联字段 | ✓ (简单关系) |
+| foreign | String          | 当前模型关联字段 | ✓ (简单关系) |
+| query   | Object          | 默认查询参数     | ✗            |
+| links   | Array\<Object\> | 多表关联定义     | ✓ (跨表关系) |
 
-| 字段    | 类型       | 说明        |
-| ------- | ---------- | ----------- |
-| id      | ID         | 用户 ID     |
-| manu_id | bigInteger | 所属厂商 ID |
-| name    | string     | 姓名        |
+##### 实际应用示例
 
-数据模型 `manu` 数据表结构如下:
-
-| 字段    | 类型   | 说明     |
-| ------- | ------ | -------- |
-| id      | ID     | 厂商 ID  |
-| short   | string | 厂商简称 |
-| company | string | 公司名称 |
-
-在查询用户数据时，可以同时列出厂商信息或可以按关联厂商进行查询，则可以在定义 `user` 数据模型时，设定与 `manu` 数据模型关系.
-
-在模型文件 `user.json` 中定义
+**一对一关系(hasOne):**
 
 ```json
 {
-  "name": "用户",
-  "relations": {
-    "manu": {
-      "type": "hasOne",
-      "model": "manu",
-      "key": "id",
-      "foreign": "manu_id",
-      "query": { "select": ["short", "company"] }
+  "manu": {
+    "type": "hasOne",
+    "model": "manu",
+    "key": "id",
+    "foreign": "manu_id",
+    "query": { "select": ["name", "short_name"] }
+  }
+}
+```
+
+**一对多关系(hasMany):**
+
+```json
+{
+  "addresses": {
+    "type": "hasMany",
+    "model": "address",
+    "key": "user_id",
+    "foreign": "id",
+    "query": {
+      "select": ["province", "city", "location"],
+      "limit": 20
     }
   }
 }
 ```
 
-**说明**
+#### 3.6 默认数据 `values`
 
-1.将关系映射类型指定为 `hasOne`
+定义模型的初始数据，在首次迁移时自动插入。
 
-2.将关联模型 `model` 设置为 `manu`
-
-3.将关联模型 `key` 设置为 `id`, 即：`manu.id` 引擎处理时，自动关联 `manu` 表的 `id` 字段。
-
-4.将 `foreign` 设置为 `manu_id`, 即: `user.manu_id` 引擎处理时，将 `manu.id` 和 `user.manu_id` 关联
-
-5.可以在 `query` 字段中，设置默认的查询条件，如指定读取的字段等。
-
-引擎解析后的 SQL 为:
-
-```sql
-SELECT `user`.*,
-  `manu`.`short` AS `user_manu_short`,
-  `manu`.`company` AS `user_manu_company`,
-  FROM `user` AS `user`
-  LEFT JOIN `manu` as `user_manu` ON `user_manu`.`id` = `user`.`manu_id`
+```json
+{
+  "values": [
+    {
+      "name": "管理员",
+      "email": "admin@example.com",
+      "password": "Admin@123",
+      "type": "admin",
+      "status": "enabled"
+    }
+  ]
+}
 ```
 
-**访问**
+#### 3.7 配置选项 `option`
 
-在调用 `process` 查询时，传入 `with` 参数，即可同时返回厂商信息
+定义模型的全局配置参数。
 
-```bash
-GET  /api/user/find/1?with=manu&manu.select=id,short
+```json
+{
+  "option": {
+    "timestamps": true, // 自动添加时间戳字段
+    "soft_deletes": true // 启用软删除
+  }
+}
 ```
 
-##### 2.5.2 `hasMany` 一对多
+| 选项         | 类型    | 说明                                         |
+| ------------ | ------- | -------------------------------------------- |
+| timestamps   | Boolean | 添加`created_at`和`updated_at`字段并自动维护 |
+| soft_deletes | Boolean | 添加`deleted_at`字段实现软删除功能           |
 
-数据模型 `user` 数据表结构如下:
+### 4. 查询参数 `QueryParam`
 
-| 字段    | 类型       | 说明        |
-| ------- | ---------- | ----------- |
-| id      | ID         | 用户 ID     |
-| manu_id | bigInteger | 所属厂商 ID |
-| name    | string     | 姓名        |
+查询参数用于在关系定义和API调用中描述数据过滤、排序和关联查询条件。
 
-数据模型 `address` 数据表结构如下:
+```json
+{
+  "select": ["id", "name", "mobile"], // 查询字段
+  "wheres": [
+    // 查询条件
+    { "column": "status", "value": "enabled" }
+  ],
+  "orders": [
+    // 排序条件
+    { "column": "id", "option": "desc" }
+  ],
+  "withs": {
+    // 关联查询
+    "profile": { "select": ["avatar"] }
+  },
+  "limit": 10, // 返回记录数
+  "page": 1, // 页码
+  "pagesize": 20 // 每页记录数
+}
+```
 
-| 字段     | 类型       | 说明                          |
-| -------- | ---------- | ----------------------------- |
-| id       | ID         | 地址 ID                       |
-| user_id  | bigInteger | 所属用户 ID (关联 `user.id` ) |
-| location | string     | 详细地址                      |
+#### 查询条件格式
 
-对于类似一个用户有多个通信地址的业务场景，可以通过建立一对多的映射关系来实现。
+```json
+{
+  "wheres": [
+    {
+      "column": "status", // 字段名
+      "value": "enabled", // 匹配值
+      "op": "eq", // 操作符(可选,默认eq)
+      "method": "where" // 方法(可选,默认where)
+    },
+    {
+      "rel": "profile", // 关联模型名
+      "column": "is_verified", // 关联模型字段
+      "value": true
+    },
+    {
+      "wheres": [
+        // 分组条件(OR)
+        { "column": "name", "value": "%张%", "op": "like" },
+        { "method": "orwhere", "column": "name", "value": "%李%", "op": "like" }
+      ]
+    }
+  ]
+}
+```
 
-在模型文件 `user.json` 中定义
+#### 常用操作符
+
+| 操作符  | 说明       | SQL等价             |
+| ------- | ---------- | ------------------- |
+| eq      | 等于(默认) | `field = value`     |
+| like    | 模糊匹配   | `field LIKE value`  |
+| gt      | 大于       | `field > value`     |
+| ge      | 大于等于   | `field >= value`    |
+| lt      | 小于       | `field < value`     |
+| le      | 小于等于   | `field <= value`    |
+| in      | 包含       | `field IN (values)` |
+| null    | 为空       | `field IS NULL`     |
+| notnull | 不为空     | `field IS NOT NULL` |
+
+### 5. 处理器(`process`)
+
+数据模型自动生成以下处理器，可在API和Flow中使用：
+
+| 处理器       | 调用方式                     | 功能                              |
+| ------------ | ---------------------------- | --------------------------------- |
+| find         | `models.模型名.find`         | 查询单条记录                      |
+| get          | `models.模型名.get`          | 按条件查询(不分页)                |
+| paginate     | `models.模型名.paginate`     | 按条件查询(分页)                  |
+| create       | `models.模型名.create`       | 创建单条记录                      |
+| update       | `models.模型名.update`       | 更新单条记录                      |
+| save         | `models.模型名.save`         | 保存记录(存在则更新,不存在则创建) |
+| delete       | `models.模型名.delete`       | 删除单条记录(软删除)              |
+| destroy      | `models.模型名.destroy`      | 删除单条记录(物理删除)            |
+| insert       | `models.模型名.insert`       | 批量插入记录                      |
+| updatewhere  | `models.模型名.updatewhere`  | 按条件更新记录                    |
+| deletewhere  | `models.模型名.deletewhere`  | 按条件删除记录(软删除)            |
+| destroywhere | `models.模型名.destroywhere` | 按条件删除记录(物理删除)          |
+| eachsave     | `models.模型名.eachsave`     | 批量保存记录                      |
+
+### 6. 完整示例
+
+以下是一个完整的用户模型定义示例：
 
 ```json
 {
   "name": "用户",
+  "table": {
+    "name": "user",
+    "comment": "用户信息表",
+    "engine": "InnoDB"
+  },
+  "columns": [
+    { "label": "ID", "name": "id", "type": "ID" },
+    {
+      "label": "用户名",
+      "name": "username",
+      "type": "string",
+      "length": 50,
+      "unique": true,
+      "comment": "登录用户名",
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "{{label}}必须是字符串"
+        },
+        {
+          "method": "minLength",
+          "args": [3],
+          "message": "{{label}}长度至少为3个字符"
+        }
+      ]
+    },
+    {
+      "label": "密码",
+      "name": "password",
+      "type": "string",
+      "length": 256,
+      "comment": "登录密码",
+      "crypt": "PASSWORD",
+      "validations": [
+        {
+          "method": "pattern",
+          "args": [
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
+          ],
+          "message": "{{label}}必须包含大小写字母、数字和特殊字符，且长度不少于8位"
+        }
+      ]
+    },
+    {
+      "label": "状态",
+      "name": "status",
+      "type": "enum",
+      "option": ["active", "inactive", "banned"],
+      "default": "inactive",
+      "comment": "用户状态",
+      "index": true
+    }
+  ],
+  "indexes": [
+    {
+      "name": "username_status_index",
+      "comment": "用户名和状态联合索引",
+      "columns": ["username", "status"],
+      "type": "index"
+    }
+  ],
   "relations": {
-    "addresses": {
+    "profile": {
+      "type": "hasOne",
+      "model": "user_profile",
+      "key": "user_id",
+      "foreign": "id"
+    },
+    "orders": {
       "type": "hasMany",
-      "model": "address",
+      "model": "order",
       "key": "user_id",
       "foreign": "id",
-      "query": {
-        "select": ["location"],
-        "limit": 20
-      }
-    },
-}
-```
-
-**说明**
-
-1.将关系映射类型指定为 `hasMany`
-
-2.将关联模型 `model` 设置为 `address`
-
-3.将关联模型 `key` 设置为 `user_id`, 即：`address.user_id` 引擎处理时，自动关联 `address` 表的 `user_id` 字段。
-
-4.将 `foreign` 设置为 `id`, 即: `user.id` 引擎处理时，将 `user.id` 和 `address.user_id` 关联
-
-5.可以在 `query` 字段中，设置默认的查询条件，如指定读取的字段等。对于 `hasMany` 建议设置默认 `limit` 约束返回数据条目
-
-对于 `hasMany` 类型关系映射，引擎将分两次查询。首次查询出主模型以及关联的 ID 列表，第二次根据 ID 列表，查询关联数据信息。
-
-第一次查询：
-
-```sql
-SELECT `user`.* FROM `user` AS `user`
-```
-
-引擎处理结果，并读取 `user`.`id`
-
-第二次查询:
-
-```sql
-SELECT  `address`.`user_id`, `address`.`location` FROM `address` AS `address`
-  WHERE `address`.`user_id` IN (<user.id...>)
-```
-
-引擎处理结果，关联用户地址信息
-
-**访问**
-
-在调用 `process` 查询时，传入 `with` 参数，即可同时取得 `addresses` 的关联信息
-
-```bash
-GET  /api/user/find/1?with=addresses
-```
-
-#### 2.7 配置选项 `option`
-
-在 `option` 中设定模型配置参数
-
-```json
-{
-  "name": "地址",
+      "query": { "limit": 10 }
+    }
+  },
+  "values": [
+    {
+      "username": "admin",
+      "password": "Admin@123",
+      "status": "active"
+    }
+  ],
   "option": {
     "timestamps": true,
     "soft_deletes": true
@@ -7118,576 +7677,64 @@ GET  /api/user/find/1?with=addresses
 }
 ```
 
-| 选项         | 类型 | 说明                                                                                                                                  |
-| ------------ | ---- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| timestamps   | Bool | 为 true 时， 自动创建 `created_at`、`updated_at` 字段，并在插入和更新数据时，标记对应操作时间                                         |
-| soft_deletes | Bool | 为 true 时， 自动创建 `deleted_at` 和 `__restore_data` 字段，数据删除时，备份唯一字段数据，并标记操作时间，查询时忽略已标记删除的数据 |
-
-### 3 查询参数 `QueryParam`
-
-在模型关联关系定义和调用处理器时，通过 Object `QueryParam` 描述查询条件。
-
-```json
-{
-  "select": ["id", "name", "mobile", "status"],
-  "withs": {
-    "manu": {
-      "query": {
-        "select": ["name", "short_name", "status"]
-      }
-    },
-    "addresses": {}
-  },
-  "wheres": [
-    { "column": "status", "value": "enabled" },
-    { "rel": "manu", "column": "status", "value": "enabled" },
-    {
-      "wheres": [
-        { "column": "name", "value": "%张三%", "op": "like" },
-        {
-          "method": "orwhere",
-          "column": "name",
-          "value": "%李四%",
-          "op": "like"
-        }
-      ]
-    }
-  ],
-  "orders": [
-    { "column": "id", "option": "desc" },
-    { "rel": "manu", "column": "name" }
-  ],
-  "limit": 2
-}
-```
-
-应用引擎将以上查询条件解析为如下 SQL :
-
-```SQL
-SELECT
-  `user`.`id`,`user`.`name`,`user`.`mobile`,`user`.`status`,
-  `user_manu`.`name` AS `user_manu_name`,
-  `user_manu`.`short_name` AS `user_manu_short_name` ,
-  `user_manu`.`status` AS `user_manu_status`
-FROM `user` AS `user`
-LEFT JOIN `manu` AS `user_manu` ON `user_manu`.`id` = `user`.`manu_id`
-WHERE  `user`.`status` = 'enabled'
-AND `user_manu`.`status` = 'enabled'
-AND (
-   `user`.`name` like '%张三%' OR `user`.`name` like '%李四%'
-)
-ORDER BY `user`.`id` desc, `user_manu`.`name` asc
-LIMIT 2
-```
-
-#### 3.1 数据结构
-
-**`QueryParam`**
-
-| 字段     | 类型                       | 说明             | 必填项 |
-| -------- | -------------------------- | ---------------- | ------ |
-| select   | Array\<String\>            | 选择字段清单     | 否     |
-| wheres   | Array\<Object Where\>      | 查询条件         | 否     |
-| orders   | Array\<Object Order\>      | 排序条件         | 否     |
-| limit    | Integer                    | 返回记录条目     | 否     |
-| page     | Integer                    | 当前页码         | 否     |
-| pagesize | Integer                    | 每页显示记录数量 | 否     |
-| withs    | `[key:String]:Object With` | 读取关联模型     | 否     |
-
-**`Object Where`**
-
-| 字段   | 类型                  | 说明                                       | 必填项 |
-| ------ | --------------------- | ------------------------------------------ | ------ |
-| rel    | String                | 如按关联模型的字段查询，则填写关联模型名称 | 否     |
-| column | String                | 字段名称                                   | 否     |
-| method | String                | 查询方法 `where`,`orwhere`                 | 否     |
-| op     | String                | 匹配关系 `eq`,`like`,`in`,`gt` 等          | 否     |
-| value  | Any                   | 匹配数值                                   | 否     |
-| wheres | Array\<Object Where\> | 分组查询                                   | 否     |
-
-| 查询方法 | 说明                                  |
-| -------- | ------------------------------------- |
-| where    | WHERE 字段 = 数值, WHERE 字段 >= 数值 |
-| orwhere  | ... OR WHERE 字段 = 数值              |
-
-| 匹配关系 | 说明                             |
-| -------- | -------------------------------- |
-| eq       | 默认值 等于 WHERE 字段 = 数值    |
-| like     | 匹配 WHERE 字段 like 数值        |
-| gt       | 大于 WHERE 字段 > 数值           |
-| ge       | 大于等于 WHERE 字段 >= 数值      |
-| lt       | 小于 WHERE 字段 < 数值           |
-| le       | 小于等于 WHERE 字段 <= 数值      |
-| null     | 为空 WHERE 字段 IS NULL          |
-| notnull  | 不为空 WHERE 字段 IS NOT NULL    |
-| in       | 列表包含 WHERE 字段 IN (数值...) |
-
-**`Object Order`**
-
-| 字段   | 类型   | 说明                                       | 必填项 |
-| ------ | ------ | ------------------------------------------ | ------ |
-| rel    | String | 如按关联模型的字段排序，则填写关联模型名称 | 否     |
-| column | String | 字段名称                                   | 否     |
-| option | String | 排序方式，默认为 asc desc, asc             | 否     |
-
-**`Object With`**
-
-| 字段  | 类型              | 说明         | 必填项 |
-| ----- | ----------------- | ------------ | ------ |
-| name  | String            | 关联关系名称 | 否     |
-| query | Object QueryParam | 查询参数     | 否     |
-
-#### 3.2 URL Query String 与 QueryParam 对照表
-
-查询条件可以通过 URL Query String 传入
-
-### 4 处理器(`process`)
-
-数据模型提供一组原子操作处理器 `process` , 这些处理器可用于服务接口(`API`)和数据流(`Flow`)编排。
-
-| 处理器              | 引用方式                            | 说明                                                                                   |
-| ------------------- | ----------------------------------- | -------------------------------------------------------------------------------------- |
-| find                | models.模型名称.Find                | 查询单条记录                                                                           |
-| get                 | models.模型名称.Get                 | 按条件查询, 不分页                                                                     |
-| paginate            | models.模型名称.Paginate            | 按条件查询, 分页                                                                       |
-| create              | models.模型名称.Create              | 创建单条记录, 返回新创建记录 ID                                                        |
-| update              | models.模型名称.Update              | 更新单条记录                                                                           |
-| save                | models.模型名称.Save                | 保存单条记录, 不存在创建记录, 存在更新记录, 返回记录 ID                                |
-| delete              | models.模型名称.Delete              | 删除单条记录(标记删除)                                                                 |
-| destroy             | models.模型名称.Destroy             | 删除单条记录(真删除)                                                                   |
-| insert              | models.模型名称.Insert              | 插入多条记录, 返回插入行数                                                             |
-| updatewhere         | models.模型名称.UpdateWhere         | 按条件更新记录, 返回更新行数                                                           |
-| deletewhere         | models.模型名称.DeleteWhere         | 按条件删除数据, 返回删除行数(标记删除)                                                 |
-| destroywhere        | models.模型名称.DestroyWhere        | 按条件删除数据, 返回删除行数(真删除)                                                   |
-| eachsave            | models.模型名称.EachSave            | 保存多条记录, 不存在创建记录, 存在更新记录, 返回记录 ID 集合                           |
-| eachsaveAfterDelete | models.模型名称.EachSaveAfterDelete | 删除一组给定 ID 的记录后，保存多条记录, 不存在创建记录, 存在更新记录, 返回记录 ID 集合 |
-
-### 5. 完整示例
-
-完整示例保存在 examples 目录
-
-```json
-{
-  "name": "用户",
-  "table": {
-    "name": "user",
-    "comment": "用户表",
-    "engine": "InnoDB"
-  },
-  "columns": [
-    { "label": "ID", "name": "id", "type": "ID" },
-    {
-      "label": "厂商",
-      "name": "manu_id",
-      "type": "bigInteger",
-      "length": 50,
-      "comment": "所属厂商",
-      "nullable": true,
-      "index": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["integer"],
-          "message": "{{input}}类型错误, {{label}}应为数字"
-        },
-        {
-          "method": "min",
-          "args": [0],
-          "message": "{{label}}应大于0"
-        }
-      ]
-    },
-    {
-      "label": "类型",
-      "name": "type",
-      "type": "enum",
-      "option": ["admin", "staff", "user"],
-      "comment": "账号类型 admin 管理员, staff 员工, user 用户",
-      "default": "staff",
-      "index": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "enum",
-          "args": ["admin", "staff", "user"],
-          "message": "{{input}}不在许可范围, {{label}}应该为 admin/staff/user"
-        }
-      ]
-    },
-    {
-      "label": "手机号",
-      "name": "mobile",
-      "type": "string",
-      "length": 50,
-      "comment": "手机号",
-      "index": true,
-      "crypt": "AES",
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "pattern",
-          "args": ["^1[3-9]\\d{9}$"],
-          "message": "{{input}}格式错误"
-        }
-      ]
-    },
-    {
-      "label": "登录密码",
-      "name": "password",
-      "type": "string",
-      "length": 256,
-      "comment": "登录密码",
-      "crypt": "PASSWORD",
-      "index": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "minLength",
-          "args": [6],
-          "message": "{{label}}应该由6-18位，大小写字母、数字和符号构成"
-        },
-        {
-          "method": "maxLength",
-          "args": [18],
-          "message": "{{label}}应该由6-18位，大小写字母、数字和符号构成"
-        },
-        {
-          "method": "pattern",
-          "args": ["[0-9]+"],
-          "message": "{{label}}应该至少包含一个数字"
-        },
-        {
-          "method": "pattern",
-          "args": ["[A-Z]+"],
-          "message": "{{label}}应该至少包含一个大写字母"
-        },
-        {
-          "method": "pattern",
-          "args": ["[a-z]+"],
-          "message": "{{label}}应该至少包含一个小写字母"
-        },
-        {
-          "method": "pattern",
-          "args": ["[@#$&*]+"],
-          "message": "{{label}}应该至少包含一个符号"
-        }
-      ]
-    },
-    {
-      "label": "姓名",
-      "name": "name",
-      "type": "string",
-      "length": 80,
-      "comment": "姓名",
-      "index": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "minLength",
-          "args": [2],
-          "message": "{{label}}至少需要2个字"
-        },
-        {
-          "method": "maxLength",
-          "args": [40],
-          "message": "{{label}}不能超过20个字"
-        }
-      ]
-    },
-    {
-      "label": "身份证号码",
-      "name": "idcard",
-      "type": "string",
-      "length": 256,
-      "comment": "身份证号码",
-      "crypt": "AES",
-      "nullable": true,
-      "index": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "pattern",
-          "args": ["^(\\d{18})|(\\d{14}X)$"],
-          "message": "{{label}}格式错误"
-        }
-      ]
-    },
-    {
-      "label": "账户余额",
-      "name": "balance",
-      "type": "integer",
-      "length": 20,
-      "comment": "账户余额(冗余)",
-      "default": 0,
-      "index": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["integer"],
-          "message": "{{input}}类型错误, {{label}}应为数字"
-        },
-        {
-          "method": "min",
-          "args": [0],
-          "message": "{{label}}应大于0"
-        }
-      ]
-    },
-    {
-      "label": "API Key",
-      "name": "key",
-      "type": "string",
-      "length": 256,
-      "comment": "API Key",
-      "nullable": true,
-      "unique": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "pattern",
-          "args": ["^[0-9A-Za-z@#$&*]{8}$"],
-          "message": " {{label}}应该由8位，大小写字母、数字和符号构成"
-        }
-      ]
-    },
-    {
-      "label": "API 密钥",
-      "name": "secret",
-      "type": "string",
-      "length": 256,
-      "nullable": true,
-      "crypt": "AES",
-      "comment": "API 密钥",
-      "index": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "pattern",
-          "args": ["^[0-9A-Za-z@#$&*]{32}$"],
-          "message": "{{label}}应该由32位，大小写字母、数字和符号构成"
-        }
-      ]
-    },
-    {
-      "label": "简历",
-      "name": "resume",
-      "type": "text",
-      "comment": "简历",
-      "nullable": true
-    },
-    {
-      "label": "扩展信息",
-      "name": "extra",
-      "type": "json",
-      "comment": "扩展信息",
-      "nullable": true
-    },
-    {
-      "label": "状态",
-      "comment": "用户状态 enabled 有效, disabled 无效",
-      "name": "status",
-      "type": "enum",
-      "default": "enabled",
-      "option": ["enabled", "disabled"],
-      "index": true,
-      "validations": [
-        {
-          "method": "typeof",
-          "args": ["string"],
-          "message": "{{input}}类型错误, {{label}}应该为字符串"
-        },
-        {
-          "method": "enum",
-          "args": ["enabled", "disabled"],
-          "message": "{{input}}不在许可范围, {{label}}应该为 enabled/disabled"
-        }
-      ]
-    }
-  ],
-  "relations": {
-    "manu": {
-      "type": "hasOne",
-      "model": "manu",
-      "key": "id",
-      "foreign": "manu_id",
-      "select": ["name", "short_name", "type"]
-    },
-    "addresses": {
-      "type": "hasMany",
-      "model": "address",
-      "key": "user_id",
-      "foreign": "id",
-      "query": {
-        "select": ["province", "city", "location", "status"],
-        "pagesize": 20
-      }
-    },
-    "mother": {
-      "type": "hasOneThrough",
-      "links": [
-        {
-          "type": "hasOne",
-          "model": "friends",
-          "key": "user_id",
-          "foreign": "user.id",
-          "query": {
-            "select": ["status", "type", "friend_id"],
-            "wheres": [
-              {
-                "column": "type",
-                "value": "monther"
-              }
-            ]
-          }
-        },
-        {
-          "type": "hasOne",
-          "model": "user",
-          "key": "id",
-          "foreign": "user_mother_friends.friend_id",
-          "query": {
-            "select": ["name", "id", "status", "type", "secret", "extra"],
-            "withs": {
-              "manu": { "name": "manu" },
-              "roles": { "name": "roles" },
-              "address": { "name": "address" }
-            }
-          }
-        }
-      ]
-    },
-    "roles": {
-      "type": "hasManyThrough",
-      "links": [
-        {
-          "type": "hasMany",
-          "model": "user_roles",
-          "key": "user_id",
-          "foreign": "id",
-          "query": {
-            "select": ["status"],
-            "pagesize": 20
-          }
-        },
-        {
-          "type": "hasOne",
-          "model": "role",
-          "key": "id",
-          "foreign": "role_id",
-          "query": {
-            "select": ["name", "label", "permission"]
-          }
-        }
-      ]
-    }
-  },
-  "values": [
-    {
-      "name": "管理员",
-      "manu_id": 1,
-      "type": "admin",
-      "idcard": "230624198301170015",
-      "mobile": "13900001111",
-      "password": "cvSK@RY6",
-      "key": "FB3fxCeQ",
-      "secret": "XMTdNRVigbgUiAPdiJCfaWgWcz2PaQXw",
-      "status": "enabled",
-      "extra": { "sex": "男" }
-    },
-    {
-      "name": "员工",
-      "manu_id": 1,
-      "type": "staff",
-      "idcard": "23082619820207024X",
-      "mobile": "13900002222",
-      "password": "qV@uT1DI",
-      "key": "JDh2ZiUt",
-      "secret": "wBeYjL7FjbcvpAdBrxtDFfjydsoPKhRN",
-      "status": "enabled",
-      "extra": { "sex": "女" }
-    },
-    {
-      "name": "用户",
-      "manu_id": 2,
-      "type": "user",
-      "idcard": "23082619820207004X",
-      "mobile": "13900003333",
-      "password": "qV@uT1DI",
-      "key": "XZ12MiPz",
-      "secret": "wBeYjL7FjbcvpAdBrxtDFfjydsoPKhRN",
-      "status": "enabled",
-      "extra": { "sex": "女" }
-    }
-  ],
-  "indexes": [
-    {
-      "comment": "厂商用户",
-      "name": "manu_id_mobile_unique",
-      "columns": ["manu_id", "mobile"],
-      "type": "unique"
-    },
-    {
-      "comment": "简历全文检索",
-      "name": "resume_fulltext",
-      "columns": ["resume"],
-      "type": "fulltext"
-    }
-  ],
-  "option": { "timestamps": true, "soft_deletes": true }
-}
-```
-
 ## 数据模型关联
 
-数据模型间支持 **hasOne** 和 **hasMany**
-方式关联，查询时通过 **withs**
-参数，直接查询关联数据。
+### 基本概念
 
-编写供应商 `supplier` 和用户 `user` 两个数据模型，一个用户对应一家供应商，一家供应商有多个用户。在查询用户时，同时返回所属供应商的信息，查询供应商时，同时返回该供应商的用户列表。
+Yao DSL支持两种数据模型关联类型：
 
-供应商模型 `supplier`:
+- **hasOne**：一对一关联，表示当前模型的一条记录对应关联模型的一条记录
+- **hasMany**：一对多关联，表示当前模型的一条记录对应关联模型的多条记录
 
-| 字段 | 标签 |
-| ---- | ---- |
-| id   | ID   |
-| name | 名称 |
+通过使用**withs**参数，可以在查询时同时获取关联数据，避免多次查询，提高效率。
 
-数据示例：
+### 实例说明
+
+以下我们通过供应商(`supplier`)和用户(`user`)两个模型演示关联关系：
+
+- 一个用户对应一家供应商 (用户 -> 供应商 = hasOne)
+- 一家供应商有多个用户 (供应商 -> 用户 = hasMany)
+
+### 数据结构设计
+
+#### 供应商模型 (`supplier`)
+
+**字段结构**：
+
+| 字段 | 标签 | 说明       |
+| ---- | ---- | ---------- |
+| id   | ID   | 主键       |
+| name | 名称 | 供应商名称 |
+
+**示例数据**：
 
 | ID  | 名称           |
 | --- | -------------- |
 | 1   | 象传智慧       |
 | 2   | Yao App Engine |
 
-`supplier.mod.json`
+#### 用户模型 (`user`)
+
+**字段结构**：
+
+| 字段        | 标签          | 说明               |
+| ----------- | ------------- | ------------------ |
+| id          | ID            | 主键               |
+| supplier_id | 所属供应商 ID | 外键，关联供应商表 |
+| name        | 姓名          | 用户姓名           |
+
+**示例数据**：
+
+| ID  | supplier_id | name   |
+| --- | ----------- | ------ |
+| 1   | 1           | 张无忌 |
+| 2   | 1           | 李光富 |
+| 3   | 2           | 李木婷 |
+| 4   | 2           | 赵长青 |
+
+### 模型定义文件
+
+#### 供应商模型定义 (`supplier.mod.json`)
 
 ```json
 {
@@ -7710,12 +7757,12 @@ LIMIT 2
   ],
   "relations": {
     "users": {
-      "name": "users",
-      "type": "hasMany",
-      "model": "user",
-      "key": "supplier_id",
-      "foreign": "id",
-      "query": { "select": ["id", "name"] }
+      "name": "users", // 关联名称，查询时通过此名称引用
+      "type": "hasMany", // 关系类型：一对多
+      "model": "user", // 关联的模型名称
+      "key": "supplier_id", // 关联模型中的关联字段
+      "foreign": "id", // 当前模型中的关联字段
+      "query": { "select": ["id", "name"] } // 默认查询字段
     }
   },
   "values": [
@@ -7725,79 +7772,7 @@ LIMIT 2
 }
 ```
 
-用户模型 `user` :
-
-| 字段        | 标签          |
-| ----------- | ------------- |
-| ID          | id            |
-| supplier_id | 所属供应商 ID |
-| name        | 姓名          |
-
-数据示例：
-
-| ID  | 供应商 | 名称   |
-| --- | ------ | ------ |
-| 1   | 1      | 张无忌 |
-| 2   | 1      | 李光富 |
-| 3   | 2      | 李木婷 |
-| 4   | 2      | 赵长青 |
-
-`user.mod.json`
-
-```json
-{
-  "name": "用户",
-  "table": { "name": "user", "comment": "用户表" },
-  "columns": [
-    { "label": "ID", "name": "id", "type": "ID", "comment": "ID" },
-    {
-      "label": "供应商",
-      "name": "supplier_id",
-      "type": "bigInteger",
-      "index": true,
-      "comment": "供应商ID"
-    },
-    {
-      "label": "姓名",
-      "name": "name",
-      "type": "string",
-      "index": true,
-      "comment": "用户姓名"
-    }
-  ],
-  "values": [
-    { "id": 1, "supplier_id": 1, "name": "张无忌" },
-    { "id": 2, "supplier_id": 1, "name": "李光富" },
-    { "id": 3, "supplier_id": 2, "name": "李木婷" },
-    { "id": 4, "supplier_id": 2, "name": "赵长青" }
-  ]
-}
-```
-
-**创建数据表**
-
-```bash
-yao migrate
-```
-
-### 关联关系声明
-
-关联关系通过 `relations` 中声明, 一个数据模型支持多个映射关系声明, 数据结构为`{"relation_name":ObjectRelation, "relation_name":ObjectRelation ,...}`
-
-Object Relation 数据结构:
-
-| 字段    | 类型   | 必填项 | 说明                                                                               |
-| ------- | ------ | ------ | ---------------------------------------------------------------------------------- |
-| name    | string | 是     | 关联名称，查询时通过这个名称引用                                                   |
-| type    | enum   | 是     | 与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。                      |
-| model   | string | 是     | **关联数据模型** 名称                                                              |
-| key     | string | 是     | **关联数据模型** 中用于关联的字段名称 (例如: user.supplier_id)                     |
-| foreign | string | 是     | **当前数据模型** 中用于关联的字段名称 (例如: supplier.id)                          |
-| query   | object | 否     | **关联数据模型** 的查询条件，可以在查询时重载。 例: `{ "select": ["id", "name"] }` |
-
-### hasOne
-
-查询用户时，同时返回该用户所属供应商的信息。修改用户模型描述文件 `user.mod.json`，添加 `hasOne` 关联关系声明。
+#### 用户模型定义 (`user.mod.json`)
 
 ```json
 {
@@ -7822,12 +7797,12 @@ Object Relation 数据结构:
   ],
   "relations": {
     "supplier": {
-      "name": "supplier",
-      "type": "hasOne",
-      "model": "supplier",
-      "key": "id",
-      "foreign": "supplier_id",
-      "query": { "select": ["id", "name"] }
+      "name": "supplier", // 关联名称，查询时通过此名称引用
+      "type": "hasOne", // 关系类型：一对一
+      "model": "supplier", // 关联的模型名称
+      "key": "id", // 关联模型中的关联字段
+      "foreign": "supplier_id", // 当前模型中的关联字段
+      "query": { "select": ["id", "name"] } // 默认查询字段
     }
   },
   "values": [
@@ -7839,164 +7814,277 @@ Object Relation 数据结构:
 }
 ```
 
-**数据查询**
+### 数据表创建
 
-查询用户同时，查询所有供应商信息:
+使用以下命令创建数据表：
 
 ```bash
+yao migrate
+```
+
+### 关联关系声明详解
+
+关联关系通过模型定义中的 `relations` 对象声明，支持多个映射关系。
+
+#### 关联关系对象字段说明
+
+| 字段    | 类型   | 必填 | 说明                                            |
+| ------- | ------ | ---- | ----------------------------------------------- |
+| name    | string | 是   | 关联名称，查询时的引用标识符                    |
+| type    | string | 是   | 关系类型：`hasOne`(一对一) 或 `hasMany`(一对多) |
+| model   | string | 是   | 关联模型名称                                    |
+| key     | string | 是   | 关联模型中用于关联的字段名称                    |
+| foreign | string | 是   | 当前模型中用于关联的字段名称                    |
+| query   | object | 否   | 关联模型的默认查询条件，可在实际查询时重载      |
+
+### hasOne 关联使用示例
+
+hasOne 表示"拥有一个"关系，如用户拥有一个供应商的关联。
+
+#### 基本查询
+
+查询用户并同时获取供应商信息：
+
+```bash
+## 查询ID为1的用户及其供应商信息
 yao run models.user.Find 1 '::{"withs":{ "supplier": {} }}'
+
+## 查询所有用户及其供应商信息
 yao run models.user.Get '::{"withs":{ "supplier": {} }}'
 ```
 
-指定关联模型的选取字段:
+#### 指定关联字段
 
 ```bash
+## 仅查询供应商的name字段
 yao run models.user.Find 1 '::{"withs":{ "supplier": {"query":{ "select":["name"] }} }}'
 ```
 
-按关联模型的字段查询条件:
+#### 按关联字段条件筛选
 
 ```bash
+## 查询供应商名称为"Yao App Engine"的用户
 yao run models.user.Get '::{"withs":{ "supplier": {} }, "wheres":[{"rel":"supplier", "column":"name", "value":"Yao App Engine" }]}'
 ```
 
-在 JS 中使用任意关联关系：
+#### JavaScript中使用关联查询
 
 ```javascript
 function test() {
   var user = Process('models.user.get', {
     withs: {
       supplier: {
+        // 关联供应商表
         query: {
-          select: ['name', 'id']
+          select: ['name', 'id'] // 指定查询字段
         }
       }
     },
-    wheres: [{ column: 'supplier_id', value: 1, op: '=' }],
-    orders: [{ column: 'id', option: 'desc' }],
-    limit: 1
+    wheres: [{ column: 'supplier_id', value: 1, op: '=' }], // 查询条件
+    orders: [{ column: 'id', option: 'desc' }], // 排序条件
+    limit: 1 // 限制返回条数
   });
 }
 ```
 
-### hasMany
+### hasMany 关联使用示例
 
-查询供应商时，同时返回该供应商的用户信息。修改用户模型描述文件 `supplier.mod.json`，添加 `hasMany` 关联关系声明。
+hasMany 表示"拥有多个"关系，如供应商拥有多个用户的关联。
 
-```json
-{
-  "name": "供应商",
-  "table": { "name": "supplier", "comment": "供应商表" },
-  "columns": [
-    { "label": "ID", "name": "id", "type": "ID", "comment": "ID" },
-    {
-      "label": "名称",
-      "name": "name",
-      "type": "string",
-      "index": true,
-      "comment": "供应商名称"
-    }
-  ],
-  "relations": {
-    "users": {
-      "name": "users",
-      "type": "hasMany",
-      "model": "user",
-      "key": "supplier_id",
-      "foreign": "id",
-      "query": { "select": ["id", "name"] }
-    }
-  },
-  "values": [
-    { "id": 1, "name": "象传智慧" },
-    { "id": 2, "name": "Yao App Engine" }
-  ]
-}
-```
-
-**数据查询**
-
-查询供应商时，同时查询所属用户信息:
+#### 基本查询
 
 ```bash
+## 查询ID为1的供应商及其所有用户
 yao run models.supplier.Find 1 '::{"withs":{ "users": {} }}'
+
+## 查询所有供应商及其所有用户
 yao run models.supplier.Get '::{"withs":{ "users": {} }}'
 ```
 
-指定关联模型的选取字段:
+#### 指定关联字段
 
 ```bash
+## 仅查询用户的name字段
 yao run models.supplier.Find 1 '::{"withs":{ "users": { "query":{"select":["name"] }} }}'
 ```
 
-指定关联用户筛选条件:
+#### 关联数据筛选
 
 ```bash
+## 查询名为"张无忌"的用户所属的供应商
 yao run models.supplier.Find 1 '::{"withs":{ "users": { "wheres":[{"column":"name", "value":"张无忌"}] } }}'
 ```
 
-### 嵌套查询
+### 嵌套关联查询
 
-关联关系支持嵌套查询，通过 `withs` 查询参数指定。
+关联关系支持嵌套查询，可以通过多层 `withs` 参数实现。
+
+#### 多层嵌套示例
 
 ```bash
+## 查询供应商及其用户，同时查询用户的供应商信息（形成循环引用）
 yao run models.supplier.Find 1 '::{"withs":{ "users": { "withs": {"supplier":{} } } }}'
-```
 
-```bash
+## 查询所有供应商的嵌套数据
 yao run models.supplier.Get '::{"withs":{ "users": { "withs": {"supplier":{} } } }}'
 ```
 
-## 模型删除数据
+### 注意事项
 
-Yao 提供了多种删除数据的方法，包括软删除和永久删除。本文档将详细介绍各种删除方式的使用方法。
+1. 嵌套查询可能导致数据量过大，请谨慎使用深层嵌套
+2. 关联查询会增加数据库负担，请只查询必要字段
+3. 复杂的关联查询建议在后端处理而非直接通过API查询
+
+通过合理使用数据模型关联，可以大幅简化数据查询逻辑，提高开发效率。
+
+## 模型删除数据 (Model Delete)
+
+### 概述
+
+Yao 提供了多种删除数据的方法，支持单条记录删除和批量删除，同时兼容软删除(Soft Delete)和永久删除(Hard Delete)两种模式。本文档详细介绍各种删除方式的特点、参数和使用场景。
 
 ### 删除方法概览
 
-| 方法         | 说明             | 是否支持软删除 |
-| ------------ | ---------------- | -------------- |
-| Delete       | 删除单条记录     | 是             |
-| Destroy      | 永久删除单条记录 | 否             |
-| DeleteWhere  | 条件批量删除     | 是             |
-| DestroyWhere | 条件批量永久删除 | 否             |
+| 方法名称     | 功能描述         | 支持软删除 | 使用场景                   |
+| ------------ | ---------------- | ---------- | -------------------------- |
+| Delete       | 删除单条记录     | ✅ 支持    | 需要保留删除记录的单条删除 |
+| Destroy      | 永久删除单条记录 | ❌ 不支持  | 彻底清除数据的单条删除     |
+| DeleteWhere  | 条件批量删除     | ✅ 支持    | 需要保留删除记录的批量删除 |
+| DestroyWhere | 条件批量永久删除 | ❌ 不支持  | 彻底清除数据的批量删除     |
 
-### 软删除配置
+### 软删除机制
 
-在模型中启用软删除功能：
+#### 软删除说明
+
+软删除不会真正从数据库中移除数据，而是通过添加删除时间标记（默认字段名`deleted_at`）来标识记录已被"删除"。这些被标记的记录在常规查询中不会被检索到，但仍然保存在数据库中，可以在需要时恢复。
+
+#### 配置软删除
+
+在模型 JSON 定义中启用软删除功能：
 
 ```json
 {
   "option": {
-    "soft_deletes": true
+    "soft_deletes": true // 开启软删除功能
   }
 }
 ```
 
-### 基本用法
+### 基本用法详解
 
-#### Delete 方法（支持软删除）
+#### Delete 方法
+
+用于删除单条记录，支持软删除。
+
+**参数说明：**
+
+- 参数1：记录ID或主键值
+
+**返回值：**
+
+- 成功：返回被删除记录的条数（通常为1）
+- 失败：抛出异常
+
+**示例代码：**
 
 ```javascript
 // 通过 ID 删除单条记录
 function deleteRecord() {
+  // 删除ID为10的记录
   return Process('models.category.delete', 10);
+}
+
+// 通过变量传入ID
+function deleteById(id) {
+  return Process('models.category.delete', id);
 }
 ```
 
-#### Destroy 方法（永久删除）
+#### Destroy 方法
+
+用于永久删除单条记录，不支持恢复。
+
+**参数说明：**
+
+- 参数1：记录ID或主键值
+
+**返回值：**
+
+- 成功：返回被删除记录的条数（通常为1）
+- 失败：抛出异常
+
+**示例代码：**
 
 ```javascript
 // 永久删除指定 ID 的记录
 function destroyRecord() {
+  // 永久删除ID为9的记录
   return Process('models.category.destroy', 9);
+}
+
+// 在事务中使用永久删除
+function destroyWithTransaction(id) {
+  const q = new Query();
+
+  // 开始事务
+  q.Run({
+    sql: {
+      stmt: 'START TRANSACTION;'
+    }
+  });
+
+  let success = true;
+  let result;
+
+  try {
+    // 执行其他操作...
+
+    // 永久删除记录
+    result = Process('models.category.destroy', id);
+
+    // 继续其他操作...
+  } catch (err) {
+    success = false;
+    console.log('永久删除操作失败:', err.message);
+  }
+
+  // 根据操作结果提交或回滚
+  if (success) {
+    q.Run({
+      sql: {
+        stmt: 'COMMIT;'
+      }
+    });
+    return result;
+  } else {
+    q.Run({
+      sql: {
+        stmt: 'ROLLBACK;'
+      }
+    });
+    return { success: false, message: '操作失败，已回滚' };
+  }
 }
 ```
 
-#### DeleteWhere 方法（条件删除）
+#### DeleteWhere 方法
+
+用于条件批量删除记录，支持软删除。
+
+**参数说明：**
+
+- 参数1：查询条件对象，格式为 `{ wheres: [...] }`
+
+**返回值：**
+
+- 成功：返回被删除记录的条数
+- 失败：抛出异常
+
+**示例代码：**
 
 ```javascript
-// 条件批量删除
-function deleteByCondition() {
+// 简单条件批量删除
+function deleteBySimpleCondition() {
   return Process('models.category.deletewhere', {
     wheres: [
       { column: 'parent_id', value: 4 },
@@ -8004,9 +8092,32 @@ function deleteByCondition() {
     ]
   });
 }
+
+// 使用多种操作符的条件删除
+function deleteWithOperators() {
+  return Process('models.category.deletewhere', {
+    wheres: [
+      { column: 'created_at', op: '<', value: '2023-01-01' },
+      { column: 'view_count', op: '<=', value: 10 }
+    ]
+  });
+}
 ```
 
-#### DestroyWhere 方法（条件永久删除）
+#### DestroyWhere 方法
+
+用于条件批量永久删除记录，不支持恢复。
+
+**参数说明：**
+
+- 参数1：查询条件对象，格式为 `{ wheres: [...] }`
+
+**返回值：**
+
+- 成功：返回被删除记录的条数
+- 失败：抛出异常
+
+**示例代码：**
 
 ```javascript
 // 条件批量永久删除
@@ -8015,20 +8126,61 @@ function destroyByCondition() {
     wheres: [{ column: 'parent_id', value: 4 }]
   });
 }
+
+// 组合条件永久删除
+function destroyWithMultipleConditions() {
+  return Process('models.category.destroywhere', {
+    wheres: [
+      { column: 'status', value: 'archived' },
+      { column: 'updated_at', op: '<', value: '2022-01-01' }
+    ]
+  });
+}
 ```
 
 ### 高级用法
 
 #### 复杂条件删除
 
+使用多种条件组合和逻辑操作符实现复杂的删除逻辑。
+
 ```javascript
-// 使用多个条件和操作符
+// 使用复杂条件和逻辑操作符
 function complexDelete() {
   return Process('models.category.deletewhere', {
     wheres: [
       { column: 'parent_id', op: '>', value: 4 },
       { column: 'created_at', op: '<', value: '2023-01-01' },
-      { method: 'or', column: 'status', value: 'archived' }
+      { method: 'or', column: 'status', value: 'archived' },
+      {
+        method: 'where',
+        wheres: [
+          { column: 'view_count', op: '<', value: 100 },
+          { column: 'is_public', value: true }
+        ]
+      }
+    ]
+  });
+}
+```
+
+#### 嵌套条件删除
+
+使用嵌套条件实现更复杂的逻辑组合。
+
+```javascript
+// 使用嵌套条件组合
+function nestedConditionDelete() {
+  return Process('models.category.deletewhere', {
+    wheres: [
+      { column: 'status', value: 'published' },
+      {
+        method: 'where',
+        wheres: [
+          { method: 'or', column: 'view_count', op: '<', value: 10 },
+          { method: 'or', column: 'comment_count', op: '=', value: 0 }
+        ]
+      }
     ]
   });
 }
@@ -8036,53 +8188,351 @@ function complexDelete() {
 
 #### 关联删除
 
+删除记录时同时处理关联数据。
+
 ```javascript
 // 删除分类时同时删除相关书籍
 function deleteWithRelated() {
   return Process('models.category.destroywhere', {
     wheres: [{ column: 'id', value: 1 }],
-    withs: ['book'] // 同时删除关联的书籍
+    withs: ['books'] // 同时删除关联的书籍
+  });
+}
+
+// 删除前检查关联数据
+function safeDeleteWithCheck() {
+  // 先查询是否有关联数据
+  const hasRelated = Process('models.category.find', 1, {
+    withs: { books: { select: ['id'], limit: 1 } }
+  });
+
+  // 判断是否有关联书籍
+  if (hasRelated.books && hasRelated.books.length > 0) {
+    throw new Error('该分类下有关联书籍，请先删除或转移书籍');
+  }
+
+  // 安全删除
+  return Process('models.category.delete', 1);
+}
+```
+
+### 常见模式与最佳实践
+
+#### 事务中的删除操作
+
+在事务中执行删除操作，确保数据一致性。
+
+```javascript
+// 在事务中执行多个删除操作
+function transactionalDelete() {
+  const q = new Query();
+
+  // 开始事务
+  q.Run({
+    sql: {
+      stmt: 'START TRANSACTION;'
+    }
+  });
+
+  let hasError = false;
+  let categoryResult, tagsResult;
+
+  try {
+    // 删除分类
+    categoryResult = Process('models.category.delete', 5);
+
+    // 相关数据清理
+    tagsResult = Process('models.tag.deletewhere', {
+      wheres: [{ column: 'category_id', value: 5 }]
+    });
+  } catch (err) {
+    hasError = true;
+    console.log('删除操作失败:', err.message);
+  }
+
+  // 根据操作结果提交或回滚事务
+  if (hasError) {
+    q.Run({
+      sql: {
+        stmt: 'ROLLBACK;'
+      }
+    });
+    return { success: false, message: '删除操作失败，已回滚' };
+  } else {
+    q.Run({
+      sql: {
+        stmt: 'COMMIT;'
+      }
+    });
+    return { success: true, category: categoryResult, tags: tagsResult };
+  }
+}
+
+// 使用事务进行批量操作的另一个示例
+function batchDeleteWithTransaction(ids) {
+  const q = new Query();
+
+  // 开始事务
+  q.Run({
+    sql: {
+      stmt: 'START TRANSACTION;'
+    }
+  });
+
+  let success = true;
+  const results = [];
+
+  // 循环删除多个记录
+  for (const id of ids) {
+    try {
+      const result = Process('models.category.delete', id);
+      results.push({ id: id, result: result });
+    } catch (err) {
+      success = false;
+      results.push({ id: id, error: err.message });
+      break;
+    }
+  }
+
+  // 根据操作结果提交或回滚
+  if (success) {
+    q.Run({
+      sql: {
+        stmt: 'COMMIT;'
+      }
+    });
+    console.log('所有删除操作已提交');
+  } else {
+    q.Run({
+      sql: {
+        stmt: 'ROLLBACK;'
+      }
+    });
+    console.log('由于错误，所有删除操作已回滚');
+  }
+
+  return { success: success, results: results };
+}
+```
+
+#### 批量删除与分页处理
+
+处理大量数据删除时的分页处理模式。
+
+```javascript
+// 分批删除大量数据
+function batchDeleteInChunks() {
+  const pageSize = 100;
+  let page = 1;
+  let totalDeleted = 0;
+
+  // 循环分批删除
+  while (true) {
+    // 查询一批数据
+    const records = Process('models.category.paginate', {
+      wheres: [{ column: 'status', value: 'archived' }],
+      page: page,
+      pagesize: pageSize
+    });
+
+    if (!records.data || records.data.length === 0) {
+      break; // 没有更多数据，退出循环
+    }
+
+    // 提取ID列表
+    const ids = records.data.map((item) => item.id);
+
+    // 批量删除
+    const result = Process('models.category.destroywhere', {
+      wheres: [{ column: 'id', op: 'in', value: ids }]
+    });
+
+    totalDeleted += result;
+    page++;
+
+    // 可选：添加延迟，减轻数据库压力
+    // Process('utils.sleep', 1000); // 暂停1秒
+  }
+
+  return totalDeleted;
+}
+```
+
+### 错误处理与调试
+
+```javascript
+// 带错误处理的删除操作
+function safeDelete(id) {
+  try {
+    const result = Process('models.category.delete', id);
+    return { success: true, count: result };
+  } catch (err) {
+    console.log('删除失败:', err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+// 调试模式删除（先查询后删除）
+function debugDelete(id) {
+  // 先查询记录是否存在
+  const record = Process('models.category.find', id);
+  if (!record) {
+    return { success: false, message: '记录不存在' };
+  }
+
+  console.log('准备删除记录:', JSON.stringify(record));
+
+  // 执行删除
+  const result = Process('models.category.delete', id);
+  return { success: true, deletedRecord: record, result: result };
+}
+```
+
+### 软删除恢复操作
+
+```javascript
+// 恢复软删除的记录
+function restoreDeleted(id) {
+  // 查询包含已删除记录的数据
+  const record = Process('models.category.find', id, {
+    with_trashed: true // 包含已软删除的记录
+  });
+
+  if (!record) {
+    return { success: false, message: '记录不存在' };
+  }
+
+  // 检查记录是否被软删除
+  if (!record.deleted_at) {
+    return { success: false, message: '记录未被删除' };
+  }
+
+  // 恢复记录（将 deleted_at 设为 null）
+  const result = Process('models.category.save', {
+    id: id,
+    deleted_at: null
+  });
+
+  return { success: true, result: result };
+}
+
+// 使用自定义条件查询已删除记录
+function queryDeletedRecords() {
+  return Process('models.category.get', {
+    wheres: [
+      { column: 'status', value: 'archived' },
+创建文件： `modesl/category.yao`
+
+      { column: 'deleted_at', op: 'notnull' } // 明确查询已软删除的记录
+    ]
   });
 }
 ```
 
-### 注意事项
-
-1. 使用软删除时，记录并未真正从数据库中删除，只是标记了删除时间
-2. Destroy 相关方法会直接从数据库中删除数据，不可恢复
-3. 批量删除时建议使用事务确保数据一致性
-4. 删除关联数据时要注意维护数据完整性
-
-### 完整示例
-
-以下是一个完整的模型定义示例，包含软删除配置：
+### 完整模型定义示例
 
 ```json
 {
   "name": "书籍分类",
   "table": {
     "name": "category",
-    "comment": "书籍分类"
+    "comment": "书籍分类表"
   },
   "columns": [
     {
       "label": "ID",
       "name": "id",
       "type": "ID",
+      "comment": "主键",
       "primary": true
     },
     {
       "label": "分类名称",
       "name": "name",
-      "type": "string"
+      "type": "string",
+      "length": 50,
+      "comment": "分类名称",
+      "nullable": false,
+      "index": true
+    },
+    {
+      "label": "父分类ID",
+      "name": "parent_id",
+      "type": "integer",
+      "comment": "父分类ID，顶级分类为0",
+      "default": 0
+    },
+    {
+      "label": "状态",
+      "name": "status",
+      "type": "string",
+      "comment": "状态：published-已发布，draft-草稿，archived-已归档",
+      "default": "published"
+    },
+    {
+      "label": "排序",
+      "name": "sort",
+      "type": "integer",
+      "comment": "排序值，越小越靠前",
+      "default": 100
     }
   ],
+  "relations": {
+    "books": {
+      "type": "hasMany",
+      "model": "book",
+      "key": "category_id",
+      "foreign": "id"
+    }
+  },
   "option": {
     "timestamps": true,
     "soft_deletes": true
-  }
+  },
+  "values": [
+    { "id": 1, "name": "技术", "parent_id": 0 },
+    { "id": 2, "name": "文学", "parent_id": 0 }
+  ]
 }
 ```
+
+### 注意事项
+
+1. **软删除特性**：
+
+   - 软删除记录实际上仍然保存在数据库中，只是设置了`deleted_at`不为null
+   - 常规查询不会检索软删除的记录，需要使用自定义条件查询
+   - 软删除记录占用数据库空间，长期积累可能影响性能
+
+2. **永久删除风险**：
+
+   - Destroy相关方法执行的是真正的DELETE操作，数据无法恢复
+   - 建议在执行永久删除前进行确认或数据备份
+   - 生产环境中谨慎使用批量永久删除
+
+3. **批量删除注意事项**：
+
+   - 大量数据批量删除可能导致数据库锁定和性能问题
+   - 建议使用事务并考虑分批处理
+   - 批量删除前先估算影响范围，例如使用count方法
+
+4. **关联数据处理**：
+
+   - 删除记录前应考虑关联数据的处理策略
+   - 设置适当的外键约束或在代码中处理关联
+   - 可以使用事务确保关联数据一致性
+
+5. **性能优化**：
+   - 删除大量数据考虑使用原生SQL或分批处理
+   - 定期清理软删除数据可以优化数据库性能
+   - 为常用查询条件字段添加适当的索引
+
+### 相关主题
+
+- 模型查询：用于在删除前查询数据
+- 模型关联：了解关联数据的处理方式
+- 数据库事务：确保数据一致性
+- 模型钩子：在删除前后执行自定义逻辑
 
 ## 新增数据 save，create，insert
 
@@ -9363,7 +9813,7 @@ yao 应用框架在这里扮演的角色是简化插件的使用流程，让开�
 - [获取主机的进程或是 os 信息](https://github.com/wwsheng009/yao-plugin-psutil)
 - [执行本地或是远程命令](https://github.com/wwsheng009/yao-plugin-command)
 - [邮件客户端](https://github.com/wwsheng009/yao-plugin-email)
-- ![](../YaoDSL/Plugin/飞书自定义登录.md)
+- ![](../docs/YaoDSL/Plugin/飞书自定义登录.md)
 
 ### Rust 语言
 
@@ -10616,7 +11066,7 @@ QueryParam 的其中一个典型的场景是直接转换 url 中的查询参数�
 
 比如有以下的 url 请求，url 的格式是按 query-param 的格式进行组装。
 
-![](../YaoDSL/Query/在url中使用QueryParam.md)
+![](../docs/YaoDSL/Query/在url中使用QueryParam.md)
 
 ```bash
 GET /api/user/paginate?withs=manu,mother,addresses&where.status.eq=enabled&&select=id,name,mobile,status,extra&page=1&pagesize=2
@@ -12306,117 +12756,13 @@ Object Record 数据结构为:`[key:String]Any`
 }
 ```
 
-## mongodb 连接配置
-
-配置 MongoDB 作为 Store Key-Value 存储器。
-
-### 配置连接器
-
-在目录 `connectors` 下创建一个 `Products.conn.yao` 文件，内容如下。需要特别注意有部分的设置：
-
-- 数据库名称配置。这需要在`options`里配置的 db 名，需要和 mongodb 里配置的 db 名一致。
-
-- Collection 名称的配置，它的配置名称是`connector`配置文件的 ID。在这个示例中它的 ID 是`Products`,取`.mongo.yao`前面的信息。这里的 `Products` 对应 mongodb 中的 `collection`.`Products` 名称。如果在数据库中 Collection 不存在，会自动的创建。
-
-- 用户名密码，需要设置数据库访问的用户名密码，这个是必须要设置的，不能使用空用户名或是空密码。
-
-如果有多个 collection,每一个 collection 创建一个配置文件。
-
-```json
-{
-  "LANG": "1.0.0",
-  "VERSION": "1.0.0",
-  "label": "Mongo TEST",
-  "type": "mongo",
-  "options": {
-    "db": "odataserver", //配置数据库名称
-    "hosts": [
-      {
-        "host": "$ENV.MONGO_TEST_HOST",
-        "port": "$ENV.MONGO_TEST_PORT",
-        "user": "$ENV.MONGO_TEST_USER",
-        "pass": "$ENV.MONGO_TEST_PASS"
-      }
-    ],
-    "params": { "maxPoolSize": 20, "w": "majority" } //配置其它参数
-  }
-}
-```
-
-在环境变量文件.env 中配置连接信息
-
-```sh
-MONGO_TEST_HOST=127.0.0.1
-MONGO_TEST_PORT=27017
-MONGO_TEST_USER="admin"
-MONGO_TEST_PASS="admin"
-```
-
-另外需要注意的是，这里的 mongodb 是用于 key-value 的存储，YAO 会自动的为`Collection`创建一个`key`的**唯一**索引。保存的数据结构为以下结构,所以`Collection`数据结构中一定要有一个唯一的 key 值。
-
-```json
-{
-  "key": "",
-  "value": ""
-}
-```
-
-所以它只适用于 key-value 数据结构，并不适用于其它的结构数据保存。
-
-### 配置 Store
-
-在 `stores` 目录配置一个名称为 `product.mongo.yao` 的配置文件。
-
-```json
-{
-  "name": "MongoDB Key-Value store",
-  "description": "MongoDB Key-Value store",
-  "connector": "mongo",
-  "option": {}
-}
-```
-
-### 处理器
-
-Store 的使用主要是通过处理器来处理：
-
-Store 处理器的语法是`stores.[StoreID].set`,这里的 storeid 即是上面文件` product.mongo.yao`的 ID 部分。即是`product`。
-
-```js
-//设置值
-Process('stores.product.Set', 'key1', 'value');
-
-//读取值
-Process('stores.product.Get', 'key1');
-
-//删除值
-Process('stores.product.Del', 'key1');
-
-//读取并删除
-Process('stores.product.GetDel', 'key1');
-
-//检查是否存在
-Process('stores.product.Has', 'key1');
-
-//获取长度
-Process('stores.product.Len');
-
-//获取所有key
-Process('stores.product.Keys');
-
-//清空
-Process('stores.product.clear');
-```
-
-### 总结
-
-mongdb 也可以像 redis 一样作为存储，但是它不支持数据结构，所以它只适用于 key-value 数据结构。
-
 ## 使用缓存
 
 缓存（cache），是每个系统必不可少的一个功能，我们可以使用 Yao 自带的缓存功能，来进行一些临时数据存储
 
-### 示例
+缓存可以使用lru,redis,mongo三种方式来实现。
+
+### 使用LRU缓存
 
 Store 使用缓存，新增文件`stores/cache.lru.json`：
 
@@ -12456,6 +12802,72 @@ function cacheOperation() {
 ```
 
 运行 `yao run scripts.test.cacheOperation`
+
+### 使用Redis缓存
+
+需要配置redis数据库连接，参考![](../docs/YaoDSL/Connector/redis.md)
+Store 使用缓存，新增文件`stores/cache.redis.json`：
+
+编写代码`cache.redis.json`：
+
+```json
+{
+  "name": "redis Cache",
+  "description": "redis缓存",
+  "connector": "redis"
+}
+```
+
+### 使用Mongo缓存
+
+需要配置mongo数据库连接，参考![](../docs/YaoDSL/Connector/mongo.md)
+
+新增文件`stores/cache.mongo.json`：
+
+编写代码`cache.mongo.json`：
+
+```json
+{
+  "name": "redis Cache",
+  "description": "redis缓存",
+  "connector": "mongo"
+}
+```
+
+### Store处理器
+
+Store 的使用主要是通过处理器来处理：
+
+Store 处理器的语法是`stores.[StoreID].set`,这里的 storeid 即是上面文件` product.mongo.yao`的 ID 部分。即是`product`。
+
+```js
+//设置值
+Process('stores.product.Set', 'key1', 'value');
+
+// redis支持超时配置
+Process('stores.product.Set', 'key1', 'value', ttl);
+
+//读取值
+Process('stores.product.Get', 'key1');
+
+//删除值
+Process('stores.product.Del', 'key1');
+
+//读取并删除
+Process('stores.product.GetDel', 'key1');
+
+//检查是否存在
+Process('stores.product.Has', 'key1');
+
+//获取长度
+Process('stores.product.Len');
+
+//获取所有key
+Process('stores.product.Keys');
+
+//清空
+Process('stores.product.clear');
+```
 
 ## sui
 
@@ -18420,7 +18832,7 @@ function WriteAutoInput(
 
 ## form 的一些使用技巧
 
-![](../Studio/自动生成table_form定义文件.md)
+![](../docs/Studio/自动生成table_form定义文件.md)
 
 ### form 最小化配置
 
@@ -18755,13 +19167,13 @@ function Save(payload) {
 
 完成以上的操作，就可以在 Form 看到一个列表控件。控件中的行项目可以拖动调整顺序。
 
-![list in form](../YaoDSL/Xgen/Form/images/xgen-form-list.png)
+![list in form](../docs/YaoDSL/Xgen/Form/images/xgen-form-list.png)
 
 ### Step3 保存数据。
 
 你可能会遇到这个问题
 
-![](..%5C%E6%BA%90%E4%BB%A3%E7%A0%81%5CXgen%5Cxgen%20List%E6%8E%A7%E4%BB%B6%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E6%97%B6%E6%95%B0%E6%8D%AE%E8%A2%AB%E6%B8%85%E7%A9%BA.md)
+![](..%5Cdocs%5C%E6%BA%90%E4%BB%A3%E7%A0%81%5CXgen%5Cxgen%20List%E6%8E%A7%E4%BB%B6%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E6%97%B6%E6%95%B0%E6%8D%AE%E8%A2%AB%E6%B8%85%E7%A9%BA.md)
 
 `List`控件的数据保存操作需要在`Form`的`Hook`里进行拦截处理。
 
@@ -18921,7 +19333,7 @@ function BeforeDeletePlanIn({ wheres }) {
 ```
 
 效果：
-![table_in_form](../YaoDSL/Xgen/Form/table_in_form.png)
+![table_in_form](../docs/YaoDSL/Xgen/Form/table_in_form.png)
 
 如果需要在`Form`里增加新内容，可以使用`List`控件。
 
@@ -19487,7 +19899,7 @@ after 处理器的输入参数是默认处理器的返回值，after 处理器�
 
 ## table 的一些使用技巧
 
-![](../Studio/自动生成table_form定义文件.md)
+![](../docs/Studio/自动生成table_form定义文件.md)
 
 ### 常见问题
 
@@ -21320,7 +21732,7 @@ https://github.com/pavittarx/editorjs-html
 
 插件的功能逻辑比较简单，主要是循环查找`json`数组中的`block`对象，再根据规则替换成文本。对源代码作下简单的处理，转换成`Yao`处理器。
 
-<!-- 处理器源代码如下：![](../YaoDSL/Xgen/Xgen控件/RichText富文本控件/EdJsParser.js) -->
+<!-- 处理器源代码如下：![](../docs/YaoDSL/Xgen/Xgen控件/RichText富文本控件/EdJsParser.js) -->
 
 ## Switch 控件
 
@@ -21896,7 +22308,7 @@ function BeforeSearch(query, page, pagesize) {
 
 ## select 控件动态搜索
 
-这里有一个![](..%5C%E6%BA%90%E4%BB%A3%E7%A0%81%5CXgen%5Cxgen%20remoteSearch.md)。
+这里有一个![](..%5Cdocs%5C%E6%BA%90%E4%BB%A3%E7%A0%81%5CXgen%5Cxgen%20remoteSearch.md)。
 
 xpath:`edit.props.xProps.$search`,
 
@@ -22790,7 +23202,7 @@ xgen:menus 中的 items 子对象。
 
 演示：通过字段选项值修改界面的布局。
 
-![](../YaoDSL/Xgen/images/form_on_change_event.gif)
+![](../docs/YaoDSL/Xgen/images/form_on_change_event.gif)
 
 哪些地方可以用 onChange 事件：
 
