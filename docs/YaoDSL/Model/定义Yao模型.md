@@ -1508,21 +1508,33 @@ const [user] = Process('models.admin.user.get', {
 示例：
 
 ```javascript
+/**
+ * 用户数据分页查询函数
+ * 演示如何使用Yao的models.user.Paginate处理器进行分页数据查询
+ *
+ * @returns {Object} 返回带有分页信息的用户数据对象，包含数据集合和分页信息
+ */
 function Paginate() {
   return Process(
-    'models.user.Paginate',
+    'models.user.Paginate', // 调用user模型的Paginate处理器
     {
-      select: ['id', 'name', 'mobile', 'status', 'extra'],
-      withs: { manu: {}, mother: {}, addresses: {} },
-      wheres: [{ column: 'status', value: 'enabled' }],
-      limit: 2
+      select: ['id', 'name', 'mobile', 'status', 'extra'], // 指定需要查询的字段列表
+      withs: {
+        manu: {}, // 关联查询制造商信息
+        mother: {}, // 关联查询母公司信息
+        addresses: {} // 关联查询地址信息
+      },
+      wheres: [
+        { column: 'status', value: 'enabled' } // 查询条件：仅查询状态为"enabled"的用户
+      ],
+      limit: 2 // 限制结果集中的记录数量为2条
     },
-    1,
-    2
+    1, // 当前页码：第1页
+    2 // 每页记录数量：每页2条记录
   );
 }
 ```
 
 ## 总结
 
-此文档介绍了 Yao 模型的定义，还有模型数据操作的处理器。目前大多数的 ai 模型并不了解 yao 的模型定义，可以在使用这些 ai 模型时，引用此文档来作为一个参考。
+此文档介绍了 Yao 模型的定义，还有模型数据操作的处理器。
