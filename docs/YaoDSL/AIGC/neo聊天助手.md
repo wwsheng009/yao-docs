@@ -31,57 +31,7 @@ openai 连接器可以参考[aigc 处理器](aigc%E5%A4%84%E7%90%86%E5%99%A8.md)
 
 ### 配置 数据库 connector
 
-在使用 Neo 过程中，会产生聊天历史记录。通过设置数据库连接器，可以把 neo 聊天历史保存在别的数据库中。
-
-如果是把会话数据操作在默认的数据库连接中，可以不配置连接器，或是设置`connector=default`。
-
-在 Yao 启动初始化时，Yao 自动在数据库中初始化一张数据库表。
-
-连接 mysql 配置
-
-```json
-{
-  "LANG": "1.0.0",
-  "VERSION": "1.0.0",
-  "label": "MySQL 8.0 TEST",
-  "type": "mysql",
-  "version": "8.0.26",
-  "options": {
-    "db": "test",
-    "charset": "utf8mb4",
-    "parseTime": true,
-    "hosts": [
-      {
-        "host": "$ENV.MYSQL_TEST_HOST",
-        "port": "$ENV.MYSQL_TEST_PORT",
-        "user": "$ENV.MYSQL_TEST_USER",
-        "pass": "$ENV.MYSQL_TEST_PASS",
-        "primary": true
-      },
-      {
-        "host": "$ENV.MYSQL_TEST_HOST",
-        "port": "$ENV.MYSQL_TEST_PORT",
-        "user": "$ENV.MYSQL_TEST_USER",
-        "pass": "$ENV.MYSQL_TEST_PASS"
-      }
-    ]
-  }
-}
-```
-
-连接 sqlite 配置
-
-```json
-{
-  "LANG": "1.0.0",
-  "VERSION": "1.0.0",
-  "label": "SQLite TEST",
-  "type": "sqlite3",
-  "options": {
-    "file": "$ENV.SQLITE_DB"
-  }
-}
-```
+数据连接器配置[连接器](../Connector/连接器.md)
 
 ### 配置 neo
 

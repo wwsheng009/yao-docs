@@ -1,8 +1,48 @@
-# mongodb 连接配置
+# mongo
 
-配置 MongoDB 作为 Store Key-Value 存储器。
+## 在environment中配置mongo连接信息
 
-## 配置连接器
+基本配置：
+
+```json
+"name": "mongo",
+"label": "mongo",
+"version": "1.0.0",
+"type": "mongo"
+"options": {
+  "hosts": [{
+    "host": "mongo",
+    "port": 27017,//默认
+    "user": "",//required
+    "pass": ""//required
+  }],
+  "params": {},
+  "user": "",
+  "db": "",
+  "timeout": 10000
+}
+```
+
+## 配置项支持引用环境变量配置：
+
+```json
+"name": "mongo",
+"label": "mongo",
+"version": "1.0.0",
+"type": "mongo"
+"options": {
+  "hosts": [{
+    "host": "$ENV.MONGO_HOST",
+    "port": "$ENV.MONGO_PORT",
+    "user": "$ENV.MONGO_USER",
+    "pass": "$ENV.MONGO_PASS"
+  }],
+  "params": {},
+  "user": "",
+  "db": "$ENV.MONGO_DB",
+  "timeout": "$ENV.MONGO_TIMEOUT"
+}
+```
 
 在目录 `connectors` 下创建一个 `Products.conn.yao` 文件，内容如下。需要特别注意有部分的设置：
 
@@ -54,52 +94,3 @@ MONGO_TEST_PASS="admin"
 ```
 
 所以它只适用于 key-value 数据结构，并不适用于其它的结构数据保存。
-
-## 配置 Store
-
-在 `stores` 目录配置一个名称为 `product.mongo.yao` 的配置文件。
-
-```json
-{
-  "name": "MongoDB Key-Value store",
-  "description": "MongoDB Key-Value store",
-  "connector": "mongo",
-  "option": {}
-}
-```
-
-## 处理器
-
-Store 的使用主要是通过处理器来处理：
-
-Store 处理器的语法是`stores.[StoreID].set`,这里的 storeid 即是上面文件` product.mongo.yao`的 ID 部分。即是`product`。
-
-```js
-//设置值
-Process('stores.product.Set', 'key1', 'value');
-
-//读取值
-Process('stores.product.Get', 'key1');
-
-//删除值
-Process('stores.product.Del', 'key1');
-
-//读取并删除
-Process('stores.product.GetDel', 'key1');
-
-//检查是否存在
-Process('stores.product.Has', 'key1');
-
-//获取长度
-Process('stores.product.Len');
-
-//获取所有key
-Process('stores.product.Keys');
-
-//清空
-Process('stores.product.clear');
-```
-
-## 总结
-
-mongdb 也可以像 redis 一样作为存储，但是它不支持数据结构，所以它只适用于 key-value 数据结构。
