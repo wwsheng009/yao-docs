@@ -60,8 +60,15 @@ class MarkdownUtils {
   static encodePath(relativePath: string): string {
     return relativePath
       .split('/')
-      .map((part, index, arr) => {
-        return index === arr.length - 1 ? encodeURIComponent(part) : part;
+      .map((part) => {
+        // 保留 . 和 .. 目录标记
+        if (part === '.' || part === '..' || part === '') {
+          return part;
+        }
+        // 只对特殊字符进行编码，保留中文和英文字母
+        return part.replace(CONSTANTS.SPECIAL_CHARS_PATTERN, (match) => {
+          return encodeURIComponent(match);
+        });
       })
       .join('/');
   }

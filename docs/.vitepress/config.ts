@@ -2,7 +2,23 @@
 export default (async () => {
   const { defineConfig } = await import('vitepress');
   const { withPwa } = await import('@vite-pwa/vitepress');
-  const { generateSitemap: sitemap } = await import('sitemap-ts');
+  const { mkdir, writeFile } = await import('node:fs/promises');
+  const glob = await import('fast-glob');
+
+  // 处理 URL 中的特殊字符，保留中文字符
+  const formatUrl = (url: string) => {
+    const specialCharsPattern = /[\s%?#[\]{}|\\^~:<>]/g;
+    return url
+      .split('/')
+      .map((part) => {
+        // 只替换特殊字符，保留中文和英文字母
+        return part.replace(specialCharsPattern, (match) => {
+          return encodeURIComponent(match); // 其他特殊字符进行编码
+        });
+      })
+      .join('/'); // 重新组合路径
+  };
+
   const { description, github, keywords, name, site } = await import(
     './meta.js'
   );
@@ -129,14 +145,30 @@ export default (async () => {
         ['meta', { property: 'og:locale', content: 'zh_CN' }]
       ],
       async buildEnd() {
-        await sitemap({
-          hostname: site,
-          changefreq: 'weekly',
-          priority: 0.8,
-          lastmod: new Date(),
-          outDir: 'dist/yao-docs',
-          robots: [{ userAgent: '*', allow: '/' }]
+        const files = await glob.default('**/*.md', {
+          cwd: 'docs',
+          ignore: ['node_modules/**', '.vitepress/**']
         });
+
+        const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${files
+  .map((file) => {
+    const urlPath = formatUrl(
+      file.replace(/\.md$/, '.html').replace(/index\.html$/, '')
+    );
+    return `  <url>
+    <loc>${site}/${urlPath}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+  })
+  .join('\n')}
+</urlset>`;
+
+        await mkdir('dist/yao-docs', { recursive: true });
+        await writeFile('dist/yao-docs/sitemap.xml', sitemapContent);
       }
     })
   );

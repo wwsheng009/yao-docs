@@ -2426,7 +2426,7 @@ API 将通过路由 `/api/<group>/<path>`访问, 请求成功响应 `out` 中定
 | `$session.字段名称`    | `Any`                | Session 会话字段数，支持多级访问。如 $session.user.name , $session.manus.0.name 值 |
 | `$file.字段名称`       | `Object File`        | 上传临时文件结构                                                                   |
 
-`session`的设置逻辑可参考![](..%5Cdocs%5CYaoDSL%5CAPI%5C%E8%87%AA%E5%AE%9A%E4%B9%89%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86login%20api.md)
+`session`的设置逻辑可参考![](..%5Cdocs%5CYaoDSL%5CAPI%5C自定义用户登陆login%20api.md)
 
 需要特别关注`:query-param/:params`，yao 框架会根据 url 中的查询条件转换成 QueryParam 对象。
 
@@ -19173,7 +19173,7 @@ function Save(payload) {
 
 你可能会遇到这个问题
 
-![](..%5Cdocs%5C%E6%BA%90%E4%BB%A3%E7%A0%81%5CXgen%5Cxgen%20List%E6%8E%A7%E4%BB%B6%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E6%97%B6%E6%95%B0%E6%8D%AE%E8%A2%AB%E6%B8%85%E7%A9%BA.md)
+![](..%5Cdocs%5C源代码%5CXgen%5Cxgen%20List控件保存数据时数据被清空.md)
 
 `List`控件的数据保存操作需要在`Form`的`Hook`里进行拦截处理。
 
@@ -22308,7 +22308,7 @@ function BeforeSearch(query, page, pagesize) {
 
 ## select 控件动态搜索
 
-这里有一个![](..%5Cdocs%5C%E6%BA%90%E4%BB%A3%E7%A0%81%5CXgen%5Cxgen%20remoteSearch.md)。
+这里有一个![](..%5Cdocs%5C源代码%5CXgen%5Cxgen%20remoteSearch.md)。
 
 xpath:`edit.props.xProps.$search`,
 
