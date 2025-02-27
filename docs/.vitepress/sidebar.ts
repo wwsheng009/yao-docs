@@ -166,50 +166,43 @@ export default {
   ],
   '/AI/': [
     {
-      text: '使用postgresql保存Embedding',
-      link: '/AI/使用postgresql保存Embedding'
+      text: '使用AI创建模型定义',
+      link: '/AI/使用AI创建模型定义'
     },
     {
-      text: 'ChatGPT',
+      text: '使用AI开发YAO应用',
+      link: '/AI/使用AI开发YAO应用'
+    },
+    {
+      text: '提示词',
+      link: '/AI/提示词'
+    },
+    {
+      text: 'AI时代',
+      link: '/AI/AI时代'
+    },
+    {
+      text: 'AI生成模型模板',
+      link: '/AI/AI生成模型模板'
+    },
+    {
+      text: 'Vscode编辑器使用插件快速开发模型',
+      link: '/AI/Vscode编辑器使用插件快速开发模型'
+    },
+    {
+      text: 'Prompts',
       collapsed: true,
       items: [
         {
-          text: '使用ChatGPT开发YAO应用',
-          link: '/AI/ChatGPT/使用ChatGPT开发YAO应用'
+          text: 'model_without_relations',
+          link: '/AI/Prompts/model_without_relations'
         },
         {
-          text: '使用gpt4助手创建模型定义',
-          link: '/AI/ChatGPT/使用gpt4助手创建模型定义'
-        },
-        {
-          text: 'Vscode编辑器使用插件快速开发模型',
-          link: '/AI/ChatGPT/Vscode编辑器使用插件快速开发模型'
-        },
-        {
-          text: 'Prompts',
-          collapsed: true,
-          items: [
-            {
-              text: 'ChatGPT生成模型模板',
-              link: '/AI/ChatGPT/Prompts/ChatGPT生成模型模板'
-            },
-            {
-              text: 'model_without_relations',
-              link: '/AI/ChatGPT/Prompts/model_without_relations'
-            },
-            {
-              text: 'model_with_relations',
-              link: '/AI/ChatGPT/Prompts/model_with_relations'
-            },
-            {
-              text: 'Prompt工程',
-              link: '/AI/ChatGPT/Prompts/Prompt工程'
-            }
-          ],
-          link: '/AI/ChatGPT/Prompts/'
+          text: 'model_with_relations',
+          link: '/AI/Prompts/model_with_relations'
         }
       ],
-      link: '/AI/ChatGPT/'
+      link: '/AI/Prompts/'
     }
   ],
   '/Studio/': [
@@ -1239,6 +1232,10 @@ export default {
       text: 'Xun',
       collapsed: true,
       items: [
+        {
+          text: '使用postgresql保存Embedding',
+          link: '/源代码/Xun/使用postgresql保存Embedding'
+        },
         {
           text: '数据库连接配置',
           link: '/源代码/Xun/数据库连接配置'

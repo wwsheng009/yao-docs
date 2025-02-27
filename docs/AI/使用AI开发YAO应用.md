@@ -1,8 +1,8 @@
-# 使用`ChatGPT`开发`Yao`应用
+# 使用`AI`开发`Yao`应用
 
-`Yao`是一个不错的低代码开发平台。使用`YAO`能快速的开发出一套`CURD`的管理平台。结合最近大火的`ChatGPT`,更是事半功倍。
+`Yao`是一个不错的低代码开发平台。使用`YAO`能快速的开发出一套`CURD`的管理平台。结合最近大火的`AI`,更是事半功倍。
 
-以下是一个使用`ChatGPT`来生成模型，`Yao Studio`脚本生成管理界面的大概流程。你所需要作的就是敲些命令，复制粘贴代码，就能弄一个管理后台。
+以下是一个使用`AI`来生成模型，`Yao`脚本生成管理界面的大概流程。你所需要作的就是敲些命令，复制粘贴代码，就能弄一个管理后台。
 
 ## Step1 下载 YAO-init 项目模板并成功执行
 
@@ -18,11 +18,11 @@ yao start
 
 **注**：如果你登录出现空白页或是其它异常，请检查是否使用了`Yao`自带的初始化模板。
 
-## Step2 使用 ChatGPT 生成模型定义
+## Step2 使用 AI 生成模型定义
 
-这里提供了一个[ChatGPT 的提示词模板](./Prompts/model_with_relations.md)，复制提示词模板中的所有内容到`ChatGPT`，让`ChatGPT`生成模型定义。
+这里提供了一个[AI 的提示词模板](./Prompts/model_with_relations.md)，复制提示词模板中的所有内容到`AI`，让`AI`生成模型定义。
 
-大家可以根据需要训练出更好的`ChatGPT`模板。
+大家可以根据需要训练出更好的`AI`模板。
 
 把生成的模型定义复制到`/yao-init/models`目录，比如[`/yao-init/models/salesorder.mod.json`](./examples/salesorder/salesorder.mod.json)
 
@@ -44,7 +44,7 @@ yao start
 
 ## Step3 生成模型对应的`Table/Form`定义文件
 
-`yao-init`项目模板中已经提供了`Studio`初始化脚本。使用以下的命令可以使用最小化配置与全部默认配置。
+`yao-init`项目模板中已经提供了初始化脚本。使用以下的命令可以使用最小化配置与全部默认配置。
 
 最小化配置的意思是生成的配置文件中只包含最基本的配置信息，详细信息会由`Yao`框架自动的在运行时自动生成。
 
@@ -59,7 +59,7 @@ yao start
 ### Step3.1 生成最小化配置
 
 ```sh
-yao studio run init.CreateTable salesorder
+yao run scripts.init.CreateTable salesorder
 ```
 
 成功后会生成以下文件`tables/salesorder.tab.json`。
@@ -67,7 +67,7 @@ yao studio run init.CreateTable salesorder
 **注意**，如果运行命令之前已经存在同名的文件，不会覆盖，只会生成全量配置文件。
 
 ```sh
-yao studio run init.CreateForm salesorder
+yao run scripts.init.CreateForm salesorder
 ```
 
 成功后会生成以下文件`forms/salesorder.form.json`。
@@ -79,8 +79,8 @@ yao studio run init.CreateForm salesorder
 如果需要生成全部配置的默认配置，请再执行以下两个命令，会生成额外的两个文件
 
 ```sh
-yao studio run init.CreateTable salesorder
-yao studio run init.CreateForm salesorder
+yao run scripts.init.CreateTable salesorder
+yao run scripts.init.CreateForm salesorder
 ```
 
 成功后会生成以下文件,再根据自己的需求进行额外的界面调整。

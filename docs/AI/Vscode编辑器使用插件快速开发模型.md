@@ -1,10 +1,10 @@
 # 使用`VSCODE`编辑器的插件快速开发`Yao`模型
 
-AI 时代已经到来~,`yao`通过这种元数据配置编程理念恰好适合 ChatGPT 来搞。之前有写过另外一笔记[使用`ChatGPT`开发`Yao`应用](./使用ChatGPT开发YAO应用.md)。使用上还是不太方便，需要手动复制大段的文字到聊天框。处理后再还需要复制一次。借助`vscode`编辑器的`ChatGPT`插件，开发起来会更加方便。
+AI 时代已经到来~,`yao`通过这种元数据配置编程理念恰好适合 AI 来搞。之前有写过另外一笔记[使用`AI`开发`Yao`应用](./使用AI开发YAO应用.md)。使用上还是不太方便，需要手动复制大段的文字到聊天框。处理后再还需要复制一次。借助`vscode`编辑器的`AI`插件，开发起来会更加方便。
 
 在起飞之前首先需要作些准备工作：
 
-- 准备好你的网络，需要能访问`OPENAI`网站的接口，这个是首要条件。
+- 准备好你的网络，需要能访问`AI`网站的接口，这个是首要条件。
 - 开发版本的`Yao`应用程序。
 - 宇宙最强的的编辑器`Vscode`。
 
@@ -49,9 +49,9 @@ yao start
 
 ### `vscode`插件配置
 
-`vscode`市场中与 ChatGPT 有关的插件有很多，选一款支持能支持自动导入选中代码的插件。这样就不需要复制代码了。
+在使用`AI`插件之前，需要先配置好编辑器的智能提示功能，请参考[编辑器vscode智能提示](../Studio/编辑器vscode智能提示.md)
 
-- `vscode`市场里找一个支持`ChatGPT`的插件。这里是我使用的一款[ChatGPT - Genie AI](https://marketplace.visualstudio.com/items?itemName=genieai.chatgpt-vscode)
+`vscode`市场中与 AI 有关的插件有很多，选一款支持能支持自动导入选中代码的插件。这样就不需要复制代码了。
 
 - 插件一般都需要配置`openai key`,根据提示在设置里设置`key`
 
@@ -65,9 +65,9 @@ yao start
 
 ![](./vscode_quick_dev/vscode_create_new_model.png)
 
-- 生成的文件基本上是可以满足要求的，有些字段显示黄色，说明这个字段不符合`Yao`的`DSL`语法。删除或是忽略即可。`yao-init`项目已经配置好了[编辑器`vscode`智能提示](../../Studio/%E7%BC%96%E8%BE%91%E5%99%A8vscode%E6%99%BA%E8%83%BD%E6%8F%90%E7%A4%BA.md)
+- 生成的文件基本上是可以满足要求的，有些字段显示黄色，说明这个字段不符合`Yao`的`DSL`语法。删除或是忽略即可。
 
-- 除了生成一个完整的模型，你还可以让`ChatGPT`参考现有的字段定义生成新的字段，这需要发挥你的聪明才智了。
+- 除了生成一个完整的模型，你还可以让`AI`参考现有的字段定义生成新的字段，这需要发挥你的聪明才智了。
 
 ## Yao 应用执行。
 
@@ -75,26 +75,6 @@ yao start
 
 ```sh
 yao migrate
-```
-
-使用`Studio`脚本生成`table/form`定义文件。Studio 脚本的更多使用方法参考：[自动生成 table_form 定义文件](../../Studio/%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90table_form%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6.md)
-
-```sh
-yao studio run init.CreateTableAndForm hospital
-```
-
-执行成功后会看到类似以下提示：
-
-```sh
-Studio Run: init.CreateTableAndForm
-args[0]: hospital
-"已生成最小化配置Table:"
-"tables/hospital.tab.json"
-"需要生成全配置Table,请再执行一次命令"
-"已生成最小化配置Form:"
-"forms/hospital.form.json"
-"需要生成全配置Form,请再执行一次"
-✨DONE✨
 ```
 
 ### 启动并访问应用
@@ -111,16 +91,13 @@ yao start
    - 默认用户名：`xiang@iqka.com`
    - 默认密码：`A123456p+`
 
-3. 登录后访问新创建的模型管理页面：
-   `http://127.0.0.1:5099/admin/x/Table/hospital`
-
 ## 进阶使用技巧
 
 ### 优化界面配置
 
-你可以使用以下提示词让 ChatGPT 帮助优化界面：
+你可以使用以下提示词让 AI 帮助优化界面：
 
-```
+```sh
 # 优化表格显示
 optimize the table configuration with:
 - Add search fields
@@ -136,9 +113,9 @@ optimize the form configuration with:
 
 ### 添加自定义功能
 
-可以让 ChatGPT 帮助添加更多功能：
+可以让 AI 帮助添加更多功能：
 
-```
+```sh
 # 添加自定义按钮
 add a custom action button that:
 [描述按钮功能]

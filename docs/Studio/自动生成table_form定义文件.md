@@ -2,10 +2,10 @@
 
 ## 下载工具脚本
 
-请把工具脚本[`init.js`](https://github.com/wwsheng009/yao-init/blob/main/studio/init.js)脚本复制到`Yao`应用的`studio`目录下。
+请把工具脚本[`init.js`](https://github.com/wwsheng009/yao-init/blob/main/studio/init.js)脚本复制到`Yao`应用的`scripts`目录下。
 
 ```sh
-wget -O studio/init.js https://raw.githubusercontent.com/wwsheng009/yao-init/main/studio/init.js
+wget -O scripts/init.js https://raw.githubusercontent.com/wwsheng009/yao-init/main/studio/init.js
 ```
 
 ## 使用脚本
@@ -17,8 +17,8 @@ wget -O studio/init.js https://raw.githubusercontent.com/wwsheng009/yao-init/mai
 首先生成最小化配置文件：
 
 ```sh
-yao studio run  init.CreateTable material
-yao studio run  init.CreateForm material
+yao run  scripts.init.CreateTable material
+yao run  scripts.init.CreateForm material
 ```
 
 执行后会生成以下文件：
@@ -38,8 +38,8 @@ yao studio run  init.CreateForm material
 如果需要更细致的界面定制，可以再次执行相同的命令生成全量配置：
 
 ```sh
-yao studio run  init.CreateTable material
-yao studio run  init.CreateForm material
+yao run  scripts.init.CreateTable material
+yao run  scripts.init.CreateForm material
 ```
 
 执行后会生成以下文件：
