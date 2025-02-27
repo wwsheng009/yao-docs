@@ -4249,7 +4249,7 @@ yao 可以在 model 定义中配置 `connector` 连接不同的数据库。针�
 
 - ![](../docs/YaoDSL/Connector/数据库连接器.md)
 - ![](../docs/YaoDSL/Connector/redis.md)
-- [MongoDB连接器](./MongoDB.md)
+- ![](../docs/YaoDSL/Connector/mongo.md)
 - ![](../docs/YaoDSL/Connector/OpenAI连接器.md)
 - MoAPI连接器
 

@@ -170,10 +170,6 @@ export default {
       link: '/AI/使用postgresql保存Embedding'
     },
     {
-      text: 'merged',
-      link: '/AI/merged'
-    },
-    {
       text: 'ChatGPT',
       collapsed: true,
       items: [
@@ -439,6 +435,33 @@ export default {
       link: '/YaoDSL/API/'
     },
     {
+      text: 'Connector',
+      collapsed: true,
+      items: [
+        {
+          text: '连接器',
+          link: '/YaoDSL/Connector/连接器'
+        },
+        {
+          text: '数据库连接器',
+          link: '/YaoDSL/Connector/数据库连接器'
+        },
+        {
+          text: 'mongo',
+          link: '/YaoDSL/Connector/mongo'
+        },
+        {
+          text: 'OpenAI连接器',
+          link: '/YaoDSL/Connector/OpenAI连接器'
+        },
+        {
+          text: 'redis',
+          link: '/YaoDSL/Connector/redis'
+        }
+      ],
+      link: '/YaoDSL/Connector/'
+    },
+    {
       text: 'Flow',
       collapsed: true,
       items: [
@@ -591,10 +614,6 @@ export default {
         {
           text: '使用缓存',
           link: '/YaoDSL/Store/使用缓存'
-        },
-        {
-          text: 'Mongo配置',
-          link: '/YaoDSL/Store/Mongo配置'
         }
       ],
       link: '/YaoDSL/Store/'

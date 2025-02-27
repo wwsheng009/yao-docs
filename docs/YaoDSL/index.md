@@ -7,6 +7,7 @@
 - [AIAgent](AIAgent/index)
 - [AIGC](AIGC/index)
 - [API](API/index)
+- [Connector](Connector/index)
 - [Flow](Flow/index)
 - [Model](Model/index)
 - [Pipe](Pipe/index)
