@@ -66,6 +66,30 @@ export default (async () => {
           { name: 'apple-mobile-web-app-status-bar-style', content: 'default' }
         ],
 
+        // 添加更多 SEO 相关 meta 标签
+        ['meta', { name: 'robots', content: 'index,follow' }],
+        ['meta', { name: 'googlebot', content: 'index,follow' }],
+        ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+        ['meta', { property: 'og:title', content: name }],
+        ['meta', { property: 'og:site_name', content: name }],
+        ['meta', { property: 'og:image', content: `${site}/og-image.png` }],
+        ['meta', { name: 'twitter:image', content: `${site}/og-image.png` }],
+        ['meta', { name: 'twitter:title', content: name }],
+        ['meta', { name: 'twitter:description', content: description }],
+
+        // 添加结构化数据
+        [
+          'script',
+          { type: 'application/ld+json' },
+          JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: name,
+            description: description,
+            url: site
+          })
+        ],
+
         ['link', { rel: 'shortcut icon', href: '/favicon.ico' }],
         ['link', { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
         ['link', { rel: 'mask-icon', href: '/logo.svg', color: '#06f' }],
@@ -105,7 +129,14 @@ export default (async () => {
         ['meta', { property: 'og:locale', content: 'zh_CN' }]
       ],
       async buildEnd() {
-        await sitemap({ hostname: 'https://github.com/wwsheng009/yao-docs' });
+        await sitemap({
+          hostname: site,
+          changefreq: 'weekly',
+          priority: 0.8,
+          lastmod: new Date(),
+          outDir: 'dist/yao-docs',
+          robots: [{ userAgent: '*', allow: '/' }]
+        });
       }
     })
   );

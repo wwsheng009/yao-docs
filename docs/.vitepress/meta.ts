@@ -2,7 +2,7 @@ import { version } from '../../package.json';
 
 // base info
 export const name = 'YaoDocs';
-export const site = 'https://github.com/wwsheng009/yao-docs';
+export const site = 'https://wwsheng009.github.io/yao-docs';
 export const logo = '';
 export const keywords = 'yao、lowercode、coding、github';
 export const description = 'Yao应用学习分享';
