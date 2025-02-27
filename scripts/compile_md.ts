@@ -261,7 +261,7 @@ async function writeOutputFile(
 ): Promise<void> {
   const targetPath = path.join(config.outputDir, config.outputFileName);
   const title = `# ${config.outputFileName.replace(new RegExp(`${CONSTANTS.MARKDOWN_EXT}$`), '')}\n\n`;
-  const mergedContent = `${CONSTANTS.PROCESSED_MARKER}\n${content.join('\n\n')}`;
+  const mergedContent = `${CONSTANTS.PROCESSED_MARKER}\n${content.join('\n')}`;
 
   if (fs.existsSync(targetPath)) {
     await fs.promises.unlink(targetPath);

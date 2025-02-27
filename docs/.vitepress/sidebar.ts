@@ -482,6 +482,10 @@ export default {
           link: '/YaoDSL/Model/定义Yao模型'
         },
         {
+          text: '模型元数据管理',
+          link: '/YaoDSL/Model/模型元数据管理'
+        },
+        {
           text: '模型删除数据',
           link: '/YaoDSL/Model/模型删除数据'
         },
