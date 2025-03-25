@@ -1,9 +1,5 @@
 # 内置 neo 聊天服务
 
-## 适用版本
-
-0.10.3 或以上
-
 ## 特性
 
 - 开箱即用的聊天服务
@@ -27,7 +23,7 @@ HTTPS_PROXY="socks5://0.0.0.0:10808"
 
 ### 配置 openai connector
 
-openai 连接器可以参考[aigc 处理器](aigc%E5%A4%84%E7%90%86%E5%99%A8.md)
+openai 连接器可以参考[aigc 处理器](../AIGC/aigc%E5%A4%84%E7%90%86%E5%99%A8.md)
 
 ### 配置 数据库 connector
 
@@ -38,46 +34,91 @@ openai 连接器可以参考[aigc 处理器](aigc%E5%A4%84%E7%90%86%E5%99%A8.md)
 Neo 助手配置文件`neo/neo.yml`，这个配置文件的路径与文件名是固定的。
 
 ```yaml
-# 配置openai connector
-connector: gpt-3_5-turbo
-# 自定义聊天token认证处理器，处理器一定要返回参数__sid
-guard: 'scripts.guard.Chat'
+connector: copilot-tencent
+use: 'neo' # default assistannt
+guard: 'scripts.auth.token.Check'
 
-conversation:
-  # 聊天会话保存连接器，默认default
-  connector: default
-  #   保存会话的表，默认yao_neo_conversation，自动初始化
-  table: yao_neo_conversation
-  #   跟open ai聊天时的最大历史数量，默认20
-  max_size: 10
-  #   历史会话的最大保存时间，单位秒，默认3600
-  ttl: 3600
+store:
+  connector: 'default' #用于指定数据存储方法的连接器名称，默认为应用数据库连接器
+  user_field: 'user_id' #用户ID字段名称，默认为"user_id"
+  prefix: 'yao_neo_' #数据库表名前缀，将自动创建带有前缀的三个表：+_history,+_chat,+_assistant
+  max_size: 100 #最大存储大小限制
+  ttl: 3600 #生存时间（秒）
 
-command:
-  # neo命令解析连接器定义，如果没有配置会使用neo connector
-  parser: gpt-3_5-turbo
+# Setting RAG settings
+rag:
+  engine: #向量数据库引擎设置
+    dirver: '' #qdrant -> 向量存储驱动，目前仅支持qdrant，为空表示不使用RAG
+    options: #使用$ENV.ENV_NAME获取环境变量
+      host: ''
+      api_key: 'sr-'
+      port: 80
 
-# 当用户请求到达API接口后，使用这个hook修改用户的请求信息后再发送到openai,接收用户请求的消息，并返回新的消息
-# 如果有聊天的历史，在这里也可以获取到。
-prepare: 'scripts.neo.Prepare'
+  vectorizer: #文本向量化设置，使用$ENV.ENV_NAME获取环境变量
+    dirver: '' #openai -> embeddings驱动，目前仅支持openai
+    options:
+      model: 'text-embedding-ada-002' #openai的默认模型
+      api_key: 'sr-'
 
-# 收到openai的回复后进行调整回复的消息后再返回到客户端
-write: 'scripts.neo.Write'
+  upload: #文件上传设置
+    async: false
+    allowed_types: ['image/jpeg', 'image/png', 'image/jpg']
+    chunk_size: 1024
+    chunk_overlap: 256
+  index_prefix: 'yao_neo_'
 
+vision:
+  storage:
+    driver: 'local' #local -> 本地存储, s3 -> s3存储
+    options: #本地存储选项
+      path: './storage/vision' #本地存储所需的路径
+      compression: true #是否压缩图片
+      base_url: '' #文件下载的基础URL
+      preview_url: '' #文件预览URL
+
+    # options:  #s3 storage options
+    #   expiration: ""
+    #   endpoint: ""
+    #   region: "auto"
+    #   key: ""
+    #   secret: ""
+    #   bucket: ""
+    #   prefix: ""
+    #   compression: true
+
+  model:
+    driver: 'openai' #openai -> openai视觉模型
+    options:
+      model: 'openai/clip-vit-base-patch32'
+      api_key: 'sr-'
+      compression: true
+      prompt: ''
+
+# prepare: "scripts.vector.Match"
 prompts:
   - role: system
     content: |
-      - Your name is Neo.
-      - Your are a AI assistant of YAO
+      - You are pretending to be YAO's AI assistant and your name is Neo.
+      - Answer my questions in Chinese from now on.
 
-option:
-  temperature: 1.2
+option: #options for chatting with the assistant
+  temperature: 0.8
 
-# 跨域设置，访问域名的白名单
+create: 'scripts.neo.neo.Create' #创建助手的函数，用于选择assistant
+
+prepare: 'scripts.neo.neo.prepare' #助手的准备函数，不再使用，使用assistant代替
+write: 'scripts.neo.neo.write' #助手的写入函数，不再使用，使用assistant代替
+
 allows:
   - 'http://127.0.0.1:8000'
   - 'http://127.0.0.1:5099'
+  - 'http://localhost:5099'
   - 'http://localhost:8000'
+
+# 连接器的额外配置
+connectors:
+  doubao: # 指定的连接器配置
+    tools: true #模型是否原生支持Function Call功能,
 ```
 
 ### 配置 app.yao

@@ -11,15 +11,11 @@
 
 ## Function Call
 
-### 函数调用的工作原理
-
-如需使用函数调用功能，您需要向模型提示添加描述编程接口的结构化查询数据（称为函数声明）。函数声明提供 API 函数的名称，说明其用途、支持的所有参数以及这些参数的说明。将查询中的函数声明列表传递给模型后，模型会分析函数声明和查询的其余部分，以确定如何使用声明的 API 来响应请求。
-
-然后，模型会返回一个 OpenAPI 兼容架构中的对象，其中指定了如何调用一个或多个已声明的函数，以便回答用户的问题。然后，您可以采用建议的函数调用参数，调用实际 API，获取响应，并将该响应提供给用户或执行进一步操作。请注意，模型实际上并不会调用声明的函数。而是使用返回的架构对象参数来调用该函数。Gemini API 还支持并行函数调用，其中模型会根据单个请求推荐多个 API 函数调用。
+通过Json定义声明给告知本地工具函数的作用与参数，AI模型在处理过程中返回调用本地工具函数的参数与函数名。
 
 ### 函数声明
 
-在提示中实现函数调用时，您需要创建一个 tools 对象，其中包含一个或多个 function declarations。您可以使用 JSON 定义函数，具体而言，使用 OpenAPI 架构格式的部分子集。单个函数声明可以包含以下参数：
+创建一个 tools 对象，包含一个或多个 function declarations。使用 JSON 定义函数。单个函数声明可以包含以下参数：
 
 - name（字符串）：API 调用中函数的唯一标识符。
 - description（字符串）：全面说明函数的用途和功能。
@@ -129,27 +125,67 @@ assistants
 
 ```json
 {
+  // 助手名称,用于显示
   "name": "model-assistant",
+
+  // 类型,固定为"assistant"
   "type": "assistant",
+
+  // 助手描述
   "description": "This is a test assistant",
+
+  // 助手ID,唯一标识符
   "assistant_id": "model",
+
+  // 是否可以被提及(@)
   "mentionable": true,
+
+  // 是否为自动化助手
   "automated": false,
+
+  // 是否只读，如果通过文件配置的方式，readonly=true
   "readonly": false,
+
+  // 是否为内置助手
   "built_in": false,
+
+  // 排序值
   "sort": 0,
+
+  // 助手目录路径
   "path": "model",
+
+  // 使用的AI模型连接器
   "connector": "deepseek-reasoner",
+
+  // 创建时间
   "created_at": "2022-02-22T14:00:00.000Z",
+
+  // 标签列表
   "tags": ["test"],
+
+  // AI模型参数配置
   "options": {
+    // 温度参数,控制输出的随机性(0-1)
     "temperature": 0.7,
+
+    // 最大输出token数
     "max_tokens": 8192,
+
+    // 核采样阈值
     "top_p": 1,
+
+    // 频率惩罚系数
     "frequency_penalty": 0,
+
+    // 存在惩罚系数
     "presence_penalty": 0
   },
+
+  // 头像URL，在Xgen中显示
   "avatar": "https://cdn.pixabay.com/photo/2016/08/20/05/38/avatar-1606916_960_720.png",
+
+  // 提示词内容
   "prompts": ""
 }
 ```
@@ -164,7 +200,7 @@ assistants
 | name    | string | 提示词名称,用于标识不同的提示词                          |
 | content | string | 提示词内容,支持多行文本和引用assets目录下的文件          |
 
-示例配置如下:
+示例配置如下,可以使用`@assets/`引用assets目录的文件，一般都是提示词内容
 
 ```yaml
 - role: system
@@ -184,7 +220,7 @@ assistants
 
 #### Create
 
-Create钩子函数用于在助手被第一次调用时触发数:
+Create钩子函数用于在助手被第一次调用时触发数。
 
 ```ts
 /**
@@ -192,17 +228,59 @@ Create钩子函数用于在助手被第一次调用时触发数:
  *
  * called before the chat with openai.
  *
- * @param context The context object containing session information and other relevant data.
  * @param input The input message array.
- * @param writer A payload object containing additional options or data.
  * @returns A response object containing the next action, input messages, and output data.
  */
 
 export function Create(
-  context: neo.Context,
   input: neo.Message[],
   option: { [key: string]: any }
 ): neo.ResHookInit | null | string {}
+```
+
+这个钩子函数有以下功能：
+
+- 修改助手id,比如返回新的助手id，可以切换助手进行问题处理。
+
+```js
+return {
+  assistant_id: new_assistant_id, //optional,change the assistant_id,switch the assistant for following process
+  chat_id: context.chat_id //optional
+};
+```
+
+- 修改AI的输入提问
+
+```js
+// input 是用户输入的问题
+//
+input.pop();
+input.push({
+  role: 'user',
+  text: content,
+  type: 'text'
+});
+return {
+  input: input
+};
+```
+
+- 调用其它的处理器
+
+```js
+return {
+  next: {
+    //optional, if you want to call another action in frontend
+    action: 'assistant', //call other assistant set to 'exit' to exit process
+    payload: {
+      assistant_id: new_assistant_id,
+      input: input,
+      options: {
+        max_tokens: 8192
+      }
+    }
+  }
+};
 ```
 
 #### Done

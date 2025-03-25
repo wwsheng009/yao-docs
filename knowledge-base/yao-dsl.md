@@ -2,469 +2,6 @@
 
 <!-- YAO-DOC-MERGE-PROCESSED -->
 
-## AI代理
-
-### AI助手
-
-通过配置Function Tool与Prompt Template，可以让AI模型变成一个AI助手。
-
-在Yao中可以使用AI代理来完成一些复杂的任务，例如：
-
-- 调用第三方API
-- 调用本地的工具
-
-### Function Call
-
-#### 函数调用的工作原理
-
-如需使用函数调用功能，您需要向模型提示添加描述编程接口的结构化查询数据（称为函数声明）。函数声明提供 API 函数的名称，说明其用途、支持的所有参数以及这些参数的说明。将查询中的函数声明列表传递给模型后，模型会分析函数声明和查询的其余部分，以确定如何使用声明的 API 来响应请求。
-
-然后，模型会返回一个 OpenAPI 兼容架构中的对象，其中指定了如何调用一个或多个已声明的函数，以便回答用户的问题。然后，您可以采用建议的函数调用参数，调用实际 API，获取响应，并将该响应提供给用户或执行进一步操作。请注意，模型实际上并不会调用声明的函数。而是使用返回的架构对象参数来调用该函数。Gemini API 还支持并行函数调用，其中模型会根据单个请求推荐多个 API 函数调用。
-
-#### 函数声明
-
-在提示中实现函数调用时，您需要创建一个 tools 对象，其中包含一个或多个 function declarations。您可以使用 JSON 定义函数，具体而言，使用 OpenAPI 架构格式的部分子集。单个函数声明可以包含以下参数：
-
-- name（字符串）：API 调用中函数的唯一标识符。
-- description（字符串）：全面说明函数的用途和功能。
-- parameters（对象）：定义函数所需的输入数据。
-- type（字符串）：指定整体数据类型，例如 object。
-- properties（对象）：列出各个参数，每个参数均包含：
-- type（字符串）：参数的数据类型，例如 string、integer、boolean。
-- description（字符串）：清楚地说明参数的用途和预期格式。
-- required（数组）：一个字符串数组，用于列出函数运行所必需的参数名称。
-
-#### 函数声明的最佳实践
-
-在将函数集成到请求中时，准确定义函数至关重要。每个函数都依赖于特定参数，这些参数可指导其行为并与模型互动。以下列表提供了有关在 functions_declarations 数组中定义各个函数参数的指南。
-
-name：使用清晰、描述性强的名称，不含空格、英文句点 (.) 或短划线 (-) 字符。请改用下划线 (\_) 字符或驼峰式命名法。
-
-description：提供详细、清晰且具体的函数说明，并根据需要提供示例。例如，使用 find theaters based on location and optionally movie title that is currently playing in theaters. 取代 find theaters。避免使用过于宽泛或模糊的说明。
-
-properties > type：使用强类型参数来减少模型幻觉。例如，如果参数值来自有限集，请使用 enum 字段，而不是在说明中列出值（例如"type": "enum", "values": ["now_playing", "upcoming"]）。如果参数值始终是整数，请将类型设置为 integer，而不是 number。
-
-properties > description：提供具体的示例和限制。 例如，使用 The city and state, e.g. San Francisco, CA or a zip code e.g. 95616 取代 the location to search。
-
-### 调用第三方API
-
-### 定义一个助手
-
-助手需要定义在Assistant目录下，一个Assistant目录下可以有多个助手，每个目录对应一个Assistant。
-
-目录结构如下：
-
-- assets：存放助手所需的资源文件，例如图片、音频、视频等,在Prompt中使用@assets/文件名.文件类型来引用。
-- package.yao：助手配置文件，定义助手的名称、描述、工具等。
-- prompts.yml：助手提示文件，定义助手的提示词。
-- src：助手源码文件，定义助手的业务逻辑。
-- tools.yao：助手工具文件，定义助手的工具。
-
-```sh
-assistants
-├── chat
-│   ├── assets
-│   ├── package.yao
-│   ├── prompts.yml
-│   ├── src
-│   │   └── index.ts
-│   └── tools.yao
-├── model
-│   ├── assets
-│   │   └── yao.md
-│   ├── package.yao
-│   ├── prompts.yml
-│   └── src
-│       └── index.ts
-├── neo
-│   ├── assets
-│   ├── package.yao
-│   ├── prompts.yml
-│   └── src
-│       └── index.ts
-└── schema
-    ├── assets
-    │   ├── model_rules.md
-    │   └── yao.md
-    ├── package.yao
-    ├── prompts.yml
-    └── src
-        └── index.ts
-```
-
-#### 助手配置文件Package.json
-
-助手定义可以有多种方式，通过文件进行配置，也可以保存在数据库中。
-
-助手配置文件定义了助手的名称、描述、工具等。
-
-助手配置文件(package.yao)是一个JSON格式的文件,用于定义助手的基本信息和配置参数。主要包含以下字段:
-
-| 字段名       | 类型     | 说明                   |
-| ------------ | -------- | ---------------------- |
-| name         | string   | 助手名称,用于显示      |
-| type         | string   | 类型,固定为"assistant" |
-| description  | string   | 助手描述               |
-| assistant_id | string   | 助手ID,唯一标识符      |
-| mentionable  | boolean  | 是否可以被提及(@)      |
-| automated    | boolean  | 是否为自动化助手       |
-| readonly     | boolean  | 是否只读               |
-| built_in     | boolean  | 是否为内置助手         |
-| sort         | number   | 排序值                 |
-| path         | string   | 助手目录路径           |
-| connector    | string   | 使用的AI模型连接器     |
-| created_at   | string   | 创建时间               |
-| tags         | string[] | 标签列表               |
-| options      | object   | AI模型参数配置         |
-| avatar       | string   | 头像URL，在Xgen中显示  |
-| prompts      | string   | 提示词配置文件路径     |
-
-其中options字段包含以下AI模型相关的参数:
-
-| 参数名            | 类型   | 说明                           |
-| ----------------- | ------ | ------------------------------ |
-| temperature       | number | 温度参数,控制输出的随机性(0-1) |
-| max_tokens        | number | 最大输出token数                |
-| top_p             | number | 核采样阈值                     |
-| frequency_penalty | number | 频率惩罚系数                   |
-| presence_penalty  | number | 存在惩罚系数                   |
-
-示例配置如下:
-
-```json
-{
-  "name": "model-assistant",
-  "type": "assistant",
-  "description": "This is a test assistant",
-  "assistant_id": "model",
-  "mentionable": true,
-  "automated": false,
-  "readonly": false,
-  "built_in": false,
-  "sort": 0,
-  "path": "model",
-  "connector": "deepseek-reasoner",
-  "created_at": "2022-02-22T14:00:00.000Z",
-  "tags": ["test"],
-  "options": {
-    "temperature": 0.7,
-    "max_tokens": 8192,
-    "top_p": 1,
-    "frequency_penalty": 0,
-    "presence_penalty": 0
-  },
-  "avatar": "https://cdn.pixabay.com/photo/2016/08/20/05/38/avatar-1606916_960_720.png",
-  "prompts": ""
-}
-```
-
-#### Prompt配置文件Prompts.yml
-
-助手提示文件(prompts.yml)是一个YAML格式的文件,用于定义助手的提示词。主要包含以下字段:
-
-| 字段名  | 类型   | 说明                                                     |
-| ------- | ------ | -------------------------------------------------------- |
-| role    | string | 角色类型,可选值: system/user/assistant，可以配置多个提示 |
-| name    | string | 提示词名称,用于标识不同的提示词                          |
-| content | string | 提示词内容,支持多行文本和引用assets目录下的文件          |
-
-示例配置如下:
-
-```yaml
-- role: system
-  name: documentation
-  content: |
-    - you are an AI assistant that translates the given DSL definition into a Yao model definition.
-    - @assets/yao.md
-```
-
-#### src/index.ts
-
-助手源码文件(src/index.ts)是一个TypeScript格式的文件,用于定义助手的业务逻辑。主要包含以下钩子函数:
-
-- Create: 助手被第一次调用时触发
-- Done: 聊天结束触发
-- Fail: 聊天出错触发
-
-##### Create
-
-Create钩子函数用于在助手被第一次调用时触发数:
-
-```ts
-/**
- * user request -> [Create hook] -> openai
- *
- * called before the chat with openai.
- *
- * @param context The context object containing session information and other relevant data.
- * @param input The input message array.
- * @param writer A payload object containing additional options or data.
- * @returns A response object containing the next action, input messages, and output data.
- */
-
-export function Create(
-  context: neo.Context,
-  input: neo.Message[],
-  option: { [key: string]: any }
-): neo.ResHookInit | null | string {}
-```
-
-##### Done
-
-```ts
-/**
- * called only once, when the call openai api done,open ai return messages
- *
- * @param context context info
- * @param input input messages
- * @param output messages
- * @param writer for response
- * @returns
- */
-function Done(
-  context: neo.Context,
-  input: neo.ChatMessage[],
-  output: neo.ChatMessage[]
-): neo.ResHookDone | null {
-  // case 1 return null,no change
-  // return null
-  return null;
-  // case 2 return object
-  return {
-    next: {
-      action: 'action1', //set to 'exit' to exit stream,only set it when you want to exit the process
-      payload: {}
-    }
-    // output: output //change the output message
-  };
-}
-```
-
-##### Fail
-
-```ts
-/**
- * called every time when the call openai api failed,open ai return error messages
- *
- * @param context context info
- * @param input input messages
- * @param output output messages
- * @returns {next,input,output}
- */
-function Fail(
-  context: neo.Context,
-  input: neo.Message[]
-): neo.ResHookFail | null {
-  // case 1 return null,no change
-  // return null
-  return null;
-  // case 2 return object
-  return {
-    // output: output,
-    // most important, return error message
-    // error: 'error message'
-  };
-}
-```
-
-## 回调函数
-
-### Agent中使用钩子函数
-
-在钩子函数中可以使用以下的函数或是对象来实现回调函数：
-
-在回调函数中，有以下的全局对象：
-
-- assistant: 助手对象
-- context: 上下文对象
-- Plan: 计划对象。
-- Send: 给前端Stream发送消息的函数
-- Call: 调用其它脚本的函数
-
-### 对象说明
-
-```ts
-
-/**
- * 创建并返回一个计划对象
- * @param planId 计划ID
- * @returns 计划对象
- */
-export declare function Plan(planId:string): Plan;
-
-type Method:string;//同一个脚本中的方法名称
-type Process:string;//yao处理器
-type Callback {//yao处理器回调，同时配置回调函数名和回调函数参数
-    name:string;
-    args:any[];
-}
-/**
- * 回调助手，并传入回调函数
- * @param assistantId 助手ID
- * @param input 输入,常用的是用户的提问。
- * @param callback 回调函数,接收4种类型的参数
- * 1. Function: 普通函数
- * 2. Callback: 对象,对象的name属性为回调函数名,args属性为回调函数参数
- * 3. Method: 方法,当前脚本中的方法名称
- * 4. Process: 处理器,调用其它处理器，处理器名称需要包含"."
- * @options 选项,调用聊天模型时的选项，比如temperature,top_p等参数
- */
-export declare function Call(assistantId:string,input:string,callback:null|Function|Callback|Method|Process,options:{[key:string]:any}): void;
-
-```
-
-Message类型定义
-
-```ts
-/**
- * Message 消息对象
- */
-interface Message {
-  /** 消息ID */
-  id?: string;
-  /** 文本内容 */
-  text?: string;
-  /** 消息类型: error, text, plan, table, form, page, file, video, audio, image, markdown, json等 */
-  type?: string;
-  /** 类型相关的属性 */
-  props?: Record<string, any>;
-  /** 标记消息是否完成 */
-  done?: boolean;
-  /** 标记是否为新消息 */
-  new?: boolean;
-  /** 标记是否为增量消息 */
-  delta?: boolean;
-  /** 会话动作列表 */
-  actions?: Action[];
-  /** 文件附件列表 */
-  attachments?: Attachment[];
-  /** 消息角色: user, assistant, system等 */
-  role?: string;
-  /** 消息名称 */
-  name?: string;
-  /** 助手ID (当role为assistant时) */
-  assistant_id?: string;
-  /** 助手名称 (当role为assistant时) */
-  assistant_name?: string;
-  /** 助手头像 (当role为assistant时) */
-  assistant_avatar?: string;
-  /** 消息提及列表 (当role为user时) */
-  mentions?: Mention[];
-  /** 消息数据 */
-  data?: Record<string, any>;
-  /** 消息是否待处理 */
-  pending?: boolean;
-  /** 消息是否隐藏 (不在UI和历史记录中显示) */
-  hidden?: boolean;
-  /** 消息是否需要重试 */
-  retry?: boolean;
-  /** 消息是否静默 (不在UI和历史记录中显示) */
-  silent?: boolean;
-  /** 工具调用ID */
-  tool_call_id?: string;
-  /** 函数调用列表 */
-  tool_calls?: FunctionCall[];
-}
-
-/**
- * 提及对象
- */
-interface Mention {
-  /** 助手ID */
-  assistant_id: string;
-  /** 名称 */
-  name: string;
-  /** 头像 */
-  avatar?: string;
-}
-
-/**
- * 附件对象
- */
-interface Attachment {
-  /** 文件名 */
-  name?: string;
-  /** 文件URL */
-  url?: string;
-  /** 文件描述 */
-  description?: string;
-  /** 文件类型 */
-  type?: string;
-  /** 内容类型 */
-  content_type?: string;
-  /** 文件大小(字节) */
-  bytes?: number;
-  /** 创建时间戳 */
-  created_at?: number;
-  /** 文件ID */
-  file_id?: string;
-  /** 会话ID */
-  chat_id?: string;
-  /** 助手ID */
-  assistant_id?: string;
-}
-
-/**
- * 动作对象
- */
-interface Action {
-  /** 动作名称 */
-  name?: string;
-  /** 动作类型 */
-  type: string;
-  /** 动作载荷 */
-  payload?: any;
-}
-```
-
-回调函数示例：
-
-```ts
-
-/**
- * 示例回调函数
- * @param msg 消息对象
- * @param args 其他参数,如果使用处理器定义，则args为处理器定义的参数
- */
-function exampleCallback(msg: Message,..args:any[]) {
-    console.log('收到消息:', msg.Text);
-}
-
-/**
- * 使用回调函数的示例
- */
-function useCallbackExample() {
-    // 使用普通函数作为回调
-    Call('neo', '你好', exampleCallback);
-
-    // 使用对象形式的回调
-    Call('neo', '你好', {
-        name: 'exampleCallback',
-        args: [] // 如果回调函数不需要参数，可以留空数组
-    });
-
-    // 使用当前脚本中的方法作为回调
-    Call('neo', '你好', 'exampleCallback');
-
-    // 使用处理器作为回调
-    Call('neo', '你好', '处理器名称.方法名称');
-}
-
-```
-
-### 测试
-
-```js
-function callback(msg:) {}
-
-function test() {
-  Call('neo', '你好', 'callback');
-  Call('neo', '你好', function () {
-    console.log('回调函数');
-  });
-}
-```
-
 ## aigc 处理器
 
 aigc 处理器是在 Yao 中实现的直接与 OpenAI 接口交互的处理器。通过配置 OpenAI 连接器与请求规则，可以将 OpenAI 接口转换成 Yao 处理器，从而与其它 Yao 功能无缝串联。
@@ -695,716 +232,6 @@ data: [DONE]
 }
 ```
 
-## neo api 接口
-
-yao 本身已经内置了 neo ai 聊天接口。
-
-### 聊天请求
-
-`/api/__yao/neo`，请求方法：`get`,URL 参数：`content`,`context`,`token`。token 是 jwt 认证参数。
-
-请求示例：
-
-```json
-{
-  "content": "Hello!",
-
-  "context": {
-    "namespace": "Table-Page-ddic.model",
-    "stack": "Table-Page-ddic.model",
-    "pathname": "/x/Table/ddic.model",
-    "formdata": {},
-    "field": { "name": "", "bind": "" },
-    "config": {},
-    "signal": ""
-  }
-}
-```
-
-```js
-const es = new EventSource(
-  `${neo_api}?content=${encodeURIComponent(
-    message.text
-  )}&context=${encodeURIComponent(
-    JSON.stringify(message.context)
-  )}&token=${encodeURIComponent(getToken())}${studio_token}`
-);
-```
-
-返回是 ss 异步消息。返回消息结构：
-
-返回消息都会被组装成`data: 消息\n\n`的格式，跟 chatgpt 的一致。其中消息内容又可以拆分成 json 数据。
-
-返回消息还会在 http 头上设置内容格式：`("Content-Type", "text/event-stream;charset=utf-8")`
-
-```json
-{
-  "text": "", //文本
-  "error": "", //错误
-  "done": false, //已完成
-  "confirm": false, //前端需要确认
-  "command": {
-    //
-    "id": "id",
-    "name": "",
-    "request": ""
-  },
-  "actions": [
-    //触发前端的操作
-    {
-      "name": "",
-      "type": "",
-      "payload": {},
-      "next": "'"
-    }
-  ]
-}
-```
-
-### 聊天历史记录
-
-`/api/__yao/neo/history`，请求方法：`get`,返回：
-
-```json
-{
-  "data": [{}] //历史记录
-}
-```
-
-### 获取命令列表
-
-`/api/__yao/neo/commands`，请求方法：`get`,返回：
-
-```json
-[
-  {
-    "name": "",
-    "description": "",
-    "args": "",
-    "stack": "",
-    "path": ""
-  }
-]
-```
-
-### 执行命令
-
-`/api/__yao/neo/`，请求方法：`post`,请求内容：
-
-```json
-{
-  "cmd": "ExitCommandMode"
-}
-```
-
-返回:
-
-```json
-{ "code": 200, "message": "success" }
-```
-
-### sse 事件流的标准格式。
-
-[使用服务器发送事件](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events/Using_server-sent_events#%E4%BA%8B%E4%BB%B6%E6%B5%81%E6%A0%BC%E5%BC%8F)
-
-```json
-{
-  "event": "update",
-  "data": { "id": 123, "message": "New update received" },
-  "id": 456,
-  "retry": 5000
-}
-```
-
-规范中规定了下面这些字段：
-
-`event` - 一个用于标识事件类型的字符串。如果指定了这个字符串，浏览器会将具有指定事件名称的事件分派给相应的监听器；网站源代码应该使用 addEventListener() 来监听指定的事件。如果一个消息没有指定事件名称，那么 onmessage 处理程序就会被调用。
-
-`data` - 消息的数据字段。当 EventSource 接收到多个以 data: 开头的连续行时，会将它们连接起来，在它们之间插入一个换行符。末尾的换行符会被删除。
-数据可以有多行，每行以 `\n` 符号分隔。换行符必须用 `\n` 来表示，不能使用 `\r\n`。在前端使用 EventSource 处理时，前缀会被自动的处理掉，并保留文本消息。除了发送 data，还可以发送 event/id/retry 字段。
-
-如果在服务端发送的数据中包含`\n`换行符,比如消息`YHOO\n+2\n\10`，那么在浏览器中收到的信息会是这样：
-
-```json
-event:message
-data: YHOO
-data: +2
-data: 10
-```
-
-最后一行必须有两个`\n `表示数据结束,使用两个换行符来分隔前后的消息
-
-`id` - 当前消息的 id, 事件 ID，会成为当前 EventSource 对象的内部属性“最后一个事件 ID”的属性值。
-
-`retry`
-重新连接的时间。如果与服务器的连接丢失，浏览器将等待指定的时间，然后尝试重新连接。这必须是一个整数，以毫秒为单位指定重新连接的时间。如果指定了一个非整数值，该字段将被忽略。
-
-所有其他的字段名都会被忽略。
-
-## Neo 命令
-
-在最新的代码中，yao 实现了 neo 命令模式。
-
-Neo 命令模式，是指在用户与 Neo 助手聊天过程中切入到业务操作模式，在命令模式下，用户可以向 Yao 发出业务操作指令，Yao 会响应指令并作出合适的响应，在这过程中 Yao 会调用 ChatGPT 进行消息处理与回复。比如，用户在 neo 聊天框中输入处理命令"帮我生成 10 条测试数据"，yao 就调用 ChatGPT 智能的生成 10 条测试数据。
-
-优势与特点：
-
-- 对用户友好，对用户来说，不再需要记住具体的功能菜单入口，只需要在聊天框中自然的描述他的想法。
-- Yao 融合了命令与聊天功能，ChatGPT 与 yao 无缝集成，在聊天的过程上随时可以调用后端命令。
-- 交互性好，前后端的接口使用 SSE 技术，信息的及时性有保证，并且集成了上下文对话功能。
-- 扩展性好，yao 把命令的定义接口留给用户，用户可以根据自己的实际需求扩展自己的功能。
-
-整个 neo 命令的执行流程如下：
-
-- ->定义命令
-- ->调用命令模板处理器 prepare,读取用户配置的提示词模板
-- ->格式化提示词
-- ->调用 ChatGPT API 接口
-- ->检查返回聊天消息
-- ->从聊天消息中解析出处理器参数
-- ->让用户确认\[可选\]
-- ->调用数据回调处理器，可以在处理器向前端写入预览消息
-- ->浏览器执行 Action(刷新界面)
-
-### 配置
-
-#### 定义命令
-
-一个 Neo 命令需要包含以下的内容。
-
-- process 回调处理器，处理 ai 返回的数据,在用户确认后调用的处理器或是直接执行的处理器。
-- actions 定义，在 xgen 界面上的回调操作。
-- prepare 处理器，准备与 ai 交互的提示词，尽可能准确的描述的你的目的。
-
-定义 Neo 命令的方法是在目录/neo 下创建后缀为`.cmd.yml`配置文件。
-
-示例：
-
-`/neo/table/data.cmd.yml`
-
-```yaml
-## Generate test data for the table
-
-##
-## yao run neo.table.Data 帮我生成20条测试数据
-
-## 命令的名称 用于匹配用户的提示请求
-name: Generate test data for the table
-## neo 命令的快捷引用方式，比如在neo助手中输入/data,直接引用这个命令，这样的好处是更快更准确的引用命令
-use: data
-## 连接器定义
-connector: gpt-3_5-turbo
-## 用户确认后再执行，或是无需确认，直接执行的处理器。
-process: scripts.table.Data
-## 处理器的参数类型与说明
-args:
-  - name: data # name 用于筛选ChatGPT返回的json数据,并作为处理器的参数
-    type: Array
-    description: The data sets to generate
-    required: true # 表示参数是必须的，如果不存在会报错
-    default: []
-## 命令执行成功后，在xgen上执行的回调命令，比如这里数据生成后，在xgen界面上自动刷新。
-actions:
-  - name: TableSearch
-    type: 'Table.search'
-    payload: {}
-
-## 命令执行的准备处理器
-prepare:
-  # 在before阶段，处理器可以根据xgen传入的上下文参数生成与ai交互的命令
-  before: scripts.table.DataBefore
-  # 在after阶段，把ai返回的数据进行格式化处理，在处理器里可以输出到xgen neo助手对话框界面。
-  after: scripts.table.DataAfter
-  option:
-    temperature: 0.8
-
-  # 与ChatGPT交互的提示词，角色是system
-  prompts:
-    - role: system
-      # prepare.before处理器返回的json数据{template:''}
-      content: '{{ template }}'
-
-    - role: system
-      # prepare.before处理器返回的json数据{explain:''}
-      content: '{{ explain }}'
-
-    #让gpt不要解析结果内容，并返回指定的数据内容
-    - role: system
-      content: |
-        - According to my description, according to the template given to you, generate a similar JSON data.
-        - The Data is what I want to generate by template.
-        - Reply to me with a message in JSON format only: {"data": "<Replace it with the test data generated by the template>"}
-        - Do not explain your answer, and do not use punctuation.
-## 命令的描述 用于匹配用户的提示请求
-description: |
-  Generate test data for the table
-
-optional:
-  #命令是否需要用户确认，会在neo助手上显示"执行"按钮
-  confirm: true
-  autopilot: true
-```
-
-### 配置聊天 api guard
-
-参考![](../docs/YaoDSL/AIGC/neo聊天助手.md)
-
-### neo 助手初始化过程
-
-- 检查内置的聊天记录表是否存在，如果不存在创建新表，默认的表名是 yao_neo_conversation。这个表可以在 neo.yml 配置文件中进行修改。
-- 初始化聊天机器人的驱动，模型根据 neo.yml 配置的 connector，默认是使用 ChatGPT 的 gpt-3_5-turbo 模型。
-- 加载用户的命令列表`*.cmd.yml, *.cmd.yaml`到内存中。
-
-#### API 响应用户请求
-
-- api guard 中解析出`__sid`作为聊天上下文 id。
-- 根据 sid 查找用户的聊天历史，查找表 yao_neo_conversation，聊天历史可以通过配置控制长度。如果是新的会话，聊天历史会是空的。
-- 在聊天消息历史中合并用户最新的提问内容,比如，“帮我生成一条数据”
-- 根据用户最后的输入消息中是否包含了命令，使用 ChatGPT 进行检查。
-
-### 命令模式与聊天模式
-
-#### 命令模式
-
-默认情况下，Neo 助手是处于聊天模式，用户与 Neo 的对话基于 ChatGPT 文本处理。
-
-当用户的消息模糊匹配到后端配置的命令列表，或是使用精确命令时，会进入"命令对话模式"。在这个模式中，所有的用户对话都会作为命令的上下文。
-
-> 在 Neo 助手界面上，会显示一个"退出"按钮。
-
-比如发消息让 AI 生成模型。"/module 请生成销售订单模型"。YAO 会匹配到创建模型的命令，直接进入命令交互模式。首先 AI 会返回一个初步的处理结果。但是你对这个结果还想进行修正或是作补充,你可以再向 AI 发送消息
-
-"请增加总金额字段"
-
-这时候，因为还在命令模式中，AI 会在继续在之前的结果上进行补充。
-
-退出命令模式后就会再次进入聊天模式。
-
-> 在 Neo 助手界面上，点击"退出"按钮,退出命令模式。
-
-用户命令的匹配过程如下：
-
-#### 检查请求与命令匹配与过滤。
-
-neo 助手的每一次请求都会携带两个当前界面组件的信息。`path` 与 `stack` 属性。path 是 neo 助手发送命令时界面的 url 地址，stack 是 xgen 界面组件在界面上的层次关系。
-
-```json
-{ "Stack": "Table-Page-pet", "Path": "/x/Table/pet" }
-```
-
-命令的模糊匹配
-
-这两个参数会跟所有 cmd.yml 中配置的 path 与 stack 属性进行比较。可以使用通配符`*`,命令中如果没有配置两个参数是匹配所有请求。
-
-把所有的匹配到的命令列表的名称 name 与描述 description，还有用户的请求消息一起提交给 ChatGPT 作判断。如果匹配成功，返回处理命令 cmd 的 id。
-
-所以，一个命令是否匹配的上，取决于 3 个因素
-
-- cmd.yml 中配置的`path`与`stack`属性与请求中的`path`与`stack`属性的匹配度。
-- cmd.yml 中名称与描述与用户请求消息的匹配度。
-- ChatGPT 的判断。
-
-命令的精确匹配
-
-完全使用 ChatGPT 来匹配命令有可能会失败。如果需要精确匹配，可以在命令中配置 Use 属性，这样就能直接在聊天对话框中使用 Use 命令，比如配置了`Use:data`在聊天中就能使用`/data 生成数据`定位命令。
-
-命令的名称只能包含大小写字母。聊天消息可以是只包含命令`/Command` 或是聊天消息以命令作为前缀`/Command `，命令后需要有空格。
-
-#### 命令执行过程
-
-成功匹配到命令后，会进入命令处理环节。
-
-- 准备与 ChatGPT 交互的提示词。
-
-  - 调用处理器 prepareBefore，获取用户定义的模板内容，返回的内容用于填充 prepare.prompts。
-
-    ```js
-    /**
-     * Command neo.table.data
-     * Prepare Hook: Before
-     * @param {*} context  上下文，包含stack/path
-     * @param {*} messages 聊天消息历史
-     */
-    function DataBefore(context, messages) {
-      // console.log("DataBefore:", context, messages);
-      context = context || { stack: '-', path: '-' };
-      messages = messages || [];
-      const { path } = context;
-      if (path === undefined) {
-        done('Error: path not found.\n');
-        return false;
-      }
-
-      const tpl = Templates[path];
-      if (tpl === undefined) {
-        done(`Error: ${path} template not found.\n`);
-        return false;
-      }
-
-      ssWrite(`Found the ${path} generate rules\n`);
-      return { template: tpl.data, explain: tpl.explain };
-    }
-    ```
-
-  - 处理器 prepareBefore 返回的内容与命令定义中的`cmd.prepare`属性中的 prompt 模板进行合并成新的提示模板。这里可以使用`{{}}`语法绑定。
-  - 提示模板中所有的的提示词的角色都会被设置成`system`，而用户提问消息的角色会被设置成`user`，Yao 结合两部分的内容后，向 ChatGPT 提交请求，并返回请求结果。
-  - 调用后继处理器 prepareAfter。后继处理的作用是检查，格式化 ChatGPT 返回的消息。如果有必要也可以使用全局函数 ssWrite 写入 neo 助手的聊天对话框。
-
-  示例：
-
-  ```js
-  /**
-   * Command neo.table.data
-   * Prepare Hook: After
-   * @param {*} content ChatGPT返回消息
-   */
-  function DataAfter(content) {
-    // console.log("DataAfter:", content);
-    const response = JSON.parse(content);
-    const data = response.data || [];
-    if (data.length > 0) {
-      // Print data preview
-      //ssWrite向客户端发送sse消息
-      ssWrite(`\n`);
-      ssWrite(`| name | type | status | mode | stay | cost | doctor_id |\n`);
-      ssWrite(`| ---- | ---- | ------ | ---- | ---- | ---- | --------- |\n`);
-      data.forEach((item) => {
-        message = `| ${item.name} |  ${item.type} |  ${item.status} | ${item.mode} | ${item.stay} | ${item.cost} | ${item.doctor_id}|\n`;
-        ssWrite(message);
-      });
-      ssWrite(`  \n\n`);
-
-      //返回新的消息
-      return response;
-    }
-
-    throw new Exception('Error: data is empty.', 500);
-  }
-  ```
-
-  - 校验 ChatGPT 返回的数据并生成处理器参数。经过上面 ChatGPT 与后继处理器的处理后，得到一个初步的结果，这些结果将会作为命令处理器的参数。在这一步里会根据配置的命令参数配置进行参数检查。参数`Command.Args`配置了哪些参数是必输项，参数名是什么，根据参数名筛选上面返回的结果作为命令处理器的参数。
-
-  ```js
-  // validate the args
-  if req.Command.Args != nil && len(req.Command.Args) > 0 {
-  	for _, arg := range req.Command.Args {
-  		v, ok := data[arg.Name]
-  		if arg.Required && !ok {
-  			err := fmt.Errorf("\nMissing required argument: %s", arg.Name)
-  			return nil, err
-  		}
-
-  		// @todo: validate the type
-  		args = append(args, v)
-  	}
-  }
-  ```
-
-  - 如果配置了`Command.Optional.Confirm`，说明这个命令是需要用户进行确认的，Yao 会给用户返回一个确认的指令，等用户确认后再执行操作。这里比较绕，它的操作是把前面操作得到的结果作为参数与处理器再次封装一个 json 数据，返回给浏览器客户端，等用户确认后再把 json 数据提交到 yao 后端执行。整个动作会被定义成一个新的名称为`ExecCommand`的`Action`。这个`Action`的默认类型会被设置成`Service.__neo`，用户确认命令后，会调用一个 Yao 的内部的服务方法`Service.__neo`。
-
-  ```go
-    //yao/neo/command/request.go
-    // confirm the command
-    func (req *Request) confirm(args []interface{}, cb func(msg *message.JSON) int) {
-
-      payload := map[string]interface{}{
-        "method": "ExecCommand",
-        "args": []interface{}{
-          req.id,
-          req.Command.Process,
-          args,
-          map[string]interface{}{"stack": req.ctx.Stack, "path": req.ctx.Path},
-        },
-      }
-
-      msg := req.msg().
-        Action("ExecCommand", "Service.__neo", payload, "").
-        Confirm().
-        Done()
-
-      if req.Actions != nil && len(req.Actions) > 0 {
-        for _, action := range req.Actions {
-          msg.Action(action.Name, action.Type, action.Payload, action.Next)
-        }
-      }
-
-      cb(msg)
-    }
-
-  ```
-
-  像这种需要用户确认命令的场景,为什么不直接调用 process,而是需要中间多一层 service 函数。因为在 xgen 上是无法直接调用后端的 process 处理器，需要使用 service 函数（云函数）作为中间层。
-
-- 如果配置了其它的`Command.Actions`，将会合并在一起，并通过 sse 全局函数发送到客户端。
-
-#### 用户确认命令
-
-经过上面的处理，在 xgen 的 neo 助手界面上会显示提示消息："消息包含业务指令，是否执行？"。当用户点击执行后，会依次调用上面配置的 actions。
-
-- 调用 action `Service.__neo`，服务端的`Service.__neo`方法会调用`Command.Process`，处理用户数据。
-- 调用用户自定义的 action，比如`Table.search`,刷新 table 界面，显示最新的 table 数据。
-
-- 如果没有配置`Command.Optional.Confirm`，说明这个命令是可以直接在后台执行，不需要用户确认。Yao 会直接调用处理器`req.Command.Process`进行处理。
-
-#### 处理器执行
-
-如果是直接执行的处理器，可以在 actions 里绑定处理器返回的内容。
-
-```yaml
-process: studio.html.Page
-actions:
-  - name: Redirect to the generated page
-    type: 'Common.historyPush'
-    payload:
-      pathname: '{{ iframe }}' #绑定处理器studio.html.Page返回的内容
-      public: false
-```
-
-### 示例代码
-
-```sh
-
-git clone https://github.com/YaoApp/yao-neo-dev.git
-
-git clone https://github.com/YaoApp/yao-dev-app.git
-```
-
-### 注意点
-
-整个命令的定义过程与步骤内容比较多。
-
-- ai 并不一定一次就能百分百匹配到命令，可以使用 Use 属性解决这个问题。
-- ai 返回的结果不一定十分准确，解决方法是，1 使用准确的提示词，2 让用户确认内容，3 脚本检测并加工处理内容。
-- 提示词设置需要一些技巧与遵循一定的规则。
-
-## 内置 neo 聊天服务
-
-### 适用版本
-
-0.10.3 或以上
-
-### 特性
-
-- 开箱即用的聊天服务
-- 支持上下文对话
-
-### 配置
-
-#### 配置 openai key
-
-连接 OPENAI 需要设置 openai key，在环境变量中设置访问 key。
-
-| 变量名称   | 说明                                                             | 示例     |
-| ---------- | ---------------------------------------------------------------- | -------- |
-| OPENAI_KEY | OPENAI API KEY, 可在连接器中更换变量名。 启用 Neo 或 AIGC 必须。 | `sk-xxx` |
-
-#### 配置代理
-
-如果需要使用代理，需要配置环境变量 https_proxy,支持使用 socket 代理或是 http 代理。
-
-HTTPS_PROXY="socks5://0.0.0.0:10808"
-
-#### 配置 openai connector
-
-openai 连接器可以参考![](../docs/YaoDSL/AIGC/aigc处理器.md)
-
-#### 配置 数据库 connector
-
-数据连接器配置![](../docs/YaoDSL/Connector/连接器.md)
-
-#### 配置 neo
-
-Neo 助手配置文件`neo/neo.yml`，这个配置文件的路径与文件名是固定的。
-
-```yaml
-## 配置openai connector
-connector: gpt-3_5-turbo
-## 自定义聊天token认证处理器，处理器一定要返回参数__sid
-guard: 'scripts.guard.Chat'
-
-conversation:
-  # 聊天会话保存连接器，默认default
-  connector: default
-  #   保存会话的表，默认yao_neo_conversation，自动初始化
-  table: yao_neo_conversation
-  #   跟open ai聊天时的最大历史数量，默认20
-  max_size: 10
-  #   历史会话的最大保存时间，单位秒，默认3600
-  ttl: 3600
-
-command:
-  # neo命令解析连接器定义，如果没有配置会使用neo connector
-  parser: gpt-3_5-turbo
-
-## 当用户请求到达API接口后，使用这个hook修改用户的请求信息后再发送到openai,接收用户请求的消息，并返回新的消息
-## 如果有聊天的历史，在这里也可以获取到。
-prepare: 'scripts.neo.Prepare'
-
-## 收到openai的回复后进行调整回复的消息后再返回到客户端
-write: 'scripts.neo.Write'
-
-prompts:
-  - role: system
-    content: |
-      - Your name is Neo.
-      - Your are a AI assistant of YAO
-
-option:
-  temperature: 1.2
-
-## 跨域设置，访问域名的白名单
-allows:
-  - 'http://127.0.0.1:8000'
-  - 'http://127.0.0.1:5099'
-  - 'http://localhost:8000'
-```
-
-#### 配置 app.yao
-
-配置路径`optional.neo.api`。neo 可以单独布署成一个服务或是与业务应用布署在一起。
-
-如果把 neo 助手服务单独布署成一个服务。需要设置 api 的全路径地址。
-
-api 访问地址：`http://host:port/api/__yao/neo，`路径`api/__yao/neo`是固定的，写死在源代码里`/service/service.go`。
-
-```json
-{
-  "xgen": "1.0",
-  "optional": {
-    "neo": { "api": "http://localhost:5099/api/__yao/neo" }
-  }
-}
-```
-
-集成配置，如果 neo 跟你的业务应用放在一起，只需要配置`/neo`，因为`yao`默认的内置前缀是`/api/__yao`。
-
-```json
-{
-  "xgen": "1.0",
-  "optional": {
-    "neo": { "api": "/neo" }
-  }
-}
-```
-
-设置`"studio": true`后可以在处理器时调用 studio 处理器，比如用来生成 dsl 文件等操作。
-
-```jsonc
-{
-  "xgen": "1.0",
-  "optional": {
-    "neo": { "api": "/neo", "studio": true }
-  }
-}
-```
-
-### 测试代码
-
-官方已提供了测试样例
-
-```sh
-https://github.com/YaoApp/yao-dev-app
-
-https://github.com/YaoApp/yao-init
-
-```
-
-### Yao 后端
-
-#### 配置类型与说明
-
-```go
-// DSL AI assistant
-type DSL struct {
-	ID                  string                    `json:"-" yaml:"-"`
-	Name                string                    `json:"name,omitempty"`
-	Use                 string                    `json:"use,omitempty"`
-	Guard               string                    `json:"guard,omitempty"`
-	Connector           string                    `json:"connector"`
-	ConversationSetting conversation.Setting      `json:"conversation" yaml:"conversation"`
-	Option              map[string]interface{}    `json:"option"`
-	Prepare             string                    `json:"prepare,omitempty"`
-	Prompts             []aigc.Prompt             `json:"prompts,omitempty"`
-	Allows              []string                  `json:"allows,omitempty"`
-	Command             Command                   `json:"command,omitempty"`
-	AI                  aigc.AI                   `json:"-" yaml:"-"`
-	Conversation        conversation.Conversation `json:"-" yaml:"-"`
-}
-
-// Setting the conversation config
-type Setting struct {
-	Connector string `json:"connector,omitempty"`
-	Table     string `json:"table,omitempty"`
-	MaxSize   int    `json:"max_size,omitempty" yaml:"max_size,omitempty"`
-	TTL       int    `json:"ttl,omitempty" yaml:"ttl,omitempty"`
-}
-
-// Answer the answer interface
-type Answer interface {
-	Stream(func(w io.Writer) bool) bool
-	Status(code int)
-	Header(key, value string)
-}
-
-// Command setting
-type Command struct {
-	Parser string `json:"parser,omitempty"`
-}
-
-```
-
-### yao api 响应处理过程
-
-#### 登录认证
-
-聊天 token 认证处理器 guard,它的作用是从 token 中解析出用户的上下文 id,如果是在 xgen 框架中使用，这个 token 会自动的带上，如果是别的外部调用，需要手动处理。最重要的是`__sid`,这个参数可以作为与 ai 对接的上下文关联会话标识 session id。而`__global`参数是在生成 jwt 令牌时插入的数据。
-
-> 令牌的生成请参考处理器`utils.jwt.Make`
-
-```js
-function Chat(path, params, query, payload, headers) {
-  query = query || {};
-  token = query.token || '';
-  token = token[0] || '';
-  token = token.replace('Bearer ', '');
-  if (token == '' || token.length == 0) {
-    throw new Exception('No token provided', 403);
-  }
-
-  let data = Process('utils.jwt.Verify', token);
-  return { __sid: data.sid, __global: data.data };
-}
-```
-
-#### 聊天会话
-
-openai 的接口请求是没有记忆聊天的历史的，这里需要使用本地数据库表保存上一次的聊天信息，在下一次的接口请求中把之前的聊天信息也带上，形成了聊天会话的效果。
-
-本地数据库表的配置名称是`conversation.table`。数据库表如果不存在，会自动的创建。
-
-#### 聊天信息钩子
-
-通过配置处理器`prepare`,可以在发送数据给 openai 接口之前，读取本地的向量数据库或是其它的额外处理。
-
-这个处理器需要返回以下结构的信息
-
-```json
-[
-  {
-    "role": "system", //角色一般会设置成system，代表是一个提示信息
-    "content": ""
-  },
-  {
-    "role": "system",
-    "content": ""
-  }
-]
-```
-
-#### 命令
-
-如果消息中包含了处理命令，还会检查并调用本地命令处理器。
-
 ## openai 处理器
 
 yao 内置了以下几个与 openai 相关的处理器：
@@ -1484,149 +311,6 @@ Process(
     ssEvent('messages', content); //如果在api接口处理中，可以使用ssEvent向api接口写入ss消息
   }
 );
-```
-
-## yao 应用中的 sse 函数
-
-在 yao 应用的 js 脚本中，有几个与 sse 相关的处理函数。
-
-### 函数 ssEvent
-
-适用于所有的`text/stream` api 请求
-
-在 js 脚本中可以使用 ssEvent 函数向客户端发送 sse 事件。这个函数在底层调用了 gin 的 SSEvent 函数。函数接收两个参数：
-
-- event,事件名称，字符串，一般默认情况下使用 message,使用 eventsource 的情况下会触发浏览器中的 onmessage 事件。
-- data,消息内容，任意数据
-
-```js
-c.SSEvent('message', msg);
-```
-
-具体请参考：
-
-[使用服务器发送事件](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events/Using_server-sent_events#%E4%BA%8B%E4%BB%B6%E6%B5%81%E6%A0%BC%E5%BC%8F)
-
-### 函数 cancel
-
-适用于所有的`text/stream` api 请求
-
-js 中的 cancel 函数实际上会调用 go 中的 context 的函数，取消请求连接。
-
-```go
-ctx, cancel := context.WithCancel(context.Background())
-```
-
-需要注意的是在调用 ssEvent 与 cancel 时，需要在 api 关联的处理函数里直接使用，不能在 api 函数里通过调用处理器间接调用。
-比如 api 定义如下，那么 ssEvent 函数需要在处理器`scripts.chatweb.process`或是其直接调用的 js 函数中调用，而不能在处理`scripts.chatweb.process`中通过`Process("")`间接调用。原因是 ssEvent 是一个特定函数，只在固定的 streamHandle 的函数上下文中才会的生效。
-
-```json
-{
-  "path": "/chat-process",
-  "method": "POST",
-  "guard": "scripts.security.CheckChatKey",
-  "process": "scripts.chatweb.process",
-  "in": [":payload"],
-  "out": {
-    "status": 200,
-    "type": "text/event-stream; charset=utf-8"
-  }
-}
-```
-
-### 函数 ssWrite
-
-只有 neo 请求中生效。
-
-在与 neo 助手的交互过程中通过 sse 向浏览器写入文本数据,参考下面的数据结构中`message.text`。
-
-### 函数 done
-
-只有 neo 请求中生效。
-
-在与 neo 助手的交互过程中向浏览器写入`message.done=true`的标识,注意并不是写入标准的 SSE 消息`data: [DONE]`，结束此次的会话。
-
-ssWrite 与 done 函数的返回的数据结构如下：
-
-```go
-// Message the message
-type Message struct {
-	Text    string                 `json:"text,omitempty"`
-	Error   string                 `json:"error,omitempty"`
-	Done    bool                   `json:"done,omitempty"`
-	Confirm bool                   `json:"confirm,omitempty"`
-	Command *Command               `json:"command,omitempty"`
-	Actions []Action               `json:"actions,omitempty"`
-	Data    map[string]interface{} `json:"-,omitempty"`//调用自定义js脚本后返回的结果
-}
-
-// Action the action
-type Action struct {
-	Name    string      `json:"name,omitempty"`
-	Type    string      `json:"type"`
-	Payload interface{} `json:"payload,omitempty"`
-	Next    string      `json:"next,omitempty"`
-}
-
-// Command the command
-type Command struct {
-	ID      string `json:"id,omitempty"`
-	Name    string `json:"name,omitempty"`
-	Reqeust string `json:"request,omitempty"`
-}
-```
-
-### 解析 sse 消息
-
-```ts
-interface SSEParsedData {
-  events: string[];
-  data: string;
-}
-
-/**
- * 转换sse消息，获取sse消息体中的data 数据，可能的格式有：
- * event: message
- * data:
- *
- * event: message
- * data: :
- * data:
- * data:
- *
- * @param sseMessage sse消息，有可能会有多行
- */
-function parseSSEMessage(sseMessage: string): SSEParsedData {
-  const parsedData: SSEParsedData = {
-    events: [],
-    data: ''
-  };
-
-  let lines = sseMessage.split('\n');
-  let currentType: 'event' | 'data' | null = null;
-  let previousType: 'event' | 'data' | null = null;
-
-  for (let line of lines) {
-    if (line.startsWith('event:')) {
-      currentType = 'event';
-      parsedData.events.push(line.substring('event:'.length).trim());
-    } else if (line.startsWith('data:')) {
-      if (previousType === 'data') {
-        parsedData.data += '\n'; // 加入换行符，只有在连续的data行之间
-      }
-      currentType = 'data';
-      let data = line.substring('data:'.length).trim();
-      if (data === '[DONE]') {
-        //结束标识
-        break;
-      }
-      parsedData.data += data;
-    }
-    previousType = currentType; // 更新前一个类型
-  }
-
-  return parsedData;
-}
 ```
 
 ## API 守卫 Guard
@@ -2100,6 +784,8 @@ Process('session.set', 'user_id', user.id, timeout, sessionId);
 
 ### 传入 API 接口中引用会话变量
 
+在 api 接口定义中，在输入节点`in`的`params`节点中可以使用变量的方式引用传入参数，比如使用`$session`引用会话变量，
+
 ```json
 {
   "path": "/session/in",
@@ -2117,18 +803,20 @@ Process('session.set', 'user_id', user.id, timeout, sessionId);
 
 在 api 接口定义中，在输出节点`out`的`headers`节点或是 `body`节点使用`{{}}`或是`?:`引用返回的对象，
 
-> 小技巧，通过在 gou 项目中查找 share.Bind 方法的调用可以看到哪些代码可以使用变量绑定功能。
+> 小技巧，通过在 gou 项目中查找 helper.Bind 方法的调用可以看到哪些代码可以使用变量绑定功能。
 
 返回值绑定示例,
 
 处理器`flows.user.info`返回一个 json 结构数据`{}`
 
-```json
-{
-  "type": "text/json",
-  "content": "hello",
-  "agent": "edge/chrome"
-}
+在处理器中需要返回一个对象。
+
+```js
+return {
+  type: 'text/json',
+  content: 'hello',
+  agent: 'edge/chrome'
+};
 ```
 
 api 定义：
@@ -2142,10 +830,10 @@ api 定义：
   "out": {
     "status": 200,
     "headers": {
-      "Content-Type": "{{type}}",
-      "User-Agent": "?:agent"
+      "Content-Type": "{{type}}", //第一种绑定方法
+      "User-Agent": "?:agent" //另外一种绑定方法
     },
-    "body": "{{content}}"
+    "body": "{{content}}" //body 节点可以是任意类型，比如json对象，数组，嵌套的对象等
   }
 }
 ```
@@ -8063,12 +6751,14 @@ if (exists) {
 | 参数     | 类型    | 说明                                                   | 必填 | 默认值 |
 | -------- | ------- | ------------------------------------------------------ | ---- | ------ |
 | metadata | boolean | 是否返回模型完整元信息，包含用户在模型中定义的所有信息 | 否   | false  |
-| columns  | boolean | 是否返回列信息字典，包括列名、类型、注释等             | 否   | false  |
+| columns  | boolean | 是否返回列**信息字典**，包括列名、类型、注释等         | 否   | false  |
 
 **返回值**：
 
 - 类型：array
 - 说明：模型信息对象数组
+
+需要注意的是：在每一个模型中的columns对象是一个字典对象，而metadata中的columns对象是一个数组。
 
 **返回值示例**：
 
@@ -8098,6 +6788,12 @@ if (exists) {
 ```
 
 **示例代码**：
+
+```sh
+yao run -s model.list "::{\"metadata\":true,\"columns\":true}" > models_list.json
+```
+
+js 示例：
 
 ```js
 // 基本用法
@@ -9245,6 +7941,1364 @@ function AfterUpdate(payload) {
     data: payload
   });
   return payload;
+}
+```
+
+## AI代理
+
+### AI助手
+
+通过配置Function Tool与Prompt Template，可以让AI模型变成一个AI助手。
+
+在Yao中可以使用AI代理来完成一些复杂的任务，例如：
+
+- 调用第三方API
+- 调用本地的工具
+
+### Function Call
+
+通过Json定义声明给告知本地工具函数的作用与参数，AI模型在处理过程中返回调用本地工具函数的参数与函数名。
+
+#### 函数声明
+
+创建一个 tools 对象，包含一个或多个 function declarations。使用 JSON 定义函数。单个函数声明可以包含以下参数：
+
+- name（字符串）：API 调用中函数的唯一标识符。
+- description（字符串）：全面说明函数的用途和功能。
+- parameters（对象）：定义函数所需的输入数据。
+- type（字符串）：指定整体数据类型，例如 object。
+- properties（对象）：列出各个参数，每个参数均包含：
+- type（字符串）：参数的数据类型，例如 string、integer、boolean。
+- description（字符串）：清楚地说明参数的用途和预期格式。
+- required（数组）：一个字符串数组，用于列出函数运行所必需的参数名称。
+
+#### 函数声明的最佳实践
+
+在将函数集成到请求中时，准确定义函数至关重要。每个函数都依赖于特定参数，这些参数可指导其行为并与模型互动。以下列表提供了有关在 functions_declarations 数组中定义各个函数参数的指南。
+
+name：使用清晰、描述性强的名称，不含空格、英文句点 (.) 或短划线 (-) 字符。请改用下划线 (\_) 字符或驼峰式命名法。
+
+description：提供详细、清晰且具体的函数说明，并根据需要提供示例。例如，使用 find theaters based on location and optionally movie title that is currently playing in theaters. 取代 find theaters。避免使用过于宽泛或模糊的说明。
+
+properties > type：使用强类型参数来减少模型幻觉。例如，如果参数值来自有限集，请使用 enum 字段，而不是在说明中列出值（例如"type": "enum", "values": ["now_playing", "upcoming"]）。如果参数值始终是整数，请将类型设置为 integer，而不是 number。
+
+properties > description：提供具体的示例和限制。 例如，使用 The city and state, e.g. San Francisco, CA or a zip code e.g. 95616 取代 the location to search。
+
+### 调用第三方API
+
+### 定义一个助手
+
+助手需要定义在Assistant目录下，一个Assistant目录下可以有多个助手，每个目录对应一个Assistant。
+
+目录结构如下：
+
+- assets：存放助手所需的资源文件，例如图片、音频、视频等,在Prompt中使用@assets/文件名.文件类型来引用。
+- package.yao：助手配置文件，定义助手的名称、描述、工具等。
+- prompts.yml：助手提示文件，定义助手的提示词。
+- src：助手源码文件，定义助手的业务逻辑。
+- tools.yao：助手工具文件，定义助手的工具。
+
+```sh
+assistants
+├── chat
+│   ├── assets
+│   ├── package.yao
+│   ├── prompts.yml
+│   ├── src
+│   │   └── index.ts
+│   └── tools.yao
+├── model
+│   ├── assets
+│   │   └── yao.md
+│   ├── package.yao
+│   ├── prompts.yml
+│   └── src
+│       └── index.ts
+├── neo
+│   ├── assets
+│   ├── package.yao
+│   ├── prompts.yml
+│   └── src
+│       └── index.ts
+└── schema
+    ├── assets
+    │   ├── model_rules.md
+    │   └── yao.md
+    ├── package.yao
+    ├── prompts.yml
+    └── src
+        └── index.ts
+```
+
+#### 助手配置文件Package.json
+
+助手定义可以有多种方式，通过文件进行配置，也可以保存在数据库中。
+
+助手配置文件定义了助手的名称、描述、工具等。
+
+助手配置文件(package.yao)是一个JSON格式的文件,用于定义助手的基本信息和配置参数。主要包含以下字段:
+
+| 字段名       | 类型     | 说明                   |
+| ------------ | -------- | ---------------------- |
+| name         | string   | 助手名称,用于显示      |
+| type         | string   | 类型,固定为"assistant" |
+| description  | string   | 助手描述               |
+| assistant_id | string   | 助手ID,唯一标识符      |
+| mentionable  | boolean  | 是否可以被提及(@)      |
+| automated    | boolean  | 是否为自动化助手       |
+| readonly     | boolean  | 是否只读               |
+| built_in     | boolean  | 是否为内置助手         |
+| sort         | number   | 排序值                 |
+| path         | string   | 助手目录路径           |
+| connector    | string   | 使用的AI模型连接器     |
+| created_at   | string   | 创建时间               |
+| tags         | string[] | 标签列表               |
+| options      | object   | AI模型参数配置         |
+| avatar       | string   | 头像URL，在Xgen中显示  |
+| prompts      | string   | 提示词配置文件路径     |
+
+其中options字段包含以下AI模型相关的参数:
+
+| 参数名            | 类型   | 说明                           |
+| ----------------- | ------ | ------------------------------ |
+| temperature       | number | 温度参数,控制输出的随机性(0-1) |
+| max_tokens        | number | 最大输出token数                |
+| top_p             | number | 核采样阈值                     |
+| frequency_penalty | number | 频率惩罚系数                   |
+| presence_penalty  | number | 存在惩罚系数                   |
+
+示例配置如下:
+
+```json
+{
+  // 助手名称,用于显示
+  "name": "model-assistant",
+
+  // 类型,固定为"assistant"
+  "type": "assistant",
+
+  // 助手描述
+  "description": "This is a test assistant",
+
+  // 助手ID,唯一标识符
+  "assistant_id": "model",
+
+  // 是否可以被提及(@)
+  "mentionable": true,
+
+  // 是否为自动化助手
+  "automated": false,
+
+  // 是否只读，如果通过文件配置的方式，readonly=true
+  "readonly": false,
+
+  // 是否为内置助手
+  "built_in": false,
+
+  // 排序值
+  "sort": 0,
+
+  // 助手目录路径
+  "path": "model",
+
+  // 使用的AI模型连接器
+  "connector": "deepseek-reasoner",
+
+  // 创建时间
+  "created_at": "2022-02-22T14:00:00.000Z",
+
+  // 标签列表
+  "tags": ["test"],
+
+  // AI模型参数配置
+  "options": {
+    // 温度参数,控制输出的随机性(0-1)
+    "temperature": 0.7,
+
+    // 最大输出token数
+    "max_tokens": 8192,
+
+    // 核采样阈值
+    "top_p": 1,
+
+    // 频率惩罚系数
+    "frequency_penalty": 0,
+
+    // 存在惩罚系数
+    "presence_penalty": 0
+  },
+
+  // 头像URL，在Xgen中显示
+  "avatar": "https://cdn.pixabay.com/photo/2016/08/20/05/38/avatar-1606916_960_720.png",
+
+  // 提示词内容
+  "prompts": ""
+}
+```
+
+#### Prompt配置文件Prompts.yml
+
+助手提示文件(prompts.yml)是一个YAML格式的文件,用于定义助手的提示词。主要包含以下字段:
+
+| 字段名  | 类型   | 说明                                                     |
+| ------- | ------ | -------------------------------------------------------- |
+| role    | string | 角色类型,可选值: system/user/assistant，可以配置多个提示 |
+| name    | string | 提示词名称,用于标识不同的提示词                          |
+| content | string | 提示词内容,支持多行文本和引用assets目录下的文件          |
+
+示例配置如下,可以使用`@assets/`引用assets目录的文件，一般都是提示词内容
+
+```yaml
+- role: system
+  name: documentation
+  content: |
+    - you are an AI assistant that translates the given DSL definition into a Yao model definition.
+    - @assets/yao.md
+```
+
+#### src/index.ts
+
+助手源码文件(src/index.ts)是一个TypeScript格式的文件,用于定义助手的业务逻辑。主要包含以下钩子函数:
+
+- Create: 助手被第一次调用时触发
+- Done: 聊天结束触发
+- Fail: 聊天出错触发
+
+##### Create
+
+Create钩子函数用于在助手被第一次调用时触发数。
+
+```ts
+/**
+ * user request -> [Create hook] -> openai
+ *
+ * called before the chat with openai.
+ *
+ * @param input The input message array.
+ * @returns A response object containing the next action, input messages, and output data.
+ */
+
+export function Create(
+  input: neo.Message[],
+  option: { [key: string]: any }
+): neo.ResHookInit | null | string {}
+```
+
+这个钩子函数有以下功能：
+
+- 修改助手id,比如返回新的助手id，可以切换助手进行问题处理。
+
+```js
+return {
+  assistant_id: new_assistant_id, //optional,change the assistant_id,switch the assistant for following process
+  chat_id: context.chat_id //optional
+};
+```
+
+- 修改AI的输入提问
+
+```js
+// input 是用户输入的问题
+//
+input.pop();
+input.push({
+  role: 'user',
+  text: content,
+  type: 'text'
+});
+return {
+  input: input
+};
+```
+
+- 调用其它的处理器
+
+```js
+return {
+  next: {
+    //optional, if you want to call another action in frontend
+    action: 'assistant', //call other assistant set to 'exit' to exit process
+    payload: {
+      assistant_id: new_assistant_id,
+      input: input,
+      options: {
+        max_tokens: 8192
+      }
+    }
+  }
+};
+```
+
+##### Done
+
+```ts
+/**
+ * called only once, when the call openai api done,open ai return messages
+ *
+ * @param context context info
+ * @param input input messages
+ * @param output messages
+ * @param writer for response
+ * @returns
+ */
+function Done(
+  context: neo.Context,
+  input: neo.ChatMessage[],
+  output: neo.ChatMessage[]
+): neo.ResHookDone | null {
+  // case 1 return null,no change
+  // return null
+  return null;
+  // case 2 return object
+  return {
+    next: {
+      action: 'action1', //set to 'exit' to exit stream,only set it when you want to exit the process
+      payload: {}
+    }
+    // output: output //change the output message
+  };
+}
+```
+
+##### Fail
+
+```ts
+/**
+ * called every time when the call openai api failed,open ai return error messages
+ *
+ * @param context context info
+ * @param input input messages
+ * @param output output messages
+ * @returns {next,input,output}
+ */
+function Fail(
+  context: neo.Context,
+  input: neo.Message[]
+): neo.ResHookFail | null {
+  // case 1 return null,no change
+  // return null
+  return null;
+  // case 2 return object
+  return {
+    // output: output,
+    // most important, return error message
+    // error: 'error message'
+  };
+}
+```
+
+## 回调函数
+
+### Agent中使用钩子函数
+
+在钩子函数中可以使用以下的函数或是对象来实现回调函数：
+
+在回调函数中，有以下的全局对象：
+
+- assistant: 助手对象
+- context: 上下文对象
+- Plan: 计划对象。
+- Send: 给前端Stream发送消息的函数
+- Call: 调用其它脚本的函数
+
+### 对象说明
+
+```ts
+
+/**
+ * 创建并返回一个计划对象
+ * @param planId 计划ID
+ * @returns 计划对象
+ */
+export declare function Plan(planId:string): Plan;
+
+type Method:string;//同一个脚本中的方法名称
+type Process:string;//yao处理器
+type Callback {//yao处理器回调，同时配置回调函数名和回调函数参数
+    name:string;
+    args:any[];
+}
+/**
+ * 回调助手，并传入回调函数
+ * @param assistantId 助手ID
+ * @param input 输入,常用的是用户的提问。
+ * @param callback 回调函数,接收4种类型的参数
+ * 1. Function: 普通函数
+ * 2. Callback: 对象,对象的name属性为回调函数名,args属性为回调函数参数
+ * 3. Method: 方法,当前脚本中的方法名称
+ * 4. Process: 处理器,调用其它处理器，处理器名称需要包含"."
+ * @options 选项,调用聊天模型时的选项，比如temperature,top_p等参数
+ */
+export declare function Call(assistantId:string,input:string,callback:null|Function|Callback|Method|Process,options:{[key:string]:any}): void;
+
+```
+
+Message类型定义
+
+```ts
+/**
+ * Message 消息对象
+ */
+interface Message {
+  /** 消息ID */
+  id?: string;
+  /** 文本内容 */
+  text?: string;
+  /** 消息类型: error, text, plan, table, form, page, file, video, audio, image, markdown, json等 */
+  type?: string;
+  /** 类型相关的属性 */
+  props?: Record<string, any>;
+  /** 标记消息是否完成 */
+  done?: boolean;
+  /** 标记是否为新消息 */
+  new?: boolean;
+  /** 标记是否为增量消息 */
+  delta?: boolean;
+  /** 会话动作列表 */
+  actions?: Action[];
+  /** 文件附件列表 */
+  attachments?: Attachment[];
+  /** 消息角色: user, assistant, system等 */
+  role?: string;
+  /** 消息名称 */
+  name?: string;
+  /** 助手ID (当role为assistant时) */
+  assistant_id?: string;
+  /** 助手名称 (当role为assistant时) */
+  assistant_name?: string;
+  /** 助手头像 (当role为assistant时) */
+  assistant_avatar?: string;
+  /** 消息提及列表 (当role为user时) */
+  mentions?: Mention[];
+  /** 消息数据 */
+  data?: Record<string, any>;
+  /** 消息是否待处理 */
+  pending?: boolean;
+  /** 消息是否隐藏 (不在UI和历史记录中显示) */
+  hidden?: boolean;
+  /** 消息是否需要重试 */
+  retry?: boolean;
+  /** 消息是否静默 (不在UI和历史记录中显示) */
+  silent?: boolean;
+  /** 工具调用ID */
+  tool_call_id?: string;
+  /** 函数调用列表 */
+  tool_calls?: FunctionCall[];
+}
+
+/**
+ * 提及对象
+ */
+interface Mention {
+  /** 助手ID */
+  assistant_id: string;
+  /** 名称 */
+  name: string;
+  /** 头像 */
+  avatar?: string;
+}
+
+/**
+ * 附件对象
+ */
+interface Attachment {
+  /** 文件名 */
+  name?: string;
+  /** 文件URL */
+  url?: string;
+  /** 文件描述 */
+  description?: string;
+  /** 文件类型 */
+  type?: string;
+  /** 内容类型 */
+  content_type?: string;
+  /** 文件大小(字节) */
+  bytes?: number;
+  /** 创建时间戳 */
+  created_at?: number;
+  /** 文件ID */
+  file_id?: string;
+  /** 会话ID */
+  chat_id?: string;
+  /** 助手ID */
+  assistant_id?: string;
+}
+
+/**
+ * 动作对象
+ */
+interface Action {
+  /** 动作名称 */
+  name?: string;
+  /** 动作类型 */
+  type: string;
+  /** 动作载荷 */
+  payload?: any;
+}
+```
+
+回调函数示例：
+
+```ts
+
+/**
+ * 示例回调函数
+ * @param msg 消息对象
+ * @param args 其他参数,如果使用处理器定义，则args为处理器定义的参数
+ */
+function exampleCallback(msg: Message,..args:any[]) {
+    console.log('收到消息:', msg.Text);
+}
+
+/**
+ * 使用回调函数的示例
+ */
+function useCallbackExample() {
+    // 使用普通函数作为回调
+    Call('neo', '你好', exampleCallback);
+
+    // 使用对象形式的回调
+    Call('neo', '你好', {
+        name: 'exampleCallback',
+        args: [] // 如果回调函数不需要参数，可以留空数组
+    });
+
+    // 使用当前脚本中的方法作为回调
+    Call('neo', '你好', 'exampleCallback');
+
+    // 使用处理器作为回调
+    Call('neo', '你好', '处理器名称.方法名称');
+}
+
+```
+
+### 测试
+
+```js
+function callback(msg:) {}
+
+function test() {
+  Call('neo', '你好', 'callback');
+  Call('neo', '你好', function () {
+    console.log('回调函数');
+  });
+}
+```
+
+## neo api 接口
+
+yao 本身已经内置了 neo ai 聊天接口。
+
+### 聊天请求
+
+`/api/__yao/neo`，请求方法：`get`,URL 参数：`content`,`context`,`token`。token 是 jwt 认证参数。
+
+请求示例：
+
+```json
+{
+  "content": "Hello!",
+
+  "context": {
+    "namespace": "Table-Page-ddic.model",
+    "stack": "Table-Page-ddic.model",
+    "pathname": "/x/Table/ddic.model",
+    "formdata": {},
+    "field": { "name": "", "bind": "" },
+    "config": {},
+    "signal": ""
+  }
+}
+```
+
+```js
+const es = new EventSource(
+  `${neo_api}?content=${encodeURIComponent(
+    message.text
+  )}&context=${encodeURIComponent(
+    JSON.stringify(message.context)
+  )}&token=${encodeURIComponent(getToken())}${studio_token}`
+);
+```
+
+返回是 ss 异步消息。返回消息结构：
+
+返回消息都会被组装成`data: 消息\n\n`的格式，跟 chatgpt 的一致。其中消息内容又可以拆分成 json 数据。
+
+返回消息还会在 http 头上设置内容格式：`("Content-Type", "text/event-stream;charset=utf-8")`
+
+```json
+{
+  "text": "", //文本
+  "error": "", //错误
+  "done": false, //已完成
+  "confirm": false, //前端需要确认
+  "command": {
+    //
+    "id": "id",
+    "name": "",
+    "request": ""
+  },
+  "actions": [
+    //触发前端的操作
+    {
+      "name": "",
+      "type": "",
+      "payload": {},
+      "next": "'"
+    }
+  ]
+}
+```
+
+### 聊天历史记录
+
+`/api/__yao/neo/history`，请求方法：`get`,返回：
+
+```json
+{
+  "data": [{}] //历史记录
+}
+```
+
+### 获取命令列表
+
+`/api/__yao/neo/commands`，请求方法：`get`,返回：
+
+```json
+[
+  {
+    "name": "",
+    "description": "",
+    "args": "",
+    "stack": "",
+    "path": ""
+  }
+]
+```
+
+### 执行命令
+
+`/api/__yao/neo/`，请求方法：`post`,请求内容：
+
+```json
+{
+  "cmd": "ExitCommandMode"
+}
+```
+
+返回:
+
+```json
+{ "code": 200, "message": "success" }
+```
+
+### sse 事件流的标准格式。
+
+[使用服务器发送事件](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events/Using_server-sent_events#%E4%BA%8B%E4%BB%B6%E6%B5%81%E6%A0%BC%E5%BC%8F)
+
+```json
+{
+  "event": "update",
+  "data": { "id": 123, "message": "New update received" },
+  "id": 456,
+  "retry": 5000
+}
+```
+
+规范中规定了下面这些字段：
+
+`event` - 一个用于标识事件类型的字符串。如果指定了这个字符串，浏览器会将具有指定事件名称的事件分派给相应的监听器；网站源代码应该使用 addEventListener() 来监听指定的事件。如果一个消息没有指定事件名称，那么 onmessage 处理程序就会被调用。
+
+`data` - 消息的数据字段。当 EventSource 接收到多个以 data: 开头的连续行时，会将它们连接起来，在它们之间插入一个换行符。末尾的换行符会被删除。
+数据可以有多行，每行以 `\n` 符号分隔。换行符必须用 `\n` 来表示，不能使用 `\r\n`。在前端使用 EventSource 处理时，前缀会被自动的处理掉，并保留文本消息。除了发送 data，还可以发送 event/id/retry 字段。
+
+如果在服务端发送的数据中包含`\n`换行符,比如消息`YHOO\n+2\n\10`，那么在浏览器中收到的信息会是这样：
+
+```json
+event:message
+data: YHOO
+data: +2
+data: 10
+```
+
+最后一行必须有两个`\n `表示数据结束,使用两个换行符来分隔前后的消息
+
+`id` - 当前消息的 id, 事件 ID，会成为当前 EventSource 对象的内部属性“最后一个事件 ID”的属性值。
+
+`retry`
+重新连接的时间。如果与服务器的连接丢失，浏览器将等待指定的时间，然后尝试重新连接。这必须是一个整数，以毫秒为单位指定重新连接的时间。如果指定了一个非整数值，该字段将被忽略。
+
+所有其他的字段名都会被忽略。
+
+## Neo 命令
+
+**此功能不再支持。**
+
+在最新的代码中，yao 实现了 neo 命令模式。
+
+Neo 命令模式，是指在用户与 Neo 助手聊天过程中切入到业务操作模式，在命令模式下，用户可以向 Yao 发出业务操作指令，Yao 会响应指令并作出合适的响应，在这过程中 Yao 会调用 ChatGPT 进行消息处理与回复。比如，用户在 neo 聊天框中输入处理命令"帮我生成 10 条测试数据"，yao 就调用 ChatGPT 智能的生成 10 条测试数据。
+
+优势与特点：
+
+- 对用户友好，对用户来说，不再需要记住具体的功能菜单入口，只需要在聊天框中自然的描述他的想法。
+- Yao 融合了命令与聊天功能，ChatGPT 与 yao 无缝集成，在聊天的过程上随时可以调用后端命令。
+- 交互性好，前后端的接口使用 SSE 技术，信息的及时性有保证，并且集成了上下文对话功能。
+- 扩展性好，yao 把命令的定义接口留给用户，用户可以根据自己的实际需求扩展自己的功能。
+
+整个 neo 命令的执行流程如下：
+
+- ->定义命令
+- ->调用命令模板处理器 prepare,读取用户配置的提示词模板
+- ->格式化提示词
+- ->调用 ChatGPT API 接口
+- ->检查返回聊天消息
+- ->从聊天消息中解析出处理器参数
+- ->让用户确认\[可选\]
+- ->调用数据回调处理器，可以在处理器向前端写入预览消息
+- ->浏览器执行 Action(刷新界面)
+
+### 配置
+
+#### 定义命令
+
+一个 Neo 命令需要包含以下的内容。
+
+- process 回调处理器，处理 ai 返回的数据,在用户确认后调用的处理器或是直接执行的处理器。
+- actions 定义，在 xgen 界面上的回调操作。
+- prepare 处理器，准备与 ai 交互的提示词，尽可能准确的描述的你的目的。
+
+定义 Neo 命令的方法是在目录/neo 下创建后缀为`.cmd.yml`配置文件。
+
+示例：
+
+`/neo/table/data.cmd.yml`
+
+```yaml
+## Generate test data for the table
+
+##
+## yao run neo.table.Data 帮我生成20条测试数据
+
+## 命令的名称 用于匹配用户的提示请求
+name: Generate test data for the table
+## neo 命令的快捷引用方式，比如在neo助手中输入/data,直接引用这个命令，这样的好处是更快更准确的引用命令
+use: data
+## 连接器定义
+connector: gpt-3_5-turbo
+## 用户确认后再执行，或是无需确认，直接执行的处理器。
+process: scripts.table.Data
+## 处理器的参数类型与说明
+args:
+  - name: data # name 用于筛选ChatGPT返回的json数据,并作为处理器的参数
+    type: Array
+    description: The data sets to generate
+    required: true # 表示参数是必须的，如果不存在会报错
+    default: []
+## 命令执行成功后，在xgen上执行的回调命令，比如这里数据生成后，在xgen界面上自动刷新。
+actions:
+  - name: TableSearch
+    type: 'Table.search'
+    payload: {}
+
+## 命令执行的准备处理器
+prepare:
+  # 在before阶段，处理器可以根据xgen传入的上下文参数生成与ai交互的命令
+  before: scripts.table.DataBefore
+  # 在after阶段，把ai返回的数据进行格式化处理，在处理器里可以输出到xgen neo助手对话框界面。
+  after: scripts.table.DataAfter
+  option:
+    temperature: 0.8
+
+  # 与ChatGPT交互的提示词，角色是system
+  prompts:
+    - role: system
+      # prepare.before处理器返回的json数据{template:''}
+      content: '{{ template }}'
+
+    - role: system
+      # prepare.before处理器返回的json数据{explain:''}
+      content: '{{ explain }}'
+
+    #让gpt不要解析结果内容，并返回指定的数据内容
+    - role: system
+      content: |
+        - According to my description, according to the template given to you, generate a similar JSON data.
+        - The Data is what I want to generate by template.
+        - Reply to me with a message in JSON format only: {"data": "<Replace it with the test data generated by the template>"}
+        - Do not explain your answer, and do not use punctuation.
+## 命令的描述 用于匹配用户的提示请求
+description: |
+  Generate test data for the table
+
+optional:
+  #命令是否需要用户确认，会在neo助手上显示"执行"按钮
+  confirm: true
+  autopilot: true
+```
+
+### 配置聊天 api guard
+
+参考![](../docs/YaoDSL/neo/neo聊天助手.md)
+
+### neo 助手初始化过程
+
+- 检查内置的聊天记录表是否存在，如果不存在创建新表，默认的表名是 yao_neo_conversation。这个表可以在 neo.yml 配置文件中进行修改。
+- 初始化聊天机器人的驱动，模型根据 neo.yml 配置的 connector，默认是使用 ChatGPT 的 gpt-3_5-turbo 模型。
+- 加载用户的命令列表`*.cmd.yml, *.cmd.yaml`到内存中。
+
+#### API 响应用户请求
+
+- api guard 中解析出`__sid`作为聊天上下文 id。
+- 根据 sid 查找用户的聊天历史，查找表 yao_neo_conversation，聊天历史可以通过配置控制长度。如果是新的会话，聊天历史会是空的。
+- 在聊天消息历史中合并用户最新的提问内容,比如，“帮我生成一条数据”
+- 根据用户最后的输入消息中是否包含了命令，使用 ChatGPT 进行检查。
+
+### 命令模式与聊天模式
+
+#### 命令模式
+
+默认情况下，Neo 助手是处于聊天模式，用户与 Neo 的对话基于 ChatGPT 文本处理。
+
+当用户的消息模糊匹配到后端配置的命令列表，或是使用精确命令时，会进入"命令对话模式"。在这个模式中，所有的用户对话都会作为命令的上下文。
+
+> 在 Neo 助手界面上，会显示一个"退出"按钮。
+
+比如发消息让 AI 生成模型。"/module 请生成销售订单模型"。YAO 会匹配到创建模型的命令，直接进入命令交互模式。首先 AI 会返回一个初步的处理结果。但是你对这个结果还想进行修正或是作补充,你可以再向 AI 发送消息
+
+"请增加总金额字段"
+
+这时候，因为还在命令模式中，AI 会在继续在之前的结果上进行补充。
+
+退出命令模式后就会再次进入聊天模式。
+
+> 在 Neo 助手界面上，点击"退出"按钮,退出命令模式。
+
+用户命令的匹配过程如下：
+
+#### 检查请求与命令匹配与过滤。
+
+neo 助手的每一次请求都会携带两个当前界面组件的信息。`path` 与 `stack` 属性。path 是 neo 助手发送命令时界面的 url 地址，stack 是 xgen 界面组件在界面上的层次关系。
+
+```json
+{ "Stack": "Table-Page-pet", "Path": "/x/Table/pet" }
+```
+
+命令的模糊匹配
+
+这两个参数会跟所有 cmd.yml 中配置的 path 与 stack 属性进行比较。可以使用通配符`*`,命令中如果没有配置两个参数是匹配所有请求。
+
+把所有的匹配到的命令列表的名称 name 与描述 description，还有用户的请求消息一起提交给 ChatGPT 作判断。如果匹配成功，返回处理命令 cmd 的 id。
+
+所以，一个命令是否匹配的上，取决于 3 个因素
+
+- cmd.yml 中配置的`path`与`stack`属性与请求中的`path`与`stack`属性的匹配度。
+- cmd.yml 中名称与描述与用户请求消息的匹配度。
+- ChatGPT 的判断。
+
+命令的精确匹配
+
+完全使用 ChatGPT 来匹配命令有可能会失败。如果需要精确匹配，可以在命令中配置 Use 属性，这样就能直接在聊天对话框中使用 Use 命令，比如配置了`Use:data`在聊天中就能使用`/data 生成数据`定位命令。
+
+命令的名称只能包含大小写字母。聊天消息可以是只包含命令`/Command` 或是聊天消息以命令作为前缀`/Command `，命令后需要有空格。
+
+#### 命令执行过程
+
+成功匹配到命令后，会进入命令处理环节。
+
+- 准备与 ChatGPT 交互的提示词。
+
+  - 调用处理器 prepareBefore，获取用户定义的模板内容，返回的内容用于填充 prepare.prompts。
+
+    ```js
+    /**
+     * Command neo.table.data
+     * Prepare Hook: Before
+     * @param {*} context  上下文，包含stack/path
+     * @param {*} messages 聊天消息历史
+     */
+    function DataBefore(context, messages) {
+      // console.log("DataBefore:", context, messages);
+      context = context || { stack: '-', path: '-' };
+      messages = messages || [];
+      const { path } = context;
+      if (path === undefined) {
+        done('Error: path not found.\n');
+        return false;
+      }
+
+      const tpl = Templates[path];
+      if (tpl === undefined) {
+        done(`Error: ${path} template not found.\n`);
+        return false;
+      }
+
+      ssWrite(`Found the ${path} generate rules\n`);
+      return { template: tpl.data, explain: tpl.explain };
+    }
+    ```
+
+  - 处理器 prepareBefore 返回的内容与命令定义中的`cmd.prepare`属性中的 prompt 模板进行合并成新的提示模板。这里可以使用`{{}}`语法绑定。
+  - 提示模板中所有的的提示词的角色都会被设置成`system`，而用户提问消息的角色会被设置成`user`，Yao 结合两部分的内容后，向 ChatGPT 提交请求，并返回请求结果。
+  - 调用后继处理器 prepareAfter。后继处理的作用是检查，格式化 ChatGPT 返回的消息。如果有必要也可以使用全局函数 ssWrite 写入 neo 助手的聊天对话框。
+
+  示例：
+
+  ```js
+  /**
+   * Command neo.table.data
+   * Prepare Hook: After
+   * @param {*} content ChatGPT返回消息
+   */
+  function DataAfter(content) {
+    // console.log("DataAfter:", content);
+    const response = JSON.parse(content);
+    const data = response.data || [];
+    if (data.length > 0) {
+      // Print data preview
+      //ssWrite向客户端发送sse消息
+      ssWrite(`\n`);
+      ssWrite(`| name | type | status | mode | stay | cost | doctor_id |\n`);
+      ssWrite(`| ---- | ---- | ------ | ---- | ---- | ---- | --------- |\n`);
+      data.forEach((item) => {
+        message = `| ${item.name} |  ${item.type} |  ${item.status} | ${item.mode} | ${item.stay} | ${item.cost} | ${item.doctor_id}|\n`;
+        ssWrite(message);
+      });
+      ssWrite(`  \n\n`);
+
+      //返回新的消息
+      return response;
+    }
+
+    throw new Exception('Error: data is empty.', 500);
+  }
+  ```
+
+  - 校验 ChatGPT 返回的数据并生成处理器参数。经过上面 ChatGPT 与后继处理器的处理后，得到一个初步的结果，这些结果将会作为命令处理器的参数。在这一步里会根据配置的命令参数配置进行参数检查。参数`Command.Args`配置了哪些参数是必输项，参数名是什么，根据参数名筛选上面返回的结果作为命令处理器的参数。
+
+  ```js
+  // validate the args
+  if req.Command.Args != nil && len(req.Command.Args) > 0 {
+  	for _, arg := range req.Command.Args {
+  		v, ok := data[arg.Name]
+  		if arg.Required && !ok {
+  			err := fmt.Errorf("\nMissing required argument: %s", arg.Name)
+  			return nil, err
+  		}
+
+  		// @todo: validate the type
+  		args = append(args, v)
+  	}
+  }
+  ```
+
+  - 如果配置了`Command.Optional.Confirm`，说明这个命令是需要用户进行确认的，Yao 会给用户返回一个确认的指令，等用户确认后再执行操作。这里比较绕，它的操作是把前面操作得到的结果作为参数与处理器再次封装一个 json 数据，返回给浏览器客户端，等用户确认后再把 json 数据提交到 yao 后端执行。整个动作会被定义成一个新的名称为`ExecCommand`的`Action`。这个`Action`的默认类型会被设置成`Service.__neo`，用户确认命令后，会调用一个 Yao 的内部的服务方法`Service.__neo`。
+
+  ```go
+    //yao/neo/command/request.go
+    // confirm the command
+    func (req *Request) confirm(args []interface{}, cb func(msg *message.JSON) int) {
+
+      payload := map[string]interface{}{
+        "method": "ExecCommand",
+        "args": []interface{}{
+          req.id,
+          req.Command.Process,
+          args,
+          map[string]interface{}{"stack": req.ctx.Stack, "path": req.ctx.Path},
+        },
+      }
+
+      msg := req.msg().
+        Action("ExecCommand", "Service.__neo", payload, "").
+        Confirm().
+        Done()
+
+      if req.Actions != nil && len(req.Actions) > 0 {
+        for _, action := range req.Actions {
+          msg.Action(action.Name, action.Type, action.Payload, action.Next)
+        }
+      }
+
+      cb(msg)
+    }
+
+  ```
+
+  像这种需要用户确认命令的场景,为什么不直接调用 process,而是需要中间多一层 service 函数。因为在 xgen 上是无法直接调用后端的 process 处理器，需要使用 service 函数（云函数）作为中间层。
+
+- 如果配置了其它的`Command.Actions`，将会合并在一起，并通过 sse 全局函数发送到客户端。
+
+#### 用户确认命令
+
+经过上面的处理，在 xgen 的 neo 助手界面上会显示提示消息："消息包含业务指令，是否执行？"。当用户点击执行后，会依次调用上面配置的 actions。
+
+- 调用 action `Service.__neo`，服务端的`Service.__neo`方法会调用`Command.Process`，处理用户数据。
+- 调用用户自定义的 action，比如`Table.search`,刷新 table 界面，显示最新的 table 数据。
+
+- 如果没有配置`Command.Optional.Confirm`，说明这个命令是可以直接在后台执行，不需要用户确认。Yao 会直接调用处理器`req.Command.Process`进行处理。
+
+#### 处理器执行
+
+如果是直接执行的处理器，可以在 actions 里绑定处理器返回的内容。
+
+```yaml
+process: studio.html.Page
+actions:
+  - name: Redirect to the generated page
+    type: 'Common.historyPush'
+    payload:
+      pathname: '{{ iframe }}' #绑定处理器studio.html.Page返回的内容
+      public: false
+```
+
+### 示例代码
+
+```sh
+
+git clone https://github.com/YaoApp/yao-neo-dev.git
+
+git clone https://github.com/YaoApp/yao-dev-app.git
+```
+
+### 注意点
+
+整个命令的定义过程与步骤内容比较多。
+
+- ai 并不一定一次就能百分百匹配到命令，可以使用 Use 属性解决这个问题。
+- ai 返回的结果不一定十分准确，解决方法是，1 使用准确的提示词，2 让用户确认内容，3 脚本检测并加工处理内容。
+- 提示词设置需要一些技巧与遵循一定的规则。
+
+## 内置 neo 聊天服务
+
+### 特性
+
+- 开箱即用的聊天服务
+- 支持上下文对话
+
+### 配置
+
+#### 配置 openai key
+
+连接 OPENAI 需要设置 openai key，在环境变量中设置访问 key。
+
+| 变量名称   | 说明                                                             | 示例     |
+| ---------- | ---------------------------------------------------------------- | -------- |
+| OPENAI_KEY | OPENAI API KEY, 可在连接器中更换变量名。 启用 Neo 或 AIGC 必须。 | `sk-xxx` |
+
+#### 配置代理
+
+如果需要使用代理，需要配置环境变量 https_proxy,支持使用 socket 代理或是 http 代理。
+
+HTTPS_PROXY="socks5://0.0.0.0:10808"
+
+#### 配置 openai connector
+
+openai 连接器可以参考![](../docs/YaoDSL/AIGC/aigc处理器.md)
+
+#### 配置 数据库 connector
+
+数据连接器配置![](../docs/YaoDSL/Connector/连接器.md)
+
+#### 配置 neo
+
+Neo 助手配置文件`neo/neo.yml`，这个配置文件的路径与文件名是固定的。
+
+```yaml
+connector: copilot-tencent
+use: 'neo' # default assistannt
+guard: 'scripts.auth.token.Check'
+
+store:
+  connector: 'default' #用于指定数据存储方法的连接器名称，默认为应用数据库连接器
+  user_field: 'user_id' #用户ID字段名称，默认为"user_id"
+  prefix: 'yao_neo_' #数据库表名前缀，将自动创建带有前缀的三个表：+_history,+_chat,+_assistant
+  max_size: 100 #最大存储大小限制
+  ttl: 3600 #生存时间（秒）
+
+## Setting RAG settings
+rag:
+  engine: #向量数据库引擎设置
+    dirver: '' #qdrant -> 向量存储驱动，目前仅支持qdrant，为空表示不使用RAG
+    options: #使用$ENV.ENV_NAME获取环境变量
+      host: ''
+      api_key: 'sr-'
+      port: 80
+
+  vectorizer: #文本向量化设置，使用$ENV.ENV_NAME获取环境变量
+    dirver: '' #openai -> embeddings驱动，目前仅支持openai
+    options:
+      model: 'text-embedding-ada-002' #openai的默认模型
+      api_key: 'sr-'
+
+  upload: #文件上传设置
+    async: false
+    allowed_types: ['image/jpeg', 'image/png', 'image/jpg']
+    chunk_size: 1024
+    chunk_overlap: 256
+  index_prefix: 'yao_neo_'
+
+vision:
+  storage:
+    driver: 'local' #local -> 本地存储, s3 -> s3存储
+    options: #本地存储选项
+      path: './storage/vision' #本地存储所需的路径
+      compression: true #是否压缩图片
+      base_url: '' #文件下载的基础URL
+      preview_url: '' #文件预览URL
+
+    # options:  #s3 storage options
+    #   expiration: ""
+    #   endpoint: ""
+    #   region: "auto"
+    #   key: ""
+    #   secret: ""
+    #   bucket: ""
+    #   prefix: ""
+    #   compression: true
+
+  model:
+    driver: 'openai' #openai -> openai视觉模型
+    options:
+      model: 'openai/clip-vit-base-patch32'
+      api_key: 'sr-'
+      compression: true
+      prompt: ''
+
+## prepare: "scripts.vector.Match"
+prompts:
+  - role: system
+    content: |
+      - You are pretending to be YAO's AI assistant and your name is Neo.
+      - Answer my questions in Chinese from now on.
+
+option: #options for chatting with the assistant
+  temperature: 0.8
+
+create: 'scripts.neo.neo.Create' #创建助手的函数，用于选择assistant
+
+prepare: 'scripts.neo.neo.prepare' #助手的准备函数，不再使用，使用assistant代替
+write: 'scripts.neo.neo.write' #助手的写入函数，不再使用，使用assistant代替
+
+allows:
+  - 'http://127.0.0.1:8000'
+  - 'http://127.0.0.1:5099'
+  - 'http://localhost:5099'
+  - 'http://localhost:8000'
+
+## 连接器的额外配置
+connectors:
+  doubao: # 指定的连接器配置
+    tools: true #模型是否原生支持Function Call功能,
+```
+
+#### 配置 app.yao
+
+配置路径`optional.neo.api`。neo 可以单独布署成一个服务或是与业务应用布署在一起。
+
+如果把 neo 助手服务单独布署成一个服务。需要设置 api 的全路径地址。
+
+api 访问地址：`http://host:port/api/__yao/neo，`路径`api/__yao/neo`是固定的，写死在源代码里`/service/service.go`。
+
+```json
+{
+  "xgen": "1.0",
+  "optional": {
+    "neo": { "api": "http://localhost:5099/api/__yao/neo" }
+  }
+}
+```
+
+集成配置，如果 neo 跟你的业务应用放在一起，只需要配置`/neo`，因为`yao`默认的内置前缀是`/api/__yao`。
+
+```json
+{
+  "xgen": "1.0",
+  "optional": {
+    "neo": { "api": "/neo" }
+  }
+}
+```
+
+设置`"studio": true`后可以在处理器时调用 studio 处理器，比如用来生成 dsl 文件等操作。
+
+```jsonc
+{
+  "xgen": "1.0",
+  "optional": {
+    "neo": { "api": "/neo", "studio": true }
+  }
+}
+```
+
+### 测试代码
+
+官方已提供了测试样例
+
+```sh
+https://github.com/YaoApp/yao-dev-app
+
+https://github.com/YaoApp/yao-init
+
+```
+
+### Yao 后端
+
+#### 配置类型与说明
+
+```go
+// DSL AI assistant
+type DSL struct {
+	ID                  string                    `json:"-" yaml:"-"`
+	Name                string                    `json:"name,omitempty"`
+	Use                 string                    `json:"use,omitempty"`
+	Guard               string                    `json:"guard,omitempty"`
+	Connector           string                    `json:"connector"`
+	ConversationSetting conversation.Setting      `json:"conversation" yaml:"conversation"`
+	Option              map[string]interface{}    `json:"option"`
+	Prepare             string                    `json:"prepare,omitempty"`
+	Prompts             []aigc.Prompt             `json:"prompts,omitempty"`
+	Allows              []string                  `json:"allows,omitempty"`
+	Command             Command                   `json:"command,omitempty"`
+	AI                  aigc.AI                   `json:"-" yaml:"-"`
+	Conversation        conversation.Conversation `json:"-" yaml:"-"`
+}
+
+// Setting the conversation config
+type Setting struct {
+	Connector string `json:"connector,omitempty"`
+	Table     string `json:"table,omitempty"`
+	MaxSize   int    `json:"max_size,omitempty" yaml:"max_size,omitempty"`
+	TTL       int    `json:"ttl,omitempty" yaml:"ttl,omitempty"`
+}
+
+// Answer the answer interface
+type Answer interface {
+	Stream(func(w io.Writer) bool) bool
+	Status(code int)
+	Header(key, value string)
+}
+
+// Command setting
+type Command struct {
+	Parser string `json:"parser,omitempty"`
+}
+
+```
+
+### yao api 响应处理过程
+
+#### 登录认证
+
+聊天 token 认证处理器 guard,它的作用是从 token 中解析出用户的上下文 id,如果是在 xgen 框架中使用，这个 token 会自动的带上，如果是别的外部调用，需要手动处理。最重要的是`__sid`,这个参数可以作为与 ai 对接的上下文关联会话标识 session id。而`__global`参数是在生成 jwt 令牌时插入的数据。
+
+> 令牌的生成请参考处理器`utils.jwt.Make`
+
+```js
+function Chat(path, params, query, payload, headers) {
+  query = query || {};
+  token = query.token || '';
+  token = token[0] || '';
+  token = token.replace('Bearer ', '');
+  if (token == '' || token.length == 0) {
+    throw new Exception('No token provided', 403);
+  }
+
+  let data = Process('utils.jwt.Verify', token);
+  return { __sid: data.sid, __global: data.data };
+}
+```
+
+#### 聊天会话
+
+openai 的接口请求是没有记忆聊天的历史的，这里需要使用本地数据库表保存上一次的聊天信息，在下一次的接口请求中把之前的聊天信息也带上，形成了聊天会话的效果。
+
+本地数据库表的配置名称是`conversation.table`。数据库表如果不存在，会自动的创建。
+
+#### 聊天信息钩子
+
+通过配置处理器`prepare`,可以在发送数据给 openai 接口之前，读取本地的向量数据库或是其它的额外处理。
+
+这个处理器需要返回以下结构的信息
+
+```json
+[
+  {
+    "role": "system", //角色一般会设置成system，代表是一个提示信息
+    "content": ""
+  },
+  {
+    "role": "system",
+    "content": ""
+  }
+]
+```
+
+#### 命令
+
+如果消息中包含了处理命令，还会检查并调用本地命令处理器。
+
+## yao 应用中的 sse 函数
+
+SSE函数是Yao应用中用于处理服务器发送事件(Server-Sent Events)的一组函数。主要包括ssEvent、cancel两个函数，其中最常用的是ssEvent函数，它可以在服务器端向客户端发送实时消息。这些函数通常在text/stream类型的API请求中使用，能够实现服务器向客户端的单向实时数据推送。ssEvent函数接收两个参数：事件名称（通常使用'message'）和要发送的数据内容。需要注意的是，这些函数必须在API关联的处理函数中直接使用，不能通过间接调用的方式使用。
+
+在 yao 应用的 js 脚本中，有几个与 sse 相关的处理函数。
+
+### 函数 ssEvent
+
+适用于所有的`text/stream` api 请求
+
+在 js 脚本中可以使用 ssEvent 函数向客户端发送 sse 事件。这个函数在底层调用了 gin 的 SSEvent 函数。函数接收两个参数：
+
+- event,事件名称，字符串，一般默认情况下使用 message,使用 eventsource 的情况下会触发浏览器中的 onmessage 事件。
+- data,消息内容，任意数据
+
+具体请参考：
+
+[使用服务器发送事件](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events/Using_server-sent_events#%E4%BA%8B%E4%BB%B6%E6%B5%81%E6%A0%BC%E5%BC%8F)
+
+### 函数 cancel
+
+适用于所有的`text/stream` api 请求
+
+js 中的 cancel 函数实际上会调用 go 中的 context 的函数，取消请求连接。
+
+```go
+ctx, cancel := context.WithCancel(context.Background())
+```
+
+需要注意的是在调用 ssEvent 与 cancel 时，需要在 api 关联的处理函数里直接使用，不能在 api 函数里通过调用处理器间接调用。
+比如 api 定义如下，那么 ssEvent 函数需要在处理器`scripts.chatweb.process`或是其直接调用的 js 函数中调用，而不能在处理`scripts.chatweb.process`中通过`Process("")`间接调用。原因是 ssEvent 是一个特定函数，只在固定的 streamHandle 的函数上下文中才会的生效。
+
+```json
+{
+  "path": "/chat-process",
+  "method": "POST",
+  "guard": "scripts.security.CheckChatKey",
+  "process": "scripts.chatweb.handler",
+  "in": [":payload"],
+  "out": {
+    "status": 200,
+    "type": "text/event-stream; charset=utf-8"
+  }
+}
+```
+
+示例：
+
+```js
+function handler(payload) {
+  // console.log("payload:", payload)
+  if (payload == null) {
+    return 0;
+  }
+  const content = payload.replace(/^data:/, '');
+  if (typeof ssEvent === 'function') {
+    ssEvent('data', content);
+  } else {
+    console.print(content);
+  }
+  return 1;
 }
 ```
 
@@ -20045,30 +20099,52 @@ neo 指令也是 action。但是不同的指令在不同的场景中有不同的
 
 ## Table 钩子函数
 
+通过使用钩子函数可以达到以下效果：
+
+- 通过使用前置与后置增强内置的action处理器。在数据库数据表中获取数据时，使用前置钩子函数可以对数据进行处理，比如对数据进行过滤、排序、分页等操作。在数据读取完成后，使用后置钩子函数可以对数据进行处理，比如对数据进行格式化、计算等操作。
+- 完全替换内置的action处理器。默认的处理器会以模型定义，数据库表的数据作为数据源。而使用替换处理器可以完全自定义表格的数据来源，比如可以从其它的数据数据源中获取数据。
+
+### 替换内置的action处理器
+
 可使用以下的配置替换 table 的默认处理器
 
 注意：在钩子函数中报错或是 error 只会记录在日志文件里，不会影响整个流程。
 
 通过指定 API 处理器，在不绑定数据模型的情况下，在数据表格中使用其他的数据源。
 
-### action
+- setting: 获取表格设置
+- component: 获取组件配置
+- upload: 上传处理
+- download: 下载处理
+- search: 搜索数据，返回分页数据
+- get: 获取单条数据
+- find: 查找数据
+- save: 保存数据
+- create: 创建数据
+- insert: 插入数据
+- delete: 删除数据
+- delete-in: 批量删除数据
+- delete-where: 条件删除数据
+- update: 更新数据
+- update-in: 批量更新数据
+- update-where: 条件更新数据
 
-- setting
-- component
-- upload
-- download
-- search
-- get
-- find
-- save
-- create
-- insert
-- delete
-- delete-in
-- delete-where
-- update
-- update-in
-- update-where
+### 示例
+
+可以通过在 `action` 字段中配置以下处理器来替换表格的默认处理器：
+
+```json
+{
+  "action": {
+    "setting": {
+      "process": "scripts.setting.get",
+      "bind": "scripts.setting.get",
+      "guard": "bearer-jwt",
+      "default": []
+    }
+  }
+}
+```
 
 ```json
 {
@@ -20083,9 +20159,21 @@ neo 指令也是 action。但是不同的指令在不同的场景中有不同的
 }
 ```
 
+处理器配置项说明：
+
+| 配置项  | 类型   | 说明                               |
+| ------- | ------ | ---------------------------------- |
+| process | string | 处理器名称                         |
+| bind    | string | 处理器名称，同 process，可以省略   |
+| guard   | string | 处理器名称，常见的有 bearer-jwt、- |
+| default | array  | 默认参数值                         |
+
 ### Hook:
 
-可以使用 Hooks 处理表格 API 输入输出数据。Hook 分为 `before` 和 `after` 两类， before hook，在 API 调用前运行，可以用来处理传入参数，after hook，在 API 调用后运行，可用来处理查询结果。
+可以使用 Hooks 处理表格 API 输入输出数据。Hook 分为 `before` 和 `after` 两类。
+
+- before hook，在 API 调用前运行，可以用来处理传入参数。
+- after hook，在 API 调用后运行，可用来处理查询结果。
 
 在描述数据表格时，在 `hooks` 字段，声明 **Hook 关联的处理器**，例如：
 
@@ -20093,30 +20181,38 @@ neo 指令也是 action。但是不同的指令在不同的场景中有不同的
 
 使用 After Hook 处理表单提交数据，保存历史数据。
 
-- before:find
-- after:find
-- before:search
-- after:search
-- before:get
-- after:get
-- before:save
-- after:save
-- before:create
-- after:create
-- before:delete
-- after:delete
-- before:insert
-- after:insert
-- before:delete-in
-- after:delete-in
-- before:delete-where
-- after:delete-where
-- before:update-in
-- after:update-in
-- before:update-where
-- after:update-where
+- before:find - 在执行find查询前调用，可用于修改查询条件
+- after:find - 在执行find查询后调用，可用于处理查询结果
+- before:search - 在执行search搜索前调用，可用于修改搜索参数和过滤条件
+- after:search - 在执行search搜索后调用，可用于处理搜索结果和分页数据
+- before:get - 在执行get获取单条记录前调用，可用于验证和修改查询参数
+- after:get - 在执行get获取单条记录后调用，可用于处理返回数据
+- before:save - 在执行save保存前调用，可用于数据验证和预处理
+- after:save - 在执行save保存后调用，可用于后续处理如发送通知
+- before:create - 在执行create创建前调用，可用于设置默认值和数据验证
+- after:create - 在执行create创建后调用，可用于关联数据处理
+- before:delete - 在执行delete删除前调用，可用于删除验证和关联检查
+- after:delete - 在执行delete删除后调用，可用于清理关联数据
+- before:insert - 在执行insert插入前调用，可用于数据预处理和验证
+- after:insert - 在执行insert插入后调用，可用于更新相关统计数据
+- before:delete-in - 在执行批量删除前调用，可用于验证删除条件
+- after:delete-in - 在执行批量删除后调用，可用于批量清理关联数据
+- before:delete-where - 在执行条件删除前调用，可用于验证删除条件
+- after:delete-where - 在执行条件删除后调用，可用于相关数据更新
+- before:update-in - 在执行批量更新前调用，可用于数据验证
+- after:update-in - 在执行批量更新后调用，可用于更新缓存
+- before:update-where - 在执行条件更新前调用，可用于验证更新条件
+- after:update-where - 在执行条件更新后调用，可用于同步更新相关数据
 
-比如：
+### hook 函数参数
+
+before 处理器的输入参数与默认处理器输入参数保持一致，before 处理器输出返回值需要与默认处理器的**输入参数**保持一致。
+
+after 处理器的输入参数是默认处理器的返回值，after 处理器输出返回值需要与默认处理器的**输出参数**保持一致。
+
+也既是只要了解默认处理器的传入参数与返回值，可以推算出 before 与 after 处理器的参数与返回值。
+
+### 示例
 
 ```json
 {
@@ -20126,14 +20222,6 @@ neo 指令也是 action。但是不同的指令在不同的场景中有不同的
   }
 }
 ```
-
-### hook 函数参数
-
-before 处理器的输入参数与默认处理器输入参数保持一致，before 处理器输出返回值需要与默认处理器的**输入参数**保持一致。
-
-after 处理器的输入参数是默认处理器的返回值，after 处理器输出返回值需要与默认处理器的**输出参数**保持一致。
-
-也既是只要了解默认处理器的传入参数与返回值，可以推算出 before 与 after 处理器的参数与返回值。
 
 ## `tableA`跳转到`FormB`
 

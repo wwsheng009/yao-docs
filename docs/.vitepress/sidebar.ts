@@ -178,10 +178,6 @@ export default {
       link: '/AI/提示词'
     },
     {
-      text: 'AI时代',
-      link: '/AI/AI时代'
-    },
-    {
       text: 'AI生成模型模板',
       link: '/AI/AI生成模型模板'
     },
@@ -315,21 +311,6 @@ export default {
       link: '/YaoDSL/处理器/'
     },
     {
-      text: 'AIAgent',
-      collapsed: true,
-      items: [
-        {
-          text: '回调函数',
-          link: '/YaoDSL/AIAgent/回调函数'
-        },
-        {
-          text: 'AI助手',
-          link: '/YaoDSL/AIAgent/AI助手'
-        }
-      ],
-      link: '/YaoDSL/AIAgent/'
-    },
-    {
       text: 'AIGC',
       collapsed: true,
       items: [
@@ -342,24 +323,8 @@ export default {
           link: '/YaoDSL/AIGC/chatgpt模型中角色的作用'
         },
         {
-          text: 'neo_api接口',
-          link: '/YaoDSL/AIGC/neo_api接口'
-        },
-        {
-          text: 'neo命令',
-          link: '/YaoDSL/AIGC/neo命令'
-        },
-        {
-          text: 'neo聊天助手',
-          link: '/YaoDSL/AIGC/neo聊天助手'
-        },
-        {
           text: 'openai处理器',
           link: '/YaoDSL/AIGC/openai处理器'
-        },
-        {
-          text: 'sse函数',
-          link: '/YaoDSL/AIGC/sse函数'
         }
       ],
       link: '/YaoDSL/AIGC/'
@@ -519,6 +484,44 @@ export default {
         }
       ],
       link: '/YaoDSL/Model/'
+    },
+    {
+      text: 'neo',
+      collapsed: true,
+      items: [
+        {
+          text: 'neo_api接口',
+          link: '/YaoDSL/neo/neo_api接口'
+        },
+        {
+          text: 'neo命令',
+          link: '/YaoDSL/neo/neo命令'
+        },
+        {
+          text: 'neo聊天助手',
+          link: '/YaoDSL/neo/neo聊天助手'
+        },
+        {
+          text: 'sse函数',
+          link: '/YaoDSL/neo/sse函数'
+        },
+        {
+          text: 'AI助手',
+          collapsed: true,
+          items: [
+            {
+              text: '回调函数',
+              link: '/YaoDSL/neo/AI助手/回调函数'
+            },
+            {
+              text: 'AI助手',
+              link: '/YaoDSL/neo/AI助手/AI助手'
+            }
+          ],
+          link: '/YaoDSL/neo/AI助手/'
+        }
+      ],
+      link: '/YaoDSL/neo/'
     },
     {
       text: 'Pipe',
