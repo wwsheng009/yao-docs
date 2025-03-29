@@ -7,7 +7,7 @@
 - Common.historyPush 跳转地址
 - Common.historyBack 返回
 - Common.confirm 弹出确认
-- Common.refetch 重新读取
+- Common.refetch 重新读取相关界面的配置与重新拉取最新数据
 - Common.reload 重加载
 - Common.reloadMenu 重新加载菜单配置
 - Common.showMessage 显示信息

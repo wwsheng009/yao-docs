@@ -8168,6 +8168,10 @@ assistants
 
 Create钩子函数用于在助手被第一次调用时触发数。
 
+- 可在以此钩子函数中提出mention对象
+- 修改助手id,切换不同的助手
+- 修改用户输入
+
 ```ts
 /**
  * user request -> [Create hook] -> openai
@@ -8211,38 +8215,26 @@ return {
 };
 ```
 
-- 调用其它的处理器
-
-```js
-return {
-  next: {
-    //optional, if you want to call another action in frontend
-    action: 'assistant', //call other assistant set to 'exit' to exit process
-    payload: {
-      assistant_id: new_assistant_id,
-      input: input,
-      options: {
-        max_tokens: 8192
-      }
-    }
-  }
-};
-```
-
 ##### Done
+
+在api调用结束后触发。
+
+可以在Done钩子函数中做以下处理：
+
+- 处理tool工具回调处理
+- 调用其它的处理器
+- 修改AI的输出
+- 设置下一个调用的助手，构成一个处理链。
 
 ```ts
 /**
  * called only once, when the call openai api done,open ai return messages
  *
- * @param context context info
  * @param input input messages
  * @param output messages
- * @param writer for response
  * @returns
  */
 function Done(
-  context: neo.Context,
   input: neo.ChatMessage[],
   output: neo.ChatMessage[]
 ): neo.ResHookDone | null {
@@ -8260,31 +8252,120 @@ function Done(
 }
 ```
 
+- 调用其它的处理器
+  - action: assistant,其它助手
+  - action: exit,退出处理
+
+```js
+return {
+  next: {
+    //optional, if you want to call another action in frontend
+    action: 'assistant', //call other assistant，set to 'exit' to exit process
+    payload: {
+      assistant_id: new_assistant_id,
+      input: input, //string,对象，Message对象
+      retry: 1, //重试
+      options: {
+        //llm options
+        max_tokens: 8192
+      }
+    }
+  }
+};
+```
+
+在Done钩子函数中还可以其它的处理：![](../docs/YaoDSL/neo/AI助手/回调函数.md)
+
 ##### Fail
+
+当 ai 返回错误消息时触发。
 
 ```ts
 /**
  * called every time when the call openai api failed,open ai return error messages
  *
- * @param context context info
  * @param input input messages
- * @param output output messages
+ * @param error string
  * @returns {next,input,output}
  */
-function Fail(
-  context: neo.Context,
-  input: neo.Message[]
-): neo.ResHookFail | null {
+function Fail(input: neo.Message[], error: string): neo.ResHookFail | null {
   // case 1 return null,no change
   // return null
   return null;
+
+  // return error message
+  return 'custom error message';
+
   // case 2 return object
   return {
-    // output: output,
-    // most important, return error message
-    // error: 'error message'
+    output: 'custom error message', //修改输出的消息
+    error: 'error message' //修改输出的错误消息，最高优先级
   };
 }
+```
+
+##### Retry
+
+当Hook Done调用出错时，重试API调用。
+
+```ts
+/**
+ * called every time when the call openai api failed,open ai return error messages
+ *
+ * @param lastInput last input messages
+ * @param output output messages
+ * @param errmsg error message
+ * @returns {next,input,output}
+ */
+function Retry(
+  lastInput: string
+  input: neo.Message[]
+  errmsg: string
+): neo.ResHookFail | null {
+  // case 1 return null,no change
+  return null;
+  // case 2 return new prompt
+  return 'new prompt';
+  // case 3 return next action
+  return {
+    next: {
+      //optional, if you want to call another action in frontend
+      action: 'assistant', //call other assistant，set to 'exit' to exit process
+      payload: {
+        assistant_id: new_assistant_id,
+        input: input,//string,对象，Message对象
+        retry: 1,//重试
+        options: {//llm options
+          max_tokens: 8192
+        }
+      }
+    }
+  };
+}
+```
+
+- 返回新的用户提示词
+
+- 调用其它的处理器
+  - action: assistant,其它助手
+  - action: exit,退出处理
+
+```js
+return {
+  next: {
+    //optional, if you want to call another action in frontend
+    action: 'assistant', //call other assistant，set to 'exit' to exit process
+    payload: {
+      assistant_id: new_assistant_id,
+      input: input, //string,对象，Message对象
+      retry: 1, //重试
+      options: {
+        //llm options
+        max_tokens: 8192
+      }
+    }
+  }
+};
 ```
 
 ## 回调函数
@@ -8295,11 +8376,307 @@ function Fail(
 
 在回调函数中，有以下的全局对象：
 
-- assistant: 助手对象
-- context: 上下文对象
-- Plan: 计划对象。
-- Send: 给前端Stream发送消息的函数
-- Call: 调用其它脚本的函数
+- \_\_yao_agent_global，全局对象
+- assistant，全局对象，助手对象
+- context，全局对象，上下文对象
+- Send，发送函数
+- Assets，资源对象
+- MakeCall，调用函数
+- MakePlan，计划函数
+- Set，全局对象设置函数
+- Get，全局对象获取函数
+- Clear，全局对象清除函数
+- Replace，全局对象替换函数
+
+### \_\_yao_agent_global，全局对象
+
+此对象主要是用于脚本内部进行脚本传递引用对象。
+
+```js
+	global := &GlobalVariables{
+		Assistant:   ast,
+		Contents:    contents,
+		GinContext:  c,
+		ChatContext: context,
+	}
+```
+
+### 全局函数
+
+#### Send
+
+Send函数用于发送消息到前端。
+
+```js
+/**
+ * Send 发送消息到前端
+ * @param msg 消息文本或是消息对象
+ * @param save 是否保存到历史记录中
+ */
+function Send(message: string | object,save?: boolean): void;
+
+```
+
+#### Assets
+
+Assets函数用于获取资源对象。读取助手assets目录下的资源文件。
+
+```js
+/**
+ * Assets 获取资源对象
+ * @param name assets 目录下的文件名称，一般是文本文件。
+ * @param data 资源对象 用于替换资源对象中中的对象。占位符为{{ xxx }}
+ * @returns 资源对象
+ */
+function Assets(name:string,data:{}): string;
+
+```
+
+#### Replace
+
+使用对象，替换模板中的占位符，返回替换后的字符串。
+
+```ts
+/**
+ * Replace 替换全局变量，占位符为{{ xxx }}
+ * @param template 模板字符串
+ * @param value 对象值
+ */
+function Replace(template: string, value: object): string;
+```
+
+#### MakeCall功能
+
+在hook钩子函数中调用其它助手，并传入回调函数。
+
+注意： **不要调用同一个助手对象**，否则会触发同一个Done钩子函数，最后出现死循环。
+
+```js
+//make a call
+const call1 = MakeCall(
+  assistant.assistant_id, //助手ID
+  '你好，编写一个笑话', //用户输入，一般是用户的提问
+  {
+    options: {
+      //调用聊天模型时的选项，比如temperature,top_p等参数
+      max_tokens: 8192,
+      temperature: 0.7,
+      top_p: 1
+    }
+  },
+  1 //retry_times,重试次数
+);
+
+// 配置完成事件回调
+call1.On('done', (msg) => {
+  console.log('done event triggered');
+  console.log(msg);
+});
+// 配置流式消息回调
+call1.On('message', (msg) => {
+  console.log('message event triggered');
+  console.log(msg);
+});
+// 调用并返回结果
+const result = call1.Run();
+
+console.log('result:');
+console.log(result);
+```
+
+#### MakePlan
+
+创建一个Plan对象。
+
+```ts
+/**
+ * MakePlan 创建一个计划对象
+ * @param planId 计划ID
+ * @returns 计划对象
+ */
+function MakePlan(planId: string): Plan;
+```
+
+![](../docs/YaoDSL/Plan/计划组件.md)
+
+#### 多个助手调用的数据共享
+
+在Hook钩子函数处理过程中，如果需要共享数据，可以使用Context上下文本中的一个共享内存空间。
+
+这个内容共享功能是在api的调用过程中自动创建的，所有在一个请求过程中所的助手都能引用。
+
+##### Set
+
+在全局的Plan共享内存空间使用Key设置对象值。
+
+```ts
+/**
+ * Set 设置全局变量
+ * @param key 全局变量键
+ * @param value 全局变量值
+ */
+function Set(key: string, value: any): void;
+```
+
+##### Get
+
+根据Key获取全局的Plan共享内存空间。
+
+```ts
+/**
+ * Get 获取全局变量
+ * @param key 全局变量键
+ * @returns 全局变量值
+ */
+function Get(key: string): any;
+```
+
+##### Del
+
+根据Key删除全局的Plan共享内存空间。
+
+```ts
+/**
+ * Del 删除全局变量
+ * @param key 全局变量键
+ */
+function Del(key: string): void;
+```
+
+##### Clear
+
+清空全局的Plan共享内存空间。
+
+```ts
+/**
+ * Clear 清除全局变量
+ */
+function Clear(): void;
+```
+
+### Done钩子函数功能
+
+#### 自定义Tool工具函数
+
+```ts
+/**
+ * called only once, when the call openai api done,open ai return messages
+ *
+ * @param input input messages
+ * @param output messages
+ * @returns
+ */
+export function Done(
+  input: neo.ChatMessage[],
+  output: neo.ChatMessage[] //AI返回的消息
+): any | null | string {
+  // console.log('__yao_agent_global');
+  // console.log(__yao_agent_global);
+
+  // console.log('context');
+  // console.log(context);
+
+  console.log('output');
+  console.log(output);
+  if (
+    output.length > 0 &&
+    output[output.length - 1].props != null &&
+    output[output.length - 1].props['function'] !== '' //通过props['function']判断是否是自定义的函数调用
+  ) {
+    const lastLine = output[output.length - 1];
+    const funcName = lastLine.props['function']; //获取函数名
+
+    if (funcName == 'get_weather') {
+      // 使用Send函数给用户发送消息
+      Send(
+        {
+          text: '',
+          type: 'page', //page类型,显示一个网页
+          props: {
+            url: `/https://wttr.in/${lastLine.props['arguments']['location']}`
+          },
+          done: true //结束消息
+        },
+        true //是否保存到历史记录中
+      );
+
+      // 如果不使用Send，使用以下的方式返回消息到前端，但是这里无法保存到历史记录中
+      return {
+        output: [
+          {
+            text: '完成...',
+            type: 'text'
+          }
+        ]
+      };
+    } else if (funcName == 'find_user') {
+      const [user] = new ModelProxy<IAdminUser>('admin.user').Get({
+        wheres: [
+          {
+            column: 'name',
+            op: 'like',
+            value: `%${lastLine.props['arguments']['username']}%`
+          }
+        ]
+      });
+      if (user) {
+        // 将用户数据转换为markdown格式输出
+        const markdown = `## 用户信息
+\`\`\`json
+${JSON.stringify(user, null, 2)}
+\`\`\``;
+        Send(
+          {
+            text: markdown, //使用text类型,可以在前端显示消息
+            type: 'guide', //使用guide类型,可以在前端显示消息，并且在前端使用action进行用户交互。
+            done: true,
+            props: {
+              //使用props配置前端actions
+              title: '用户信息',
+              actions: [
+                {
+                  namespace: context.pathname,
+                  primary: 'id',
+                  title: '用户信息',
+                  action: [
+                    {
+                      type: 'Common.confirm',
+                      payload: {
+                        title: '测试',
+                        content: '测试'
+                      }
+                    }
+                  ],
+                  name: 'user_info',
+                  icon: 'icon-book',
+                  data_item: {
+                    title: '用户信息',
+                    description: '用户信息',
+                    icon: 'icon-book',
+                    action: 'Common.refresh'
+                  }
+                }
+              ]
+            }
+          },
+          false //是否保存到历史记录中
+        );
+        return null;
+      } else {
+        return {
+          output: [{ text: '用户不存在' }] as neo.ChatMessage[]
+        };
+      }
+    }
+
+    return {
+      output: [
+        { text: '错误的调用，不支持的函数调用：' + funcName }
+      ] as neo.ChatMessage[]
+    };
+  }
+}
+```
 
 ### 对象说明
 
@@ -9880,7 +10257,7 @@ export declare class Plan {
   Get(key: string): any;
 
   /**
-   * 在共享空间中设置值
+   * 在共享空间中设置值，如果有订阅相关的Key,会触发相关的subscribe事件。
    */
   Set(key: string, value: any): void;
 
@@ -9981,25 +10358,9 @@ function TaskCompleted(plan_id: string, key: string, data: any, foo: string) {
 }
 ```
 
-### 最佳实践
-
-1. **错误处理**: 始终检查计划操作返回的错误。
-2. **信号处理**: 在长时间运行的任务中实现适当的信号处理。
-3. **资源清理**: 使用 `stop()` 正确清理资源。
-4. **上下文使用**: 在任务实现中尊重上下文取消。
-5. **共享状态**: 使用共享空间进行任务通信，而不是外部变量。
-
-### 线程安全
-
-计划组件设计为线程安全：
-
-- 所有计划操作都是同步的
-- 共享空间操作受互斥锁保护
-- 信号通道是缓冲的，以防止阻塞
-
 ### 事件触发
 
-内置事件：
+内置事件，会在任务状态发生变化时自动触发。在使用Plan时，不要在Set函数中使用以下Key参数。
 
 - TaskCompleted：当任务完成时触发
 - TaskError：当任务发生错误时触发
@@ -21527,7 +21888,7 @@ xpath:"action.bind.option.form".
 - Common.historyPush 跳转地址
 - Common.historyBack 返回
 - Common.confirm 弹出确认
-- Common.refetch 重新读取
+- Common.refetch 重新读取相关界面的配置与重新拉取最新数据
 - Common.reload 重加载
 - Common.reloadMenu 重新加载菜单配置
 - Common.showMessage 显示信息
@@ -26286,11 +26647,6 @@ fs.Merge(['file1.txt', 'file2.txt'], 'merged.txt'); // 合并多个文件
 var matches = fs.Glob('*.txt'); // 按模式匹配文件
 ```
 
-**约定**
-
-1. 示例中约定应用根目录为 `/data/app`, 实际编写时需替换为应用根目录。
-2. 使用 `<>` 标识自行替换的内容。 例如: `icon-<图标名称>`, 实际编写时应替换为: `icon-foo`, `icon-bar` ...
-
 | 空间 | 根目录         | 说明     |
 | ---- | -------------- | -------- |
 | data | /data/app/data | 应用数据 |
@@ -26447,11 +26803,6 @@ function handler(payload) {
   return 1; // 返回1表示继续接收数据，返回0表示停止接收，返回-1表示异常
 }
 ```
-
-**约定**
-
-1. 示例中约定应用根目录为 `/data/app`, 实际编写时需替换为应用根目录。
-2. 使用 `<>` 标识自行替换的内容。 例如: `icon-<图标名称>`, 实际编写时应替换为: `icon-foo`, `icon-bar` ...
 
 **示例**
 

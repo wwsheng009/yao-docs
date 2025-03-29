@@ -222,6 +222,10 @@ assistants
 
 Create钩子函数用于在助手被第一次调用时触发数。
 
+- 可在以此钩子函数中提出mention对象
+- 修改助手id,切换不同的助手
+- 修改用户输入
+
 ```ts
 /**
  * user request -> [Create hook] -> openai
@@ -265,38 +269,26 @@ return {
 };
 ```
 
-- 调用其它的处理器
-
-```js
-return {
-  next: {
-    //optional, if you want to call another action in frontend
-    action: 'assistant', //call other assistant set to 'exit' to exit process
-    payload: {
-      assistant_id: new_assistant_id,
-      input: input,
-      options: {
-        max_tokens: 8192
-      }
-    }
-  }
-};
-```
-
 #### Done
+
+在api调用结束后触发。
+
+可以在Done钩子函数中做以下处理：
+
+- 处理tool工具回调处理
+- 调用其它的处理器
+- 修改AI的输出
+- 设置下一个调用的助手，构成一个处理链。
 
 ```ts
 /**
  * called only once, when the call openai api done,open ai return messages
  *
- * @param context context info
  * @param input input messages
  * @param output messages
- * @param writer for response
  * @returns
  */
 function Done(
-  context: neo.Context,
   input: neo.ChatMessage[],
   output: neo.ChatMessage[]
 ): neo.ResHookDone | null {
@@ -314,29 +306,118 @@ function Done(
 }
 ```
 
+- 调用其它的处理器
+  - action: assistant,其它助手
+  - action: exit,退出处理
+
+```js
+return {
+  next: {
+    //optional, if you want to call another action in frontend
+    action: 'assistant', //call other assistant，set to 'exit' to exit process
+    payload: {
+      assistant_id: new_assistant_id,
+      input: input, //string,对象，Message对象
+      retry: 1, //重试
+      options: {
+        //llm options
+        max_tokens: 8192
+      }
+    }
+  }
+};
+```
+
+在Done钩子函数中还可以其它的处理：[回调函数](回调函数.md)
+
 #### Fail
+
+当 ai 返回错误消息时触发。
 
 ```ts
 /**
  * called every time when the call openai api failed,open ai return error messages
  *
- * @param context context info
  * @param input input messages
- * @param output output messages
+ * @param error string
  * @returns {next,input,output}
  */
-function Fail(
-  context: neo.Context,
-  input: neo.Message[]
-): neo.ResHookFail | null {
+function Fail(input: neo.Message[], error: string): neo.ResHookFail | null {
   // case 1 return null,no change
   // return null
   return null;
+
+  // return error message
+  return 'custom error message';
+
   // case 2 return object
   return {
-    // output: output,
-    // most important, return error message
-    // error: 'error message'
+    output: 'custom error message', //修改输出的消息
+    error: 'error message' //修改输出的错误消息，最高优先级
   };
 }
+```
+
+#### Retry
+
+当Hook Done调用出错时，重试API调用。
+
+```ts
+/**
+ * called every time when the call openai api failed,open ai return error messages
+ *
+ * @param lastInput last input messages
+ * @param output output messages
+ * @param errmsg error message
+ * @returns {next,input,output}
+ */
+function Retry(
+  lastInput: string
+  input: neo.Message[]
+  errmsg: string
+): neo.ResHookFail | null {
+  // case 1 return null,no change
+  return null;
+  // case 2 return new prompt
+  return 'new prompt';
+  // case 3 return next action
+  return {
+    next: {
+      //optional, if you want to call another action in frontend
+      action: 'assistant', //call other assistant，set to 'exit' to exit process
+      payload: {
+        assistant_id: new_assistant_id,
+        input: input,//string,对象，Message对象
+        retry: 1,//重试
+        options: {//llm options
+          max_tokens: 8192
+        }
+      }
+    }
+  };
+}
+```
+
+- 返回新的用户提示词
+
+- 调用其它的处理器
+  - action: assistant,其它助手
+  - action: exit,退出处理
+
+```js
+return {
+  next: {
+    //optional, if you want to call another action in frontend
+    action: 'assistant', //call other assistant，set to 'exit' to exit process
+    payload: {
+      assistant_id: new_assistant_id,
+      input: input, //string,对象，Message对象
+      retry: 1, //重试
+      options: {
+        //llm options
+        max_tokens: 8192
+      }
+    }
+  }
+};
 ```
