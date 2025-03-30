@@ -7982,7 +7982,7 @@ description：提供详细、清晰且具体的函数说明，并根据需要提
 
 properties > type：使用强类型参数来减少模型幻觉。例如，如果参数值来自有限集，请使用 enum 字段，而不是在说明中列出值（例如"type": "enum", "values": ["now_playing", "upcoming"]）。如果参数值始终是整数，请将类型设置为 integer，而不是 number。
 
-properties > description：提供具体的示例和限制。 例如，使用 The city and state, e.g. San Francisco, CA or a zip code e.g. 95616 取代 the location to search。
+properties > description：提供具体的示例和限制。
 
 ### 调用第三方API
 
@@ -8156,21 +8156,22 @@ assistants
     - @assets/yao.md
 ```
 
-#### src/index.ts
+#### 增强脚本文件
 
 助手源码文件(src/index.ts)是一个TypeScript格式的文件,用于定义助手的业务逻辑。主要包含以下钩子函数:
 
 - Create: 助手被第一次调用时触发
-- Done: 聊天结束触发
-- Fail: 聊天出错触发
+- Done: Ai API调用结束后触发
+- Fail: Ai api返回错误触发
+- Retry: Done函数出错时触发
 
 ##### Create
 
 Create钩子函数用于在助手被第一次调用时触发数。
 
-- 可在以此钩子函数中提出mention对象
-- 修改助手id,切换不同的助手
-- 修改用户输入
+- 可在以此钩子函数中提取mention对象。
+- 修改助手id,切换不同的助手，比如切换到neo助手。
+- 修改用户输入消息,输出input参数
 
 ```ts
 /**
@@ -8199,7 +8200,7 @@ return {
 };
 ```
 
-- 修改AI的输入提问
+- 修改AI的输入提问,输出input参数。
 
 ```js
 // input 是用户输入的问题
@@ -8213,6 +8214,67 @@ input.push({
 return {
   input: input
 };
+```
+
+示例2：解析用户请求
+
+```ts
+export function Create(
+  input: neo.Message[],
+  option: { [key: string]: any }
+): neo.ResHookInit | null | string {
+  //case 1 return null
+  //return null
+
+  //case 2 returns a string,change the assistant_id
+  //return "assignment_id"
+  //check if the last message in input attachment with type URL
+
+  // Get the last message in the input array
+  const lastMessage = input[input.length - 1];
+  input.pop();
+
+  // Check if the last message has attachments
+  if (lastMessage.attachments && lastMessage.attachments.length > 0) {
+    // Check if any attachment has the type 'URL'
+    lastMessage.attachments.forEach((attachment) => {
+      if (attachment.type === 'URL' && attachment.url) {
+        // console.log('attachment');
+        // console.log(attachment);
+        try {
+          Send('读取网页' + attachment.url);
+          const content = getWebPageContent(attachment.url);
+          Send('读取网页完成' + attachment.url);
+          Send(content);
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    });
+  }
+  // get the assistant_id from the message text where it looks  "@xxxxx"
+  const mentenion_assistant_id = lastMessage.text?.match(/@(\w+)/)?.[1];
+  let new_assistant_id = context.assistant_id;
+
+  if (
+    mentenion_assistant_id &&
+    mentenion_assistant_id !== context.assistant_id
+  ) {
+    new_assistant_id = mentenion_assistant_id;
+  }
+
+  input.push(lastMessage);
+  //case 3 returns an object
+  return {
+    assistant_id: new_assistant_id, //optional,change the assistant_id,switch the assistant for following process
+    chat_id: context.chat_id, //optional
+    input: input, //optional,overwrite the input messages
+    options: {
+      max_tokens: 8192
+      //optional, if you want to change the options for openai api call
+    }
+  };
+}
 ```
 
 ##### Done
@@ -8278,7 +8340,7 @@ return {
 
 ##### Fail
 
-当 ai 返回错误消息时触发。
+调用llm模型api接口返回错误消息时触发。
 
 ```ts
 /**
@@ -8415,6 +8477,79 @@ Send函数用于发送消息到前端。
  */
 function Send(message: string | object,save?: boolean): void;
 
+```
+
+##### 示例
+
+在前端调用action。
+
+![](../docs/YaoDSL/Xgen/xgen命令汇总.md)
+
+前端支持的组件类型：
+
+- guide,支持弹出框等用户交互
+- text,支持文本消息
+- page,嵌入iframe网页
+- plan,计划组件
+- tool,工具组件
+- think,思考组件
+- loading,显示正在加载
+- error,显示错误信息
+
+在前端使用iframe显示页面。
+
+```ts
+Send(
+  {
+    text: '',
+    type: 'page', //page类型,显示一个网页
+    props: {
+      url: `/https://wttr.in/${lastLine.props['arguments']['location']}`
+    },
+    done: true //结束消息
+  },
+  true //是否保存到历史记录中
+);
+```
+
+在前端使用guide组件显示交互信息。
+
+```ts
+Send(
+  {
+    text: markdown, //markdown格式的文本
+    type: 'guide',
+    done: true,
+    props: {
+      title: '用户信息',
+      actions: [
+        {
+          namespace: context.pathname,
+          primary: 'id',
+          title: '用户信息',
+          action: [
+            {
+              type: 'Common.confirm',
+              payload: {
+                title: '测试',
+                content: '测试'
+              }
+            }
+          ],
+          name: 'user_info',
+          icon: 'icon-book',
+          data_item: {
+            title: '用户信息',
+            description: '用户信息',
+            icon: 'icon-book',
+            action: 'Common.refresh'
+          }
+        }
+      ]
+    }
+  },
+  false
+);
 ```
 
 #### Assets
@@ -8567,7 +8702,7 @@ function Clear(): void;
  * @returns
  */
 export function Done(
-  input: neo.ChatMessage[],
+  input: neo.ChatMessage[], //用户输入的消息，包含历史消息
   output: neo.ChatMessage[] //AI返回的消息
 ): any | null | string {
   // console.log('__yao_agent_global');
@@ -8577,7 +8712,9 @@ export function Done(
   // console.log(context);
 
   console.log('output');
-  console.log(output);
+  console.log(output); //ai返回的消息
+
+  // 解析ai function call回调函数
   if (
     output.length > 0 &&
     output[output.length - 1].props != null &&
@@ -8593,7 +8730,7 @@ export function Done(
           text: '',
           type: 'page', //page类型,显示一个网页
           props: {
-            url: `/https://wttr.in/${lastLine.props['arguments']['location']}`
+            url: `/https://wttr.in/${lastLine.props['arguments']['location']}` //解析参数，参考tools.yao配置文件中的参数
           },
           done: true //结束消息
         },
@@ -10132,11 +10269,13 @@ Process('pipe.CreateWith', dsl, { placeholder: 'hello world' });
 
 ## 计划组件
 
-Plan 提供了灵活的任务编排系统，具有共享状态管理和信号控制功能。
+js Plan 对象 提供了灵活的任务编排系统，具有共享状态管理和信号控制功能。
+
+Plan对象提供了Js接口与GO lang接口。
 
 ### 特性
 
-- 任务排序和并行执行
+- 任务排序和并行执行，同一个order的任务会并行执行。
 - 任务间共享状态管理
 - 任务生命周期控制（暂停/恢复/停止）
 - 基于信号的任务通信
@@ -10173,6 +10312,12 @@ class Plan {
     // 初始化计划
   }
 }
+```
+
+创建一个新的 Plan 实例，需要传入plan_id,如果此id已经存在，会返回已存在的Plan。
+
+```typescript
+const plan = new Plan(plan_id: string);
 ```
 
 ### 类型定义
@@ -10212,8 +10357,8 @@ export declare class Plan {
    *
    * will Trigger the TaskStarted signal "TaskStarted"
    * @param task_id - 任务ID
-   * @param order - 任务顺序
-   * @param task_process - 要执行的任务处理函数,如果是在assitant中，可以直接传入函数。
+   * @param order - 任务顺序，同一个order的任务会并行执行
+   * @param task_process - 要执行的任务处理函数或是处理器名称,默认情况下只支持处理器名称，如果需要直接传入函数，需要定制开发。
    * @param task_args - 传递给任务的参数
    */
   Add(
@@ -10366,6 +10511,45 @@ function TaskCompleted(plan_id: string, key: string, data: any, foo: string) {
 - TaskError：当任务发生错误时触发
 - TaskStarted：当任务被添加到计划时触发
 - Released：当共享空间中的所有数据被删除时触发
+
+### 注意
+
+计划组件在js环境中与golang环境暴露的接口不同：
+
+- js环境，没有stop,pause,resume等方法,只能等待任务完成。
+
+  - plan.Run() Run the plan
+  - plan.Add() Add a task to the plan
+  - plan.Status() Get the status of the plan and each task
+  - plan.Release() Release the task and releases its resources
+  - plan.TaskStatus() Get the status of a task
+  - plan.TaskData() Get or set the data of a task
+  - plan.Subscribe() Subscribe to a key in the shared space
+  - plan.Get() Get a value from the shared space
+  - plan.Set() Set a value in the shared space
+  - plan.Del() Delete a value from the shared space
+  - plan.Clear() Clear the shared space
+
+- golang环境，更加丰富的功能，可以暂停，恢复，停止等。
+  - plan.NewPlan() NewPlan creates a new Plan instance
+  - plan.AddTask() AddTask adds a new task to the plan
+  - plan.RemoveTask() RemoveTask removes a task from the plan
+  - plan.Start() Start begins execution of the plan
+  - plan.Pause() Pause temporarily halts execution of the plan
+  - plan.Resume() Resume continues execution of a paused plan
+  - plan.Stop() Stop terminates execution of the plan
+  - plan.Rlease() Release the task and releases its resources
+  - plan.GetStatus() GetStatus returns the current status of the plan and its tasks
+  - plan.Trigger() Trigger triggers an event on the plan
+  - plan.GetTaskStatus() GetTaskStatus returns the status of a specific task
+  - plan.GetTaskData() GetTaskData returns the data associated with a specific task
+  - share.Set stores a value in the shared space
+  - share.Get retrieves a value from the shared space
+  - share.Delete deletes a value from the shared space
+  - share.ClearNotify ClearNotify removes all values from the shared space and notifies subscribers
+  - share.Clear removes all values from the shared space
+  - share.Subscribe subscribes to changes in the shared space
+  - share.Unsubscribe unsubscribes from changes in the shared space
 
 ## golang grpc 插件模板
 

@@ -36,7 +36,7 @@ description：提供详细、清晰且具体的函数说明，并根据需要提
 
 properties > type：使用强类型参数来减少模型幻觉。例如，如果参数值来自有限集，请使用 enum 字段，而不是在说明中列出值（例如"type": "enum", "values": ["now_playing", "upcoming"]）。如果参数值始终是整数，请将类型设置为 integer，而不是 number。
 
-properties > description：提供具体的示例和限制。 例如，使用 The city and state, e.g. San Francisco, CA or a zip code e.g. 95616 取代 the location to search。
+properties > description：提供具体的示例和限制。
 
 ## 调用第三方API
 
@@ -210,21 +210,22 @@ assistants
     - @assets/yao.md
 ```
 
-### src/index.ts
+### 增强脚本文件
 
 助手源码文件(src/index.ts)是一个TypeScript格式的文件,用于定义助手的业务逻辑。主要包含以下钩子函数:
 
 - Create: 助手被第一次调用时触发
-- Done: 聊天结束触发
-- Fail: 聊天出错触发
+- Done: Ai API调用结束后触发
+- Fail: Ai api返回错误触发
+- Retry: Done函数出错时触发
 
 #### Create
 
 Create钩子函数用于在助手被第一次调用时触发数。
 
-- 可在以此钩子函数中提出mention对象
-- 修改助手id,切换不同的助手
-- 修改用户输入
+- 可在以此钩子函数中提取mention对象。
+- 修改助手id,切换不同的助手，比如切换到neo助手。
+- 修改用户输入消息,输出input参数
 
 ```ts
 /**
@@ -253,7 +254,7 @@ return {
 };
 ```
 
-- 修改AI的输入提问
+- 修改AI的输入提问,输出input参数。
 
 ```js
 // input 是用户输入的问题
@@ -267,6 +268,67 @@ input.push({
 return {
   input: input
 };
+```
+
+示例2：解析用户请求
+
+```ts
+export function Create(
+  input: neo.Message[],
+  option: { [key: string]: any }
+): neo.ResHookInit | null | string {
+  //case 1 return null
+  //return null
+
+  //case 2 returns a string,change the assistant_id
+  //return "assignment_id"
+  //check if the last message in input attachment with type URL
+
+  // Get the last message in the input array
+  const lastMessage = input[input.length - 1];
+  input.pop();
+
+  // Check if the last message has attachments
+  if (lastMessage.attachments && lastMessage.attachments.length > 0) {
+    // Check if any attachment has the type 'URL'
+    lastMessage.attachments.forEach((attachment) => {
+      if (attachment.type === 'URL' && attachment.url) {
+        // console.log('attachment');
+        // console.log(attachment);
+        try {
+          Send('读取网页' + attachment.url);
+          const content = getWebPageContent(attachment.url);
+          Send('读取网页完成' + attachment.url);
+          Send(content);
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    });
+  }
+  // get the assistant_id from the message text where it looks  "@xxxxx"
+  const mentenion_assistant_id = lastMessage.text?.match(/@(\w+)/)?.[1];
+  let new_assistant_id = context.assistant_id;
+
+  if (
+    mentenion_assistant_id &&
+    mentenion_assistant_id !== context.assistant_id
+  ) {
+    new_assistant_id = mentenion_assistant_id;
+  }
+
+  input.push(lastMessage);
+  //case 3 returns an object
+  return {
+    assistant_id: new_assistant_id, //optional,change the assistant_id,switch the assistant for following process
+    chat_id: context.chat_id, //optional
+    input: input, //optional,overwrite the input messages
+    options: {
+      max_tokens: 8192
+      //optional, if you want to change the options for openai api call
+    }
+  };
+}
 ```
 
 #### Done
@@ -332,7 +394,7 @@ return {
 
 #### Fail
 
-当 ai 返回错误消息时触发。
+调用llm模型api接口返回错误消息时触发。
 
 ```ts
 /**
