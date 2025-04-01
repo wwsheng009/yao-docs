@@ -6601,7 +6601,7 @@ yao run models.supplier.Get '::{"withs":{ "users": { "withs": {"supplier":{} } }
 
 ## 模型元数据管理
 
-本文档介绍了 Yao 框架中模型元数据的管理方法。模型元数据管理分为两个主要部分：单个模型实例的操作和全局模型管理。
+本文档介绍了 Yao 框架中模型元数据的管理方法。模型元数据管理分为三个主要部分：单个模型实例的操作、全局模型管理和快照管理。
 
 ### 1. 模型实例管理
 
@@ -6738,9 +6738,116 @@ if (exists) {
 }
 ```
 
-### 2. 全局模型管理
+### 2. 快照管理
 
-#### 2.1 模型列表和查询
+快照功能允许您保存和恢复模型的数据状态，这对于数据备份和恢复非常有用。
+
+#### 2.1 快照基本操作
+
+##### models.MODEL_ID.takesnapshot
+
+**功能描述**：创建模型的数据快照
+
+**参数说明**：
+
+| 参数     | 类型    | 说明                   | 必填 | 默认值 |
+| -------- | ------- | ---------------------- | ---- | ------ |
+| inMemory | boolean | 是否仅在内存中存储快照 | 否   | false  |
+
+**返回值**：
+
+- 类型：string
+- 说明：快照名称
+
+**示例代码**：
+
+```js
+// 创建快照
+const snapshot = Process('models.pet.takesnapshot', false);
+console.log('创建的快照名称:', snapshot);
+```
+
+##### models.MODEL_ID.restoresnapshot
+
+**功能描述**：从快照恢复模型数据
+
+**参数说明**：
+
+| 参数 | 类型   | 说明     | 必填 | 默认值 |
+| ---- | ------ | -------- | ---- | ------ |
+| name | string | 快照名称 | 是   | -      |
+
+**示例代码**：
+
+```js
+// 从快照恢复
+Process('models.pet.restoresnapshot', 'pet_snapshot_20230101');
+```
+
+##### models.MODEL_ID.restoresnapshotbyrename
+
+**功能描述**：通过重命名表的方式从快照恢复数据
+
+**参数说明**：
+
+| 参数 | 类型   | 说明     | 必填 | 默认值 |
+| ---- | ------ | -------- | ---- | ------ |
+| name | string | 快照名称 | 是   | -      |
+
+**示例代码**：
+
+```js
+// 通过重命名恢复快照
+Process('models.pet.restoresnapshotbyrename', 'pet_snapshot_20230101');
+```
+
+##### models.MODEL_ID.dropsnapshot
+
+**功能描述**：删除指定的快照
+
+**参数说明**：
+
+| 参数 | 类型   | 说明     | 必填 | 默认值 |
+| ---- | ------ | -------- | ---- | ------ |
+| name | string | 快照名称 | 是   | -      |
+
+**示例代码**：
+
+```js
+// 删除快照
+Process('models.pet.dropsnapshot', 'pet_snapshot_20230101');
+```
+
+##### models.MODEL_ID.snapshotexists
+
+**功能描述**：检查指定的快照是否存在
+
+**参数说明**：
+
+| 参数 | 类型   | 说明     | 必填 | 默认值 |
+| ---- | ------ | -------- | ---- | ------ |
+| name | string | 快照名称 | 是   | -      |
+
+**返回值**：
+
+- 类型：boolean
+- 说明：true 表示存在，false 表示不存在
+
+**示例代码**：
+
+```js
+// 检查快照是否存在
+const exists = Process('models.pet.snapshotexists', 'pet_snapshot_20230101');
+if (exists) {
+  console.log('快照存在');
+} else {
+  console.log('快照不存在');
+}
+```
+
+### 3. 全局模型管理
+
+#### 3.1 模型列表和查询
 
 ##### model.list
 
@@ -6816,7 +6923,28 @@ modelsWithDetails.forEach((model) => {
 });
 ```
 
-##### model.get
+##### model.read
+
+**功能描述**：获取指定模型的源代码
+**参数说明**：
+| 参数 | 类型 | 说明 | 必填 | 默认值 |
+| ------- | ------ | ------ | ---- | ------ |
+| modelID | string | 模型ID | 是 | - |
+
+**返回值**：
+
+- 类型：string
+- 说明：模型源代码字符串
+
+**示例代码**：
+
+```js
+// 基本用法
+const modelSource = Process('model.read', 'admin.user');
+console.log('管理用户的源代码:', modelSource);
+```
+
+##### model.dsl
 
 **功能描述**：获取指定模型的元数据信息
 
@@ -6841,13 +6969,17 @@ modelsWithDetails.forEach((model) => {
 
 **示例代码**：
 
+```sh
+yao run model.dsl pet '::{\"metadata\":true,\"columns\":true}' > pet_model_dsl.json
+```
+
 ```js
 // 基本用法
-const petModel = Process('model.get', 'pet');
+const petModel = Process('model.dsl', 'pet');
 console.log('宠物模型信息:', petModel);
 
 // 获取完整信息
-const petModelDetails = Process('model.get', 'pet', {
+const petModelDetails = Process('model.dsl', 'pet', {
   metadata: true,
   columns: true
 });
@@ -7699,7 +7831,7 @@ function Save() {
 }
 ```
 
-### Cearte 新增:
+### Create 新增:
 
 ```javascript
 function Create() {
@@ -7726,6 +7858,42 @@ function Insert() {
 ```
 
 执行 `yao run scripts.test.Save`和`yao run scripts.test.Create`
+
+### Upsert a record
+
+Upsert 是一种数据库操作，用于在表中插入新记录或更新现有记录。它的工作原理是根据指定的唯一键（或一组唯一键）来确定记录是否已经存在。如果记录存在，则更新该记录的指定列；如果记录不存在，则插入新记录。
+
+需要注意的是，并不是所有的数据库都支持 Upsert 操作。在某些数据库中，Upsert 操作可能需要使用特定的语法或函数。
+
+在mysql中，upsert 操作可以使用 `ON DUPLICATE KEY UPDATE` 语法来实现。
+以下是一个使用 `ON DUPLICATE KEY UPDATE` 语法的示例：
+
+```sql
+INSERT INTO users (id, name, email)
+VALUES (1, 'John Doe', 'EMAIL')
+ON DUPLICATE KEY UPDATE
+  name = VALUES(name),
+  email = VALUES(email);
+```
+
+在上面的示例中，如果 `id` 为 1 的记录已经存在，则更新 `name` 和 `email` 列；如果记录不存在，则插入新记录。
+在yao中，我们可以使用 `Process` 函数来执行 Upsert 操作。以下是一个示例：
+
+```typescript
+/**
+ * 如果记录不存在则插入新记录，如果记录存在则更新记录
+ * @param data - 记录数据
+ * @param uniqueBy - 用于检查唯一性的列名（可以是单个或多个）
+ * @param updateColumns - 如果记录存在，需要更新的列（可选）
+ * @returns any - 更新或插入记录的ID
+ */
+const id = Process(
+  'models.user.Upsert',
+  { email: 'john@example.com', name: 'John Doe', status: 'active' },
+  'email', // Can be a string or array of strings
+  ['name', 'status'] // Optional columns to update
+);
+```
 
 ## 更新数据 save，update，updatewhere
 
@@ -8239,10 +8407,9 @@ export function Create(
     // Check if any attachment has the type 'URL'
     lastMessage.attachments.forEach((attachment) => {
       if (attachment.type === 'URL' && attachment.url) {
-        // console.log('attachment');
-        // console.log(attachment);
         try {
           Send('读取网页' + attachment.url);
+          // 这里可以使用一个函数来获取网页内容
           const content = getWebPageContent(attachment.url);
           Send('读取网页完成' + attachment.url);
           Send(content);
@@ -8441,14 +8608,14 @@ return {
 - \_\_yao_agent_global，全局对象
 - assistant，全局对象，助手对象
 - context，全局对象，上下文对象
-- Send，发送函数
-- Assets，资源对象
-- MakeCall，调用函数
-- MakePlan，计划函数
+- Send，向前端发送信息的函数
+- Assets，读取资源对象
+- MakeCall，调用其它助手函数
+- MakePlan，创建计划组件函数
 - Set，全局对象设置函数
 - Get，全局对象获取函数
 - Clear，全局对象清除函数
-- Replace，全局对象替换函数
+- Replace，替换字符串中占位符函数
 
 ### \_\_yao_agent_global，全局对象
 
@@ -10517,7 +10684,6 @@ function TaskCompleted(plan_id: string, key: string, data: any, foo: string) {
 计划组件在js环境中与golang环境暴露的接口不同：
 
 - js环境，没有stop,pause,resume等方法,只能等待任务完成。
-
   - plan.Run() Run the plan
   - plan.Add() Add a task to the plan
   - plan.Status() Get the status of the plan and each task
@@ -10529,7 +10695,6 @@ function TaskCompleted(plan_id: string, key: string, data: any, foo: string) {
   - plan.Set() Set a value in the shared space
   - plan.Del() Delete a value from the shared space
   - plan.Clear() Clear the shared space
-
 - golang环境，更加丰富的功能，可以暂停，恢复，停止等。
   - plan.NewPlan() NewPlan creates a new Plan instance
   - plan.AddTask() AddTask adds a new task to the plan
@@ -15265,6 +15430,8 @@ yao sui watch "blog" "website" -d '::{}'
 
 `__document.html` 是页面的最外层模板文档，可以用于整个页面应用的框架。 在这个文档中会通过变量`{{ __page }}`来引用具体的页面，在用户访问时，会根据不同的路由替换不同的页面。
 
+整个模板处理逻辑由上至下，由整体到局部，document > page > component。
+
 ```html
 <!DOCTYPE html>
 <html lang="en" class="dark scroll-smooth" dir="ltr">
@@ -15307,6 +15474,20 @@ yao sui watch "blog" "website" -d '::{}'
 ```
 
 #### template.json
+
+sui 模板的配置文件，定义了模板的名称，描述，主题，语言，脚本，翻译器等。
+
+模板脚本处理：
+
+- `before:build`：在构建之前执行的脚本，支持两种类型：
+  - `process`：使用处理器处理脚本，可在脚本中进行更复杂的文件操作，处理器的参数是模板的根目录。
+  - `command`：使用命令行处理脚本，比如使用 tailwind 构建 css。
+- `after:build`：在构建之后执行的脚本，支持两种类型：
+  - `process`：使用处理器处理脚本。
+  - `command`：使用命令行处理脚本。
+- `build:complete`：在构建完成后执行的脚本，支持两种类型：
+  - `process`：使用处理器处理脚本。
+  - `command`：使用命令行处理脚本。
 
 示例：
 
@@ -16177,6 +16358,51 @@ guard 处理器可以使用以下的参数：
 - 函数 Abort(),退出请求
 - 函数 Cookie(name),获取特定 cookie
 - 函数 SetCookie(name,value,maxAge,path,domain,secure,httpOnly)，设置 cookie
+
+### 路由重写
+
+路由重写是指将请求的路径映射到本地文件的一种方法，比如博客的文章详情页都是共用一种页面，但是文章的 id 是不同的，此时可以使用路由重写来实现。
+
+比如：
+
+- 将`/assets/xxxx`请求重定向到`/asset/xxxx`。
+- 将`/xxx`请求重定向到`/xxx.sui。
+- 将`/blog/1`请求重定向到`/blog/[slug].sui`页面。
+
+其中请求变量在脚本或是页面中可以使用`params.XXXX`来获取请求的参数，可以使用$1,$2,$3等来引用替换请求的参数。
+
+yao.app文件配置：
+
+在rewrite中可以配置多个重写规则,每一个规则中中的key是正则表达式，value是重写的路径，在value中可以使用[xxxx]来捕获请求的参数。
+
+```json
+{
+  "public": {
+    // The rules from the top to the bottom
+    "rewrite": [
+      { "^\\/assets\\/(.*)$": "/assets/$1" }, // SUI assets
+      { "^\\/docs/(.*)$": "/docs/[name].sui" }, // SUI Documentation Detail
+      { "^\\/blog/(.*)$": "/blog/[slug].sui" }, // SUI Blog Detail
+      { "^\\/example/(.*)$": "/example/[id].sui" },
+
+      // Installation route
+      { "^\\/install.sh$": "/install.sh.txt" },
+      { "^\\/install.ps1$": "/install.ps1.txt" },
+
+      // Sitemap route
+      { "^\\/sitemap.xml$": "/sitemap.xml" },
+
+      // Redirect to the new routes...
+      { "^\\/en-US(.*)$": "/index.sui" },
+      { "^\\/components(.*)$": "/index.sui" },
+      { "^\\/doc/(.*)$": "/index.sui" },
+
+      // File system route
+      { "^\\/(.*)$": "/$1.sui" }
+    ]
+  }
+}
+```
 
 ### 页面访问
 
@@ -24507,6 +24733,52 @@ yao 系统里有几个内置的处理器
 // 查看控件的Compute
 // Execute Compute View On:    Search, Get, Find
 ```
+
+## 模板替换
+
+在Xgen中，在多个场景下可以使用模板替换功能。
+
+模板替换使用mustache.js实现的，主要有两种替换方法：
+
+:::v-pre
+
+- `{{}}`/ `[[]]` 替换对象中的字段
+- `{{{}}}` / `[[[]]]` 替换对象中的字段，未转义。
+
+:::
+
+在actions中可以使用`${actionName}`引用上一个节点的返回值。
+
+示例：
+
+```json
+{
+  "title": "Unpublish",
+  "icon": "icon-arrow-down",
+  "style": "danger",
+  "disabled": { "bind": "{{status}}", "value": "draft" },
+  "action": [
+    { "name": "Submit", "type": "Form.submit" },
+    {
+      "name": "Draft",
+      "type": "Service.article",
+      "payload": {
+        "method": "UpdateStatus",
+        "args": [{ "id": "[[$Submit]]", "status": "draft" }] // 在actions中引用上一个节点的返回值
+      }
+    },
+    { "name": "Refetch", "type": "Common.refetch" }
+  ]
+}
+```
+
+使用场景，可以xgen项目中查询函数`getTemplateValue`的引用：
+
+- task中的payload对象
+- form中的action对象
+- form中的reference对象
+- form中的sections对象
+- table中的actions对象
 
 ## `Yao`应用默认用户名
 

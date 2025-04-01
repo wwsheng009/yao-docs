@@ -727,6 +727,10 @@ export default {
           link: '/YaoDSL/Xgen/菜单结构'
         },
         {
+          text: '模板替换',
+          link: '/YaoDSL/Xgen/模板替换'
+        },
+        {
           text: '使用compute',
           link: '/YaoDSL/Xgen/使用compute'
         },

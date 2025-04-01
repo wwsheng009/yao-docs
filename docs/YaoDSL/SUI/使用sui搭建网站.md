@@ -119,6 +119,8 @@
 
 `__document.html` 是页面的最外层模板文档，可以用于整个页面应用的框架。 在这个文档中会通过变量`{{ __page }}`来引用具体的页面，在用户访问时，会根据不同的路由替换不同的页面。
 
+整个模板处理逻辑由上至下，由整体到局部，document > page > component。
+
 ```html
 <!DOCTYPE html>
 <html lang="en" class="dark scroll-smooth" dir="ltr">
@@ -161,6 +163,20 @@
 ```
 
 ### template.json
+
+sui 模板的配置文件，定义了模板的名称，描述，主题，语言，脚本，翻译器等。
+
+模板脚本处理：
+
+- `before:build`：在构建之前执行的脚本，支持两种类型：
+  - `process`：使用处理器处理脚本，可在脚本中进行更复杂的文件操作，处理器的参数是模板的根目录。
+  - `command`：使用命令行处理脚本，比如使用 tailwind 构建 css。
+- `after:build`：在构建之后执行的脚本，支持两种类型：
+  - `process`：使用处理器处理脚本。
+  - `command`：使用命令行处理脚本。
+- `build:complete`：在构建完成后执行的脚本，支持两种类型：
+  - `process`：使用处理器处理脚本。
+  - `command`：使用命令行处理脚本。
 
 示例：
 
@@ -1031,6 +1047,51 @@ guard 处理器可以使用以下的参数：
 - 函数 Abort(),退出请求
 - 函数 Cookie(name),获取特定 cookie
 - 函数 SetCookie(name,value,maxAge,path,domain,secure,httpOnly)，设置 cookie
+
+## 路由重写
+
+路由重写是指将请求的路径映射到本地文件的一种方法，比如博客的文章详情页都是共用一种页面，但是文章的 id 是不同的，此时可以使用路由重写来实现。
+
+比如：
+
+- 将`/assets/xxxx`请求重定向到`/asset/xxxx`。
+- 将`/xxx`请求重定向到`/xxx.sui。
+- 将`/blog/1`请求重定向到`/blog/[slug].sui`页面。
+
+其中请求变量在脚本或是页面中可以使用`params.XXXX`来获取请求的参数，可以使用$1,$2,$3等来引用替换请求的参数。
+
+yao.app文件配置：
+
+在rewrite中可以配置多个重写规则,每一个规则中中的key是正则表达式，value是重写的路径，在value中可以使用[xxxx]来捕获请求的参数。
+
+```json
+{
+  "public": {
+    // The rules from the top to the bottom
+    "rewrite": [
+      { "^\\/assets\\/(.*)$": "/assets/$1" }, // SUI assets
+      { "^\\/docs/(.*)$": "/docs/[name].sui" }, // SUI Documentation Detail
+      { "^\\/blog/(.*)$": "/blog/[slug].sui" }, // SUI Blog Detail
+      { "^\\/example/(.*)$": "/example/[id].sui" },
+
+      // Installation route
+      { "^\\/install.sh$": "/install.sh.txt" },
+      { "^\\/install.ps1$": "/install.ps1.txt" },
+
+      // Sitemap route
+      { "^\\/sitemap.xml$": "/sitemap.xml" },
+
+      // Redirect to the new routes...
+      { "^\\/en-US(.*)$": "/index.sui" },
+      { "^\\/components(.*)$": "/index.sui" },
+      { "^\\/doc/(.*)$": "/index.sui" },
+
+      // File system route
+      { "^\\/(.*)$": "/$1.sui" }
+    ]
+  }
+}
+```
 
 ## 页面访问
 

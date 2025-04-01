@@ -293,10 +293,9 @@ export function Create(
     // Check if any attachment has the type 'URL'
     lastMessage.attachments.forEach((attachment) => {
       if (attachment.type === 'URL' && attachment.url) {
-        // console.log('attachment');
-        // console.log(attachment);
         try {
           Send('读取网页' + attachment.url);
+          // 这里可以使用一个函数来获取网页内容
           const content = getWebPageContent(attachment.url);
           Send('读取网页完成' + attachment.url);
           Send(content);
