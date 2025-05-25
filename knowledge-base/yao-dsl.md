@@ -15248,6 +15248,66 @@ self.LoadCategory = async function (event: MouseEvent, data: EventData) {
 };
 ```
 
+## SUI页面中使用表达式
+
+### 1. 表达式
+
+在页面中，可以使用表达式来动态地显示数据或是作条件判断。表达式的语法使用了go语言风格的表达式解析库[源代码](https://github.com/expr-lang/expr),[文档](https://expr-lang.org/)的语法，具体请参考库的文档。
+
+具体的每一个表达式的语法请参考库的[文档]
+
+需要注意使用的是**[定制表达式]**(https://expr-lang.org/docs/language-definition),并不是使用js的语法，比如判断长度的表达式需要使用len()函数，而不是articles.data.length。
+
+比如以下代码中需要判断数组的长度：
+
+```html
+<div s:if="len(articles.data) == 0">
+  <div>没有文章</div>
+</div>
+```
+
+### 定制Yao表达式
+
+另外在sui中，有几个额外定制的Yao相关的处理函数:
+
+- P*()，调用处理器，比如P*(process_name,args1,args2,args3)，第一个参数是处理器名称，剩下的是处理器的参数。
+- True()，判断是否是真，比如true,"true",1,非0都会返回真
+- False()，判断是否为假，比如false,"false",0,空字符串都会返回假
+- Empty()，判断是否为空，比如空的数组，空的对象，空的字符串都会返回真
+
+直接在页面中使用表达式调用处理器：
+
+```html
+<div>articles:{{ P_('scripts.app.blog.site.getPostList') }}</div>
+```
+
+### 调试
+
+在sui中，有几个有用的命令，可以方便地调试：
+
+开发阶段构建页面使用watch命令。
+
+```sh
+## build sui web page
+yao sui build <sui_id> <template_id>
+## for example:
+yao sui build  blog website
+
+## watch sui web page change and build
+yao sui watch <sui_id> <template_id>
+
+## for example:
+yao sui watch  blog website
+```
+
+在页面中，如果不确定某个表达式的值，可以使用{{}}来包裹表达式，直接在页面上输出表达式的值进行调试处理。
+
+使用变量$env可以输出当前页面中所有的变量，所有的变量在整个渲染的过程中都是可用的。
+
+```html
+<div>$env: {{$env}}</div>
+```
+
 ## 使用 builder 创建 sui 页面
 
 **此功能已被停用**
@@ -15418,7 +15478,7 @@ yao sui watch "blog" "website" -d '::{}'
 │       ├── __services
 │       │   ├── article.ts
 │       │   └── __pages
-│       ├── website.json         # 模板全局配置
+│       ├── template.json         # 模板全局配置
 │       └── __yao
 │           ├── core.ts
 │           └── types.ts
@@ -15473,7 +15533,7 @@ yao sui watch "blog" "website" -d '::{}'
 </html>
 ```
 
-#### template.json
+#### 模板全局配置文件template.json
 
 sui 模板的配置文件，定义了模板的名称，描述，主题，语言，脚本，翻译器等。
 
@@ -15505,7 +15565,7 @@ sui 模板的配置文件，定义了模板的名称，描述，主题，语言�
     { "label": "繁體中文", "value": "zh-hk" },
     { "label": "日本語", "value": "ja-jp" }
   ],
-  "translator": "scripts.translator.Default",
+  "translator": "scripts.translator.Default", //自动的多语言翻译器
   "scripts": {
     "before:build": [
       { "type": "process", "content": "scripts.build.Before" },
@@ -16423,6 +16483,209 @@ yao.app文件配置：
 - 在页面请求时，添加 `__sui_disable_cache=true`参数，会禁用页面缓存。
 - 请求抬头中包含配置项 `Cache-Control = "no-cache"` 同样会禁用缓存。
 - 页面请求时，添加`__debug=true`参数，会开启调试模式。调试模式会禁用页面缓存。
+
+## SUI多语言支持
+
+在开发国际化应用时，会有多语言的需求，根据页面的locale动态的翻译成不同国家的语言。
+
+### 多语言页面声明
+
+有两种方式可以实现多语言支持：
+
+- 在html节点中使用属性`s:trans`进行修饰。
+- 在变量中使用`::`进行修饰。
+
+针对于静态文本信息，在外层加上一个节点属性`s:trans`，单行或是多行的文本。
+
+针对变量，使用`::`进行修饰,相比于静态文本，变量的翻译会更加灵活，也可以使用表达式进行拼接。
+
+如果是使用了`:::`进行修饰，也会自动的把变量的文本信息进行翻译。
+
+```html
+<div>{{ "::hello yao" }}</div>
+
+<div>{{ '::hello world' + '::why you cry' }}</div>
+
+<h1 s:trans>All-in-one App Engine</h1>
+
+<span s:trans>
+  is a free, open-source application engine that enables developers to create
+  web apps, REST APIs, business applications, and more, with AI as a development
+  partner.
+</span>
+```
+
+### 多语言脚本翻译
+
+除了在页面中使用多语言，也可以在脚本中使用内置函数**m来进行多语言处理，**m函数运行期间查找翻译文本。
+
+```js
+function hello(name) {
+  console.log(__m('hello') + name);
+  console.log(__m('hello') + name);
+
+  // 还可以使用回调函数进行额外的处理，传入message与locales信息,locales为当前页面的语言配置信息
+  console.log(__m('hello', (message, locales) => {}) + name);
+}
+```
+
+### 使用工具生成翻译
+
+SUI提供了一个工具，可以根据页面的文本信息，自动生成翻译文件。
+
+在模板配置文件template.json中添加需要生成的语言列表。
+
+suis/sui_id/template_id/template.json
+
+```json
+{
+  "locales": [
+    { "label": "English", "value": "en-us", "default": true }, //default为true时，不会生成翻译文件
+    { "label": "简体中文", "value": "zh-cn" },
+    { "label": "繁體中文", "value": "zh-hk" }
+  ],
+  "translator": "scripts.translator.Default" //使用AI处理器进行多语言翻译器
+}
+```
+
+或是在模板目录下创建需要翻译页面的子目录。比如：
+
+- suis/sui_id/template_id/\_\_locales/en-us
+- suis/sui_id/template_id/\_\_locales/zh-CN
+- suis/sui_id/template_id/\_\_locales/ja-jp
+- suis/sui_id/template_id/\_\_locales/zh-hk
+
+执行yao trans命令生成翻译文件。
+
+如果配置了translator，会自动的调用ai处理器进行处理。
+
+配置：/aigcs/translate.ai.yml
+
+```yaml
+## Translate
+name: Translate
+## connector: moapi:gpt-4-turbo
+connector: deepseek-chat
+prompts:
+  - role: system
+    content: |
+      - Translate the given the "messages" field value.
+      - The target language is "language" field.
+      - Keep the original key, replace the value with the translated message.
+      - Answer the translated object only.
+      - Do not change the structure of the object.
+      - Do not explain your answer, and do not use punctuation.
+      - Do not add your own punctuation marks.
+
+optional:
+  autopilot: true
+```
+
+脚本示例：
+
+```js
+import { Locale } from '@yao/sui';
+import { Process, time } from '@yaoapps/client';
+
+export function Default(
+  locale: string,//语言,比如zh-cn
+  data: Locale,//Locale配置，包含需要翻译的文本信息，最重要的是messages属性，包含需要翻译的文本信息
+  route: string,//页面路由
+  tmpl: string,//页面模板路径
+  retry: number = 1
+): Locale { //返回翻译后的messages属性与keys属性，最后保存到__locales/localeID/pageID.yml文件中
+  const payload = {
+    messages: data.messages || {},
+    language: locale
+  };
+
+  if (Object.keys(payload.messages).length === 0) {
+    console.log(`No translation ${route}`);
+    return data;
+  }
+
+  if (retry > 3) {
+    console.log(`Failed to translate ${route} with ${locale} locale`);
+    return data;
+  }
+
+  console.log(
+    `Translating ${route} with ${locale} locale ${
+      retry > 1 ? `(${retry})` : ''
+    }`
+  );
+   //   使用了ai处理器进行翻译
+  const res = Process('aigcs.translate', JSON.stringify(payload));
+  try {
+    const translated = JSON.parse(res);
+    if (translated.messages) {
+      return {
+        keys: data.keys,
+        messages: translated.messages
+      };
+    }
+
+    time.Sleep(200);
+    return Default(locale, data, route, tmpl, retry + 1);
+  } catch (e) {
+    time.Sleep(200);
+    return Default(locale, data, route, tmpl, retry + 1);
+  }
+}
+
+```
+
+```sh
+yao sui trans sui_id template_id
+
+## 翻译本地所有语言的所有页面
+yao sui trans blog website
+
+## 翻译本地指定语言的所有页面
+yao sui trans blog website -l 'zh-cn,ja-jp'
+
+## 最后执行编译命令
+yao sui build blog website
+```
+
+### 全局配置
+
+另外如果多个页面存在相同的语言配置，可以使用全局翻译配置。
+
+全局配置，在template/**locales/langugeID/**global.yml中配置，需要手动创建此文件。
+
+如果页面中引用了组件component,页面配置会把组件的配置合并到页面配置中。
+
+页面配置，在页面的template/\_\_locales/langugeID/pageID.yml中配置,如果有子目录，在子目录中配置。
+
+### 语言配置文件格式
+
+yml文件的配置格式如下,其中的key是在页面中使用的文本值，value是对应的翻译值，可以配置单行或是多行的文本，建议使用上面提供的trans命令结合ai处理器进行生成。
+
+```yaml
+messages:
+  All-in-one App Engine: All-in-one App Engine
+  Getting Started: 入门指南
+  ? |-
+    is a free, open-source application engine that allows developers to
+            create web apps, REST APIs, enterprise apps and more, with AI as a
+            seamless collaborator.
+  : 是一个免费的开源应用引擎，允许开发人员创建Web应用程序、REST API、企业应用程序等，AI作为一个无缝的合作者。
+```
+
+### 编译模板
+
+```sh
+yao sui build sui_id template_id
+```
+
+### 切换语言
+
+在前端页面中可以通过cookie来配置语言，再刷新页面就会显示新的翻译文本，如果没有配置语言，直接输出页面文本。
+
+```js
+document.cookie = 'locale=zh-CN';
+```
 
 ## 异步任务
 

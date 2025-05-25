@@ -107,7 +107,7 @@
 │       ├── __services
 │       │   ├── article.ts
 │       │   └── __pages
-│       ├── website.json         # 模板全局配置
+│       ├── template.json         # 模板全局配置
 │       └── __yao
 │           ├── core.ts
 │           └── types.ts
@@ -162,7 +162,7 @@
 </html>
 ```
 
-### template.json
+### 模板全局配置文件template.json
 
 sui 模板的配置文件，定义了模板的名称，描述，主题，语言，脚本，翻译器等。
 
@@ -194,7 +194,7 @@ sui 模板的配置文件，定义了模板的名称，描述，主题，语言�
     { "label": "繁體中文", "value": "zh-hk" },
     { "label": "日本語", "value": "ja-jp" }
   ],
-  "translator": "scripts.translator.Default",
+  "translator": "scripts.translator.Default", //自动的多语言翻译器
   "scripts": {
     "before:build": [
       { "type": "process", "content": "scripts.build.Before" },

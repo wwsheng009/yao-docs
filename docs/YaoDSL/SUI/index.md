@@ -28,9 +28,11 @@ SUI采用三层结构设计：
 
 <!-- links begin -->
 
+- [多语言支持](多语言支持.md)
 - [使用builder创建sui页面](使用builder创建sui页面.md)
 - [使用sui搭建网站](使用sui搭建网站.md)
 - [sui介绍](sui介绍.md)
 - [sui的命令工具](sui的命令工具.md)
 - [sui编译文件自动插入的内容](sui编译文件自动插入的内容.md)
+- [sui表达式](sui表达式.md)
 <!-- links end -->
