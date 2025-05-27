@@ -5,8 +5,13 @@ import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform';
 
+// 添加ESM动态导入配置
 export default defineConfig(async () => {
-  const UnoCSS = (await import('unocss/vite')).default;
+  const [UnoCSS, { default: pkgManagerDetector }] = await Promise.all([
+    import('unocss/vite').then((m) => m.default),
+    import('package-manager-detector') // 修复ESM模块导入问题
+  ]);
+
   return {
     server: {
       hmr: {
@@ -34,9 +39,21 @@ export default defineConfig(async () => {
       Icons({
         compiler: 'vue3',
         autoInstall: true,
-        defaultStyle: 'display: inline-block'
+        defaultStyle: 'display: inline-block',
+        // 添加浏览器polyfill配置
+        customCollections: {
+          core: {
+            async loader() {
+              return await pkgManagerDetector();
+            }
+          }
+        }
       }),
       UnoCSS()
-    ]
+    ],
+    // 添加ESM构建配置
+    build: {
+      target: 'esnext'
+    }
   };
 });
