@@ -27,22 +27,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7.27.1
-
-      - name: Set node
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
-          cache: pnpm
+          node-version: 22.15.0
 
-      # - name: Setup
-      #   run: npm i -g @antfu/ni
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
 
-      # - name: Install
-      #   run: nci
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
 
