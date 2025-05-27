@@ -14042,6 +14042,211 @@ Process('stores.product.clear');
 
 - 运行`yao start`命令，启动 yao 主程序。后端服务会根据路由信息，读取页面源代码，并且页面关联的处理器读取数据填充模板。最后输出页面。
 
+## SUI多语言支持
+
+在开发国际化应用时，会有多语言的需求，根据页面的locale动态的翻译成不同国家的语言。
+
+### 多语言页面声明
+
+有两种方式可以实现多语言支持：
+
+- 在html节点中使用属性`s:trans`进行修饰。
+- 在变量中使用`::`进行修饰。
+
+针对于静态文本信息，在外层加上一个节点属性`s:trans`，单行或是多行的文本。
+
+针对变量，使用`::`进行修饰,相比于静态文本，变量的翻译会更加灵活，也可以使用表达式进行拼接。
+
+如果是使用了`:::`进行修饰，也会自动的把变量的文本信息进行翻译。
+
+```html
+<div>{{ "::hello yao" }}</div>
+
+<div>{{ '::hello world' + '::why you cry' }}</div>
+
+<h1 s:trans>All-in-one App Engine</h1>
+
+<span s:trans>
+  is a free, open-source application engine that enables developers to create
+  web apps, REST APIs, business applications, and more, with AI as a development
+  partner.
+</span>
+```
+
+### 多语言脚本翻译
+
+除了在页面中使用多语言，也可以在脚本中使用内置函数**m来进行多语言处理，**m函数运行期间查找翻译文本。
+
+```js
+function hello(name) {
+  console.log(__m('hello') + name);
+  console.log(__m('hello') + name);
+
+  // 还可以使用回调函数进行额外的处理，传入message与locales信息,locales为当前页面的语言配置信息
+  console.log(__m('hello', (message, locales) => {}) + name);
+}
+```
+
+### 使用工具生成翻译
+
+SUI提供了一个工具，可以根据页面的文本信息，自动生成翻译文件。
+
+在模板配置文件template.json中添加需要生成的语言列表。
+
+suis/sui_id/template_id/template.json
+
+```json
+{
+  "locales": [
+    { "label": "English", "value": "en-us", "default": true }, //default为true时，不会生成翻译文件
+    { "label": "简体中文", "value": "zh-cn" },
+    { "label": "繁體中文", "value": "zh-hk" }
+  ],
+  "translator": "scripts.translator.Default" //使用AI处理器进行多语言翻译器
+}
+```
+
+或是在模板目录下创建需要翻译页面的子目录。比如：
+
+- suis/sui_id/template_id/\_\_locales/en-us
+- suis/sui_id/template_id/\_\_locales/zh-CN
+- suis/sui_id/template_id/\_\_locales/ja-jp
+- suis/sui_id/template_id/\_\_locales/zh-hk
+
+执行yao trans命令生成翻译文件。
+
+如果配置了translator，会自动的调用ai处理器进行处理。
+
+配置：/aigcs/translate.ai.yml
+
+```yaml
+## Translate
+name: Translate
+## connector: moapi:gpt-4-turbo
+connector: deepseek-chat
+prompts:
+  - role: system
+    content: |
+      - Translate the given the "messages" field value.
+      - The target language is "language" field.
+      - Keep the original key, replace the value with the translated message.
+      - Answer the translated object only.
+      - Do not change the structure of the object.
+      - Do not explain your answer, and do not use punctuation.
+      - Do not add your own punctuation marks.
+
+optional:
+  autopilot: true
+```
+
+脚本示例：
+
+```js
+import { Locale } from '@yao/sui';
+import { Process, time } from '@yaoapps/client';
+
+export function Default(
+  locale: string,//语言,比如zh-cn
+  data: Locale,//Locale配置，包含需要翻译的文本信息，最重要的是messages属性，包含需要翻译的文本信息
+  route: string,//页面路由
+  tmpl: string,//页面模板路径
+  retry: number = 1
+): Locale { //返回翻译后的messages属性与keys属性，最后保存到__locales/localeID/pageID.yml文件中
+  const payload = {
+    messages: data.messages || {},
+    language: locale
+  };
+
+  if (Object.keys(payload.messages).length === 0) {
+    console.log(`No translation ${route}`);
+    return data;
+  }
+
+  if (retry > 3) {
+    console.log(`Failed to translate ${route} with ${locale} locale`);
+    return data;
+  }
+
+  console.log(
+    `Translating ${route} with ${locale} locale ${
+      retry > 1 ? `(${retry})` : ''
+    }`
+  );
+   //   使用了ai处理器进行翻译
+  const res = Process('aigcs.translate', JSON.stringify(payload));
+  try {
+    const translated = JSON.parse(res);
+    if (translated.messages) {
+      return {
+        keys: data.keys,
+        messages: translated.messages
+      };
+    }
+
+    time.Sleep(200);
+    return Default(locale, data, route, tmpl, retry + 1);
+  } catch (e) {
+    time.Sleep(200);
+    return Default(locale, data, route, tmpl, retry + 1);
+  }
+}
+
+```
+
+可使用-d来进行调试，编译的脚本不会自动压缩，而且会自动的全局变量打印到控制台。
+
+```sh
+yao sui trans sui_id template_id -D
+
+## 翻译本地所有语言的所有页面
+yao sui trans blog website -D
+
+## 翻译本地指定语言的所有页面
+yao sui trans blog website -l 'zh-cn,ja-jp' -D
+
+## 最后执行编译命令
+yao sui build blog website -D
+```
+
+### 全局配置
+
+另外如果多个页面存在相同的语言配置，可以使用全局翻译配置。
+
+全局配置，在template/**locales/langugeID/**global.yml中配置，需要手动创建此文件。
+
+如果页面中引用了组件component,页面配置会把组件的配置合并到页面配置中。
+
+页面配置，在页面的template/\_\_locales/langugeID/pageID.yml中配置,如果有子目录，在子目录中配置。
+
+### 语言配置文件格式
+
+yml文件的配置格式如下,其中的key是在页面中使用的文本值，value是对应的翻译值，可以配置单行或是多行的文本，建议使用上面提供的trans命令结合ai处理器进行生成。
+
+```yaml
+messages:
+  All-in-one App Engine: All-in-one App Engine
+  Getting Started: 入门指南
+  ? |-
+    is a free, open-source application engine that allows developers to
+            create web apps, REST APIs, enterprise apps and more, with AI as a
+            seamless collaborator.
+  : 是一个免费的开源应用引擎，允许开发人员创建Web应用程序、REST API、企业应用程序等，AI作为一个无缝的合作者。
+```
+
+### 编译模板
+
+```sh
+yao sui build sui_id template_id
+```
+
+### 切换语言
+
+在前端页面中可以通过cookie来配置语言，再刷新页面就会显示新的翻译文本，如果没有配置语言，直接输出页面文本。
+
+```js
+document.cookie = 'locale=zh-CN';
+```
+
 ## SUI 开发套件提供了 3 个命令工具
 
 ### 构建单一文件
@@ -14154,7 +14359,7 @@ Building...  Success (8ms)
 - 全局 js 对象。
   为了方便用户操作页面，sui 页面会自动的注入一些全局对象。
 
-#### Yao 对象
+#### Yao 全局工具类对象
 
 用于操作页面的一些 API。比如获取 Token，获取 Cookie，设置 Cookie，删除 Cookie，序列化数据等。
 
@@ -14225,22 +14430,31 @@ Yao.prototype.Serialize = function (obj) {};
 使用方法：
 
 ```js
+// 创建一个新的Yao实例
 const yao = new Yao();
+// 获取当前的Token
 const token = yao.Token();
+// 获取指定名称的Cookie值
 const cookie = yao.Cookie('cookieName');
+// 设置Cookie,有效期7天
 yao.SetCookie('cookieName', 'cookieValue', 7);
+// 删除指定名称的Cookie
 yao.DeleteCookie('cookieName');
+// 将对象序列化为查询字符串
 const data = yao.Serialize({ key: 'value' });
 
+// 发送GET请求到指定路径
 const rest = await yao.Get('/api/path', params, headers);
+// 发送POST请求到指定路径
 const rest = await yao.Post('/api/path', { key: 'value' }, params, headers);
 // savefile filename to save
+// 下载文件到指定路径
 await yao.Download('/api/path', params, savefile, headers);
 ```
 
-#### Dom 操作
+#### SUI 组件操作
 
-Query SUI 组件选择器
+在前端针对于SUI 组件进行Query查询选择器，返回一个`$Query`对象,通过此对象可以对组件进行详细的操作。
 
 ```ts
 function $Query(selector: string | Element): __Query {
@@ -14248,7 +14462,15 @@ function $Query(selector: string | Element): __Query {
 }
 ```
 
-用于操作页面 DOM 的对象。
+使用方法,类似于Jquery。
+
+```js
+$Query('[category]').each((el) => {
+  el.removeClass(active).addClass(inactive);
+});
+```
+
+实现的细节，主要是用于操作页面 HTML DOM 的对象。
 
 ```ts
 /**
@@ -14511,6 +14733,10 @@ class __Query {
 
 #### SUI 组件选择器
 
+`$Query`中的`$$`方法用于获取sui页面中定义的Compoment对象，与`$Query`的区别是，`$$`方法会返回一个`sui前端组件对象`，而`$Query`方法会返回一个`html dom`对象。而sui前端组件对象中包含了组件的状态，事件，属性，方法等。
+
+`$$`方法可以通过组件的名称来获取组件对象，比如`$$('input')`会返回一个`input`组件对象。或是通过组件的html元素来获取组件对象，比如`$$(document.querySelector('input'))`会返回一个`input`组件对象。
+
 ```ts
 /**
  * Dom Object
@@ -14540,7 +14766,7 @@ function $$(selector) {
 }
 ```
 
-这里会有点复杂，组件中包含了不同的对象，比如状态，事件处理，属性，方法等。
+这里会有点复杂，sui 前端组件中包含了不同的对象，比如状态，事件处理，属性，方法等。
 
 ```ts
 /**
@@ -14594,7 +14820,9 @@ function __sui_component(elm, component) {
 }
 
 /**
- * 组件的状态处理，组件通过回调函数进行响应处理，如果在组件中定义了watch对象，则会自动调用watch中的函数。
+ * sui组件的状态处理细节。
+ *
+ * SUI组件的状态处理，组件通过回调函数进行响应处理，如果在组件中定义了watch对象，则会自动调用watch中的函数。
  *
  * 把事件向传到父组件中，父组件可以通过watch对象来监听组件的状态变化。
  *
@@ -14694,11 +14922,43 @@ function __sui_props(elm) {
 
 #### Store 对象
 
-用于存储页面数据的对象。
+Store 选择器，返回html元素或是组件对象中关联的状态信息，也可以直接使用`$Query('').store`来引用。
+
+```ts
+function $Store(elm) {
+  if (!elm) {
+    return null;
+  }
+
+  if (typeof elm === 'string') {
+    elm = document.querySelectorAll(elm);
+    if (elm.length == 0) {
+      return null;
+    }
+    elm = elm[0];
+  }
+  // @ts-ignore
+  return new __sui_store(elm);
+}
+```
+
+使用示例：
+
+```js
+function selectItem(el: HTMLElement) {
+  const store = $Store(el);
+  const item = store.GetJSON("item");
+  store.SetJSON("item", { ...item, selected: true });
+}
+```
+
+实现的细节。
+
+函数返回一个封装html元素/sui组件数据存储关联操作的对象，可以理解成一个获取或是设置html元素属性数据的对象。yao sui组件的元素数据存储在html元素的自定义属性中，而不是像react或是vue有一个专门的store保存对象。可以理解成html元素的自定义属性。这样做的好处是可以方便的在html元素中保存数据，而不需要单独的store对象，并且可以直接前后端共享数据。后端在渲染页面时，可以直接把数据保存在html元素的自定义属性中，前端在渲染页面时，可以直接从html元素的自定义属性中获取数据。
 
 ```ts
 /**
- * 组件的状态处理，利用组件的属性来保存组件的数据
+ * 组件的状态处理，利用组件/html元素的自定义属性来保存组件的数据
  *
  * @param {*} elm 组件的html元素
  * @returns
@@ -14742,29 +15002,9 @@ function __sui_store(elm) {
 }
 ```
 
-Store 选择器
+### 多语言
 
-```ts
-function $Store(elm) {
-  if (!elm) {
-    return null;
-  }
-
-  if (typeof elm === 'string') {
-    elm = document.querySelectorAll(elm);
-    if (elm.length == 0) {
-      return null;
-    }
-    elm = elm[0];
-  }
-  // @ts-ignore
-  return new __sui_store(elm);
-}
-```
-
-sui lib 内容，主要是 js 脚本。
-
-语言翻译，多语言，在 js 脚本中可以使用`__m`进行翻译。
+语言翻译，多语言，在后端页面或是组件中如果有配置了多语言，在页面渲染后，则会把多语言数据保存在`__sui_locale`对象中。在 js 脚本中可以使用`__m`进行翻译。
 
 ```html
 <script type="text/javascript">
@@ -14782,9 +15022,11 @@ sui lib 内容，主要是 js 脚本。
 </script>
 ```
 
-全局对象：\_\_sui_data 保存了页面的全局数据。包含请求的对象，cookie，主题，语言，时区，payload，参数，url 等。
+### 全局对象
 
-加载事件处理，处理`s:ready`事件。
+在页面渲染时，会把用户请求的数据作为全局数据保存在`__sui_data`对象中。`__sui_data` 保存了页面的全局数据。包含请求的对象，cookie，主题，语言，时区，payload，参数，url 等。
+
+在浏览器中加载页面时，会自动的加载页面中所有的组件初始化脚本，比如加载事件处理，处理`s:ready`事件。
 
 ```html
 <script name="imports" type="json">
@@ -14836,15 +15078,14 @@ sui lib 内容，主要是 js 脚本。
 </script>
 ```
 
-### 事件处理
+### 组件初始化
 
 函数`__sui_event_init`会在页面加载完成后调用，初始化绑定页面及组件的事件。
 
-在组件中，使用`s:event-xxxx`属性来绑定事件。
+在组件中，使用`s:event-xxxx`属性来绑定事件，事件的的参数可以使用以下两种方法来直接传递参数：
 
-在组件中使用`s:data-xxxx`属性,`s:json-xxxx`属性来设置事件的数据。
-
-也可以在组件中使用`data:xxx`属性,`json:xxxx`属性来设置事件的数据。
+- 在组件中使用`s:data-xxxx`属性,`s:json-xxxx`属性来设置事件的数据，在页面编译过程中`s:data-xxxx`属性会转换成`data:xxx`属性，`s:json-xxx`属性会转换成`json:xxx`属性。
+- 也可以在组件中使用`data:xxx`属性,`json:xxxx`属性来设置事件的数据。
 
 ```html
 <li
@@ -14863,7 +15104,7 @@ sui lib 内容，主要是 js 脚本。
 </li>
 ```
 
-在`.backend.ts`中，编写事件响应处理函数。
+在页面对应的`<componentid>.ts`中，编写前端事件响应处理函数，需要注意的是这个是前端js，不是`<componentid>.backend.ts`。
 
 ```ts
 /**
@@ -14873,8 +15114,8 @@ sui lib 内容，主要是 js 脚本。
  * @prram detail 事件关联的数据
  */
 self.LoadCategory = async function (
-  event: MouseEvent,
-  data: EventData,
+  event: MouseEvent, //html 事件
+  data: EventData, //在这个参数中会接收在组件中配置的所有的data属性，比如上面的调用会传入{category:xxxx}
   detail: {
     rootElement: HtmlElement; //即是本组件
     targetElement: HtmlElement; // 点击的元素,事件源
@@ -14910,6 +15151,29 @@ self.LoadCategory = async function (
 ```
 
 示例 2：
+
+组件配置
+
+```html
+<div
+  s:else
+  class="flex items-center"
+  s:on-click="onItemClick"
+  data:xxs="px-4"
+  s:data-index="{{ index }}"
+  s:json-item="{{ item }}"
+  data-value="{{ item.value }}"
+  class="
+        flex items-center justify-between cursor-pointer rounded-lg
+        transition-none hover:transition hover:duration-200 hover:ease-in-out
+        {{ itemSizeClass }} {{ itemColorClass }}
+
+      "
+  item
+></div>
+```
+
+组件对应的js脚本。
 
 ```ts
 /**
@@ -15080,15 +15344,28 @@ function __sui_event_init(elm: Element) {
 }
 ```
 
-### 浏览器渲染
+### 浏览器渲染组件
 
-在浏览器中，无刷新更新的方法。
+在浏览器中，无刷新更新部分页面组件的方法。
 
-通过调用 api，传入上下文数据，返回页面的 html 代码。
+通过调用 api，传入上下文数据，返回页面的 html 代码，在浏览器中无刷新替换页面源代码，不需要整个页面刷新。
 
 组件需要设置属性：`s:render="name"`。
 
 ```ts
+class __Render {
+  comp = null;
+  option = null;
+  constructor(comp, option) {
+    this.comp = comp;
+    this.option = option;
+  }
+  async Exec(name, data): Promise<string> {
+    // @ts-ignore
+    return __sui_render(this.comp, name, data, this.option);
+  }
+}
+
 /**
  * SUI Render
  * @param component
@@ -15193,60 +15470,9 @@ async function __sui_render(
     return Promise.reject('Failed to render');
   }
 }
-
-class __Render {
-  comp = null;
-  option = null;
-  constructor(comp, option) {
-    this.comp = comp;
-    this.option = option;
-  }
-  async Exec(name, data): Promise<string> {
-    // @ts-ignore
-    return __sui_render(this.comp, name, data, this.option);
-  }
-}
 ```
 
-使用示例：
-
-用法选择不同的分类，会重新加载文章列表。此时界面不需要更新。
-
-```ts
-/**
- * When category is changed, load articles
- * @param event
- * @param data
- */
-self.LoadCategory = async function (event: MouseEvent, data: EventData) {
-  // Active and inactive class
-  const active =
-    'text-primary-500 dark:text-primary-400 border-primary-500 dark:border-primary-400';
-  const inactive = 'border-transparent';
-
-  // Prevent default behavior ( href redirect )
-  event.preventDefault();
-
-  // Get category and store it
-  const category = data.category || null;
-  self.store.Set('category', category);
-
-  // Change item style
-  $Query('[category]').each((el) => {
-    el.removeClass(active).addClass(inactive);
-    // Current category
-    if ($Store(el.element as HTMLElement).Get('category') === category) {
-      el.removeClass(inactive).addClass(active);
-    }
-  });
-
-  // Load articles
-  const articles = await $Backend('/blog').Call('GetArticles', category, 1);
-
-  // Render articles
-  await self.render('articles', { articles });
-};
-```
+使用示例参考上面的`LoadCategory`,页面用户点击某个分类时，使用api获取后端文章列表，进行部分页面更新。
 
 ## SUI页面中使用表达式
 
@@ -15302,11 +15528,188 @@ yao sui watch  blog website
 
 在页面中，如果不确定某个表达式的值，可以使用{{}}来包裹表达式，直接在页面上输出表达式的值进行调试处理。
 
-使用变量$env可以输出当前页面中所有的变量，所有的变量在整个渲染的过程中都是可用的。
+使用变量$env可以输出当前页面中所有的动态变量，包含用户请求信息，后台返回数据，所有的变量在整个渲染的过程中都是可用的。
 
 ```html
 <div>$env: {{$env}}</div>
 ```
+
+## SUI页面重复使用机制详解
+
+### 概述
+
+在Web开发中，通常一个URL对应一个页面，但在Yao SUI框架中，可以通过URL重定向(rewrite)机制，将多个URL映射到同一个页面，实现页面复用。这种方式特别适合以下场景：
+
+- 多语言站点（如/en-US/about和/zh-CN/about指向同一个页面）
+- 内容管理系统（如/blog/post-1和/news/post-1指向同一内容）
+- API版本控制（如/api/v1/users和/api/v2/users）
+- 维护旧URL兼容性
+
+### 配置详解
+
+在`app.yao`配置文件中，通过`public.rewrite`字段配置重定向规则。以下是一个完整配置示例，包含详细注释：
+
+```json
+{
+  "public": {
+    // 基础配置
+    "disableGzip": false, // 是否禁用Gzip压缩
+    "sourceRoots": { "/public": "/data/templates/default" }, // 开发模式下的源文件映射
+
+    // 重定向规则（按优先级从高到低排序）
+    "rewrite": [
+      // 静态资源路由
+      { "^\\/assets\\/(.*)$": "/assets/$1" }, // 匹配/assets/下的所有请求，保持原路径
+
+      // 内容页面路由（带命名参数）
+      { "^\\/docs/(.*)$": "/docs/[name].sui" }, // 文档详情页，参数存入params.name
+      { "^\\/blog/(.*)$": "/blog/[slug].sui" }, // 博客详情页，参数存入params.slug
+      { "^\\/example/(.*)$": "/example/[id].sui" }, // 示例详情页，参数存入params.id
+
+      // 特殊文件路由
+      { "^\\/install.sh$": "/install.sh.txt" }, // 安装脚本
+      { "^\\/install.ps1$": "/install.ps1.txt" }, // PowerShell安装脚本
+      { "^\\/sitemap.xml$": "/sitemap.xml" }, // 网站地图
+
+      // 多路由指向同一页面
+      { "^\\/en-US(.*)$": "/index.sui" }, // 英文版路由
+      { "^\\/components(.*)$": "/index.sui" }, // 组件库路由
+      { "^\\/doc/(.*)$": "/index.sui" }, // 旧版文档路由兼容
+
+      // 默认路由规则（必须放在最后）
+      { "^\\/(.*)$": "/$1.sui" } // 为所有路径添加.sui后缀
+    ]
+  }
+}
+```
+
+### 工作机制
+
+#### 规则匹配流程
+
+1. **初始化阶段**：
+
+   - Yao启动时加载`app.yao`配置文件
+   - 将`rewrite`规则编译为正则表达式数组
+   - 规则按配置顺序排序（从上到下）
+
+2. **请求处理阶段**：
+   - 收到请求后，按顺序尝试匹配每个规则
+   - 使用第一个匹配成功的规则
+   - 根据规则进行路径转换和参数提取
+
+#### 参数处理方式
+
+1. **位置参数** (`$1`, `$2`等)：
+
+   ```json
+   { "^\\/category\\/(.*)\\/(.*)$": "/$2/$1.sui" }
+   ```
+
+   - 访问`/category/books/123` → 重定向到`/123/books.sui`
+   - `$1`匹配"books"，`$2`匹配"123"
+
+2. **命名参数** (`[param]`)：
+
+   ```json
+   { "^\\/product\\/(.*)$": "/detail/[pid].sui" }
+   ```
+
+   - 访问`/product/abc123` → 重定向到`/detail/[pid].sui`
+   - 参数存入`params.pid = "abc123"`
+
+3. **混合使用**：
+   ```json
+   { "^\\/(.*)\\/(.*)$": "/[$1]/[id].sui" }
+   ```
+   - 访问`/user/123` → 重定向到`/[user]/[id].sui`
+   - 参数存入：
+     ```js
+     params = {
+       user: 'user', // 来自$1
+       id: '123' // 来自$2
+     };
+     ```
+
+### 最佳实践
+
+#### 调试
+
+在url中使用debug参数或是**sui_disable_cache参数禁用页面缓存,`?debug=true`或`?**sui_disable_cache=true`。
+
+#### 规则设计建议
+
+1. **从特殊到通用**：
+
+   - 将最具体的规则放在前面
+   - 通用规则（如默认路由）放在最后
+
+2. **参数命名**：
+
+   - 使用有意义的参数名（如`[slug]`而非`[name]`）
+   - 保持命名一致性（全站使用相同的参数名表示相同含义）
+
+3. **性能优化**：
+
+   - 减少正则表达式复杂度
+   - 将高频访问的路由放在前面
+   - 避免过多嵌套分组
+
+4. **错误排查**：
+   - 404错误：检查目标文件是否存在
+   - 500错误：检查正则表达式语法
+   - 参数缺失：确认规则中的参数命名
+
+### 常见问题
+
+#### Q1: 规则不生效怎么办？
+
+- 检查规则顺序（是否被前面的规则拦截）
+- 验证正则表达式（可在正则测试工具中验证）
+- 确认没有语法错误（如未转义的特殊字符）
+
+#### Q2: 如何实现A/B测试路由？
+
+```json
+{ "^\\/test\\/(.*)$": "/experiment/[variant].sui" }
+```
+
+- 访问`/test/v1` → 重定向到`/experiment/[variant].sui`
+- 在页面中通过`params.variant`获取版本号
+
+#### Q3: 如何保留原始查询参数？
+
+重定向会自动保留原始查询字符串：
+
+- 访问`/old/path?key=value` → 重定向到`/new/path.sui?key=value`
+
+### 注意事项
+
+1. **文件存在性**：
+
+   - 所有重定向目标必须对应实际存在的.sui文件
+   - 建议在部署前验证所有路由
+
+2. **性能影响**：
+
+   - 过多重定向规则会影响性能
+   - 建议控制在20条规则以内
+
+3. **缓存问题**：
+
+   - 浏览器可能会缓存重定向
+   - 开发时可禁用浏览器缓存
+
+4. **特殊字符**：
+
+   - 正则表达式中需正确转义特殊字符
+   - 例如：`\\/`表示正斜杠
+
+5. **测试建议**：
+   - 为所有重定向规则编写单元测试
+   - 覆盖各种边界情况
+
+通过合理配置重定向规则，可以极大提高Yao SUI应用的灵活性和可维护性。建议结合具体业务需求，设计清晰的路由方案。
 
 ## 使用 builder 创建 sui 页面
 
@@ -16294,7 +16697,7 @@ function comp_name(component){
 		__self.root.dispatchEvent(event);
 	};
 
-	//%s,用户的在backend.ts中定义的代码。在组件js中可以使用上面定义的函数与定义。
+	//%s,用户的在<component>.ts中定义的代码。在组件js中可以使用上面定义的函数与定义。
 
 	if (this.root.getAttribute("initialized") != 'true') {
 		__self.root.setAttribute("initialized", 'true');
@@ -16483,209 +16886,6 @@ yao.app文件配置：
 - 在页面请求时，添加 `__sui_disable_cache=true`参数，会禁用页面缓存。
 - 请求抬头中包含配置项 `Cache-Control = "no-cache"` 同样会禁用缓存。
 - 页面请求时，添加`__debug=true`参数，会开启调试模式。调试模式会禁用页面缓存。
-
-## SUI多语言支持
-
-在开发国际化应用时，会有多语言的需求，根据页面的locale动态的翻译成不同国家的语言。
-
-### 多语言页面声明
-
-有两种方式可以实现多语言支持：
-
-- 在html节点中使用属性`s:trans`进行修饰。
-- 在变量中使用`::`进行修饰。
-
-针对于静态文本信息，在外层加上一个节点属性`s:trans`，单行或是多行的文本。
-
-针对变量，使用`::`进行修饰,相比于静态文本，变量的翻译会更加灵活，也可以使用表达式进行拼接。
-
-如果是使用了`:::`进行修饰，也会自动的把变量的文本信息进行翻译。
-
-```html
-<div>{{ "::hello yao" }}</div>
-
-<div>{{ '::hello world' + '::why you cry' }}</div>
-
-<h1 s:trans>All-in-one App Engine</h1>
-
-<span s:trans>
-  is a free, open-source application engine that enables developers to create
-  web apps, REST APIs, business applications, and more, with AI as a development
-  partner.
-</span>
-```
-
-### 多语言脚本翻译
-
-除了在页面中使用多语言，也可以在脚本中使用内置函数**m来进行多语言处理，**m函数运行期间查找翻译文本。
-
-```js
-function hello(name) {
-  console.log(__m('hello') + name);
-  console.log(__m('hello') + name);
-
-  // 还可以使用回调函数进行额外的处理，传入message与locales信息,locales为当前页面的语言配置信息
-  console.log(__m('hello', (message, locales) => {}) + name);
-}
-```
-
-### 使用工具生成翻译
-
-SUI提供了一个工具，可以根据页面的文本信息，自动生成翻译文件。
-
-在模板配置文件template.json中添加需要生成的语言列表。
-
-suis/sui_id/template_id/template.json
-
-```json
-{
-  "locales": [
-    { "label": "English", "value": "en-us", "default": true }, //default为true时，不会生成翻译文件
-    { "label": "简体中文", "value": "zh-cn" },
-    { "label": "繁體中文", "value": "zh-hk" }
-  ],
-  "translator": "scripts.translator.Default" //使用AI处理器进行多语言翻译器
-}
-```
-
-或是在模板目录下创建需要翻译页面的子目录。比如：
-
-- suis/sui_id/template_id/\_\_locales/en-us
-- suis/sui_id/template_id/\_\_locales/zh-CN
-- suis/sui_id/template_id/\_\_locales/ja-jp
-- suis/sui_id/template_id/\_\_locales/zh-hk
-
-执行yao trans命令生成翻译文件。
-
-如果配置了translator，会自动的调用ai处理器进行处理。
-
-配置：/aigcs/translate.ai.yml
-
-```yaml
-## Translate
-name: Translate
-## connector: moapi:gpt-4-turbo
-connector: deepseek-chat
-prompts:
-  - role: system
-    content: |
-      - Translate the given the "messages" field value.
-      - The target language is "language" field.
-      - Keep the original key, replace the value with the translated message.
-      - Answer the translated object only.
-      - Do not change the structure of the object.
-      - Do not explain your answer, and do not use punctuation.
-      - Do not add your own punctuation marks.
-
-optional:
-  autopilot: true
-```
-
-脚本示例：
-
-```js
-import { Locale } from '@yao/sui';
-import { Process, time } from '@yaoapps/client';
-
-export function Default(
-  locale: string,//语言,比如zh-cn
-  data: Locale,//Locale配置，包含需要翻译的文本信息，最重要的是messages属性，包含需要翻译的文本信息
-  route: string,//页面路由
-  tmpl: string,//页面模板路径
-  retry: number = 1
-): Locale { //返回翻译后的messages属性与keys属性，最后保存到__locales/localeID/pageID.yml文件中
-  const payload = {
-    messages: data.messages || {},
-    language: locale
-  };
-
-  if (Object.keys(payload.messages).length === 0) {
-    console.log(`No translation ${route}`);
-    return data;
-  }
-
-  if (retry > 3) {
-    console.log(`Failed to translate ${route} with ${locale} locale`);
-    return data;
-  }
-
-  console.log(
-    `Translating ${route} with ${locale} locale ${
-      retry > 1 ? `(${retry})` : ''
-    }`
-  );
-   //   使用了ai处理器进行翻译
-  const res = Process('aigcs.translate', JSON.stringify(payload));
-  try {
-    const translated = JSON.parse(res);
-    if (translated.messages) {
-      return {
-        keys: data.keys,
-        messages: translated.messages
-      };
-    }
-
-    time.Sleep(200);
-    return Default(locale, data, route, tmpl, retry + 1);
-  } catch (e) {
-    time.Sleep(200);
-    return Default(locale, data, route, tmpl, retry + 1);
-  }
-}
-
-```
-
-```sh
-yao sui trans sui_id template_id
-
-## 翻译本地所有语言的所有页面
-yao sui trans blog website
-
-## 翻译本地指定语言的所有页面
-yao sui trans blog website -l 'zh-cn,ja-jp'
-
-## 最后执行编译命令
-yao sui build blog website
-```
-
-### 全局配置
-
-另外如果多个页面存在相同的语言配置，可以使用全局翻译配置。
-
-全局配置，在template/**locales/langugeID/**global.yml中配置，需要手动创建此文件。
-
-如果页面中引用了组件component,页面配置会把组件的配置合并到页面配置中。
-
-页面配置，在页面的template/\_\_locales/langugeID/pageID.yml中配置,如果有子目录，在子目录中配置。
-
-### 语言配置文件格式
-
-yml文件的配置格式如下,其中的key是在页面中使用的文本值，value是对应的翻译值，可以配置单行或是多行的文本，建议使用上面提供的trans命令结合ai处理器进行生成。
-
-```yaml
-messages:
-  All-in-one App Engine: All-in-one App Engine
-  Getting Started: 入门指南
-  ? |-
-    is a free, open-source application engine that allows developers to
-            create web apps, REST APIs, enterprise apps and more, with AI as a
-            seamless collaborator.
-  : 是一个免费的开源应用引擎，允许开发人员创建Web应用程序、REST API、企业应用程序等，AI作为一个无缝的合作者。
-```
-
-### 编译模板
-
-```sh
-yao sui build sui_id template_id
-```
-
-### 切换语言
-
-在前端页面中可以通过cookie来配置语言，再刷新页面就会显示新的翻译文本，如果没有配置语言，直接输出页面文本。
-
-```js
-document.cookie = 'locale=zh-CN';
-```
 
 ## 异步任务
 

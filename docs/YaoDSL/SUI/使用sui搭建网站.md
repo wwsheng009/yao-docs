@@ -923,7 +923,7 @@ function comp_name(component){
 		__self.root.dispatchEvent(event);
 	};
 
-	//%s,用户的在backend.ts中定义的代码。在组件js中可以使用上面定义的函数与定义。
+	//%s,用户的在<component>.ts中定义的代码。在组件js中可以使用上面定义的函数与定义。
 
 	if (this.root.getAttribute("initialized") != 'true') {
 		__self.root.setAttribute("initialized", 'true');

@@ -11,7 +11,7 @@
 - 全局 js 对象。
   为了方便用户操作页面，sui 页面会自动的注入一些全局对象。
 
-### Yao 对象
+### Yao 全局工具类对象
 
 用于操作页面的一些 API。比如获取 Token，获取 Cookie，设置 Cookie，删除 Cookie，序列化数据等。
 
@@ -82,22 +82,31 @@ Yao.prototype.Serialize = function (obj) {};
 使用方法：
 
 ```js
+// 创建一个新的Yao实例
 const yao = new Yao();
+// 获取当前的Token
 const token = yao.Token();
+// 获取指定名称的Cookie值
 const cookie = yao.Cookie('cookieName');
+// 设置Cookie,有效期7天
 yao.SetCookie('cookieName', 'cookieValue', 7);
+// 删除指定名称的Cookie
 yao.DeleteCookie('cookieName');
+// 将对象序列化为查询字符串
 const data = yao.Serialize({ key: 'value' });
 
+// 发送GET请求到指定路径
 const rest = await yao.Get('/api/path', params, headers);
+// 发送POST请求到指定路径
 const rest = await yao.Post('/api/path', { key: 'value' }, params, headers);
 // savefile filename to save
+// 下载文件到指定路径
 await yao.Download('/api/path', params, savefile, headers);
 ```
 
-### Dom 操作
+### SUI 组件操作
 
-Query SUI 组件选择器
+在前端针对于SUI 组件进行Query查询选择器，返回一个`$Query`对象,通过此对象可以对组件进行详细的操作。
 
 ```ts
 function $Query(selector: string | Element): __Query {
@@ -105,7 +114,15 @@ function $Query(selector: string | Element): __Query {
 }
 ```
 
-用于操作页面 DOM 的对象。
+使用方法,类似于Jquery。
+
+```js
+$Query('[category]').each((el) => {
+  el.removeClass(active).addClass(inactive);
+});
+```
+
+实现的细节，主要是用于操作页面 HTML DOM 的对象。
 
 ```ts
 /**
@@ -368,6 +385,10 @@ class __Query {
 
 ### SUI 组件选择器
 
+`$Query`中的`$$`方法用于获取sui页面中定义的Compoment对象，与`$Query`的区别是，`$$`方法会返回一个`sui前端组件对象`，而`$Query`方法会返回一个`html dom`对象。而sui前端组件对象中包含了组件的状态，事件，属性，方法等。
+
+`$$`方法可以通过组件的名称来获取组件对象，比如`$$('input')`会返回一个`input`组件对象。或是通过组件的html元素来获取组件对象，比如`$$(document.querySelector('input'))`会返回一个`input`组件对象。
+
 ```ts
 /**
  * Dom Object
@@ -397,7 +418,7 @@ function $$(selector) {
 }
 ```
 
-这里会有点复杂，组件中包含了不同的对象，比如状态，事件处理，属性，方法等。
+这里会有点复杂，sui 前端组件中包含了不同的对象，比如状态，事件处理，属性，方法等。
 
 ```ts
 /**
@@ -451,7 +472,9 @@ function __sui_component(elm, component) {
 }
 
 /**
- * 组件的状态处理，组件通过回调函数进行响应处理，如果在组件中定义了watch对象，则会自动调用watch中的函数。
+ * sui组件的状态处理细节。
+ *
+ * SUI组件的状态处理，组件通过回调函数进行响应处理，如果在组件中定义了watch对象，则会自动调用watch中的函数。
  *
  * 把事件向传到父组件中，父组件可以通过watch对象来监听组件的状态变化。
  *
@@ -551,11 +574,43 @@ function __sui_props(elm) {
 
 ### Store 对象
 
-用于存储页面数据的对象。
+Store 选择器，返回html元素或是组件对象中关联的状态信息，也可以直接使用`$Query('').store`来引用。
+
+```ts
+function $Store(elm) {
+  if (!elm) {
+    return null;
+  }
+
+  if (typeof elm === 'string') {
+    elm = document.querySelectorAll(elm);
+    if (elm.length == 0) {
+      return null;
+    }
+    elm = elm[0];
+  }
+  // @ts-ignore
+  return new __sui_store(elm);
+}
+```
+
+使用示例：
+
+```js
+function selectItem(el: HTMLElement) {
+  const store = $Store(el);
+  const item = store.GetJSON("item");
+  store.SetJSON("item", { ...item, selected: true });
+}
+```
+
+实现的细节。
+
+函数返回一个封装html元素/sui组件数据存储关联操作的对象，可以理解成一个获取或是设置html元素属性数据的对象。yao sui组件的元素数据存储在html元素的自定义属性中，而不是像react或是vue有一个专门的store保存对象。可以理解成html元素的自定义属性。这样做的好处是可以方便的在html元素中保存数据，而不需要单独的store对象，并且可以直接前后端共享数据。后端在渲染页面时，可以直接把数据保存在html元素的自定义属性中，前端在渲染页面时，可以直接从html元素的自定义属性中获取数据。
 
 ```ts
 /**
- * 组件的状态处理，利用组件的属性来保存组件的数据
+ * 组件的状态处理，利用组件/html元素的自定义属性来保存组件的数据
  *
  * @param {*} elm 组件的html元素
  * @returns
@@ -599,29 +654,9 @@ function __sui_store(elm) {
 }
 ```
 
-Store 选择器
+## 多语言
 
-```ts
-function $Store(elm) {
-  if (!elm) {
-    return null;
-  }
-
-  if (typeof elm === 'string') {
-    elm = document.querySelectorAll(elm);
-    if (elm.length == 0) {
-      return null;
-    }
-    elm = elm[0];
-  }
-  // @ts-ignore
-  return new __sui_store(elm);
-}
-```
-
-sui lib 内容，主要是 js 脚本。
-
-语言翻译，多语言，在 js 脚本中可以使用`__m`进行翻译。
+语言翻译，多语言，在后端页面或是组件中如果有配置了多语言，在页面渲染后，则会把多语言数据保存在`__sui_locale`对象中。在 js 脚本中可以使用`__m`进行翻译。
 
 ```html
 <script type="text/javascript">
@@ -639,9 +674,11 @@ sui lib 内容，主要是 js 脚本。
 </script>
 ```
 
-全局对象：\_\_sui_data 保存了页面的全局数据。包含请求的对象，cookie，主题，语言，时区，payload，参数，url 等。
+## 全局对象
 
-加载事件处理，处理`s:ready`事件。
+在页面渲染时，会把用户请求的数据作为全局数据保存在`__sui_data`对象中。`__sui_data` 保存了页面的全局数据。包含请求的对象，cookie，主题，语言，时区，payload，参数，url 等。
+
+在浏览器中加载页面时，会自动的加载页面中所有的组件初始化脚本，比如加载事件处理，处理`s:ready`事件。
 
 ```html
 <script name="imports" type="json">
@@ -693,15 +730,14 @@ sui lib 内容，主要是 js 脚本。
 </script>
 ```
 
-## 事件处理
+## 组件初始化
 
 函数`__sui_event_init`会在页面加载完成后调用，初始化绑定页面及组件的事件。
 
-在组件中，使用`s:event-xxxx`属性来绑定事件。
+在组件中，使用`s:event-xxxx`属性来绑定事件，事件的的参数可以使用以下两种方法来直接传递参数：
 
-在组件中使用`s:data-xxxx`属性,`s:json-xxxx`属性来设置事件的数据。
-
-也可以在组件中使用`data:xxx`属性,`json:xxxx`属性来设置事件的数据。
+- 在组件中使用`s:data-xxxx`属性,`s:json-xxxx`属性来设置事件的数据，在页面编译过程中`s:data-xxxx`属性会转换成`data:xxx`属性，`s:json-xxx`属性会转换成`json:xxx`属性。
+- 也可以在组件中使用`data:xxx`属性,`json:xxxx`属性来设置事件的数据。
 
 ```html
 <li
@@ -720,7 +756,7 @@ sui lib 内容，主要是 js 脚本。
 </li>
 ```
 
-在`.backend.ts`中，编写事件响应处理函数。
+在页面对应的`<componentid>.ts`中，编写前端事件响应处理函数，需要注意的是这个是前端js，不是`<componentid>.backend.ts`。
 
 ```ts
 /**
@@ -730,8 +766,8 @@ sui lib 内容，主要是 js 脚本。
  * @prram detail 事件关联的数据
  */
 self.LoadCategory = async function (
-  event: MouseEvent,
-  data: EventData,
+  event: MouseEvent, //html 事件
+  data: EventData, //在这个参数中会接收在组件中配置的所有的data属性，比如上面的调用会传入{category:xxxx}
   detail: {
     rootElement: HtmlElement; //即是本组件
     targetElement: HtmlElement; // 点击的元素,事件源
@@ -767,6 +803,29 @@ self.LoadCategory = async function (
 ```
 
 示例 2：
+
+组件配置
+
+```html
+<div
+  s:else
+  class="flex items-center"
+  s:on-click="onItemClick"
+  data:xxs="px-4"
+  s:data-index="{{ index }}"
+  s:json-item="{{ item }}"
+  data-value="{{ item.value }}"
+  class="
+        flex items-center justify-between cursor-pointer rounded-lg
+        transition-none hover:transition hover:duration-200 hover:ease-in-out
+        {{ itemSizeClass }} {{ itemColorClass }}
+        
+      "
+  item
+></div>
+```
+
+组件对应的js脚本。
 
 ```ts
 /**
@@ -937,15 +996,28 @@ function __sui_event_init(elm: Element) {
 }
 ```
 
-## 浏览器渲染
+## 浏览器渲染组件
 
-在浏览器中，无刷新更新的方法。
+在浏览器中，无刷新更新部分页面组件的方法。
 
-通过调用 api，传入上下文数据，返回页面的 html 代码。
+通过调用 api，传入上下文数据，返回页面的 html 代码，在浏览器中无刷新替换页面源代码，不需要整个页面刷新。
 
 组件需要设置属性：`s:render="name"`。
 
 ```ts
+class __Render {
+  comp = null;
+  option = null;
+  constructor(comp, option) {
+    this.comp = comp;
+    this.option = option;
+  }
+  async Exec(name, data): Promise<string> {
+    // @ts-ignore
+    return __sui_render(this.comp, name, data, this.option);
+  }
+}
+
 /**
  * SUI Render
  * @param component
@@ -1050,57 +1122,6 @@ async function __sui_render(
     return Promise.reject('Failed to render');
   }
 }
-
-class __Render {
-  comp = null;
-  option = null;
-  constructor(comp, option) {
-    this.comp = comp;
-    this.option = option;
-  }
-  async Exec(name, data): Promise<string> {
-    // @ts-ignore
-    return __sui_render(this.comp, name, data, this.option);
-  }
-}
 ```
 
-使用示例：
-
-用法选择不同的分类，会重新加载文章列表。此时界面不需要更新。
-
-```ts
-/**
- * When category is changed, load articles
- * @param event
- * @param data
- */
-self.LoadCategory = async function (event: MouseEvent, data: EventData) {
-  // Active and inactive class
-  const active =
-    'text-primary-500 dark:text-primary-400 border-primary-500 dark:border-primary-400';
-  const inactive = 'border-transparent';
-
-  // Prevent default behavior ( href redirect )
-  event.preventDefault();
-
-  // Get category and store it
-  const category = data.category || null;
-  self.store.Set('category', category);
-
-  // Change item style
-  $Query('[category]').each((el) => {
-    el.removeClass(active).addClass(inactive);
-    // Current category
-    if ($Store(el.element as HTMLElement).Get('category') === category) {
-      el.removeClass(inactive).addClass(active);
-    }
-  });
-
-  // Load articles
-  const articles = await $Backend('/blog').Call('GetArticles', category, 1);
-
-  // Render articles
-  await self.render('articles', { articles });
-};
-```
+使用示例参考上面的`LoadCategory`,页面用户点击某个分类时，使用api获取后端文章列表，进行部分页面更新。

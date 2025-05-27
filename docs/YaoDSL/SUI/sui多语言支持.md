@@ -149,17 +149,19 @@ export function Default(
 
 ```
 
+可使用-d来进行调试，编译的脚本不会自动压缩，而且会自动的全局变量打印到控制台。
+
 ```sh
-yao sui trans sui_id template_id
+yao sui trans sui_id template_id -D
 
 # 翻译本地所有语言的所有页面
-yao sui trans blog website
+yao sui trans blog website -D
 
 # 翻译本地指定语言的所有页面
-yao sui trans blog website -l 'zh-cn,ja-jp'
+yao sui trans blog website -l 'zh-cn,ja-jp' -D
 
 # 最后执行编译命令
-yao sui build blog website
+yao sui build blog website -D
 ```
 
 ## 全局配置

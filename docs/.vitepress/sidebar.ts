@@ -623,10 +623,6 @@ export default {
       collapsed: true,
       items: [
         {
-          text: '多语言支持',
-          link: '/YaoDSL/SUI/多语言支持'
-        },
-        {
           text: '使用builder创建sui页面',
           link: '/YaoDSL/SUI/使用builder创建sui页面'
         },
@@ -639,6 +635,10 @@ export default {
           link: '/YaoDSL/SUI/sui介绍'
         },
         {
+          text: 'sui多语言支持',
+          link: '/YaoDSL/SUI/sui多语言支持'
+        },
+        {
           text: 'sui的命令工具',
           link: '/YaoDSL/SUI/sui的命令工具'
         },
@@ -649,6 +649,10 @@ export default {
         {
           text: 'sui表达式',
           link: '/YaoDSL/SUI/sui表达式'
+        },
+        {
+          text: 'sui页面重复使用',
+          link: '/YaoDSL/SUI/sui页面重复使用'
         }
       ],
       link: '/YaoDSL/SUI/'
