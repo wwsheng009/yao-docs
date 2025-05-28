@@ -1,4 +1,4 @@
-const fs = require('fs');
+import { copyFile } from 'node:fs/promises';
 
 // Path to the source file
 const source = './dist/yao-docs/index.html';
@@ -7,10 +7,9 @@ const source = './dist/yao-docs/index.html';
 const destination = './dist/index.html';
 
 // Copying the file
-fs.copyFile(source, destination, (err) => {
-  if (err) {
-    console.error('Error occurred while copying the file:', err);
-    return;
-  }
+try {
+  await copyFile(source, destination);
   console.log('File was copied successfully');
-});
+} catch (err) {
+  console.error('Error occurred while copying the file:', err);
+}

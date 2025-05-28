@@ -148,7 +148,7 @@ export default withPwa(
       ['meta', { property: 'og:locale', content: 'zh_CN' }]
     ],
     async buildEnd() {
-      const files = glob.default('**/*.md', {
+      const files = await glob('**/*.md', {
         cwd: 'docs',
         ignore: ['node_modules/**', '.vitepress/**']
       });
@@ -156,7 +156,7 @@ export default withPwa(
       const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${files
-  .map((file) => {
+  .map((file: string) => {
     const urlPath = formatUrl(
       file.replace(/\.md$/, '.html').replace(/index\.html$/, '')
     );
