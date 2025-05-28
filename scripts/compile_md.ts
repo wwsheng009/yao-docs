@@ -1,5 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+// 获取当前文件的目录路径
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // 常量定义
 const CONSTANTS = {
@@ -278,6 +283,6 @@ async function writeOutputFile(
 export { compileMdFiles, CompileConfig };
 
 // 如果直接运行脚本
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   compileMdFiles().catch(console.error);
 }

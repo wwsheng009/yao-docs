@@ -1,4 +1,6 @@
-export default {
+import type { DefaultTheme } from 'vitepress';
+
+const algolia: DefaultTheme.AlgoliaSearchOptions = {
   appId: 'Z0GOIBJSIG',
   apiKey: 'f3f332389d40f82741dc99678e577e5d',
   indexName: 'yao-docs',
@@ -43,3 +45,5 @@ export default {
     }
   }
 };
+
+export default algolia;

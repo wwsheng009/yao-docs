@@ -15,7 +15,8 @@
   "include": [
     "docs",
     "docs/.vitepress/components/*.vue",
-    "docs/.vitepress/*.ts"
+    "docs/.vitepress/*.ts",
+    "docs/.vitepress/config.ts"
   ],
   "exclude": ["**/node_modules/**", "**/dist/**"]
 }

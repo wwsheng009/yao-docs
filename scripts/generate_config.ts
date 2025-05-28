@@ -123,7 +123,7 @@ function getAllMdFiles(dir: string) {
           text: file,
           collapsed: true,
           items: [],
-          link: `${filePath.replace(BaseDocPath, '').replaceAll('\\', '/')}/`, // ; + auto_created_index_file,
+          link: `${filePath.replace(BaseDocPath, '').replaceAll('\\', '/')}/` // ; + auto_created_index_file,
           // should end with "/"
         };
         addFiles(folder.items, filePath);
@@ -136,7 +136,7 @@ function getAllMdFiles(dir: string) {
         if (checkIsMdFile(filePath) && !checkIsIndexFile(file)) {
           parent.push({
             text: file.slice(0, -3),
-            link: getFileRelativePath(filePath).replaceAll('\\', '/'),
+            link: getFileRelativePath(filePath).replaceAll('\\', '/')
           });
         }
       }
@@ -175,7 +175,7 @@ function GetFilesUnderFolder(folderPath: string, fileExtensions: string[]) {
           folder.startsWith('_') ||
           folder.endsWith('index.md') ||
           folder.endsWith('.bak')
-        ),
+        )
     );
   const subfolderCount = getSubfolderCount(folderPath);
 
@@ -215,7 +215,7 @@ function rootFolderList(basePath: string) {
           folder.startsWith('..') ||
           folder.startsWith('_') ||
           folder === 'public'
-        ),
+        )
     );
 
   // Filter out non-directories
@@ -287,16 +287,16 @@ function CreateVitePressConfig() {
     (total, file) =>
       total.concat({
         text: file.slice(0, -3),
-        link: getFileRelativePath(file),
+        link: getFileRelativePath(file)
       }),
-    [] as NavItem[],
+    [] as NavItem[]
   );
   sidebar['/'] = items;
 
   const folders = rootFolderList(BaseDocPath);
   const nav = folders.reduce(
     (total, item) => total.concat({ text: item, link: `/${item}/index` }), // }
-    [] as NavItem[],
+    [] as NavItem[]
   );
 
   folders.forEach((item) => {
@@ -312,13 +312,13 @@ function CreateVitePressConfig() {
   `;
   fs.writeFileSync(
     path.join(BaseDocPath, '/.vitepress/sidebar.ts'),
-    prepend + JSON.stringify(sidebar, null, 2),
+    prepend + JSON.stringify(sidebar, null, 2)
   );
   console.log(
-    `Generated vitepress config:${path.join(
+    `Generated vitepress sidebar config:${path.join(
       BaseDocPath,
-      '/.vitepress/config.js',
-    )}`,
+      '.vitepress/sidebar.ts'
+    )}`
   );
 
   // syntax needed by vitepress
@@ -327,7 +327,7 @@ function CreateVitePressConfig() {
   `;
   fs.writeFileSync(
     path.join(BaseDocPath, '/.vitepress/nav.ts'),
-    prepend + JSON.stringify(nav, null, 2),
+    prepend + JSON.stringify(nav, null, 2)
   );
 }
 
