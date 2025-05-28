@@ -203,7 +203,7 @@ sui 模板的配置文件，定义了模板的名称，描述，主题，语言�
         "content": "npx tailwindcss -i ./__assets/css/tailwind.css -o ./__assets/css/tailwind.min.css --minify"
       }
     ],
-    "after:build": [{ "type": "process", "content": "scripts.build.After" }],
+    "after:build": {% "type": "process", "content": "scripts.build.After" %},
 
     "build:complete": [
       { "type": "process", "content": "scripts.build.Complete" }
@@ -416,12 +416,12 @@ data['$global']; //其它全局对象，从<page>.json文件复制而来。
 
 ```html
 <page is="/footer">
-  <slot is="link"> Link </slot>
-  <slot is="item"> Item </slot>
+  <slot name="link"> Link </slot>
+  <slot name="item"> Item </slot>
 
   <!-- jit 组件 -->
   <div is="link2">{{xxx}}</div>
-  <div is="link3" p2="[{xxx}]"></div>
+  <div is="link3" p2="{%xxx%}"></div>
   <div is="link4" p1="{%xxx%}"></div>
 </page>
 ```
@@ -438,38 +438,34 @@ data['$global']; //其它全局对象，从<page>.json文件复制而来。
 ```html
 <div class="bg-blue-700">
   <page is="/item" active="index">
-    <slot is="link1"> Link Slot</slot>
-    <slot is="item"> Item Slot</slot>
+    <slot name="link1"><div>Link</div></slot>
+    <slot name="item1"><div>item</div></slot>
   </page>
 </div>
 ```
 
 `item.html`,在子页面中：
 
-- 使用`[{$prop.<prop>}]`来引用父页面传递的属性值。
+- 使用`{% <prop> %}`来引用父页面传递的属性值。
 
 ```html
 <div class="flex">
-  <div
-    class="[{ $prop.active=='index' ? 'text-white' : 'text-blue-200' }] w-10"
-  >
+  <div class="{% active=='index' ? 'text-white' : 'text-blue-200' %} w-10">
     <a href="/index">介绍</a>
   </div>
 
-  <div
-    class="[{ $prop.active=='signin' ? 'text-white' : 'text-blue-200' }] w-10"
-  >
+  <div class="{% active=='signin' ? 'text-white' : 'text-blue-200' %} w-10">
     <a href="/index">登录</a>
   </div>
 </div>
 ```
 
-- 使用`[{}]`语法来接收父页面传递的 slot 配置。
+- 自定义html元素接收父页面传递的 slot 配置。
 
 ```html
-<div class="text-blue-200">[{link}]</div>
+<link1></link1>
 
-<div class="text-red-200">[{item}]</div>
+<item1></item1>
 ```
 
 ## 组件导入
@@ -721,49 +717,6 @@ function Catalog(r: sui.Request) {
   const ignoreCache = r.query?.refresh?.[0] === 'true' || false;
   return GetCatalog(route.root, route.name, route.locale, ignoreCache);
 }
-```
-
-## 使用 Set 数据
-
-在模板中，可以使用`s:set` 或是`set` 标签,属性`value`来设置页面数据。这部分代码会在编译后保存，但是在页面输出时，set 配置数据被读取后，会删除`s:set`标签内容。它的作用跟页面关联的`json`配置文件作用一样。
-
-比如，以下的页面配置也会应用到模板中。
-
-```html
-...
-
-<!-- 简单类型数据 -->
-<s:set name="weight" value="{% weight %}"></s:set>
-<s:set name="icon" value="{% icon %}"></s:set>
-<!-- json object 对象 -->
-<s:set
-  name="sizes"
-  value="{{ { 
-          'xs': 'text-xs', 
-          'sm': 'text-sm', 
-          'base': 'text-base',
-          'lg': 'text-lg', 
-          'xl': 'text-xl',
-          'none': ''
-      } }}"
-></s:set>
-
-<!-- 在模板中，可以使用set name来引用set中的配置数据 -->
-<a
-  id="{{ id }}"
-  name="{{ name }}"
-  title="{{ title }}"
-  class="cursor-pointer hover:transition hover:duration-200 hover:ease-in-out
-          {{ icon != '' ? 'flex items-center justify-start' : 'inline-block' }}
-          {{ size != '' ? sizes[size] : sizes.base }}
-      "
-  href="{{ href }}"
-  target="{{ target != '' ? target : '_self' }}"
-  button
->
-  <i s:if="icon != ''" class="material outlined me-1"> {{icon}} </i>
-  <children></children>
-</a>
 ```
 
 ## 组件事件处理
@@ -1041,67 +994,20 @@ guard 处理器可以使用以下的参数：
 
 如果是在 sui guard 环境中使用脚本处理器，比如`scripts.xxx`,那么可以在 js 脚本中使用以下的特有的 js 函数对象。
 
-- 函数 SetSid 设置全局对象\_\_sid
-- 函数 SetGlobal，设置全局对象\_\_global
+- 函数 SetSid 设置全局对象`__sid`
+- 函数 SetGlobal，设置全局对象`__global`
 - 函数 Redirect(code,url)，跳转到特定的地址。
 - 函数 Abort(),退出请求
 - 函数 Cookie(name),获取特定 cookie
 - 函数 SetCookie(name,value,maxAge,path,domain,secure,httpOnly)，设置 cookie
 
-## 路由重写
-
-路由重写是指将请求的路径映射到本地文件的一种方法，比如博客的文章详情页都是共用一种页面，但是文章的 id 是不同的，此时可以使用路由重写来实现。
-
-比如：
-
-- 将`/assets/xxxx`请求重定向到`/asset/xxxx`。
-- 将`/xxx`请求重定向到`/xxx.sui。
-- 将`/blog/1`请求重定向到`/blog/[slug].sui`页面。
-
-其中请求变量在脚本或是页面中可以使用`params.XXXX`来获取请求的参数，可以使用$1,$2,$3等来引用替换请求的参数。
-
-yao.app文件配置：
-
-在rewrite中可以配置多个重写规则,每一个规则中中的key是正则表达式，value是重写的路径，在value中可以使用[xxxx]来捕获请求的参数。
-
-```json
-{
-  "public": {
-    // The rules from the top to the bottom
-    "rewrite": [
-      { "^\\/assets\\/(.*)$": "/assets/$1" }, // SUI assets
-      { "^\\/docs/(.*)$": "/docs/[name].sui" }, // SUI Documentation Detail
-      { "^\\/blog/(.*)$": "/blog/[slug].sui" }, // SUI Blog Detail
-      { "^\\/example/(.*)$": "/example/[id].sui" },
-
-      // Installation route
-      { "^\\/install.sh$": "/install.sh.txt" },
-      { "^\\/install.ps1$": "/install.ps1.txt" },
-
-      // Sitemap route
-      { "^\\/sitemap.xml$": "/sitemap.xml" },
-
-      // Redirect to the new routes...
-      { "^\\/en-US(.*)$": "/index.sui" },
-      { "^\\/components(.*)$": "/index.sui" },
-      { "^\\/doc/(.*)$": "/index.sui" },
-
-      // File system route
-      { "^\\/(.*)$": "/$1.sui" }
-    ]
-  }
-}
-```
-
 ## 页面访问
 
 访问方法:`<host>:<port>:/<root>/<page_index>`,比如这里的页面访问方法：`http://localhost:5099/blog/index`。
 
-**注意** 目前是调整了 yao 的路径处理代码才能使用
-
 ## 示例源代码
 
-在 yao-admin-admin 项目中实现了简单的博客[yao-amis-admin](https://github.com/wwsheng009/yao-amis-admin)。
+在 yao-website 项目中实现了官网的实现[yao website](https://github.com/Yaoapp/website)。
 
 ## 调试模式
 

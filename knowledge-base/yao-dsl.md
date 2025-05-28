@@ -13999,48 +13999,909 @@ Process('stores.product.Keys');
 Process('stores.product.clear');
 ```
 
-## sui
+## 组件化开发
 
-在 0.10.4 版本中，yao 主程序中增加一个新的创建前端界面的工具。在程序的名称为 sui。
+SUI 支持组件化开发，可以通过以下方式实现代码复用：
 
-它的工作原理是使用模板技术，结合 yao 独特的处理器调用方式生成 html 页面。用户访问的页面内容类似于 SSR 技术生成，并不是动态的页面内容。适合于博客，公司网站。
+#### 1. 组件定义
 
-### sui 的功能介绍
+```html
+<!-- components/header.html -->
+<header class="site-header">
+  <nav>
+    <a href="/">首页</a>
+    <a href="/about">关于</a>
+  </nav>
+</header>
+```
 
-- 有模板定义
-- 有模板语法
-- 支持调用后端处理器
-- ssr 页面生成
+#### 2. 组件使用
+
+```html
+<!-- pages/index.html -->
+<div is="/components/header"></div>
+<main>页面内容</main>
+```
+
+### 组件通信
+
+#### 1. 数据传递
+
+```html
+<!-- 父组件 -->
+<div is="components/header" title="网站标题"></div>
+
+<!-- 子组件 -->
+<header class="site-header">
+  <h1>{% title %}</h1>
+</header>
+```
+
+#### 2. 事件处理
+
+```html
+<!-- 父组件 -->
+<div is="components/button" s:on-click="handleClick"></div>
+
+<!-- 子组件 -->
+<button s:on-click="emit('click')">点击</button>
+```
+
+### 插槽使用
+
+#### 1. 定义插槽
+
+```html
+<!-- components/layout.html -->
+<div class="layout">
+  <header>
+    <slot is="header">默认头部</slot>
+  </header>
+  <main>
+    <slot is="content">默认内容</slot>
+  </main>
+  <footer>
+    <slot is="footer">默认底部</slot>
+  </footer>
+</div>
+```
+
+#### 2. 使用插槽
+
+```html
+<!-- pages/index.html -->
+<div is="components/layout">
+  <slot is="header">自定义头部</slot>
+  <slot is="content">自定义内容</slot>
+  <slot is="footer">自定义底部</slot>
+</div>
+```
+
+### 最佳实践
+
+1. 将通用组件放在 `components` 目录
+2. 使用 `is` 引入组件
+3. 通过数据传递实现组件通信
+4. 使用 CSS 模块化避免样式冲突
+5. 合理使用插槽增加组件灵活性
+6. 保持组件的单一职责
+7. 使用 TypeScript 增强类型安全
+
+### 示例
+
+#### 1. 导航组件
+
+```html
+<!-- components/nav.html -->
+<nav class="site-nav">
+  <ul>
+    <li s:for="items" s:for-item="item">
+      <a href="{{ item.url }}" class="{% active == item.url ? 'active' : '' %}">
+        {{ item.text }}
+      </a>
+    </li>
+  </ul>
+</nav>
+```
+
+#### 2. 卡片组件
+
+```html
+<!-- components/card.html -->
+<div class="card">
+  <div class="card-header">
+    <slot is="header">{% title %}</slot>
+  </div>
+  <div class="card-body">
+    <slot is="content">{% content %}</slot>
+  </div>
+  <div class="card-footer">
+    <slot is="footer">
+      <button s:on-click="emit('action')">{% buttonText %}</button>
+    </slot>
+  </div>
+</div>
+```
+
+#### 3. 使用组件
+
+```html
+<!-- pages/index.html -->
+<div
+  is="/components/nav"
+  items="{{ navigation }}"
+  active="{{ currentPath }}"
+></div>
+
+<div
+  is="/components/card"
+  title="标题"
+  content="内容"
+  s:data-button-text="点击"
+>
+  <slot is="header">自定义头部</slot>
+  <slot is="content">自定义内容</slot>
+  <slot is="footer">
+    <button s:on-click="handleAction">自定义按钮</button>
+  </slot>
+</div>
+```
+
+## SUI 介绍
+
+### 什么是 SUI
+
+SUI (Simple User Interface) 是 Yao v0.10.4 中新增的一个基于组件的模板引擎，用于创建网页界面。它使用 HTML、CSS 和 TypeScript 来构建网页，具有以下特点：
+
+- AI 友好：模板语法简单直观，易于 AI 生成和理解
+- 服务器端渲染 (SSR)：支持服务器端渲染，提升 SEO 效果
+- 无需构建工具：不需要额外的构建工具，简化开发流程
+- 组件化：支持基于组件的开发方式，促进代码复用
+- 多语言支持：内置多语言支持机制
+- 数据集成：支持与后端处理器无缝集成
+
+### 工作原理
+
+1. 模板定义：用户定义 HTML 模板和组件
+2. 模板编译：使用 `yao sui build` 命令编译模板
+3. 页面生成：服务器根据路由读取编译后的模板，调用处理器获取数据，生成最终页面
+
+### 适用场景
+
+- 博客网站
+- 公司官网
+- 静态内容展示
+- 简单的动态网站
+
+### 技术特点
+
+- 支持模板定义和动态数据
+- 支持多套模板配置
+- 支持多语言
+- 支持后端处理器调用
+- 支持 SSR 页面生成
 
 ### 程序流程
 
-- 定义 sui 模板定义。
-
-- 定义模板，静态页面配置。
-
-- 在模板中生成页面的过程中，调用 yao 处理器，通过处理器获取动态数据。
-
-- 生成前端页面。
-
-### 使用设计器
-
-- 页面设计器读取页面配置信息。
-
-- 用户使用编辑器定义模板，上传资源，定义模板中的数据来源【使用处理器】。
-
-- 页面编辑，页面预览。
-
-- 编译模板，发布并生成页面。
-
-- 用户访问，根据请求的路由信息，读取页面源代码，并且页面关联的处理器读取数据填充模板。最后输出页面。
+1. 定义 SUI 模板
+2. 定义静态页面配置
+3. 在模板中调用 Yao 处理器获取动态数据
+4. 生成前端页面
 
 ### SUI 工作原理
 
-- 用户定义模板与页面组件，此时的模板还不能直接使用。
+1. 用户定义模板与页面组件
+2. 运行 `yao sui build` 命令编译模板
+3. 运行 `yao start` 启动服务
+4. 后端服务根据路由读取编译后的页面
+5. 调用关联的处理器读取数据
+6. 填充模板并输出页面
 
-- 运行`yao sui build`命令，编译用户编写的模板，生成前端模板。
+## SUI 前端工具库
 
-- 运行`yao start`命令，启动 yao 主程序。后端服务会根据路由信息，读取页面源代码，并且页面关联的处理器读取数据填充模板。最后输出页面。
+SUI 是一个后台渲染的框架，同时也提供了前端UI操作的工具库，结合 libsui.min.js 工具库，提供组件化开发、状态管理、事件处理、动态渲染、后端交互和 AI 代理功能。本文档概述其核心功能、扩展功能、Yao SDK 和 Yao AI Agent SDK 的使用方法。
+
+在SUI中，模板编译后默认会注入一个名称为`libsui.min.js`的前端工具库，它包含了SUI中常用的工具函数。
+执行以下命令会生成libsui.min.js文件。
+
+```sh
+yao sui build sui_id template_id
+```
+
+index.html中引用libsui.min.js文件。
+
+```html
+<script
+  s:ns=""
+  s:cn=""
+  s:hash="script_5f50a1db8f374703"
+  src="/assets/libsui.min.js"
+  type="text/javascript"
+  name="libsui"
+></script>
+```
+
+在开发阶段，不需要显式的引用，只需要在模板关联的ts/js文件中引用类型声明即可。
+
+```ts
+//示例：
+import { $Query, Component, EventData } from '@yao/sui';
+import { $Backend, $Query, $Store, Component, Yao } from '@yao/sui';
+```
+
+此函数库包含以下功能：
+
+- 核心库，包含HTML查询，数据处理。
+- 全局Yao对象
+- AI操作库
+
+### 1. 核心功能
+
+在后端渲染过程中，每一个模板中的子页面可以理解成一个个单独的组件`Component`,组件有自己的事件处理与数据管理、状态管理、属性信息。每一个组件都会有一个html属性`s:cn`，这个组件ID在一个页面中是唯一的，组件的其它信息都会以组件id的方式进行关联。
+
+#### 1.1 组件初始化
+
+通过 `$$` 函数初始化组件，支持 CSS 选择器或 HTML 元素作为参数：
+
+- **输入**：字符串选择器或 HTMLElement。
+- **逻辑**：查找元素，获取 `s:cn` 属性（组件名称），并实例化对应组件。
+- **返回**：`__sui_component` 实例或 `null`。
+
+#### 1.2 状态管理
+
+`__sui_state` 管理组件状态，支持异步状态更新和事件传播：
+
+- **方法**：
+  - `Set(key, value, target)`：更新状态，触发 `watch` 中的处理函数，并支持向上传播状态变化事件。
+  - `stopPropagation()`：阻止状态事件传播。
+- **事件**：通过 `state:change` 自定义事件通知父组件。
+
+#### 1.3 属性管理
+
+`__sui_props` 处理组件的属性（`prop:` 前缀）：
+
+- **方法**：
+  - `Get(key)`：获取指定属性值，支持 JSON 解析（`json-attr-prop:`）。
+  - `List()`：列出所有属性键值对。
+
+#### 1.4 数据存储
+
+`__sui_store` 管理组件的本地数据（`data:` 和 `json:` 前缀）：
+
+- **方法**：
+  - `Get(key)`：获取 `data:` 属性值。
+  - `Set(key, value)`：设置 `data:` 属性值。
+  - `GetJSON(key)`：获取并解析 `json:` 属性值。
+  - `SetJSON(key, value)`：设置 JSON 格式的属性值。
+  - `GetData()`：获取 `__component_data` 的 JSON 数据。
+
+#### 1.5 事件绑定
+
+`__sui_event_init` 为带有 `s:event` 或 `s:event-jit` 的元素绑定事件：
+
+- **逻辑**：查找 `s:on-*` 属性，绑定对应事件处理函数，支持 `data:` 和 `json:` 属性传递数据。
+- **错误处理**：未找到组件或事件处理函数时记录错误日志。
+
+#### 1.6 后端调用
+
+`__sui_backend_call` 用于发起后端 API 请求：
+
+- **参数**：
+  - `route`：API 路由。
+  - `headers`：请求头。
+  - `method`：调用方法。
+  - `args`：参数列表。
+- **逻辑**：向 `/api/__yao/sui/v1/run${route}` 发送 POST 请求，返回解析后的响应数据或错误。
+
+#### 1.7 动态渲染
+
+`__sui_render` 实现动态内容渲染：
+
+- **参数**：
+  - `component`：组件实例或选择器。
+  - `name`：渲染目标（`s:render` 属性）。
+  - `data`：渲染数据。
+  - `option`：渲染选项（`replace`、`showLoader`、`withPageData`、`route` 等）。
+- **逻辑**：
+  1. 查找 `s:render` 元素。
+  2. 显示加载提示（可选）。
+  3. 合并组件数据和页面数据，发送 POST 请求至 `/api/__yao/sui/v1/render${route}`。
+  4. 更新目标元素内容，初始化子组件和事件。
+- **返回**：渲染结果或错误。
+
+### 2. 组件结构
+
+#### 2.1 Component
+
+```typescript
+interface Component {
+  root: HTMLElement; // 组件根元素
+  state: ComponentState; // 状态管理
+  store: ComponentStore; // 数据存储
+  watch?: Record<string, (value: any, state?: State) => void>; // 状态监听
+  Constants?: Record<string, any>; // 常量
+  [key: string]: any; // 扩展属性
+}
+```
+
+#### 2.2 RenderOption
+
+```typescript
+interface RenderOption {
+  target?: HTMLElement; // 渲染目标
+  showLoader?: HTMLElement | string | boolean; // 加载提示
+  replace?: boolean; // 是否替换内容
+  withPageData?: boolean; // 是否包含页面数据
+  component?: string; // 组件名称
+  route?: string; // 渲染路由
+}
+```
+
+#### 2.3 ComponentState
+
+```typescript
+interface ComponentState {
+  Set: (key: string, value: any) => void; // 设置状态
+}
+```
+
+#### 2.4 ComponentStore
+
+```typescript
+interface ComponentStore {
+  Get: (key: string) => string; // 获取数据
+  Set: (key: string, value: any) => void; // 设置数据
+  GetJSON: (key: string) => any; // 获取 JSON 数据
+  SetJSON: (key: string, value: any) => void; // 设置 JSON 数据
+  GetData: () => Record<string, any>; // 获取组件数据
+}
+```
+
+#### 2.5 State
+
+```typescript
+interface State {
+  target: HTMLElement; // 状态目标元素
+  stopPropagation: () => void; // 阻止状态传播
+}
+```
+
+### 3. 使用示例
+
+#### 3.1 初始化组件
+
+```html
+<div s:cn="MyComponent"></div>
+<script>
+  const comp = $$("div[s:cn='MyComponent']");
+</script>
+```
+
+#### 3.2 状态更新
+
+```javascript
+comp.state.Set('count', 42); // 触发 watch.count 处理函数
+```
+
+#### 3.3 事件绑定
+
+```html
+<button s:event s:on-click="handleClick" data:id="123">Click me</button>
+<script>
+  const self = this as Component;
+  self.handleClick = (event, data) => console.log(data.id); // 输出: 123
+</script>
+```
+
+#### 3.4 动态渲染
+
+```html
+<div s:cn="MyComponent" s:route="/page">
+  <div s:render="content"></div>
+</div>
+<script>
+  const self = this as Component;
+
+  self.render("content", { key: "value" }, { showLoader: true });
+</script>
+```
+
+### 4. 注意事项
+
+- 确保 `s:cn` 属性正确设置以关联组件。
+- 事件绑定需确保 `window[cn]` 存在且为函数。
+- 渲染和后端调用依赖正确的路由和服务器配置。
+- 使用 `json:` 属性时需保证 JSON 格式正确。
+
+以下是根据提供的 JavaScript 代码整理的简洁明了的中文文档，采用 Markdown 格式，概述了 SUI 框架中 `$Store`、`$Query`、`$Render` 和 `$Backend` 相关功能和使用方法。
+
+扩展功能，包括 `$Store`、`$Query`、`$Render` 和 `$Backend`，用于增强组件数据管理、DOM 查询、动态渲染和后端交互。
+
+### 5. 扩展功能
+
+#### 5.1 $Store
+
+用于创建组件数据存储实例，基于 `__sui_store` 实现。
+
+- **函数**：`$Store(elm)`
+- **参数**：
+  - `elm`：字符串选择器或 HTMLElement。
+- **逻辑**：
+  - 若 `elm` 为字符串，查询首个匹配元素；若无匹配，返回 `null`。
+  - 返回 `__sui_store` 实例，管理 `data:` 和 `json:` 属性。
+- **返回**：`__sui_store` 实例或 `null`。
+
+#### 5.2 $Query
+
+提供类似 jQuery 的 DOM 查询和操作接口，封装为 `__Query` 类。
+
+- **函数**：`$Query(selector)`
+- **参数**：
+  - `selector`：字符串选择器、Element 或 NodeList。
+- **类方法**：
+  - `elm()`：返回首个匹配元素。
+  - `elms()`：返回所有匹配元素（NodeList）。
+  - `find(selector)`：在当前元素内查找子元素，返回 `__Query` 实例或 `null`。
+  - `findAll(selector)`：查找所有子元素，返回 `__Query` 实例或 `null`。
+  - `closest(selector)`：查找最近的祖先元素，返回 `__Query` 实例或 `null`。
+  - `on(event, callback)`：绑定事件监听器，返回自身以支持链式调用。
+  - `$$()`：查找最近的 `[s:cn]` 组件元素并返回 `__sui_component` 实例。
+  - `each(callback)`：遍历匹配元素，调用回调函数（参数为 `__Query` 实例和索引）。
+  - `store()`：返回当前元素的 `__sui_store` 实例。
+  - `attr(key)`：获取指定属性值。
+  - `data(key)`：获取 `data:` 属性值。
+  - `json(key)`：获取并解析 `json:` 属性值，解析失败返回 `null`。
+  - `prop(key)`：获取 `prop:` 属性值，支持 JSON 解析（`json-attr-prop:`）。
+  - `hasClass(className)`：检查元素是否包含指定类名。
+  - `toggleClass(className)`：切换类名（支持字符串或数组），返回自身。
+  - `removeClass(className)`：移除类名（支持字符串或数组），返回自身。
+  - `addClass(className)`：添加类名（支持字符串或数组），返回自身。
+  - `html(html?)`：获取或设置元素 `innerHTML`，无参数时返回 HTML 内容，有参数时设置内容并返回自身。
+- **返回**：`__Query` 实例。
+
+#### 5.3 $Render
+
+用于动态渲染组件内容，基于 `__sui_render` 实现。
+
+- **函数**：`$Render(comp, option)`
+- **参数**：
+  - `comp`：组件实例或选择器。
+  - `option`：渲染选项（参考 `RenderOption`）。
+- **类方法**：
+  - `Exec(name, data)`：执行渲染，调用 `__sui_render`。
+- **返回**：`__Render` 实例。
+
+#### 5.4 $Backend
+
+用于发起后端 API 请求，基于 `__sui_backend_call` 实现。
+
+- **函数**：`$Backend(route?, headers?)`
+- **参数**：
+  - `route`：API 路由（可选，默认使用当前路径）。
+  - `headers`：请求头（可选）。
+- **逻辑**：
+  - 自动添加公共路径前缀（`s:public` 属性）。
+  - 规范化路由，移除重复前缀。
+- **类方法**：
+  - `Call(method, ...args)`：调用指定方法，传递参数，返回 Promise。
+- **返回**：`__Backend` 实例。
+
+### 6. 扩展功能使用示例
+
+#### 6.1 $Store
+
+```html
+<div data:key="value" json:info='{"id": 1}'></div>
+<script>
+  const store = $Store('div');
+  console.log(store.Get('key')); // 输出: value
+  console.log(store.GetJSON('info')); // 输出: { id: 1 }
+  store.Set('key', 'new-value');
+  store.SetJSON('info', { id: 2 });
+</script>
+```
+
+#### 6.2 $Query
+
+```html
+<div class="test" data:key="value">
+  <span class="child">Content</span>
+</div>
+<script>
+  const query = $Query('.test');
+  console.log(query.data('key')); // 输出: value
+  query.addClass('active').on('click', () => console.log('Clicked'));
+  const child = query.find('.child');
+  console.log(child.html()); // 输出: Content
+  child.html('New Content');
+</script>
+```
+
+#### 6.3 $Render
+
+一般不直接使用此方法，而是通过使用`$Query`引用对象再调用render方法。
+
+```html
+<div s:cn="MyComponent" s:render="content"></div>
+<script>
+  const comp = $("div[s:cn='MyComponent']");
+  const renderer = $Render(comp, { showLoader: true });
+  renderer.Exec('content', { key: 'value' }).then((html) => console.log(html));
+</script>
+```
+
+#### 6.4 $Backend
+
+```javascript
+const backend = $Backend('/api/test');
+backend.Call('getData', { id: 1 }).then((data) => console.log(data));
+```
+
+### 7. 扩展功能注意事项
+
+- `$Store` 和 `$Query` 操作需确保目标元素存在。
+- `$Query` 的 `json` 和 `prop` 方法在解析 JSON 时会捕获错误并记录日志。
+- `$Backend` 的路由需正确配置，依赖服务器支持。
+- 链式调用（如 `addClass`、`on`）需确保元素有效以避免空操作。
+
+### 全局Yao对象
+
+YAO Pure JavaScript SDK 是一个轻量级库，用于与服务器 API 交互，支持 HTTP 请求、令牌管理、Cookie 操作和查询参数序列化。初始化时需指定主机地址，适用于 GET、POST 和文件下载等操作。
+
+#### 构造函数`Yao(host)`
+
+初始化 YAO SDK 实例。
+
+- **参数**：
+  - `host`（可选）：API 基础 URL，默认使用当前页面协议和主机加 `/api`（如 `http://example.com/api`）。
+- **属性**：
+  - `host`：API 请求的基础 URL。
+  - `query`：从当前 URL 查询字符串解析的键值对对象。
+
+### 方法
+
+#### `Get(path, params, headers)`
+
+执行 HTTP GET 请求。
+
+- **参数**：
+  - `path`：API 路径（如 `/users`）。
+  - `params`（可选）：查询参数对象。
+  - `headers`（可选）：附加 HTTP 头对象。
+- **返回**：Promise，解析为 JSON 或文本响应。
+
+#### `Post(path, data, params, headers)`
+
+执行 HTTP POST 请求。
+
+- **参数**：
+  - `path`：API 路径。
+  - `data`（可选）：请求体数据（JSON 序列化）。
+  - `params`（可选）：查询参数对象。
+  - `headers`（可选）：附加 HTTP 头对象。
+- **返回**：Promise，解析为 JSON 或文本响应。
+
+#### `Download(path, params, savefile, headers)`
+
+从 API 下载文件并触发浏览器下载。
+
+- **参数**：
+  - `path`：API 路径。
+  - `params`（可选）：查询参数对象。
+  - `savefile`：保存文件名（如 `data.csv`）。
+  - `headers`（可选）：附加 HTTP 头对象。
+- **行为**：从响应创建文件并触发下载，失败时显示提示。
+
+#### `Fetch(method, path, params, data, headers, isblob)`
+
+底层 HTTP 请求方法（供 `Get`、`Post`、`Download` 使用）。
+
+- **参数**：
+  - `method`：HTTP 方法（如 `GET`、`POST`）。
+  - `path`：API 路径。
+  - `params`（可选）：查询参数。
+  - `data`（可选）：请求体数据（JSON 序列化）。
+  - `headers`（可选）：附加 HTTP 头。
+  - `isblob`（可选）：若为 `true`，返回 Blob。
+- **返回**：Promise，解析为 JSON、文本或 Blob。
+
+#### `Token()`
+
+获取认证令牌。
+
+- **返回**：从 `sessionStorage` 或 `__tk` Cookie 获取的令牌，若无则返回空字符串。
+
+#### `Cookie(cookieName)`
+
+获取指定 Cookie 值。
+
+- **参数**：
+  - `cookieName`：Cookie 名称。
+- **返回**：Cookie 值，若不存在返回 `null`。
+
+#### `SetCookie(cookieName, cookieValue, expireDays)`
+
+设置 Cookie。
+
+- **参数**：
+  - `cookieName`：Cookie 名称。
+  - `cookieValue`：Cookie 值。
+  - `expireDays`（可选）：过期天数，默认 30 天。
+- **行为**：设置带过期时间和 `/` 路径的 Cookie。
+
+#### `DeleteCookie(cookieName)`
+
+删除指定 Cookie。
+
+- **参数**：
+  - `cookieName`：Cookie 名称。
+- **行为**：将 Cookie 过期时间设为 1970 年 1 月 1 日以删除。
+
+#### `Serialize(obj)`
+
+将对象序列化为 URL 查询字符串。
+
+- **参数**：
+  - `obj`：键值对对象。
+- **返回**：URL 编码的查询字符串（如 `key1=value1&key2=value2`）。
+
+### 使用示例
+
+#### 8.3.1 初始化 SDK
+
+```javascript
+// 指定主机
+const yao = new Yao('https://api.example.com');
+// 或使用默认主机
+const yao = new Yao();
+```
+
+#### 8.3.2 GET 请求
+
+```javascript
+async function fetchData() {
+  try {
+    const response = await yao.Get(
+      '/users',
+      { id: 123 },
+      { 'Custom-Header': 'value' }
+    );
+    console.log(response);
+  } catch (error) {
+    console.error('获取数据失败:', error);
+  }
+}
+fetchData();
+```
+
+#### 8.3.3 POST 请求
+
+```javascript
+async function postData() {
+  const payload = { name: '张三', email: 'zhangsan@example.com' };
+  try {
+    const response = await yao.Post('/users', payload, { limit: 10 });
+    console.log(response);
+  } catch (error) {
+    console.error('提交数据失败:', error);
+  }
+}
+postData();
+```
+
+#### 8.3.4 下载文件
+
+```javascript
+async function downloadFile() {
+  try {
+    await yao.Download('/export', { format: 'csv' }, 'data.csv');
+  } catch (error) {
+    console.error('下载文件失败:', error);
+  }
+}
+downloadFile();
+```
+
+#### 8.3.5 Cookie 管理
+
+```javascript
+// 设置 Cookie
+yao.SetCookie('user_id', '12345', 7);
+
+// 获取 Cookie
+const userId = yao.Cookie('user_id');
+console.log('用户 ID:', userId);
+
+// 删除 Cookie
+yao.DeleteCookie('user_id');
+```
+
+#### 8.3.6 获取令牌
+
+```javascript
+const token = yao.Token();
+console.log('认证令牌:', token);
+```
+
+### 注意事项
+
+- 自动在请求中添加 `Authorization: Bearer <token>` 头（若令牌存在）。
+- `Fetch` 方法默认使用 `application/json` 作为 `Content-Type`。
+- 使用 `fetch` API，支持 CORS 模式和重定向。
+- 下载失败时显示简单提示。
+
+### YAO AI Agent
+
+YAO AI Agent SDK 是一个用于与 AI 代理交互的轻量级库，支持通过 EventSource 接收实时消息、处理事件和附件上传。初始化时需指定代理 ID 和配置选项，适用于实时聊天和 AI 交互场景。
+
+### 数据结构
+
+#### `AgentMessage`
+
+消息结构：
+
+- `text`: 消息文本。
+- `type`: 消息类型（如 `text`, `action`, `error`）。
+- `done`: 是否完成。
+- `is_neo`: 是否为 AI 消息。
+- `assistant_id`, `assistant_name`, `assistant_avatar`: 代理信息。
+- `props`: 附加属性。
+- `tool_id`: 工具 ID。
+- `new`, `delta`: 新消息或增量更新标志。
+- `result`: 结果数据。
+- `previous_assistant_id`: 前一代理 ID。
+
+#### `AgentInput`
+
+输入类型：
+
+- 字符串：直接文本。
+- 对象：包含 `text` 和可选 `attachments`（`AgentAttachment` 数组）。
+
+#### `AgentAttachment`
+
+附件结构：
+
+- `name`, `url`, `type`, `content_type`, `bytes`, `created_at`, `file_id`: 附件信息。
+- `chat_id`, `assistant_id`, `description`（可选）：关联信息。
+
+#### `AgentOption`
+
+初始化选项：
+
+- `host`（可选）：API 地址，默认 `/api/__yao/neo`。
+- `token`: 认证令牌。
+- `silent`（可选）：是否静默模式，默认 `false`。
+- `history_visible`（可选）：是否显示历史记录，默认 `false`。
+- `chat_id`（可选）：会话 ID。
+- `context`（可选）：上下文对象。
+
+### 类与方法
+
+#### `Agent`
+
+AI 代理类，管理与 AI 的交互。
+
+##### 构造函数
+
+```typescript
+constructor(assistant_id: string, option: AgentOption)
+```
+
+- 初始化代理，设置主机、令牌、事件处理器等。
+
+##### `On(event, handler)`
+
+注册事件处理器。
+
+- **参数**：
+  - `event`: 事件类型（`message` 或 `done`）。
+  - `handler`: 回调函数（`MessageHandler` 或 `DoneHandler`）。
+- **返回**：`Agent` 实例（支持链式调用）。
+- **示例**：
+  ```javascript
+  agent.On('message', (msg) => console.log(msg.text));
+  agent.On('done', (msgs) => console.log('完成', msgs));
+  ```
+
+##### `Cancel()`
+
+取消当前事件流连接。
+
+##### `Call(input, ...args)`
+
+调用 AI 代理。
+
+- **参数**：
+  - `input`: 输入（字符串或包含文本和附件的对象）。
+  - `args`: 附加参数。
+- **返回**：Promise，解析为结果或抛出错误。
+- **行为**：通过 EventSource 接收实时消息，触发 `message` 和 `done` 事件。
+
+##### `makeChatID()`
+
+生成唯一会话 ID（格式：`chat_[时间戳]_[随机字符串]`）。
+
+### 使用示例
+
+#### 9.3.1 初始化代理
+
+```javascript
+const agent = new Agent('assistant123', {
+  host: '', //默认会调用/api/__yao/neo，或是指定主机,
+  token: new yao().Token(), //"your_token",
+  silent: false,
+  history_visible: true,
+  context: { user: 'test' }
+});
+```
+
+#### 9.3.2 注册事件
+
+```javascript
+//注册事件处理函数，监听消息事件和完成事件。
+agent.On('message', (msg) => {
+  console.log('收到消息:', msg.text, msg.type);
+});
+agent.On('done', (msgs) => {
+  console.log('会话完成:', msgs);
+});
+```
+
+#### 9.3.3 调用代理（文本输入）
+
+```javascript
+async function callAgent() {
+  try {
+    const result = await agent.Call('你好，AI！');
+    console.log('结果:', result);
+  } catch (error) {
+    console.error('错误:', error.message);
+  }
+}
+callAgent();
+```
+
+#### 9.3.4 调用代理（带附件）
+
+```javascript
+async function callWithAttachment() {
+  const input = {
+    text: '处理这个文件',
+    attachments: [
+      {
+        name: 'doc.pdf',
+        url: 'https://example.com/doc.pdf',
+        type: 'file',
+        content_type: 'application/pdf',
+        bytes: 1024,
+        created_at: '2025-05-28T09:00:00Z',
+        file_id: 'file123'
+      }
+    ]
+  };
+  try {
+    const result = await agent.Call(input);
+    console.log('结果:', result);
+  } catch (error) {
+    console.error('错误:', error.message);
+  }
+}
+callWithAttachment();
+```
+
+#### 9.3.5 取消会话
+
+```javascript
+agent.Cancel();
+```
+
+### 注意事项
+
+- 使用 EventSource 实现实时消息流。
+- 自动处理认证令牌和错误（如 401、403、500 等）。
+- 支持增量消息更新（`delta`）和新消息（`new`）。
+- 错误信息通过 `message` 事件返回，类型为 `error`。
 
 ## SUI多语言支持
 
@@ -14246,6 +15107,200 @@ yao sui build sui_id template_id
 ```js
 document.cookie = 'locale=zh-CN';
 ```
+
+## SUI 指令
+
+在SUI中，有丰富的指令可以帮助开发者更高效地构建和管理SUI应用。以下是一些常用的SUI指令：
+
+### 原始值
+
+在没有使用这个指令时，所有的模板绑定的变量值在输出前都会被进行 url 编码处理。
+
+使用`s:raw`指令输出子原元素的 html 原始值,比如把博客的内容保存在数据库中，在渲染时直接输出博客的内容。
+
+**注意：用户需要注意处理 s:raw 的原始信息，避免出现 xss 的攻击漏洞**
+
+```html
+<p s:raw="true">{{post.content}}</p>
+```
+
+### 使用 Set 数据
+
+在模板中，可以使用`s:set` 或是`set` 标签,属性`value`来设置页面数据。这部分代码会在编译后保存，但是在页面输出时，set 配置数据被读取后，会删除`s:set`标签内容。它的作用跟页面关联的`json`配置文件作用一样。
+
+比如，以下的模板中使用`s:set name="weight"`标签来来接收上级节点传入的属性配置weight,并把weight转换成本页面的变量配置。
+
+```html
+...
+
+<!-- 简单类型数据 -->
+<s:set name="weight" value="{% weight %}"></s:set>
+<s:set name="icon" value="{% icon %}"></s:set>
+<!-- json object 对象 -->
+<s:set
+  name="sizes"
+  value="{{ {
+          'xs': 'text-xs',
+          'sm': 'text-sm',
+          'base': 'text-base',
+          'lg': 'text-lg',
+          'xl': 'text-xl',
+          'none': ''
+      } }}"
+></s:set>
+
+<!-- 在模板中，可以使用set name来引用set中的配置数据 -->
+<a
+  id="{{ id }}"
+  name="{{ name }}"
+  title="{{ title }}"
+  class="cursor-pointer hover:transition hover:duration-200 hover:ease-in-out
+          {{ icon != '' ? 'flex items-center justify-start' : 'inline-block' }}
+          {{ size != '' ? sizes[size] : sizes.base }}
+      "
+  href="{{ href }}"
+  target="{{ target != '' ? target : '_self' }}"
+  button
+>
+  <i s:if="icon != ''" class="material outlined me-1"> {{icon}} </i>
+  <children></children>
+</a>
+```
+
+需要注意的是，在模板编译过程中，如果使用是使用的`{% %}`标签来定义变量，那么在编译后，会被替换成父节点的属性信息。
+
+比如，有以下两个模板配置：
+
+子节点：
+
+```html
+<s:set name="acvice" value="{% active == '' ? '/' : active %}"></s:set>
+
+<div color="{{ acvice == item.href ? 'primary' : 'dark' }}"></div>
+```
+
+父节点,引用了子节点：
+
+```html
+<header is="/header" active="/"></header>
+```
+
+在编译后，子节点的模板会被替换成，这个过程会发生在编译阶段`yao sui build`。
+
+```html
+<s:set name="acvice" value="/"></s:set>
+
+<div color="{{ acvice == item.href? 'primary' : 'dark' }}"></div>
+```
+
+如果希望在编译后，子节点的模板接收变量，那么在父节点需要配置变量。
+父节点：
+
+```html
+<header is="/header" active="{{ active }}"></header>
+```
+
+编译后,active 会在运行时引用页面变量。
+
+```html
+<s:set name="acvice" value="{{ active }}"></s:set>
+
+<div color="{{ acvice == item.href? 'primary' : 'dark' }}"></div>
+```
+
+## SUI 命令工具
+
+### 构建命令
+
+```bash
+yao sui build <sui_id> <template_id>
+```
+
+#### 参数说明
+
+- `sui_id`: SUI 部件 ID，在 `suis` 目录中定义
+- `template_id`: 模板名称，位于 `data/templates` 目录
+
+#### 示例
+
+```bash
+## 构建默认模板
+yao sui build web default
+
+## 构建特定模板
+yao sui build blog website
+```
+
+### 监视命令
+
+```bash
+yao sui watch <sui_id> <template_id>
+```
+
+实时监视文件变化并自动重新构建。
+
+#### 示例
+
+```bash
+## 监视默认模板
+yao sui watch web default
+
+## 监视特定模板
+yao sui watch blog website
+```
+
+### 构建输出
+
+构建成功后会在 `public` 目录生成以下文件：
+
+- 编译后的 HTML 文件 (`.sui`)
+- 编译后的 CSS 文件
+- 编译后的 JavaScript 文件
+- 资源文件
+
+#### 输出示例
+
+```bash
+-----------------------
+Public Root: /public/
+   Template: /templates/default
+    Session: {}
+-----------------------
+Build succeeded for production in 9ms
+```
+
+### 其他命令
+
+#### 列出 SUI 部件
+
+```bash
+yao sui list
+```
+
+显示所有可用的 SUI 部件和模板。
+
+#### 清理构建文件
+
+```bash
+yao sui clean
+```
+
+清理所有构建生成的文件。
+
+#### 帮助信息
+
+```bash
+yao sui help
+```
+
+显示所有可用的 SUI 命令和说明。
+
+### 命令使用建议
+
+1. 开发时使用 `watch` 命令实时预览修改
+2. 部署前使用 `build` 命令生成生产文件
+3. 遇到问题时使用 `clean` 命令清理缓存
+4. 使用 `list` 命令查看可用的部件和模板
 
 ## SUI 开发套件提供了 3 个命令工具
 
@@ -15474,17 +16529,73 @@ async function __sui_render(
 
 使用示例参考上面的`LoadCategory`,页面用户点击某个分类时，使用api获取后端文章列表，进行部分页面更新。
 
-## SUI页面中使用表达式
+## SUI 表达式
 
-### 1. 表达式
+### 基本语法
 
-在页面中，可以使用表达式来动态地显示数据或是作条件判断。表达式的语法使用了go语言风格的表达式解析库[源代码](https://github.com/expr-lang/expr),[文档](https://expr-lang.org/)的语法，具体请参考库的文档。
+SUI 页面中可以使用`{{ }}`来引用页面变量或是使用`{% %}`引用上级html元素属性值。这里的引用不单可以直接使用变量名，还可以使用简单的表达式，其中表达式是用`Go`语言风格的表达式解析库，支持以下表达式类型：
 
-具体的每一个表达式的语法请参考库的[文档]
+#### 1. 数据渲染
 
-需要注意使用的是**[定制表达式]**(https://expr-lang.org/docs/language-definition),并不是使用js的语法，比如判断长度的表达式需要使用len()函数，而不是articles.data.length。
+在页面中，可以使用表达式来动态地显示数据或是作条件判断。表达式的语法使用了go语言风格的表达式解析库[源代码]
+(https://github.com/expr-lang/expr),[文档](https://expr-lang.org/)的语法，具体请参考库的文档。
 
-比如以下代码中需要判断数组的长度：
+```html
+{{ variable }}
+<!-- 渲染变量 -->
+{{ object.key }}
+<!-- 访问对象属性 -->
+{{ array[0] }}
+<!-- 访问数组元素 -->
+```
+
+#### 2. 条件渲染
+
+```html
+<div s:if="condition">内容</div>
+<div s:if="len(array) > 0">数组不为空</div>
+```
+
+需要注意使用的是**[定制表达式]**(https://expr-lang.org/docs/language-definition),并不是使用js的语法，比如判断
+长度的表达式需要使用len()函数，而不是articles.data.length。
+
+#### 3. 循环渲染
+
+```html
+<div s:for="items" s:for-item="item">{{ item.name }}</div>
+```
+
+#### 4. 事件绑定
+
+```html
+<button s:on-click="handleClick" s:data-id="{{ id }}">点击</button>
+```
+
+### 内置函数
+
+- `P_()`: 调用处理器
+- `True()`: 判断是否为真
+- `False()`: 判断是否为假
+- `Empty()`: 判断是否为空
+
+### 定制Yao表达式
+
+在 SUI 中，有几个额外定制的 Yao 相关的处理函数:
+
+- `P_()`: 调用处理器，例如 `P*('process_name', arg1, arg2)`，第一个参数是处理器名称，剩下的是处理器的参数。
+- `True()`: 判断是否为真，例如 `true`, `"true"`, `1`, 非 0 都会返回真
+- `False()`: 判断是否为假，例如 `false`, `"false"`, `0`, 空字符串都会返回假
+- `Empty()`: 判断是否为空，例如空的数组，空的对象，空的字符串都会返回真
+
+### 示例
+
+#### 调用处理器
+
+```html
+<div>articles:{{ P_('scripts.app.blog.site.getPostList') }}</div>
+```
+
+#### 条件判断
 
 ```html
 <div s:if="len(articles.data) == 0">
@@ -15492,53 +16603,37 @@ async function __sui_render(
 </div>
 ```
 
-### 定制Yao表达式
+### 调试技巧
 
-另外在sui中，有几个额外定制的Yao相关的处理函数:
+1. 使用 `{{ }}` 输出表达式值进行调试
+2. 使用 `$env` 查看所有可用变量
+3. 使用 `yao sui watch` 实时预览修改
 
-- P*()，调用处理器，比如P*(process_name,args1,args2,args3)，第一个参数是处理器名称，剩下的是处理器的参数。
-- True()，判断是否是真，比如true,"true",1,非0都会返回真
-- False()，判断是否为假，比如false,"false",0,空字符串都会返回假
-- Empty()，判断是否为空，比如空的数组，空的对象，空的字符串都会返回真
-
-直接在页面中使用表达式调用处理器：
+#### 调试示例
 
 ```html
-<div>articles:{{ P_('scripts.app.blog.site.getPostList') }}</div>
-```
-
-### 调试
-
-在sui中，有几个有用的命令，可以方便地调试：
-
-开发阶段构建页面使用watch命令。
-
-```sh
-## build sui web page
-yao sui build <sui_id> <template_id>
-## for example:
-yao sui build  blog website
-
-## watch sui web page change and build
-yao sui watch <sui_id> <template_id>
-
-## for example:
-yao sui watch  blog website
-```
-
-在页面中，如果不确定某个表达式的值，可以使用{{}}来包裹表达式，直接在页面上输出表达式的值进行调试处理。
-
-使用变量$env可以输出当前页面中所有的动态变量，包含用户请求信息，后台返回数据，所有的变量在整个渲染的过程中都是可用的。
-
-```html
+<!-- 输出所有环境变量 -->
 <div>$env: {{$env}}</div>
+
+<!-- 输出特定变量 -->
+<div>articles: {{articles}}</div>
 ```
 
-## SUI页面重复使用机制详解
+### 开发命令
+
+```bash
+## 构建页面
+yao sui build <sui_id> <template_id>
+
+## 监视文件变化并自动构建
+yao sui watch <sui_id> <template_id>
+```
+
+## SUI URL路由配置
 
 ### 概述
 
-在Web开发中，通常一个URL对应一个页面，但在Yao SUI框架中，可以通过URL重定向(rewrite)机制，将多个URL映射到同一个页面，实现页面复用。这种方式特别适合以下场景：
+SUI访问是基于文件系统的路径，通常一个URL对应一个sui页面,后缀名为`.sui`。但在Yao SUI框架中，可以通过URL重定向(rewrite)机制，将多个URL映射到同一个页面，实现页面复用。这种方式特别适合以下场景：
 
 - 多语言站点（如/en-US/about和/zh-CN/about指向同一个页面）
 - 内容管理系统（如/blog/post-1和/news/post-1指向同一内容）
@@ -15977,7 +17072,7 @@ sui 模板的配置文件，定义了模板的名称，描述，主题，语言�
         "content": "npx tailwindcss -i ./__assets/css/tailwind.css -o ./__assets/css/tailwind.min.css --minify"
       }
     ],
-    "after:build": [{ "type": "process", "content": "scripts.build.After" }],
+    "after:build": {% "type": "process", "content": "scripts.build.After" %},
 
     "build:complete": [
       { "type": "process", "content": "scripts.build.Complete" }
@@ -16190,12 +17285,12 @@ data['$global']; //其它全局对象，从<page>.json文件复制而来。
 
 ```html
 <page is="/footer">
-  <slot is="link"> Link </slot>
-  <slot is="item"> Item </slot>
+  <slot name="link"> Link </slot>
+  <slot name="item"> Item </slot>
 
   <!-- jit 组件 -->
   <div is="link2">{{xxx}}</div>
-  <div is="link3" p2="[{xxx}]"></div>
+  <div is="link3" p2="{%xxx%}"></div>
   <div is="link4" p1="{%xxx%}"></div>
 </page>
 ```
@@ -16212,38 +17307,34 @@ data['$global']; //其它全局对象，从<page>.json文件复制而来。
 ```html
 <div class="bg-blue-700">
   <page is="/item" active="index">
-    <slot is="link1"> Link Slot</slot>
-    <slot is="item"> Item Slot</slot>
+    <slot name="link1"><div>Link</div></slot>
+    <slot name="item1"><div>item</div></slot>
   </page>
 </div>
 ```
 
 `item.html`,在子页面中：
 
-- 使用`[{$prop.<prop>}]`来引用父页面传递的属性值。
+- 使用`{% <prop> %}`来引用父页面传递的属性值。
 
 ```html
 <div class="flex">
-  <div
-    class="[{ $prop.active=='index' ? 'text-white' : 'text-blue-200' }] w-10"
-  >
+  <div class="{% active=='index' ? 'text-white' : 'text-blue-200' %} w-10">
     <a href="/index">介绍</a>
   </div>
 
-  <div
-    class="[{ $prop.active=='signin' ? 'text-white' : 'text-blue-200' }] w-10"
-  >
+  <div class="{% active=='signin' ? 'text-white' : 'text-blue-200' %} w-10">
     <a href="/index">登录</a>
   </div>
 </div>
 ```
 
-- 使用`[{}]`语法来接收父页面传递的 slot 配置。
+- 自定义html元素接收父页面传递的 slot 配置。
 
 ```html
-<div class="text-blue-200">[{link}]</div>
+<link1></link1>
 
-<div class="text-red-200">[{item}]</div>
+<item1></item1>
 ```
 
 ### 组件导入
@@ -16495,49 +17586,6 @@ function Catalog(r: sui.Request) {
   const ignoreCache = r.query?.refresh?.[0] === 'true' || false;
   return GetCatalog(route.root, route.name, route.locale, ignoreCache);
 }
-```
-
-### 使用 Set 数据
-
-在模板中，可以使用`s:set` 或是`set` 标签,属性`value`来设置页面数据。这部分代码会在编译后保存，但是在页面输出时，set 配置数据被读取后，会删除`s:set`标签内容。它的作用跟页面关联的`json`配置文件作用一样。
-
-比如，以下的页面配置也会应用到模板中。
-
-```html
-...
-
-<!-- 简单类型数据 -->
-<s:set name="weight" value="{% weight %}"></s:set>
-<s:set name="icon" value="{% icon %}"></s:set>
-<!-- json object 对象 -->
-<s:set
-  name="sizes"
-  value="{{ {
-          'xs': 'text-xs',
-          'sm': 'text-sm',
-          'base': 'text-base',
-          'lg': 'text-lg',
-          'xl': 'text-xl',
-          'none': ''
-      } }}"
-></s:set>
-
-<!-- 在模板中，可以使用set name来引用set中的配置数据 -->
-<a
-  id="{{ id }}"
-  name="{{ name }}"
-  title="{{ title }}"
-  class="cursor-pointer hover:transition hover:duration-200 hover:ease-in-out
-          {{ icon != '' ? 'flex items-center justify-start' : 'inline-block' }}
-          {{ size != '' ? sizes[size] : sizes.base }}
-      "
-  href="{{ href }}"
-  target="{{ target != '' ? target : '_self' }}"
-  button
->
-  <i s:if="icon != ''" class="material outlined me-1"> {{icon}} </i>
-  <children></children>
-</a>
 ```
 
 ### 组件事件处理
@@ -16815,67 +17863,20 @@ guard 处理器可以使用以下的参数：
 
 如果是在 sui guard 环境中使用脚本处理器，比如`scripts.xxx`,那么可以在 js 脚本中使用以下的特有的 js 函数对象。
 
-- 函数 SetSid 设置全局对象\_\_sid
-- 函数 SetGlobal，设置全局对象\_\_global
+- 函数 SetSid 设置全局对象`__sid`
+- 函数 SetGlobal，设置全局对象`__global`
 - 函数 Redirect(code,url)，跳转到特定的地址。
 - 函数 Abort(),退出请求
 - 函数 Cookie(name),获取特定 cookie
 - 函数 SetCookie(name,value,maxAge,path,domain,secure,httpOnly)，设置 cookie
 
-### 路由重写
-
-路由重写是指将请求的路径映射到本地文件的一种方法，比如博客的文章详情页都是共用一种页面，但是文章的 id 是不同的，此时可以使用路由重写来实现。
-
-比如：
-
-- 将`/assets/xxxx`请求重定向到`/asset/xxxx`。
-- 将`/xxx`请求重定向到`/xxx.sui。
-- 将`/blog/1`请求重定向到`/blog/[slug].sui`页面。
-
-其中请求变量在脚本或是页面中可以使用`params.XXXX`来获取请求的参数，可以使用$1,$2,$3等来引用替换请求的参数。
-
-yao.app文件配置：
-
-在rewrite中可以配置多个重写规则,每一个规则中中的key是正则表达式，value是重写的路径，在value中可以使用[xxxx]来捕获请求的参数。
-
-```json
-{
-  "public": {
-    // The rules from the top to the bottom
-    "rewrite": [
-      { "^\\/assets\\/(.*)$": "/assets/$1" }, // SUI assets
-      { "^\\/docs/(.*)$": "/docs/[name].sui" }, // SUI Documentation Detail
-      { "^\\/blog/(.*)$": "/blog/[slug].sui" }, // SUI Blog Detail
-      { "^\\/example/(.*)$": "/example/[id].sui" },
-
-      // Installation route
-      { "^\\/install.sh$": "/install.sh.txt" },
-      { "^\\/install.ps1$": "/install.ps1.txt" },
-
-      // Sitemap route
-      { "^\\/sitemap.xml$": "/sitemap.xml" },
-
-      // Redirect to the new routes...
-      { "^\\/en-US(.*)$": "/index.sui" },
-      { "^\\/components(.*)$": "/index.sui" },
-      { "^\\/doc/(.*)$": "/index.sui" },
-
-      // File system route
-      { "^\\/(.*)$": "/$1.sui" }
-    ]
-  }
-}
-```
-
 ### 页面访问
 
 访问方法:`<host>:<port>:/<root>/<page_index>`,比如这里的页面访问方法：`http://localhost:5099/blog/index`。
 
-**注意** 目前是调整了 yao 的路径处理代码才能使用
-
 ### 示例源代码
 
-在 yao-admin-admin 项目中实现了简单的博客[yao-amis-admin](https://github.com/wwsheng009/yao-amis-admin)。
+在 yao-website 项目中实现了官网的实现[yao website](https://github.com/Yaoapp/website)。
 
 ### 调试模式
 

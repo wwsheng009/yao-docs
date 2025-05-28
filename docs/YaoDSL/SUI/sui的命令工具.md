@@ -1,3 +1,97 @@
+# SUI 命令工具
+
+## 构建命令
+
+```bash
+yao sui build <sui_id> <template_id>
+```
+
+### 参数说明
+
+- `sui_id`: SUI 部件 ID，在 `suis` 目录中定义
+- `template_id`: 模板名称，位于 `data/templates` 目录
+
+### 示例
+
+```bash
+# 构建默认模板
+yao sui build web default
+
+# 构建特定模板
+yao sui build blog website
+```
+
+## 监视命令
+
+```bash
+yao sui watch <sui_id> <template_id>
+```
+
+实时监视文件变化并自动重新构建。
+
+### 示例
+
+```bash
+# 监视默认模板
+yao sui watch web default
+
+# 监视特定模板
+yao sui watch blog website
+```
+
+## 构建输出
+
+构建成功后会在 `public` 目录生成以下文件：
+
+- 编译后的 HTML 文件 (`.sui`)
+- 编译后的 CSS 文件
+- 编译后的 JavaScript 文件
+- 资源文件
+
+### 输出示例
+
+```bash
+-----------------------
+Public Root: /public/
+   Template: /templates/default
+    Session: {}
+-----------------------
+Build succeeded for production in 9ms
+```
+
+## 其他命令
+
+### 列出 SUI 部件
+
+```bash
+yao sui list
+```
+
+显示所有可用的 SUI 部件和模板。
+
+### 清理构建文件
+
+```bash
+yao sui clean
+```
+
+清理所有构建生成的文件。
+
+### 帮助信息
+
+```bash
+yao sui help
+```
+
+显示所有可用的 SUI 命令和说明。
+
+## 命令使用建议
+
+1. 开发时使用 `watch` 命令实时预览修改
+2. 部署前使用 `build` 命令生成生产文件
+3. 遇到问题时使用 `clean` 命令清理缓存
+4. 使用 `list` 命令查看可用的部件和模板
+
 # SUI 开发套件提供了 3 个命令工具
 
 ## 构建单一文件
