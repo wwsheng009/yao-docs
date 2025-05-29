@@ -858,38 +858,79 @@ function BeforeRender(request,props){
 
 ```
 
+BeforeRender返回的数据会保存在组件的属性`json:__component_data`中，如果是动态渲染，会把此数据再次发送到后端。
+
 ### sui 页面 guard
 
 每一个 sui 页面可以设置页面对应的配置，`<page>.config`,这是一个 json 文件，它的定义结构如下：
 
 ```go
-
-type PageConfig struct {
-	PageSetting `json:",omitempty"`
-	Mock        *PageMock           `json:"mock,omitempty"`
-	Rendered    *PageConfigRendered `json:"rendered,omitempty"`
-}
-type PageConfigRendered struct {
-	Title string `json:"title,omitempty"`
-	Link  string `json:"link,omitempty"`
-}
-// PageSetting is the struct for the page setting
-type PageSetting struct {
-	Title       string   `json:"title,omitempty"`
-	Guard       string   `json:"guard,omitempty"` //配置页面请求时的认证处理器，比如scripts.page.guard
-	CacheStore  string   `json:"cache_store,omitempty"`
-	Cache       int      `json:"cache,omitempty"`
-	Root        string   `json:"root,omitempty"`
-	DataCache   int      `json:"data_cache,omitempty"`
-	Description string   `json:"description,omitempty"`
-	SEO         *PageSEO `json:"seo,omitempty"`
-}
-type PageSEO struct {
-	Title       string `json:"title,omitempty"`
-	Description string `json:"description,omitempty"`
-	Keywords    string `json:"keywords,omitempty"`
-	Image       string `json:"image,omitempty"`
-	URL         string `json:"url,omitempty"`
+{
+    // 页面配置，包含页面设置、模拟请求数据和渲染信息
+    // 页面标题
+      "title": "",
+      // 用于处理页面请求处理器认证的守卫
+      "guard": "",
+      // 缓存存储方式
+      "cacheStore": "",
+      // 缓存时间
+      "cache": 0,
+      // 页面根路径
+      "root": "",
+      // 数据缓存时间
+      "dataCache": 0,
+      // 页面描述
+      "description": "",
+      // 页面 SEO 相关信息
+      "seo": {
+          // SEO 标题
+          "title": "",
+          // SEO 描述
+          "description": "",
+          // SEO 关键词
+          "keywords": "",
+          // SEO 图片链接
+          "image": "",
+          // SEO 页面链接
+          "url": ""
+      },
+      // 页面 API 相关配置
+      "api": {
+          // API 前缀
+          "prefix": "",
+          // 默认的 API 认证守卫
+          "defaultGuard": "",
+          // 不同 API 对应的认证守卫映射
+          "guards": {}
+      },
+    // 模拟请求数据
+    "mock": {
+        // 请求方法，如 GET、POST 等
+        "method": "",
+        // 请求来源页面的 URL
+        "referer": "",
+        // 请求携带的有效负载数据
+        "payload": {},
+        // 请求的查询参数
+        "query": {},
+        // 请求的路径参数
+        "params": {},
+        // 请求头信息
+        "headers": {},
+        // 请求体数据
+        "body": null,
+        // 请求的 URL 信息
+        "url": {},
+        // 会话 ID
+        "sid": ""
+    },
+    // 页面渲染相关信息
+    "rendered": {
+        // 渲染后的页面标题
+        "title": "",
+        // 渲染后的页面链接
+        "link": ""
+    }
 }
 
 ```

@@ -334,7 +334,7 @@ comp.state.Set('count', 42); // 触发 watch.count 处理函数
 ### 6.4 $Backend
 
 ```javascript
-const backend = $Backend('/api/test');
+const backend = $Backend('/blog');
 backend.Call('getData', { id: 1 }).then((data) => console.log(data));
 ```
 

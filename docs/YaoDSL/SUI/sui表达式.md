@@ -22,6 +22,10 @@ SUI 页面中可以使用`{{ }}`来引用页面变量或是使用`{% %}`引用�
 
 ```html
 <div s:if="condition">内容</div>
+<div s:elif="condition2">内容2</div>
+<div s:elif="condition3">内容3</div>
+<div s:else>内容4</div>
+
 <div s:if="len(array) > 0">数组不为空</div>
 ```
 
@@ -55,6 +59,36 @@ SUI 页面中可以使用`{{ }}`来引用页面变量或是使用`{% %}`引用�
 - `True()`: 判断是否为真，例如 `true`, `"true"`, `1`, 非 0 都会返回真
 - `False()`: 判断是否为假，例如 `false`, `"false"`, `0`, 空字符串都会返回假
 - `Empty()`: 判断是否为空，例如空的数组，空的对象，空的字符串都会返回真
+
+## 处理布尔属性
+
+在HTML页面中有一些布尔属性，例如 `disabled`, `checked`, `selected`,`required` 等，这些属性的值通常是布尔类型，
+
+布尔属性的值本质上不是字符串，而是表示属性的存在或不存在。例如：
+
+```html
+<input disabled />
+<!-- 表示 disabled 属性存在 -->
+<input disabled="false" />
+<!-- 表示 disabled 属性存在 -->
+<input disabled="true" />
+<!-- 表示 disabled 属性存在 -->
+<input disabled="disabled" />
+<!-- 表示 disabled 属性存在 -->
+```
+
+针对于这些属性不，给它们赋一任何字符串值，会被认为是存在的。
+
+在SUI中，这样处理，给它们增加一个特殊的前缀`s-attr-`，只有当值为真时，才会添加属性，当值为非真时，不会添加属性。
+
+渲染成HTML时，会自动去掉`s-attr-`前缀，例如：
+
+```html
+<input s-attr-disabled="{{True(disabled)}}" />
+<!-- 表示 disabled 属性存在 -->
+<input s-attr-disabled="{{True(disabled)}}" />
+<!-- 表示 disabled 属性不存在 -->
+```
 
 ## 示例
 

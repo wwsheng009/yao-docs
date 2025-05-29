@@ -631,8 +631,8 @@ export default {
           link: '/YaoDSL/SUI/使用sui搭建网站'
         },
         {
-          text: 'sudi组件化开发',
-          link: '/YaoDSL/SUI/sudi组件化开发'
+          text: 'ai提示词',
+          link: '/YaoDSL/SUI/ai提示词'
         },
         {
           text: 'sui介绍',
@@ -643,8 +643,16 @@ export default {
           link: '/YaoDSL/SUI/sui前端工具库'
         },
         {
+          text: 'sui前端静态资源引用',
+          link: '/YaoDSL/SUI/sui前端静态资源引用'
+        },
+        {
           text: 'sui多语言支持',
           link: '/YaoDSL/SUI/sui多语言支持'
+        },
+        {
+          text: 'sui局部渲染',
+          link: '/YaoDSL/SUI/sui局部渲染'
         },
         {
           text: 'sui指令',
@@ -657,6 +665,10 @@ export default {
         {
           text: 'sui组件初始化的细节',
           link: '/YaoDSL/SUI/sui组件初始化的细节'
+        },
+        {
+          text: 'sui组件化开发',
+          link: '/YaoDSL/SUI/sui组件化开发'
         },
         {
           text: 'sui组件的状态管理state',
