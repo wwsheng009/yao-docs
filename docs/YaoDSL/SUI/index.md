@@ -36,6 +36,8 @@ SUI采用三层结构设计：
 - [sui多语言支持](sui多语言支持.md)
 - [sui指令](sui指令.md)
 - [sui的命令工具](sui的命令工具.md)
+- [sui组件初始化的细节](sui组件初始化的细节.md)
+- [sui组件的状态管理state](sui组件的状态管理state.md)
 - [sui编译文件自动插入的内容](sui编译文件自动插入的内容.md)
 - [sui表达式](sui表达式.md)
 - [sui路由配置](sui路由配置.md)

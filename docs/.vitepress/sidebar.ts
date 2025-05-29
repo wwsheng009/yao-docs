@@ -655,6 +655,14 @@ export default {
           link: '/YaoDSL/SUI/sui的命令工具'
         },
         {
+          text: 'sui组件初始化的细节',
+          link: '/YaoDSL/SUI/sui组件初始化的细节'
+        },
+        {
+          text: 'sui组件的状态管理state',
+          link: '/YaoDSL/SUI/sui组件的状态管理state'
+        },
+        {
           text: 'sui编译文件自动插入的内容',
           link: '/YaoDSL/SUI/sui编译文件自动插入的内容'
         },

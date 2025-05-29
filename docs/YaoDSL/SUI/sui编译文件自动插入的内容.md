@@ -478,11 +478,13 @@ function __sui_component(elm, component) {
  *
  * 把事件向传到父组件中，父组件可以通过watch对象来监听组件的状态变化。
  *
- * @param {*} component yao sui组件对象，用户通常需要自定义组件对象的处理函数，与组件同名的js或是ts文件。
+ * @param {*} component yao sui组件对象，用户通常需要自定义组件对象的处理函数，与组件同名的js或是ts函数。
  */
 function __sui_state(component) {
-  this.handlers = component.watch || {}; //组件需要在组件对象中定义watch对象，用于监听组件状态的变化。
-  //当组件状态发生变化时，会自动调用组件对象中的watch对象中的函数。
+  //组件需要在组件对象中定义watch对象，用于监听组件状态的变化。
+  this.handlers = component.watch || {};
+
+  //调用Set函数来触发组件的watch对象中的监听函数。
   this.Set = async function (key, value, target) {
     const handler = this.handlers[key];
     //target对象默认是当前组件对象，如果target对象是组件对象，则使用组件对象中的root对象【html对象】。
@@ -494,7 +496,7 @@ function __sui_state(component) {
           target.setAttribute('state-propagation', 'true');
         }
       };
-      // Call the state change handler，watch中的函数会有两个参数，第一个参数是新的值，第二个参数是状态对象，可以理解成事件对象。
+      //watch中的监听函数被调用时，会传入两个参数，第一个参数是新的值，第二个参数是状态对象，可以理解成事件对象。
       await handler(value, stateObj);
       // 默认情况下会向上传播状态变化，除非在watch中的函数中调用了stateObj.stopPropagation()函数。
       const isStopPropagation = target

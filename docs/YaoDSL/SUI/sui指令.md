@@ -2,6 +2,64 @@
 
 在SUI中，有丰富的指令可以帮助开发者更高效地构建和管理SUI应用。以下是一些常用的SUI指令：
 
+## 条件
+
+使用条件可以控制页面元素的显示与隐藏。对应的命令有：`s:if`,`s:elif`,`s:else`
+
+```html
+<section>
+  <h1 class="text-3xl font-bold mb-4">Yao Blog Post List</h1>
+  <ul
+    class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+  >
+    <!-- Replace the code below with your actual post data -->
+    <li s:for="articles.data" s:for-item="article" s:for-index="idx">
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <img
+          s:if="article.img != ''"
+          src="{{ article.img }}"
+          alt="Post Image"
+          class="object-cover rounded-md"
+        />
+        <a
+          href="{{ article.url }}"
+          target="_blank"
+          class="text-xl text-blue-500 font-semibold mb-2"
+          >{{ article.title }}</a
+        >
+        <p class="text-gray-600 mb-4">{{ article.description }}</p>
+        <a
+          href="{{ article.url }}"
+          target="_blank"
+          class="text-blue-500 font-semibold"
+          >Read More</a
+        >
+      </div>
+    </li>
+    <!-- Repeat the above code for each post -->
+  </ul>
+</section>
+<!-- JAVASCRIPTS -->
+```
+
+## 循环
+
+与其它的模板页面开发技术类似，使用三个关键字实现循环输出语法：
+
+- `s:for`, 引用需要循环数据，要求是数组格式的数据，可以是在数组中包含复杂的对象。
+- `s:for-item`,设置循环中的 key 字段，默认值是`item`。
+- `s:for-index`,设置索引字段,默认值是`index`。
+- `s:if`,可以在循环中使用`s:if`控制条目是否显示,表达式需要返回 true 才会生效。
+
+```html
+<!-- Replace the code below with your actual post data -->
+<li s:for="articles.data" s:for-item="article" s:for-index="idx" s:if="idx==1">
+  <div class="bg-white shadow-md rounded-lg p-4">
+    <p class="text-gray-600 mb-4">{{ article.description }}</p>
+  </div>
+</li>
+```
+
 ## 原始值
 
 在没有使用这个指令时，所有的模板绑定的变量值在输出前都会被进行 url 编码处理。
@@ -97,3 +155,7 @@
 
 <div color="{{ acvice == item.href? 'primary' : 'dark' }}"></div>
 ```
+
+## 其它
+
+指令`s:set`,`s:attr-`,`s:for`,`s:if`，`s:elif`可以不使用`{{}}`来引用变量，因为它本身就是一个特殊的html属性，它们一定是需要指向一个变量，所以不需要使用`{{}}`来引用变量，当然为了代码的可读性，还是建议使用`{{}}`来引用变量。

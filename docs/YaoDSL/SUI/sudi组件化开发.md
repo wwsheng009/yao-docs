@@ -67,15 +67,9 @@ graph TD
 ```html
 <!-- components/layout.html -->
 <div class="layout">
-  <header>
-    <slot is="header">默认头部</slot>
-  </header>
-  <main>
-    <slot is="content">默认内容</slot>
-  </main>
-  <footer>
-    <slot is="footer">默认底部</slot>
-  </footer>
+  <header></header>
+  <main></main>
+  <footer></footer>
 </div>
 ```
 
@@ -84,9 +78,9 @@ graph TD
 ```html
 <!-- pages/index.html -->
 <div is="components/layout">
-  <slot is="header">自定义头部</slot>
-  <slot is="content">自定义内容</slot>
-  <slot is="footer">自定义底部</slot>
+  <slog name="header">自定义头部</slot>
+  <slog name="content">自定义内容</slot>
+  <slog name="footer">自定义底部</slot>
 </div>
 ```
 
@@ -122,16 +116,16 @@ graph TD
 ```html
 <!-- components/card.html -->
 <div class="card">
-  <div class="card-header">
-    <slot is="header">{% title %}</slot>
-  </div>
-  <div class="card-body">
-    <slot is="content">{% content %}</slot>
-  </div>
+  <header>
+    <slog name="header">{% title %}</slot>
+  </header>
+  <content>
+    <slog name="content">{% content %}</slot>
+  </content>
   <div class="card-footer">
-    <slot is="footer">
+    <footer>
       <button s:on-click="emit('action')">{% buttonText %}</button>
-    </slot>
+    </footer>
   </div>
 </div>
 ```
@@ -152,9 +146,9 @@ graph TD
   content="内容"
   s:data-button-text="点击"
 >
-  <slot is="header">自定义头部</slot>
-  <slot is="content">自定义内容</slot>
-  <slot is="footer">
+  <slog name="header">自定义头部</slot>
+  <slog name="content">自定义内容</slot>
+  <slog name="footer">
     <button s:on-click="handleAction">自定义按钮</button>
   </slot>
 </div>
