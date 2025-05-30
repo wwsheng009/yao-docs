@@ -64,6 +64,9 @@ SUI是一套基于服务器端生成SSR页面的模型渲染引擎框架，它�
 - 文件系统路由定义网页路由。例如，`index.html` 映射到 `/`，`about.html` 映射到 `/about`。
 - 动态路由用 `[id]` 表示，例如，`/pet/1`，`/pet/2` 是 `/[id]`。
 - 使用 `s:on-click` 进行事件绑定，例如，`<button s:on-cli ck="handleClick" s:data-id="{{ pet.id }}">点击</button>`。
+- 在处理布尔类型属性时，比如 `disabled`, `checked`, `selected`,`required`。如果使用到表达式时，需要使用`s:attr-`进行修饰，
+  示例：`<input type="checkbox" s:attr-checked="{{True(isCheck)}}" />`，`isCheck == true` 会渲染成`<input type="checkbox" checked />`。
+  示例：`<input type="checkbox" s:attr-checked="{{True(isCheck)}}" />`，`isCheck == false`会渲染成`<input type="checkbox"/>`。
 - 在组件关联同名的 TS 文件中实现事件处理程序，例如：
 
   ```ts
@@ -304,4 +307,248 @@ SUI是一套基于服务器端生成SSR页面的模型渲染引擎框架，它�
   <button s:on-click="Process">处理</button>
   ```
 
-  :::
+## todolist项目示例：
+
+这是一个简单的todolist项目示例，演示了如何使用SUI构建一个简单的todolist应用。
+项目结构如下：
+
+```sh
+suis/
+└── web.sui.yao                     #sui配置文件，web是sui id。
+data/
+└── templates/                      #模板目录，每个模板对应一个目录
+    └── default/                    #web默认模板，模板id是default，一套模板可以有多个组件。
+        ├── todolist/               #todolist组件，每一个组件对应一个目录
+        │   ├── todolist.html       #定义组件的结构
+        │   ├── todolist.json       #定义组件的页面共用数据
+        │   ├── todolist.ts         #组件的前端逻辑
+        │   ├── todolist.css        #组件的样式
+        │   └── todolist.backend.ts #组件的后端逻辑
+        ├── __assets/               # 组件共用资源使用@assets/来引用
+        ├── __data.json             #模板共用全局数据配置
+        └── __document.html         # 组件/页面的共用入门文件
+```
+
+### 文件列表：
+
+### todolist.html：
+
+- 定义组件的结构和样式
+- `s:render`标识需要动态渲染的区域
+- `s:for`绑定需要渲染的变量
+
+```html
+<!-- data/templates/default/todolist/todolist.html -->
+<div class="todolist-container">
+  <h2 s:trans>Todo List</h2>
+  <div class="todo-input">
+    <input
+      type="text"
+      id="todo-input"
+      placeholder="Add a new todo"
+      s:trans="placeholder"
+    />
+    <button s:on-click="addTodo" s:trans>Add</button>
+  </div>
+  <ul class="todo-list" s:render="todo-list">
+    <li
+      s:for="todos"
+      s:for-item="todo"
+      class="todo-item"
+      s:class="{{ todo.completed ? 'completed' : '' }}"
+    >
+      <input
+        type="checkbox"
+        s:data-id="{{ todo.id }}"
+        s:attr-checked="todo.completed"
+        s:on-click="toggleTodo"
+      />
+      <span>{{ todo.text }}</span>
+      <button s:data-id="{{ todo.id }}" s:on-click="deleteTodo" s:trans>
+        Delete
+      </button>
+    </li>
+  </ul>
+</div>
+```
+
+### todolist.css：
+
+- 定义组件的样式，使用正常的css语法。
+
+```css
+/* data/templates/default/todolist/todolist.css */
+```
+
+### todolist.json：
+
+- 使用`$`修饰的key,并且`@`修改的value,会调用后端脚本中的函数。
+- 使用`$`修饰的key,会调用Yao处理器，比如`scripts.lib.process`。
+
+```json
+{
+  "$todos": "@GetTodos",
+  "title": "Todo List"
+}
+```
+
+### todolist.ts：
+
+- 在浏览器上执行的脚本程序，可以使用`$Backend`来调用后端脚本中的函数。
+- `__sui_data`是一个页面渲染后注入全局变量，包含了页面的所有数据。
+- 使用`self.store`来保存状态，注意`self.store.Get`/`self.store.Set`非对象类型的对象，使用`self.store.GetJSON`/`self.store.SetJSON`
+- 使用`self.$root`来获取组件的根元素。
+- 使用`self.render`来动态渲染组件。
+
+```ts
+/* data/templates/default/todolist/todolist.ts */
+import {
+  Component,
+  EventData,
+  EventDetail,
+  $Backend,
+  __sui_data
+} from '@yao/sui';
+const self = this as Component;
+// Initialize component state
+self.once = async function () {
+  // Initial render of todos
+  self.store.SetJSON('todos', __sui_data['todos']);
+};
+// Add a new todo
+self.addTodo = async (event: Event, data: EventData, detail: EventDetail) => {
+  const input = self.$root.find('#todo-input').elm() as HTMLInputElement;
+  const text = input.value.trim();
+  if (!text) return;
+  // Call backend to add todo
+  const newTodo = await $Backend('/todolist').Call('AddTodo', text);
+  if (newTodo) {
+    const todos = self.store.GetJSON('todos') || [];
+    todos.push(newTodo);
+    self.store.SetJSON('todos', todos);
+    await self.render('todo-list', { todos });
+    input.value = ''; // Clear input
+  }
+};
+
+// Toggle todo completion status
+self.toggleTodo = async (
+  event: Event,
+  data: EventData,
+  detail: EventDetail
+) => {
+  const id = data['id'];
+  const todos = self.store.GetJSON('todos') || [];
+  const todo = todos.find((t: any) => t.id === id);
+  if (todo) {
+    const updatedTodo = await $Backend('/todolist').Call('ToggleTodo', id);
+    if (updatedTodo) {
+      todo.completed = updatedTodo.completed;
+      self.store.SetJSON('todos', todos);
+      await self.render('todo-list', { todos });
+    }
+  }
+};
+
+// Delete a todo
+self.deleteTodo = async (
+  event: Event,
+  data: EventData,
+  detail: EventDetail
+) => {
+  const id = data['id'];
+  const success = await $Backend('/todolist').Call('DeleteTodo', id);
+  if (success) {
+    const todos = (self.store.GetJSON('todos') || []).filter(
+      (t: any) => t.id !== id
+    );
+    self.store.SetJSON('todos', todos);
+    await self.render('todo-list', { todos });
+  }
+};
+```
+
+### todolist.backend.ts：
+
+- 后端脚本，在服务器上执行.
+- 如果是暴露成API，需要使用`Api`修饰。
+- 每一次Api调用，脚本都会被重新加载，不要使用全局变量来保存持久性数据。
+- `BeforeRender`方法只会在当成组件使用时才会被调用。
+
+```ts
+/* data/templates/default/todolist/todolist.backend.ts */
+import { Store } from '@yao/lib';
+import { sui } from '@yao/sui';
+let todos: Array<{ id: string; text: string; completed: boolean }> = undefined;
+let idCounter = 1;
+function Init() {
+  todos = new Store('cache').Get('todos') || [];
+  idCounter = todos.length + 1;
+}
+function Save() {
+  new Store('cache').Set('todos', todos);
+}
+function getTodos() {
+  const cache = new Store('cache');
+  return cache.Get('todos') || [];
+}
+// Fetch all todos
+// 页面渲染时，在todolist.json中引用，会调用此函数
+function GetTodos(r: sui.Request) {
+  Init();
+  return todos;
+}
+// Add a new todo，前端调用AddTodo方法时，会调用此函数
+function ApiAddTodo(text: string) {
+  Init();
+  const newTodo = {
+    id: (idCounter++).toString(),
+    text,
+    completed: false
+  };
+  todos.push(newTodo);
+  Save();
+  return newTodo;
+}
+// Toggle todo completion
+function ApiToggleTodo(id: string) {
+  Init();
+  const todo = todos.find((t) => t.id === id);
+  if (todo) {
+    todo.completed = !todo.completed;
+    console.log('ApiToggleTodo todos', todos);
+    Save();
+    return todo;
+  }
+  return null;
+}
+// Delete a todo
+function ApiDeleteTodo(id: string) {
+  Init();
+  const index = todos.findIndex((t) => t.id === id);
+  if (index !== -1) {
+    todos.splice(index, 1);
+    Save();
+    return true;
+  }
+  return false;
+}
+
+// Initialize some sample todos
+function BeforeRender(request: sui.Request, props: any) {
+  Init();
+  if (todos.length === 0) {
+    todos = [
+      { id: '1', text: 'Learn SUI', completed: false },
+      { id: '2', text: 'Build TodoList', completed: true }
+    ];
+    idCounter = 3;
+  }
+  Save();
+  return {
+    todos
+  };
+}
+```
+
+:::

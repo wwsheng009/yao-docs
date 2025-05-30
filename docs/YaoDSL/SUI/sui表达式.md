@@ -79,14 +79,14 @@ SUI 页面中可以使用`{{ }}`来引用页面变量或是使用`{% %}`引用�
 
 针对于这些属性不，给它们赋一任何字符串值，会被认为是存在的。
 
-在SUI中，这样处理，给它们增加一个特殊的前缀`s-attr-`，只有当值为真时，才会添加属性，当值为非真时，不会添加属性。
+在SUI中，这样处理，给它们增加一个特殊的前缀`s:attr-`，只有当值为真时，才会添加属性，当值为非真时，不会添加属性。
 
-渲染成HTML时，会自动去掉`s-attr-`前缀，例如：
+渲染成HTML时，会自动去掉`s:attr-`前缀，例如：
 
 ```html
-<input s-attr-disabled="{{True(disabled)}}" />
+<input s:attr-disabled="{{True(disabled)}}" />
 <!-- 表示 disabled 属性存在 -->
-<input s-attr-disabled="{{True(disabled)}}" />
+<input s:attr-disabled="{{True(disabled)}}" />
 <!-- 表示 disabled 属性不存在 -->
 ```
 
