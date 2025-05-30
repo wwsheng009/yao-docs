@@ -266,7 +266,7 @@ self.hello = function () {
 - `root`：组件的根HTML元素。
 - `store`：Yao框架提供的存储对象，用于管理组件状态。
 - `state`：状态管理对象，用于设置和获取组件状态。
-- `props`：属性管理对象，用于操作组件的属性。
+- `props`：属性管理对象，用于读取组件的属性。
 - `$root`：基于`__Query`的根节点查询对象。
 - `find(selector)`：查询匹配选择器的第一个元素，返回`__Query`对象。
 - `query(selector)`：查询匹配选择器的第一个DOM元素。

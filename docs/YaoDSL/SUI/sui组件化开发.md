@@ -19,7 +19,7 @@ graph TD
 ### 1. 组件定义
 
 ```html
-<!-- components/header.html -->
+<!-- data/templates/default/header/header.html -->
 <header class="site-header">
   <nav>
     <a href="/">首页</a>
@@ -31,8 +31,8 @@ graph TD
 ### 2. 组件使用
 
 ```html
-<!-- pages/index.html -->
-<div is="/components/header"></div>
+<!-- data/templates/default/index/index.html -->
+<div is="/header"></div>
 <main>页面内容</main>
 ```
 
@@ -42,7 +42,7 @@ graph TD
 
 ```html
 <!-- 父组件 -->
-<div is="components/header" title="网站标题"></div>
+<div is="/header" title="网站标题"></div>
 
 <!-- 子组件 -->
 <header class="site-header">
@@ -54,7 +54,7 @@ graph TD
 
 ```html
 <!-- 父组件 -->
-<div is="components/button" s:on-click="handleClick"></div>
+<div is="/button" s:on-click="handleClick"></div>
 
 <!-- 子组件 -->
 <button s:on-click="emit('click')">点击</button>
@@ -65,7 +65,7 @@ graph TD
 ### 1. 定义插槽
 
 ```html
-<!-- components/layout.html -->
+<!-- layout.html -->
 <div class="layout">
   <header></header>
   <main></main>
@@ -77,7 +77,7 @@ graph TD
 
 ```html
 <!-- pages/index.html -->
-<div is="components/layout">
+<div is="/layout">
   <slog name="header">自定义头部</slot>
   <slog name="content">自定义内容</slot>
   <slog name="footer">自定义底部</slot>
@@ -86,7 +86,7 @@ graph TD
 
 ## 最佳实践
 
-1. 将通用组件放在 `components` 目录
+1. 将组件放在 `data/templates/default/` 目录,每一个组件创建一个目录
 2. 使用 `is` 引入组件
 3. 通过数据传递实现组件通信
 4. 使用 CSS 模块化避免样式冲突
@@ -99,7 +99,7 @@ graph TD
 ### 1. 导航组件
 
 ```html
-<!-- components/nav.html -->
+<!-- data/templates/default/nav/nav.html -->
 <nav class="site-nav">
   <ul>
     <li s:for="items" s:for-item="item">
@@ -114,7 +114,7 @@ graph TD
 ### 2. 卡片组件
 
 ```html
-<!-- components/card.html -->
+<!-- data/templates/default/card/card.html -->
 <div class="card">
   <header>
     <slog name="header">{% title %}</slot>
@@ -133,15 +133,15 @@ graph TD
 ### 3. 使用组件
 
 ```html
-<!-- pages/index.html -->
+<!-- data/templates/default/index/index.html -->
 <div
-  is="/components/nav"
+  is="/nav"
   items="{{ navigation }}"
   active="{{ currentPath }}"
 ></div>
 
 <div
-  is="/components/card"
+  is="/card"
   title="标题"
   content="内容"
   s:data-button-text="点击"

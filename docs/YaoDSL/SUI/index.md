@@ -30,7 +30,6 @@ SUI采用三层结构设计：
 
 - [使用builder创建sui页面](使用builder创建sui页面.md)
 - [使用sui搭建网站](使用sui搭建网站.md)
-- [ai提示词](ai提示词.md)
 - [sui介绍](sui介绍.md)
 - [sui前端工具库](sui前端工具库.md)
 - [sui前端静态资源引用](sui前端静态资源引用.md)

@@ -199,6 +199,17 @@ export default {
         }
       ],
       link: '/AI/Prompts/'
+    },
+    {
+      text: 'sui',
+      collapsed: true,
+      items: [
+        {
+          text: 'SUI ai提示词',
+          link: '/AI/sui/SUI ai提示词'
+        }
+      ],
+      link: '/AI/sui/'
     }
   ],
   '/Studio/': [
@@ -629,10 +640,6 @@ export default {
         {
           text: '使用sui搭建网站',
           link: '/YaoDSL/SUI/使用sui搭建网站'
-        },
-        {
-          text: 'ai提示词',
-          link: '/YaoDSL/SUI/ai提示词'
         },
         {
           text: 'sui介绍',

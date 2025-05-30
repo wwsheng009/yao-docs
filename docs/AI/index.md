@@ -10,4 +10,5 @@
 - [AI生成模型模板](AI生成模型模板.md)
 - [Vscode编辑器使用插件快速开发模型](Vscode编辑器使用插件快速开发模型.md)
 - [Prompts](Prompts/index)
+- [sui](sui/index)
 <!-- links end -->
