@@ -984,6 +984,10 @@ export default {
               link: '/YaoDSL/Xgen/Xgen控件/远程select控件'
             },
             {
+              text: 'IFrame控件',
+              link: '/YaoDSL/Xgen/Xgen控件/IFrame控件'
+            },
+            {
               text: 'Switch控件',
               link: '/YaoDSL/Xgen/Xgen控件/Switch控件'
             },

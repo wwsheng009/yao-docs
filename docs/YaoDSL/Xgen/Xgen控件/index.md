@@ -11,6 +11,7 @@
 - [图片控件](图片控件.md)
 - [文件上传UploadFile](文件上传UploadFile.md)
 - [远程select控件](远程select控件.md)
+- [IFrame控件](IFrame控件.md)
 - [Switch控件](Switch控件.md)
 - [Upload在List下视频样式错乱](Upload在List下视频样式错乱.md)
 - [Xgen登录界面邮件电话校验规则](Xgen登录界面邮件电话校验规则.md)
