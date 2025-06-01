@@ -22,76 +22,108 @@ project_root/
 
 ### 2. 项目目录结构:
 
-这是一个项目示例，项目结构如下：
+以下是一个项目的目录结构说明，包含项目的配置文件、模板、页面、组件以及多语言和公共资源等部分的详细描述。
 
 ```sh
-app.yao                             #项目配置文件,app.yao文件中路由配置信息,控制整个网站的路由重定向配置。
+app.yao                             # 项目配置文件，包含路由重定向配置，控制整个网站的路由
 suis/
-└── web.sui.yao                     #web默认模板的存储，目录映射配置文件
+└── web.sui.yao                     # Web默认模板的配置文件，存储目录映射信息
 data/
-└── templates/                      #模板目录，每个模板对应一个目录
-    └── default/                    #web默认模板，模板id是default，一套模板可以有多个组件。
-        ├── components/                         #模板共用组件目录，所有页面都可以引用。
-        │   ├── component_name/                 #组件目录，每个组件对应一个目录
-        │   │   ├── component_name.html         #组件HTML模板
-        │   │   ├── component_name.json         #组件模板数据配置
-        │   │   ├── component_name.ts           #组件前端脚本
-        │   │   ├── component_name.css          #组件样式
-        │   │   └── component_name.backend.ts   #组件后端脚本
-        ├── page_name/               #页面，每一个页面对应一个目录
-        │   ├── page_name.html       #页面的模板结构
-        │   ├── page_name.json       #页面的模板关联数据配置
-        │   ├── page_name.ts         #页面的前端逻辑
-        │   ├── page_name.css        #页面的样式
-        │   ├── page_name.config     #页面访问控制配置
-        │   └── page_name.backend.ts #组件的后端逻辑
-        │       ├── component_name/  #组件目录
-        │       │   ├── component_name.html         #组件HTML模板
-        │       │   ├── component_name.json         #组件数据文件配置文件
-        │       │   ├── component_name.ts           #组件前端脚本
-        │       │   ├── component_name.css          #组件样式
-        │       │   └── component_name.backend.ts   #组件后端脚本
-        │       └── [item]/                 #动态路由组件目录
-        │           ├── [item].html         #动态路由组件HTML模板
-        │           ├── [item].json         #动态路由组件数据文件配置文件
-        │           ├── [item].ts           #动态路由组件前端脚本
-        │           ├── [item].css          #动态路由组件样式
-        │           └── [item].backend.ts   #动态路由组件后端脚本
-        ├── __locales/               #模板级多语言配置目录，所有页面都可以引用。
-        │   └── zh-cn/                #语言配置目录，每个语言对应一个目录
-        │       ├── [page_id].yml     #页面的多语言配置文件，指定页面对应一个配置文件。
-        │       └── __global.yml      #模板级的多语言配置文件，所有页面都可以引用。
-        ├── __assets/               #公共资源目录，通过 `import '@assets/style.css'` 引用
-        │   └── js/                 #公共资源js目录
-        │   └── css/                  #公共资源css目录
-        │       └── tailwind.css      #tailwindcss配置文件
-        ├── __data.json             #模板级全局数据，所有组件可通过 `{{ $global.xx }}` 访问
-        ├── template.json           #模板配置文件，包含多语言支持配置信息
-        ├── package.json            #外部依赖包配置文件
-        └── __document.html         #所有页面的基础 HTML 骨架，包含 `<head>` 和 `<body>` 结构
+└── templates/                      # 模板目录，每个模板对应一个目录
+    └── default/                    # 默认模板，模板ID为default，包含多套组件
+        ├── components/                         # 模板共用组件目录，所有页面均可引用
+        │   ├── component_name/                 # 组件目录，每个组件对应一个目录
+        │   │   ├── component_name.html         # 组件HTML模板
+        │   │   ├── component_name.json         # 组件模板数据配置
+        │   │   ├── component_name.ts           # 组件前端脚本
+        │   │   ├── component_name.css          # 组件样式
+        │   │   └── component_name.backend.ts   # 组件后端脚本
+        ├── page_name/               # 页面目录，每个页面对应一个目录
+        │   ├── page_name.html       # 页面HTML模板结构
+        │   ├── page_name.json       # 页面模板关联数据配置
+        │   ├── page_name.ts         # 页面前端逻辑脚本
+        │   ├── page_name.css        # 页面样式
+        │   ├── page_name.config     # 页面访问控制配置
+        │   └── page_name.backend.ts # 页面后端逻辑脚本
+        │       ├── component_name/  # 页面专用组件目录
+        │       │   ├── component_name.html         # 组件HTML模板
+        │       │   ├── component_name.json         # 组件数据配置文件
+        │       │   ├── component_name.ts           # 组件前端脚本
+        │       │   ├── component_name.css          # 组件样式
+        │       │   └── component_name.backend.ts   # 组件后端脚本
+        │       └── [item]/                 # 动态路由组件目录
+        │           ├── [item].html         # 动态路由组件HTML模板
+        │           ├── [item].json         # 动态路由组件数据配置文件
+        │           ├── [item].ts           # 动态路由组件前端脚本
+        │           ├── [item].css          # 动态路由组件样式
+        │           └── [item].backend.ts   # 动态路由组件后端脚本
+        ├── __locales/               # 模板级多语言配置目录，所有页面均可引用
+        │   └── zh-cn/                # 语言配置目录，每个语言对应一个目录
+        │       ├── [page_id].yml     # 页面多语言配置文件，指定页面对应一个配置文件
+        │       └── __global.yml      # 模板级多语言配置文件，所有页面均可引用
+        ├── __assets/               # 公共资源目录，通过 `import '@assets/style.css'` 引用
+        │   └── js/                 # 公共资源JS目录
+        │   └── css/                # 公共资源CSS目录
+        │       └── tailwind.css    # Tailwind CSS配置文件
+        ├── __data.json             # 模板级全局数据，组件可通过 `{{ $global.xx }}` 访问
+        ├── template.json           # 模板配置文件，包含多语言支持配置信息
+        ├── package.json            # 外部依赖包配置文件
+        └── __document.html         # 所有页面的基础HTML骨架，包含 `<head>` 和 `<body>` 结构
 ```
 
-目录结构由sui_id/template_id/page/component组成，其中:
+## 目录结构说明
 
-- sui_id: 模板id，对应suis目录下的配置文件，如web.sui.yao。
-- template_id: 模板id，对应data/templates目录下的模板目录。
-- page: 页面目录，对应data/templates/template_id/page_name目录,在template_id目录下的第一个层级
-- component: 组件目录，对应data/templates/template_id/page_name/component_name目录。
+项目的目录结构由以下几个部分组成：`sui_id`、`template_id`、`page` 和 `component`，具体说明如下：
 
-页面与组件之间的关系：
+- **sui_id**：模板ID，对应 `suis` 目录下的配置文件，例如 `web.sui.yao`。
+- **template_id**：模板ID，对应 `data/templates` 目录下的模板目录。
+- **page**：页面目录，对应 `data/templates/template_id/page_name` 目录，位于 `template_id` 目录下的第一层级。
+- **component**：组件目录，对应 `data/templates/template_id/page_name/component_name` 目录。
 
-- 页面是一个完整的页面，包含页面`<body></body>`的结构、样式、逻辑等。
-- 页面可以包含多个组件，每个组件对应一个目录。
-- 组件可以包含子组件，子组件的目录结构与组件相同。
+## 页面与组件的关系
 
-页面与组件之间的区别：
+- **页面**：一个完整的页面，包含页面的结构、样式、逻辑等，映射到特定的URL，可以单独配置SEO信息和认证方式。页面模板内容使用 `<body></body>` 包裹，渲染后会替换 `__document.html` 文件中的 `{{ __page }}` 占位符。
+- **组件**：类似于HTML自定义组件，可以在多个页面中重复使用，或被其他组件嵌套引用。组件通过 `<div is=component xx="p1"></div>` 在页面中引用，其后端脚本（`.backend.ts`）可使用 `BeforeRender` 函数接收调用参数。
 
-- 页面模板内容使用`<body></body>`包裹,而组件模板没有这个要求
-- 页面是一个完整的页面，包含页面的结构、样式、逻辑等，前端页面脚本与样式在全局生效，渲染过程中会替换`__doucment.html`文件中的`{{ __page }}` 点位符。
-- 组件是一个独立的组件，包含组件的结构、样式、逻辑等，在页面中使用`<div is=component xx="p1"></div>`引用组件，组件关联的后端脚本中可以使用`BeforeRender`函数接收调用参数，可以被不同的页面重复引用。
-- 页面可以包含多个组件，组件可以包含子组件。
-- 如果组件是某一个页面的专用组件，放在页面目录的子目录下。
-- 共用的组件，放在模板根目录components子目录下。
+### 页面与组件的区别
+
+1. **功能定位**：
+
+   - 页面用于响应用户请求，映射到特定URL，支持SEO和认证配置。
+   - 组件是可复用的模块，可被多个页面或组件引用。
+
+2. **模板结构**：
+
+   - 页面模板内容使用 `<body></body>` 包裹。
+   - 组件模板无此要求，仅作为普通HTML元素渲染。
+
+3. **服务器端逻辑**：
+
+   - 页面的后端脚本无 `BeforeRender` 函数。
+   - 组件的后端脚本可通过 `BeforeRender` 函数接收调用参数。
+
+4. **渲染方式**：
+
+   - 页面渲染后挂载在 `document.body` 节点，前端脚本和样式在全局生效。
+   - 组件渲染后作为普通HTML元素嵌入页面。
+
+5. **组件层级**：
+   - 页面可包含多个组件，组件可包含子组件。
+   - 专用组件放置在页面目录的子目录下。
+   - 共用组件放置在模板根目录的 `components` 子目录下。
+
+## 文件说明
+
+- **`app.yao`**：项目配置文件，包含整个网站的路由重定向配置。
+- **`web.sui.yao`**：Web默认模板的目录映射配置文件。
+- **`components/`**：存储模板级共用组件，所有页面均可引用。
+- **`page_name/`**：页面目录，包含页面的HTML结构、数据配置、前后端逻辑、样式及访问控制配置。
+- **`__locales/`**：模板级多语言配置目录，支持页面级和模板级多语言配置文件。
+- **`__assets/`**：公共资源目录，包含JS和CSS文件，可通过 `import '@assets/style.css'` 引用。
+- **`__data.json`**：模板级全局数据，组件可通过 `{{ $global.xx }}` 访问。
+- **`template.json`**：模板配置文件，包含多语言支持配置信息。
+- **`package.json`**：外部依赖包配置文件。
+- **`__document.html`**：所有页面的基础HTML骨架，包含 `<head>` 和 `<body>` 结构。
 
 ### 3. 组件目录结构
 
