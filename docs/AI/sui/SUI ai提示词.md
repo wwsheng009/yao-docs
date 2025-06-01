@@ -233,8 +233,8 @@ data/
 
 ## 页面与组件的关系
 
-- **页面**：一个完整的页面，包含页面的结构、样式、逻辑等，映射到特定的URL，可以单独配置SEO信息和认证方式。页面模板内容使用 `<body></body>` 包裹，渲染后会替换 `__document.html` 文件中的 `{{ __page }}` 占位符。
-- **组件**：类似于HTML自定义组件，可以在多个页面中重复使用，或被其他组件嵌套引用。组件通过 `<div is=component xx="p1"></div>` 在页面中引用，其后端脚本（`.backend.ts`）可使用 `BeforeRender` 函数接收调用参数。
+- **页面page**：一个完整的页面，包含页面的结构、样式、逻辑等，映射到特定的URL，可以单独配置SEO信息和认证方式。页面模板内容使用 `<body></body>` 包裹，渲染后会替换 `__document.html` 文件中的 `{{ __page }}` 占位符。
+- **组件component**：类似于HTML自定义组件，可以在多个页面中重复使用，或被其他组件嵌套引用。组件通过 `<div is=component xx="p1"></div>` 在页面中引用，其后端脚本（`.backend.ts`）可使用 `BeforeRender` 函数接收调用参数。
 
 ### 页面与组件的区别
 
@@ -757,6 +757,7 @@ messages:
   - `s:json-`：前缀，同`json:`，传递定复杂类型数据给事件，建议使用`json:`，例如，`<button s:on-click="handleClick" s:json-data="{{ { "name": "value"} }}">点击</button>`。
   - `is:`：引用组件，例如，`<div is="/pet/"> </div>`。
   - `slot:`：标签，需要name属性，渲染子组件的内容，例如，`<slot name="content">自定义内容</slot>`。
+  - `prop:`：前缀，接收父组件传递的属性，例如，父组件`<com name="{{ pet.name }}"></com>`,子组件`<div prop:name="pet.name"> </div>`。
 
 - 每个模板应该由单独的纯 HTML、CSS 和 TypeScript 文件组成。使用相同的名称但不同的扩展名（例如，`component_id.html`、`component_id.css`、`component_id.ts`）。
 - 避免使用框架或库。如果需要，通过 script 标签导入库。
@@ -949,9 +950,9 @@ self.process = function () {
   });
   //hide selected item
   $Query(el).find('[checked]')?.addClass('hidden');
-  //获取组件的属性，属性是只读的，不能修改。
+  //获取page传给组件的属性，属性是只读的，不能修改。
   const api = self.props.Get('api');
-  //列出所有的属性
+  //获取page传给组件所有的属性
   const api = self.props.List();
   //给组件增加css样式
   self.$root.addClass('hidden');
@@ -994,7 +995,7 @@ document.addEventListener('DOMContentLoaded', initStat);
     - 如果模板文件类型是页面则返回`document.body`对象。
   - `self.store`：Yao框架提供的存储对象，用于管理组件状态,操作html dom中的使用前缀`data:`与`json:`修饰的属性。
   - `self.state`：状态管理对象，用于设置和获取组件状态。
-  - `self.props`：属性管理对象，用于读取组件的属性。
+  - `self.props`：属性管理对象，作为组件被调用时，page调用组件传入的参数。
   - `self.$root`：返回`SUIQuery`实例。
   - `self.find(selector)`：在页面/组件内查询匹配选择器的第一个元素，返回`SUIQuery`对象。
   - `self.query(selector)`：在页面/组件内查询匹配选择器的第一个DOM元素。
@@ -1009,9 +1010,14 @@ document.addEventListener('DOMContentLoaded', initStat);
   - `self.find("[multiple-values]")?.hasClass("hidden")` 查找页面/组件是否有css class
 
 - 属性读取：
-
-  - `self.props.Get("mode")` 读取页面/组件属性
-
+  比如有两个组件：
+  - `custom-compoent` 组件
+  - `page` 页面
+  - `page` 页面传入了`custom-compoent`组件，并且传入了属性`mode`
+  ```html
+  <custom-compoent mode="light"></custom-compoent>
+  ```
+  - `self.props.Get("mode")` 在custom-compoent组件读取page传入的属性
 - 状态设置:
 
   - `$$(self.root.querySelector(".flowbite-edit-input")).state.Set("value", label);` 在页面上找到组件并设置状态，触发对应组件`watch`中的函数。
@@ -1262,7 +1268,7 @@ self.emitEvent = () => {
 import { Request } from '@yao/sui';
 
 // 组件渲染前处理
-// props是父组件传递的属性列表
+// props是page传给组件的属性列表
 function BeforeRender(request: Request, props: any) {
   // 根据父节点传入的属性与请求参数，生成组件所需要的属性信息
   // 处理逻辑
@@ -1320,7 +1326,7 @@ const Constants = {
   // 组件初始化逻辑
   function BeforeRender(
     request: sui.Request,
-    props: Record<string, string>
+    props: Record<string, string>//page传入的属性参数
   ): Record<string, any> {
     console.log('old props:', props);
     //output:
@@ -1652,11 +1658,11 @@ export declare class SUIQuery {
   on(event: string, callback: (event: Event) => void): SUIQuery; // 添加事件监听
   $$(): Component | null; // 获取关联组件
   store(): ComponentStore | null; // 获取存储
-  attr(name: string): string | null; // 获取属性
+  attr(name: string): string | null; // 获取html元素属性
   data(name: string): string | null; // 获取data属性
   json(name: string): any | null; // 获取JSON数据
   hasClass(className: string): boolean; // 检查类
-  prop(name: string): any | null; // 获取属性值
+  prop(name: string): any | null; // 获取page调用组件时传入的属性。
   removeClass(className: string | string[]): SUIQuery; // 移除类
   toggleClass(className: string | string[]): SUIQuery; // 切换类
   addClass(className: string | string[]): SUIQuery; // 添加类
