@@ -196,6 +196,10 @@ export default {
         {
           text: 'model_with_relations',
           link: '/AI/Prompts/model_with_relations'
+        },
+        {
+          text: 'prompt工程师',
+          link: '/AI/Prompts/prompt工程师'
         }
       ],
       link: '/AI/Prompts/'
@@ -204,6 +208,10 @@ export default {
       text: 'sui',
       collapsed: true,
       items: [
+        {
+          text: '简化',
+          link: '/AI/sui/简化'
+        },
         {
           text: 'SUI ai提示词',
           link: '/AI/sui/SUI ai提示词'
@@ -692,6 +700,10 @@ export default {
         {
           text: 'sui路由配置',
           link: '/YaoDSL/SUI/sui路由配置'
+        },
+        {
+          text: 'sui项目中使用flowbite',
+          link: '/YaoDSL/SUI/sui项目中使用flowbite'
         }
       ],
       link: '/YaoDSL/SUI/'

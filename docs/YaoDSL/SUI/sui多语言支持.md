@@ -168,11 +168,11 @@ yao sui build blog website -D
 
 另外如果多个页面存在相同的语言配置，可以使用全局翻译配置。
 
-全局配置，在template/**locales/langugeID/**global.yml中配置，需要手动创建此文件。
+全局配置，在`template/__locales/langugeID/__global.yml`中配置，需要手动创建此文件。
 
 如果页面中引用了组件component,页面配置会把组件的配置合并到页面配置中。
 
-页面配置，在页面的template/\_\_locales/langugeID/pageID.yml中配置,如果有子目录，在子目录中配置。
+页面配置，在页面的`template/__locales/langugeID/pageID.yml`中配置,如果有子目录，在子目录中配置。
 
 ## 语言配置文件格式
 

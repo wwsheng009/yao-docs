@@ -43,4 +43,5 @@ SUI采用三层结构设计：
 - [sui编译文件自动插入的内容](sui编译文件自动插入的内容.md)
 - [sui表达式](sui表达式.md)
 - [sui路由配置](sui路由配置.md)
+- [sui项目中使用flowbite](sui项目中使用flowbite.md)
 <!-- links end -->

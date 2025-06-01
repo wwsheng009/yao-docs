@@ -24,6 +24,53 @@ project_root/
 
 这是一个项目示例，项目结构如下：
 
+```sh
+app.yao                             #项目配置文件,app.yao文件中路由配置信息,控制整个网站的路由重定向配置。
+suis/
+└── web.sui.yao                     #web默认模板的存储，目录映射配置文件
+data/
+└── templates/                      #模板目录，每个模板对应一个目录
+    └── default/                    #web默认模板，模板id是default，一套模板可以有多个组件。
+        ├── components/                         #模板共用组件目录，所有页面都可以引用。
+        │   ├── component_name/                 #组件目录，每个组件对应一个目录
+        │   │   ├── component_name.html         #组件HTML模板
+        │   │   ├── component_name.json         #组件模板数据配置
+        │   │   ├── component_name.ts           #组件前端脚本
+        │   │   ├── component_name.css          #组件样式
+        │   │   └── component_name.backend.ts   #组件后端脚本
+        ├── page_name/               #页面，每一个页面对应一个目录
+        │   ├── page_name.html       #页面的模板结构
+        │   ├── page_name.json       #页面的模板关联数据配置
+        │   ├── page_name.ts         #页面的前端逻辑
+        │   ├── page_name.css        #页面的样式
+        │   ├── page_name.config     #页面访问控制配置
+        │   └── page_name.backend.ts #组件的后端逻辑
+        │       ├── component_name/  #组件目录
+        │       │   ├── component_name.html         #组件HTML模板
+        │       │   ├── component_name.json         #组件数据文件配置文件
+        │       │   ├── component_name.ts           #组件前端脚本
+        │       │   ├── component_name.css          #组件样式
+        │       │   └── component_name.backend.ts   #组件后端脚本
+        │       └── [item]/                 #动态路由组件目录
+        │           ├── [item].html         #动态路由组件HTML模板
+        │           ├── [item].json         #动态路由组件数据文件配置文件
+        │           ├── [item].ts           #动态路由组件前端脚本
+        │           ├── [item].css          #动态路由组件样式
+        │           └── [item].backend.ts   #动态路由组件后端脚本
+        ├── __locales/               #模板级多语言配置目录，所有页面都可以引用。
+        │   └── zh-cn/                #语言配置目录，每个语言对应一个目录
+        │       ├── [page_id].yml     #页面的多语言配置文件，指定页面对应一个配置文件。
+        │       └── __global.yml      #模板级的多语言配置文件，所有页面都可以引用。
+        ├── __assets/               #公共资源目录，通过 `import '@assets/style.css'` 引用
+        │   └── js/                 #公共资源js目录
+        │   └── css/                  #公共资源css目录
+        │       └── tailwind.css      #tailwindcss配置文件
+        ├── __data.json             #模板级全局数据，所有组件可通过 `{{ $global.xx }}` 访问
+        ├── template.json           #模板配置文件，包含多语言支持配置信息
+        ├── package.json            #外部依赖包配置文件
+        └── __document.html         #所有页面的基础 HTML 骨架，包含 `<head>` 和 `<body>` 结构
+```
+
 目录结构由sui_id/template_id/page/component组成，其中:
 
 - sui_id: 模板id，对应suis目录下的配置文件，如web.sui.yao。
@@ -35,64 +82,31 @@ project_root/
 
 - 页面可以包含多个组件，每个组件对应一个目录。
 - 组件可以包含子组件，子组件的目录结构与组件相同。
-- 组件可以包含动态路由组件，动态路由组件的目录结构与组件相同，但是目录名包含在`[]`之间，`[]`之间的名称表示动态路由参数名称，接收路由配置中的url参数。
 
 页面与组件之间的区别：
 
 - 页面是一个完整的页面，包含页面的结构、样式、逻辑等，前端页面脚本与样式在全局生效，渲染过程中会替换`__doucment.html`文件中的`{{ __page }}` 点位符。
 - 组件是一个独立的组件，包含组件的结构、样式、逻辑等，在页面中使用`<div is=component xx="p1"></div>`引用组件，组件关联的后端脚本中可以使用`BeforeRender`函数接收调用参数，可以被不同的页面重复引用。
 - 页面可以包含多个组件，组件可以包含子组件。
-- 可以给某一个页面创建专用的组件，放在页面目录下，也可以创建模板共用的组件，放在模板目录components目录下。
-
-```sh
-app.yao                             #项目配置文件,app.yao文件中路由配置信息,控制整个网站的路由重定向配置。
-suis/
-└── web.sui.yao                     #web默认模板的存储，目录映射配置文件
-data/
-└── templates/                      #模板目录，每个模板对应一个目录
-    └── default/                    #web默认模板，模板id是default，一套模板可以有多个组件。
-        ├── components/                         #模板共用组件目录，所有页面都可以引用。
-        │   ├── component_name/                 #组件目录，每个组件对应一个目录
-        │   │   ├── component_name.html         #组件HTML模板
-        │   │   ├── component_name.json         #组件配置文件
-        │   │   ├── component_name.ts           #组件前端脚本
-        │   │   ├── component_name.css          #组件样式
-        │   │   └── component_name.backend.ts   #组件后端脚本
-        ├── page_name/               #页面，每一个页面对应一个目录
-        │   ├── page_name.html       #定义页面的结构
-        │   ├── page_name.json       #定义页面的页面共用数据
-        │   ├── page_name.ts         #页面的前端逻辑
-        │   ├── page_name.css        #页面的样式
-        │   ├── page_name.config     #页面配置
-        │   └── page_name.backend.ts #组件的后端逻辑
-        │       ├── component_name/  #组件目录
-        │       │   ├── component_name.html         #组件HTML模板
-        │       │   ├── component_name.json         #组件配置文件
-        │       │   ├── component_name.ts           #组件前端脚本
-        │       │   ├── component_name.css          #组件样式
-        │       │   └── component_name.backend.ts   #组件后端脚本
-        │       └── [item]/                 #动态路由组件目录
-        │           ├── [item].html         #动态路由组件HTML模板
-        │           ├── [item].json         #动态路由组件配置文件
-        │           ├── [item].ts           #动态路由组件前端脚本
-        │           ├── [item].css          #动态路由组件样式
-        │           └── [item].backend.ts   #动态路由组件后端脚本
-        ├── __assets/               #公共资源目录，通过 `import '@assets/style.css'` 引用
-        ├── __data.json             #模板级全局数据，所有组件可通过 `{{ globalData }}` 访问
-        └── __document.html         #所有页面的基础 HTML 骨架，包含 `<head>` 和 `<body>` 结构
-```
+- 如果组件是某一个页面的专用组件，放在页面目录的子目录下。
+- 共用的组件，放在模板根目录components子目录下。
 
 ### 3. 组件目录结构
 
 每个页面目录都遵循以下结构：
+
+两者都使用json格式，但是需要区分配置文件`.json`与`.config`文件用途。
+
+- `.json`文件是组件的模板数据配置文件，内容由开发者自由定义，可调用后端服务获取数据。
+- `.config`文件是页面的访问配置文件，配置格式固定，开发者需要按要求填写，比如访问认证，seo标题、描述、关键词等。
 
 ```json
 page_name/
 ├── page_name.html        # 组件模板
 ├── page_name.css         # 组件样式
 ├── page_name.ts          # 前端 TypeScript
-├── page_name.json        # 页面数据配置
-├── page_name.config      # 页面配置，比如访问认证，seo标题、描述、关键词等。
+├── page_name.json        # 页面模板数据配置
+├── page_name.config      # 页面访问配置，比如访问认证，seo标题、描述、关键词等。
 └── page_name.backend.ts  # 后端 TypeScript
 ```
 
@@ -104,7 +118,7 @@ page_name
     ├── component_name.html        # 组件模板
     ├── component_name.css         # 组件样式
     ├── component_name.ts          # 前端 TypeScript
-    ├── component_name.json        # 组件数据配置，比如访问认证，seo标题、描述、关键词等。
+    ├── component_name.json        # 组件数据配置
     └── component_name.backend.ts  # 后端 TypeScript
 ```
 
@@ -179,7 +193,7 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
 /* data/templates/default/todolist/todolist.css */
 ```
 
-### todolist.json：
+### 模板关联数据文件todolist.json：
 
 - 使用`$`修饰的key,并且`@`修改的value,会调用后端脚本中的函数。
 - 使用`$`修饰的key,会调用Yao处理器，比如`scripts.lib.process`。
@@ -191,12 +205,20 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
 }
 ```
 
-### todolist.ts：
+### 翻译文件
+
+```yaml
+# data/templates/default/todolist/__locales/zh-cn/todolist.yml
+messages:
+  Add: '增加'
+```
+
+### todolist.ts（前端脚本）：
 
 - 使用`$Backend`来调用后端脚本中的函数。
-- `__sui_data`是一个页面渲染完成后注入全局变量，包含了页面的所有数据。
 - 使用`self.render`调用服务器api返回渲染后的组件。
-- 不要在once中调用使用`__sui_data`，而是在文档加载完成后调用。
+- `__sui_data`是一个页面渲染完成后注入全局变量，包含了页面的所有数据。
+- 是在文档加载完成事件`DOMContentLoaded`中读取全局变量`__sui_data`，而不是once中调用，。
 
 ```ts
 /* data/templates/default/todolist/todolist.ts */
@@ -211,6 +233,7 @@ const self = this as Component;
 // Initialize component state
 self.once = async function () {
   // call when component inited
+  console.log('todolist 初始化');
 };
 // Add a new todo
 self.addTodo = async (event: Event, data: EventData, detail: EventDetail) => {
@@ -268,13 +291,14 @@ self.deleteTodo = async (
 };
 
 // 在文档加载完成后，初始化组件的状态
-function initState() {
+async function initState() {
   self.store.SetJSON('todos', __sui_data['todos']);
+  console.log('状态初始化');
 }
 document.addEventListener('DOMContentLoaded', initState);
 ```
 
-### todolist.backend.ts：
+### todolist.backend.ts(后端脚本)：
 
 - 后端脚本，在服务器上执行.
 - 如果是暴露成API，需要使用`Api`修饰。
@@ -304,7 +328,7 @@ function getTodos() {
   return new Store('cache').Get('todos') || [];
 }
 // Fetch all todos
-// 页面渲染时，在todolist.json中引用，会调用此函数
+// 页面渲染时，在页面模板数据关联文件todolist.json中引用，会调用此函数
 function GetTodos(r: Request) {
   return getTodos();
 }
@@ -348,58 +372,144 @@ function ApiDeleteTodo(id: string) {
 
 ## 核心文件详解
 
-### 1. \_\_document.html
+### `package.json`
 
-基础的页面模板文件，定义所有页面共用的配置，占位符`{{ __page }}`用于替换页面的HTML内容。
+- 项目的依赖管理文件，定义项目的外部依赖库和命令。
+- 安装依赖后把输出文件复制到`__assets`目录下。
+
+```json
+{
+  "scripts": {
+    "dev": "tailwindcss -i ./__assets/css/tailwind.css -o ./__assets/css/tailwind.min.css --watch --minify",
+    "build": "tailwindcss -i ./__assets/css/tailwind.css -o ./__assets/css/tailwind.min.css --minify"
+  },
+  "packageManager": "pnpm@10.4.1",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.8",
+    "@tailwindcss/typography": "^0.5.16",
+    "flowbite": "^3.1.2",
+    "flowbite-typography": "^1.0.5",
+    "tailwindcss": "^4.1.8"
+  }
+}
+```
+
+安装命令
+
+```bash
+pnpm install
+cp node_modules/flowbite/dist/flowbite.min.js __assets/js/flowbite.min.js
+```
+
+### `tailwind.css`
+
+Tailwind CSS的配置文件，定义了项目的样式和主题。
+
+```css
+@import 'tailwindcss';
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
+@plugin "flowbite-typography";
+@plugin "@tailwindcss/typography";
+/* 支持flowbite dark主题 */
+@custom-variant dark (&:where(.dark, .dark *));
+```
+
+### `__document.html`
+
+- 基础的页面模板文件，定义所有页面共用的配置，占位符`{{ __page }}`用于替换页面的HTML内容。
+- 如果需要增加新的全局样式，先在`__assets/css`目录下创建新的css文件。
+- 如果需要增加新的全局脚本或是引用外部库文件，比如`jQuery`等，先在`__assets/js`目录下创建新的js文件。
+- 使用flowbite4,css样式文件使用命令构建，只需要在`__document.html`只需要引入`tailwind.min.css`和`flowbite.min.js`即可。
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="{{ $global.theme }}" {{ $global.theme }}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="{{ description }}" />
+    <meta name="keywords" content="{{ keywords }}" />
+    <meta name="og:url" content="{{ url }}" />
+    <meta name="og:title" content="{{ title }}" />
+    <meta name="og:image" content="{{ image }}" />
     <title>{{ title }}</title>
     <!-- css样式 -->
     <link href="@assets/css/tailwind.min.css" rel="stylesheet" />
     <link href="@assets/css/flowbite.min.css" rel="stylesheet" />
   </head>
-
-  {{ __page }}
-
-  <!-- JAVASCRIPTS -->
-  <script src="@assets/js/jquery.min.js"></script>
-  <script src="@assets/js/flowbite.min.js"></script>
+  <body class="relative bg-transparent">
+    {{ __page }}
+    <!-- JAVASCRIPTS -->
+    <script src="@assets/js/flowbite.min.js"></script>
+  </body>
 </html>
 ```
 
-### 2. \_\_data.json
+### template.json(模板配置文件)
 
-所有页面/组件共享的数据配置文件：
+- 模板配置文件增加语言配置，增加支持的语言列表，配置默认的语言。
+- 配置构建前执行的命令，使用`pnpx @tailwindcss/cli`来构建tailwindcss。
+
+```json
+{
+  "locales": [
+    { "label": "English", "value": "en-us", "default": true },
+    { "label": "简体中文", "value": "zh-cn" }
+  ],
+  "scripts": {
+    "before:build": [
+      {
+        "type": "command",
+        "content": "pnpx @tailwindcss/cli -i ./__assets/css/tailwind.css -o ./__assets/css/tailwind.min.css --minify"
+      }
+    ]
+  }
+}
+```
+
+### `__data.json`(模板全局数据配置文件):
+
+- 配置信息在所有页面/组件共享。
+- `theme`: 主题配置，支持`light`和`dark`两种主题。
+- 在模板中使用`{{ $global.theme }}`来获取主题配置。
 
 ```json
 {
   "title": "应用名称",
   "description": "应用描述",
-  "globalSettings": {
-    "theme": "light",
-    "language": "zh-CN"
-  }
+  "theme": "light",
+  "language": "zh-CN"
 }
 ```
 
-#### 页面/组件数据配置文件 (.json)
+### 页面/组件数据配置文件 (.json)
 
-- SUI引擎渲染使用了SSR技术，在服务器端渲染过程，会读取数据配置文件``page_name.json`或是`component_name.json`获取渲染数据数据
+- SUI引擎渲染使用了SSR技术，在服务器端渲染过程，会读取组件或是页面数据配置文件`page_name.json`或是`component_name.json`获取渲染数据数据
 - 动态数据使用`$key:@functionName`的方式来调用后端脚本`.backend.ts`中的函数。
 - 静态数据可以直接在JSON文件中定义。
   ```json
   {
     "$catalog": "@Catalog",
     "name": "John Doe"
+    //其它静态数据
   }
   ```
 
-## 页面/组件开发规范
+### 多语言文件配置`__locales/localeID/pageID.yml`与`__locales/localeID/__global.yml`
+
+- 多语言文件配置，用于配置页面/组件的多语言支持，每个页面/组件可以有自己的多语言配置文件，也可以有全局的多语言配置文件。
+- 在messages属性中定义需要翻译的文本信息，key为需要翻译的文本，value为翻译后的文本。
+- key是在页面模板中使用`s:trans`属性来引用的,或是使用`::`来引用的。
+
+```yml
+messages:
+  Hello: Hello
+  Welcome: Welcome
+  Name: Name
+```
+
+### `.html`页面/组件开发模板语法规范
 
 ### 1. 命名规范
 
@@ -410,6 +520,21 @@ function ApiDeleteTodo(id: string) {
 ### 2. 模板语法规范
 
 ### 3. HTML 模板 (.html)
+
+- 模板渲染过程使用一个包含多种数据的复杂对象，数据来源如下：
+
+  - **`$payload`**: `request.Payload` - 用户请求的数据
+  - **`$query`**: `request.Query` - 请求查询参数
+  - **`$param`**: `request.Params` - 请求路径参数
+  - **`$cookie`**: `cookies` - Cookie 数据
+  - **`$url`**: `request.URL` - 请求地址
+  - **`$theme`**: `cookies["color-theme"]` - 用户通过 Cookie 设置的前端主题
+  - **`$locale`**: `cookies["locale"]` - 用户通过 Cookie 设置的语言
+  - **`$timezone`**: `"+08:00"` - 后端服务器系统时区
+  - **`$direction`**: `'ltr'` - 默认语言方向
+  - **`$global`**: 从 `__data.json` 文件定义的变量
+  - **模板关联配置文件**: 模板对应的 `.json` 配置文件中的变量
+  - **模板自定义变量**: 页面通过 `Set` 指令配置的变量
 
 - sui引擎自定义属性说明：
 
@@ -425,6 +550,7 @@ function ApiDeleteTodo(id: string) {
   - `s:json-`：前缀，传递定复杂类型数据给事件，建议使用`json:`，例如，`<button s:on-click="handleClick" s:json-data="{{ { "name": "value"} }}">点击</button>`。
   - `s:render`：动态渲染区域，例如，`<div s:render="content-area"> {{ data }} </div>`。
   - `s:attr-`：前缀，针对于布尔属性的控件，表达式返回真设置对应的值，例如，`<input type="checkbox" s:attr-checked="{{ isChecked }}">` => `<input type="checkbox" checked>` 或是 `<input type="checkbox" />`。
+  - `...key`：前缀，解构复杂的配置属性，例如，`<div is="/pet/" ...key> </div>`
   - `s:raw=true`：不转义HTML特殊字符，不正确的使用会导致安全风险（如 XSS 攻击），例如，`<div s:raw="true">{{ rawContent }}</div>`。
   - `data:`：前缀，传递数据给组件，例如，`<div is="/pet/" data:id="{{ pet.id }}"> </div>`。
   - `json:`：前缀，传递JSON数据给组件，例如，`<div is="/pet/" json:obj="{{ { "name": "value"} }}"> </div>`。
@@ -445,12 +571,11 @@ function ApiDeleteTodo(id: string) {
 - 使用 `s:for` 遍历数据列表，例如，`<div s:for="items" s:for-item="pet"> <span>{{ pet.name }}</span> </div>`。
 - 使用 `s:if`,`s:elif`,`s:else` 进行条件渲染，例如，`<span s:if="pet.name">{{ pet.name }}</span>`。
 - 文件系统路由定义网页路由。例如，`index.html` 映射到 `/`，`about.html` 映射到 `/about`。
-- 动态路由用 `[id]` 表示，例如，`/pet/1`，`/pet/2` 是 `/[id]`。
 - 使用 `s:on-click` 进行事件绑定，例如，`<button s:on-cli ck="handleClick" s:data-id="{{ pet.id }}">点击</button>`。
 - 在处理布尔类型属性时，比如 `disabled`, `checked`, `selected`,`required`。如果使用到表达式时，需要使用`s:attr-`进行修饰，
   示例：`<input type="checkbox" s:attr-checked="{{True(isCheck)}}" />`，`isCheck == true` 会渲染成`<input type="checkbox" checked />`。
   示例：`<input type="checkbox" s:attr-checked="{{True(isCheck)}}" />`，`isCheck == false`会渲染成`<input type="checkbox"/>`。
-- 模板引用使用 `is` 属性，例如，`<div is="/pet/"></div>`。
+- 模板引用其它组件使用 `is` 属性，例如，`<div is="/pet/"></div>`。
 - 模板可以使用`slot`来渲染子组件的内容
   子组件：
   ```html
@@ -504,6 +629,36 @@ function ApiDeleteTodo(id: string) {
     <slot name="content">默认内容</slot>
   </div>
 </div>
+```
+
+#### 属性展开：
+
+在页面/组件的json配置文件中，定义一个obj对象，包含html属性，值为一个对象，对象的key为属性名，value为属性值，在页面上使用`...key`来展开属性。
+
+需要注意对象名不要使用驼峰命名，html属性不支持驼峰命名，需要使用连字符命名。
+
+```json
+{
+  "objattr": {
+    "class": "px-3",
+    "style": "font-size: 14px;",
+    "id": "myId"
+  }
+}
+```
+
+在模板中使用`...key`来展开属性，例如：
+
+```html
+<container>
+  <div ...objattr></div>
+</container>
+```
+
+展开后的html为：
+
+```html
+<div style="font-size: 14px;" id="myId" class="px-3"></div>
 ```
 
 #### 模板渲染安全规则
@@ -562,19 +717,6 @@ function ApiDeleteTodo(id: string) {
 - 脚本文件的内容为一个TypeScript模块,只需要在ts文件中增加业务处理逻辑，引擎会自动导出组件并注入前端页面。
 - 页面关联的脚本文件会在页面加载时立即执行，组件关联的脚本文件会在文档加载完成后执行。
 - 在前端可以使用`$Backend`来调用后端脚本`backend.ts`中的函数，但是所有在后端暴露出来的函数需要以默认前端`Api`进行修饰。
-- 模板初始化时会自动注入以下功能：
-  - `__sui_data`是一个页面渲染完成后注入全局变量，包含了页面的所有数据。
-  - `root`：组件的根HTML元素。
-  - `store`：Yao框架提供的存储对象，用于管理组件状态。
-  - `state`：状态管理对象，用于设置和获取组件状态。
-  - `props`：属性管理对象，用于读取组件的属性。
-  - `$root`：基于`__Query`的根节点查询对象。
-  - `find(selector)`：查询匹配选择器的第一个元素，返回`__Query`对象。
-  - `query(selector)`：查询匹配选择器的第一个DOM元素。
-  - `queryAll(selector)`：查询所有匹配选择器的DOM元素。
-  - `render(name, data, option)`：根据模板名称和数据在服务器端渲染内容并更新前端页面局部内容。
-  - `emit(name, data)`：触发指定名称的自定义事件，并传递数据。
-  - `once`：可选的初始化钩子函数，仅在组件首次初始化时执行。
 
 ```ts
 import { Component, EventData, EventDetail, __m } from '@yao/sui';
@@ -595,7 +737,6 @@ self.handleClick = async (
   self.store.SetJSON('key', result);
   // 调用函数__m翻译文本
   console.log(__m('welcome_message')); // Translates 'welcome_message' based on locale
-
   // 重新渲染
   await self.render('content-area', { data: result });
 };
@@ -618,7 +759,6 @@ self.process = function () {
 self.update = function () {
   //调用blog.html对象的blog.backend.ts中的ApiGetArticles方法
   const articles = await $Backend('/blog').Call('GetArticles', category, 1);
-  // Render articles
   // render是一个异步函数，需要使用await来修饰
   await self.render('articles', { articles });
 };
@@ -631,12 +771,65 @@ self.watch = {
 
 self.once = async function () {
   // 组件初始化逻辑
+  console.log('Component initialized');
 };
 
 function initStat() {
   // 页面初始化逻辑
+  console.log('Page initialized');
 }
 document.addEventListener('DOMContentLoaded', initStat);
+```
+
+### 前端常用的操作：
+
+- 页面/组件初始化时会在前端脚本`.ts`中自动注入以下功能：
+
+  - `__sui_data`是一个页面渲染完成后注入全局变量，包含了页面的所有数据。
+  - `self.root`：返回组件的DOM节点。
+  - `self.store`：Yao框架提供的存储对象，用于管理组件状态。
+  - `self.state`：状态管理对象，用于设置和获取组件状态。
+  - `self.props`：属性管理对象，用于读取组件的属性。
+  - `self.$root`：返回此组件的`SUIQuery`实例。
+  - `self.find(selector)`：在组件内查询匹配选择器的第一个元素，返回`SUIQuery`对象。
+  - `self.query(selector)`：在组件内查询匹配选择器的第一个DOM元素。
+  - `self.queryAll(selector)`：在组件内查询所有匹配选择器的DOM元素。
+  - `self.render(name, data, option)`：根据模板名称和数据在服务器端渲染内容并更新前端页面局部内容。
+  - `self.emit(name, data)`：触发指定名称的自定义事件，并传递数据。
+  - `self.once`：可选的初始化钩子函数，仅在组件首次初始化时执行。
+
+- 特别注意：
+
+  - 如果是page页面，self会引用全局对象的window。
+  - 如果是组件，self会引用当前组件实例。
+
+- 常见操作：
+
+  - `self.store.Set("action", type);` 设置组件状态。
+  - `self.store.Get("action");` 获取组件状态。
+  - `self.store.SetJSON("key", value);` 设置复杂对象。
+  - `self.store.GetJSON("key");` 获取复杂对象。
+  - `self.query("[input-element]")` 在组件内选择Dom元素
+  - `self.find("[multiple-values]")?.hasClass("hidden")` 查找组件是否有css class
+
+- 属性读取：
+
+  - `self.props.Get("mode")` 读取组件属性
+
+- 状态设置:
+
+  - `$$(self.root.querySelector(".flowbite-edit-input")).state.Set("value", label);` 在页面上找到组件并设置状态，触发对应组件`watch`中的函数。
+
+- `$$(selector)` 在页面上查找组件并返回实例，selector是html元素或是css选择器。
+  - `$$(dropdown).store.GetJSON("items")` 操作其它组件
+
+## 多语言切换：
+
+通过设置cookie来切换语言，cookie的名称为`locale`，值为语言代码，例如：`zh-CN`。
+
+```ts
+yao.SetCookie('locale', 'zh-CN');
+window.location.reload();
 ```
 
 ## SUI模板组件状态管理：
@@ -793,7 +986,9 @@ self.emitEvent = () => {
 - 后端脚本中的函数不要使用export导出，因为后端脚本是在node环境中执行的，不能使用export导出。
 - 每个页面/组件可以包含一个后端脚本文件,后缀名是`.backend.ts`，用于实现页面/组件在服务器端的逻辑。
 - 脚本文件的内容为一个TypeScript模块，只需要在ts文件中增加业务处理逻辑，引擎在页面渲染过程中自动调用相关函数。
-- 当一个组件被别的组件或是页面调用时，组件的函数`BeforeRender`才会生效,接收父组件的属性传递值，函数返回处理过的数据并且保存在当前组件的属性`json:__component_data`中，前端脚本调用`const props = self.store.GetData()`可读取。
+- 对于页面模板，不要实施函数`BeforeRender`。
+- 对于组件模板，可选择实现函数`BeforeRender`，用于在组件渲染前处理数据。
+- 函数`BeforeRender`接收父组件的属性传递值，函数返回处理过的属性数据，在属性配置上使用`{{ }}` 接收新的属性配置。
 - 前后端脚本常量数据共享，在脚本`.backend.ts`中定义一个常量`Constants`,在前端脚本`.ts`中可以使用`self.Constants`来读取。
 
 关联的json配置：
@@ -892,8 +1087,8 @@ const Constants = {
 - 模板中使用`data:`或是`s:data-`传递数据给前端，在前端中使用`store.GetData()`获取数据，在事件处理函数中使用`data['id']`获取数据。
 - 模板中使用`json:`或是`s:json-`传递数据给前端，在前端中使用`store.GetJSON()`获取数据，在事件处理函数中使用`data['id']`获取json数据。
 - 在后端脚本`.backend.ts`中定义一个常量`Constants`,在前端脚本`.ts`中可以使用`self.Constants`来读取。
-- 在后端组件或是页面json配置文件`.json`中配置的数据，在前端全局变量`__sui_data`中读取。
-- 在后端全局json配置文件`__data.json`中配置的数据，在前端全局变量`__sui_data`中读取。
+- 在后端组件或是页面数据配置文件`.json`中配置的数据，在前端全局变量`__sui_data`中读取。
+- 在后端全局数据配置文件`__data.json`中配置的数据，在前端全局变量`__sui_data`中读取，在模板中使用`{{ $global.xxx }}`来访问。
 - 前端调用后端API：
   - 使用 `$Backend` 调用后端脚本中的函数，例如：`const result = await $Backend('/path').Call('Method', id);`。
   - 后端脚本中的函数需要以 `Api` 开头，例如：`function ApiMethod(id) { ... }`。
@@ -916,7 +1111,7 @@ const Constants = {
         // 内容页面路由（带命名参数）
         { "^\\/category\\/(.*)\\/(.*)$": "/$2/$1.sui" },
         { "^\\/product\\/(.*)$": "/detail/[pid].sui" },
-        { "^\\/(.*)\\/(.*)$": "/[$1]/[id].sui" },
+        { "^\\/(.*)\\/(.*)$": "/[$1]/[pid].sui" },
         // 默认路由规则（必须放在最后）
         { "^\\/(.*)$": "/$1.sui" } // 为所有路径添加.sui后缀
       ]
@@ -949,17 +1144,17 @@ const Constants = {
   **混合使用，复杂场景**：
 
   ```json
-  { "^\\/(.*)\\/(.*)$": "/[$1]/[id].sui" }
+  { "^\\/(.*)\\/(.*)$": "/[$1]/[pid].sui" }
   ```
 
   在路由中同时使用位置参数和命名参数，前一部分捕获URL参数并作为位置参数，后面的部分作为命名参数。
 
-  - 先进行文件路径的替换：访问`/user/123` → 重定向到`public/[user]/[id].sui`
+  - 先进行文件路径的替换：访问`/user/123` → 重定向到`public/[user]/[pid].sui`
   - 再进行参数的映射，参数存入：
     ```js
     request.params = {
       user: 'user', // 来自$1
-      id: '123' // 来自$2
+      pid: '123' // 来自$2
     };
     ```
 
@@ -972,9 +1167,9 @@ const Constants = {
 | title       | string | 页面标题，对应 `<title />`                                                     | "页面标题"  |
 | guard       | string | 页面访问认证方式及认证失败跳转地址，支持 `bearer-jwt`、`cookie-jwt` 等         | ""          |
 | cacheStore  | string | 页面缓存所需的 store id，需在 stores 配置，常用于 Redis 等 ,配置为空会禁用缓存 | ""          |
-| cache       | number | 页面模板缓存时间（秒），配置为0会禁用页面page缓存                              | 12          |
+| cache       | number | 页面模板缓存时间（秒），配置为cache=0会禁用页面page缓存                        | 12          |
 | root        | string | 页面请求前缀，相对于 public 根目录，通常无需配置                               | ""          |
-| dataCache   | number | 页面请求数据缓存时间（秒），配置为0会禁用data缓存                              | 0           |
+| dataCache   | number | 页面请求数据缓存时间（秒），配置为dataCache=0会禁用data缓存                    | 0           |
 | description | string | 页面描述，meta[name=description]                                               | ""          |
 | seo         | object | SEO 相关配置，会自动附加到页面的meta节点，见下方详细说明                       | {...}       |
 | api         | object | 后端`.backend.ts`脚本中 API函数 配置，见下方详细说明                           | {...}       |
@@ -1000,13 +1195,13 @@ const Constants = {
 
 #### SEO 配置（seo）
 
-| 字段        | 说明                                    |
-| ----------- | --------------------------------------- |
-| title       | 附加上html页面meta[property='og:title'] |
-| description | 附加上html页面meta[name=description]    |
-| keywords    | 附加上html页面meta[name=keywords]       |
-| image       | 附加上html页面meta[property='og:image'] |
-| url         | 附加上html页面meta[property='og:url']   |
+| 字段        | 说明                                  |
+| ----------- | ------------------------------------- |
+| title       | 替换html页面meta[property='og:title'] |
+| description | 替换html页面meta[name=description]    |
+| keywords    | 替换html页面meta[name=keywords]       |
+| image       | 替换html页面meta[property='og:image'] |
+| url         | 替换html页面meta[property='og:url']   |
 
 #### API 配置（api）
 
@@ -1029,11 +1224,11 @@ const Constants = {
   "description": "", //meta[name=description]
   "seo": {
     //这里的配置会在附加到页面的meta节点
-    "title": "标题", //meta[property='og:title']
-    "description": "长描述", //meta[name=description]
-    "keywords": "", //关键字meta[name=keywords]
-    "image": "", //图片meta[property='og:image']
-    "url": "" //访问地址meta[property='og:url']
+    "title": "标题", //替换[property='og:title']
+    "description": "长描述", //替换meta[name=description]
+    "keywords": "", //替换meta[name=keywords]
+    "image": "", //替换meta[property='og:image']
+    "url": "" //替换meta[property='og:url']
   },
   "api": {
     //后端脚本中每一个Api方法可以设置单独的guard配置
@@ -1046,6 +1241,44 @@ const Constants = {
 }
 ```
 
+## 主题切换
+
+- 支持`light`、`dark`、`system`三种主题。
+- 通过`cookie=color-theme`可以把主题保存到cookie中
+- 后端脚本中使用`request.$theme`来获取。
+
+在前端脚本可以使用以下代码来切换主题：
+
+```ts
+type Theme = 'light' | 'dark' | 'system';
+
+function getTheme() {
+  const yao = new Yao();
+  const savedTheme = yao.Cookie('color-theme') as Theme | null;
+  return savedTheme === 'dark' ||
+    (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ? 'dark'
+    : 'light';
+}
+
+function setTheme(event: Event, data: EventData, detail: EventDetail) {
+  const { theme } = data;
+  const yao = new Yao();
+  const html = document.documentElement;
+  // Remove existing theme classes
+  html.classList.remove('light', 'dark');
+  if (theme === 'system') {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.classList.add('dark');
+    }
+    yao.SetCookie('color-theme', 'system');
+    return;
+  }
+  html.classList.add(theme);
+  yao.SetCookie('color-theme', theme);
+}
+```
+
 ## 构建与部署：
 
 - 使用 `yao sui build web default` 命令构建前端模板中所有的页面,在开发阶段可以使用`-D`参数使用调试模板，参数会禁用缓存。使用`-d ::{}`传入会话信息。
@@ -1053,170 +1286,186 @@ const Constants = {
 - 使用 `yao sui trans web default` 命令生成多语言文件
 - 使用 `yao start` 命令启动本地开发服务器
 
-## sui项目中的类型定义
+## 开发调试
+
+- 页面模板调试，在页面中使用`{{ $env }}`在页面中输出页面渲染使用的变量`<div>{{ $env }}</div>`。
+- 使用 `yao sui build` 使用`-D`参数参数会禁用缓存，并且生成的模板文件不会进行压缩。
+- 请求 URL 中添加参数 `?__debug=true`,页面加载时，浏览器控制台会自动的输出全局变量`__sui_data`。
+
+## `sui.d.ts`(sui项目中的类型定义):
 
 ```ts
+// TypeScript声明：YAO Pure JavaScript SDK
+// 作者: Max <max@iqka.com>
+// 维护者: https://yaoapps.com
+
+/** HTTP请求接口 */
 export interface Request {
-  method: string;
-  asset_root?: string;
-  referer?: string;
-  payload?: Record<string, any>;
-  query?: Record<string, string[]>;
-  params?: Record<string, string>;
-  headers?: Record<string, string[]>;
-  body?: any;
-  url?: URL;
-  sid?: string;
-  theme?: string;
-  locale?: string;
+  method: string; // 请求方法，如"GET"或"POST"
+  asset_root?: string; // 资产访问根URL，可选
+  referer?: string; // 请求来源URL
+  payload?: Record<string, any>; // 请求负载数据
+  query?: Record<string, string[]>; // URL查询参数
+  params?: Record<string, string>; // URL路径参数
+  headers?: Record<string, string[]>; // 请求头
+  body?: any; // 请求体
+  url?: URL; // 请求URL详情
+  sid?: string; // 会话ID，可选
+  theme?: string; // 主题偏好，可选
+  locale?: string; // 区域设置，可选
 }
 
+/** 请求URL结构 */
 export interface URL {
-  host?: string;
-  domain?: string;
-  path?: string;
-  scheme?: string;
-  url?: string;
-}
-// Global data and utilities
-declare const __sui_data: Record<string, any>;
-declare function __m(message: string): string;
-declare const arguments: any[];
-
-// Headers for requests
-type Headers = Record<string, string | string[]>;
-
-// Locale configuration
-interface Locale {
-  name?: string;
-  keys?: Record<string, string>;
-  messages?: Record<string, string>;
-  direction?: 'ltr' | 'rtl';
-  timezone?: string;
+  host?: string; // 主机，如"www.example.com"
+  domain?: string; // 域名，如"example.com"
+  path?: string; // 路径，如"/path/to/route"
+  scheme?: string; // 协议，如"http"或"https"
+  url?: string; // 完整URL
 }
 
-// UI Component
-type Component = {
-  root: HTMLElement;
-  state: { Set: (key: string, value?: any) => void };
-  store: ComponentStore;
-  $root: SUIQuery; //注意与root的区别
-  find: (selector: string | HTMLElement) => SUIQuery | null;
-  query: (selector: string) => HTMLElement | null;
-  queryAll: (selector: string) => NodeListOf<Element> | null;
-  emit: (name: string, detail?: EventData) => void;
-  render: (
-    name: string,
-    data: Record<string, any>,
-    option?: RenderOption
-  ) => Promise<string>;
-  once?: () => void;
-  watch?: Record<string, (value?: any) => void>;
-  Constants?: Record<string, any>;
+/** 服务器获取的数据 */
+export declare const __sui_data: Record<string, any>;
+
+/** 本地化消息和设置 */
+export declare function __m(message: string): string;
+
+// @ts-ignore
+export declare const arguments: any[] = [];
+
+/** 请求头类型 */
+export type Headers = Record<string, string | string[]>;
+
+/** 本地化设置接口 */
+export interface Locale {
+  name?: string; // 区域名称，如"en-US"
+  keys?: Record<string, string>; // 翻译键值对
+  messages?: Record<string, string>; // 消息模板
+  direction?: "ltr" | "rtl"; // 文字方向
+  timezone?: string; // 时区，如"+05:30"
+}
+
+/** UI组件类型 */
+export declare type Component = {
+  root: HTMLElement; // 组件根元素
+  state: ComponentState; // 状态管理
+  store: ComponentStore; // 状态存储
+  $root: SUIQuery; // DOM查询对象
+  find: (selector: string | HTMLElement) => SUIQuery | null; // 查找元素
+  query: (selector: string) => HTMLElement | null; // 查询单个元素
+  queryAll: (selector: string) => NodeListOf<Element> | null; // 查询所有元素
+  emit: (name: string, detail?: EventData) => void; // 触发事件
+  render: (name: string, data: Record<string, any>, option?: RenderOption) => Promise<string>; // 渲染视图
+  once?: () => void; // 一次性生命周期方法
+  watch?: Record<string, (value?: any) => void>; // 状态监听
+  Constants?: Record<string, any>; // 组件常量
   [key: string]: any;
 };
 
-// Render options
-type RenderOption = {
-  target?: HTMLElement;
-  showLoader?: HTMLElement | string | boolean;
-  replace?: boolean;
-  withPageData?: boolean;
+/** 渲染选项 */
+export declare type RenderOption = {
+  target?: HTMLElement; // 渲染目标容器
+  showLoader?: HTMLElement | string | boolean; // 显示加载器
+  replace?: boolean; // 是否替换现有内容
+  withPageData?: boolean; // 是否包含页面数据
 };
 
-// Component store
-type ComponentStore = {
-  Get: (key: string) => string;
-  Set: (key: string, value: string) => void;
-  GetJSON: (key: string) => any;
-  SetJSON: (key: string, value: any) => void;
-  GetData: () => Record<string, any>;
+/** 组件状态管理 */
+export declare type ComponentState = {
+  Set: (key: string, value?: any) => void; // 设置状态
 };
 
-// Component utilities
-declare const $$: (selector: HTMLElement | string) => Component;
-declare function $Render(
-  component: Component | string,
-  option?: RenderOption
-): SUIRender;
-declare function $Store(selector: HTMLElement | string): ComponentStore | null;
-declare function $Query(selector: string | HTMLElement): SUIQuery;
-
-// Event data
-type EventDetail<T = HTMLElement> = {
-  rootElement: HTMLElement;
-  targetElement: T;
+/** 组件存储管理 */
+export declare type ComponentStore = {
+  Get: (key: string) => string; // 获取值
+  Set: (key: string, value: string) => void; // 设置值
+  GetJSON: (key: string) => any; // 获取JSON数据
+  SetJSON: (key: string, value: any) => void; // 设置JSON数据
+  GetData: () => Record<string, any>; // 获取所有数据
 };
-type EventData = Record<string, any>;
-type State = { target: HTMLElement; stopPropagation(): void };
 
-// SUIQuery for DOM manipulation
-class SUIQuery {
-  selector: string | Element;
-  element: Element | null;
-  elements: NodeListOf<Element> | null;
+/** 获取组件 */
+export declare const $$: (selector: HTMLElement | string) => Component;
+
+/** 事件详情 */
+export declare type EventDetail<T = HTMLElement> = {
+  rootElement: HTMLElement; // 组件根元素
+  targetElement: T; // 事件目标元素
+};
+
+/** 事件数据 */
+export declare type EventData = Record<string, any>;
+
+/** 事件状态 */
+export declare type State = {
+  target: HTMLElement; // 目标元素
+  stopPropagation(): void; // 停止事件传播
+};
+
+/** 创建渲染实例 */
+export declare function $Render(component: Component | string, option?: RenderOption): SUIRender;
+
+/** 渲染操作类 */
+export declare class SUIRender {
+  constructor(comp: Component | string, option?: RenderOption);
+  Exec(name: string, data: Record<string, any>): Promise<string>; // 执行渲染
+}
+
+/** 获取存储 */
+export declare function $Store(selector: HTMLElement | string): ComponentStore | null;
+
+/** DOM查询 */
+export declare function $Query(selector: string | HTMLElement): SUIQuery;
+
+/** DOM操作类 */
+export declare class SUIQuery {
+  selector: string | Element; // 查询选择器或元素
+  element: Element | null; // 当前元素
+  elements: NodeListOf<Element> | null; // 匹配元素集合
   constructor(selector: string | Element);
-  each(callback: (element: SUIQuery, index: number) => void): void;
-  elm(): Element | null;
-  elms(): NodeListOf<Element> | null;
-  find(selector: string): SUIQuery | null;
-  closest(selector: string): SUIQuery | null;
-  on(event: string, callback: (event: Event) => void): SUIQuery;
-  $$(): Component | null;
-  store(): ComponentStore | null;
-  attr(name: string): string | null;
-  data(name: string): string | null;
-  json(name: string): any | null;
-  hasClass(className: string): boolean;
-  prop(name: string): any | null;
-  removeClass(className: string | string[]): SUIQuery;
-  toggleClass(className: string | string[]): SUIQuery;
-  addClass(className: string | string[]): SUIQuery;
-  html(html?: string): SUIQuery | string;
+  each(callback: (element: SUIQuery, index: number) => void): void; // 遍历元素
+  elm(): Element | null; // 获取当前元素
+  elms(): NodeListOf<Element> | null; // 获取所有元素
+  find(selector: string): SUIQuery | null; // 查找子元素
+  closest(selector: string): SUIQuery | null; // 查找最近祖先
+  on(event: string, callback: (event: Event) => void): SUIQuery; // 添加事件监听
+  $$(): Component | null; // 获取关联组件
+  store(): ComponentStore | null; // 获取存储
+  attr(name: string): string | null; // 获取属性
+  data(name: string): string | null; // 获取data属性
+  json(name: string): any | null; // 获取JSON数据
+  hasClass(className: string): boolean; // 检查类
+  prop(name: string): any | null; // 获取属性值
+  removeClass(className: string | string[]): SUIQuery; // 移除类
+  toggleClass(className: string | string[]): SUIQuery; // 切换类
+  addClass(className: string | string[]): SUIQuery; // 添加类
+  html(html?: string): SUIQuery | string; // 获取或设置HTML
 }
 
-// Backend API handler
-declare function $Backend<T = any>(
-  route?: string,
-  headers?: Headers
-): SUIBackend<T>;
-class SUIBackend<T = any> {
+/** 创建后端请求 */
+export declare function $Backend<T = any>(route?: string, headers?: Headers): SUIBackend<T>;
+
+/** 后端API调用类 */
+export declare class SUIBackend<T = any> {
   constructor(route?: string, headers?: Headers);
-  Call(method: string, ...args: any): Promise<T>;
+  Call(method: string, ...args: any): Promise<T>; // 调用API
 }
 
-// YAO API client
-class Yao {
+/** YAO API交互类 */
+export declare class Yao {
   constructor(host?: string);
-  Get(path: string, params?: object, headers?: Headers): Promise<any>;
-  Post(
-    path: string,
-    data?: object,
-    params?: object,
-    headers?: Headers
-  ): Promise<any>;
-  Download(
-    path: string,
-    params: object,
-    savefile: string,
-    headers?: Headers
-  ): Promise<void>;
-  Fetch(
-    method: string,
-    path: string,
-    params?: object,
-    data?: object,
-    headers?: Headers,
-    isblob?: boolean
-  ): Promise<any>;
-  Token(): string;
-  Cookie(cookieName: string): string | null;
-  SetCookie(cookieName: string, cookieValue: string, expireDays?: number): void;
-  DeleteCookie(cookieName: string): void;
+  Get(path: string, params?: object, headers?: Headers): Promise<any>; // GET请求
+  Post(path: string, data?: object, params?: object, headers?: Headers): Promise<any>; // POST请求
+  Download(path: string, params: object, savefile: string, headers?: Headers): Promise<void>; // 下载文件
+  Fetch(method: string, path: string, params?: object, data?: object, headers?: Headers, isblob?: boolean): Promise<any>; // 通用请求
+  Token(): string; // 获取token
+  Cookie(cookieName: string): string | null; // 获取cookie
+  SetCookie(cookieName: string, cookieValue: string, expireDays?: number): void; // 设置cookie
+  DeleteCookie(cookieName: string): void; // 删除cookie
 }
 
-// Agent messaging
-interface AgentMessage {
+/** 代理消息 */
+export interface AgentMessage {
   text: string;
   type?: string;
   done?: boolean;
@@ -1232,33 +1481,39 @@ interface AgentMessage {
   previous_assistant_id?: string;
 }
 
-type AgentDoneData = AgentMessage[];
-interface MessageHandler {
+/** 完成事件数据 */
+export type AgentDoneData = AgentMessage[];
+
+/** 消息处理器 */
+export interface MessageHandler {
   (message: AgentMessage): void;
 }
-interface DoneHandler {
+
+/** 完成处理器 */
+export interface DoneHandler {
   (messages: AgentDoneData): void;
 }
-type AgentEvent = 'message' | 'done';
-interface EventHandlers {
+
+/** 代理事件类型 */
+export type AgentEvent = "message" | "done";
+
+/** 事件处理器 */
+export interface EventHandlers {
   message?: MessageHandler;
   done?: DoneHandler;
 }
 
-// Agent class
-class Agent {
+/** 代理类 */
+export declare class Agent {
   constructor(assistant_id: string, option: AgentOption);
-  private makeChatID(): string;
-  On<E extends AgentEvent>(
-    event: E,
-    handler: E extends 'message' ? MessageHandler : DoneHandler
-  ): Agent;
-  Cancel(): void;
-  Call(input: AgentInput, ...args: any[]): Promise<any>;
+  private makeChatID(): string; // 生成聊天ID
+  On<E extends AgentEvent>(event: E, handler: E extends "message" ? MessageHandler : DoneHandler): Agent; // 注册事件
+  Cancel(): void; // 取消代理
+  Call(input: AgentInput, ...args: any[]): Promise<any>; // 调用代理
 }
 
-// Agent input and options
-interface AgentAttachment {
+/** 附件信息 */
+export interface AgentAttachment {
   name: string;
   url: string;
   type: string;
@@ -1271,9 +1526,11 @@ interface AgentAttachment {
   description?: string;
 }
 
-type AgentInput = string | { text: string; attachments?: AgentAttachment[] };
+/** 代理输入类型 */
+export type AgentInput = string | { text: string; attachments?: AgentAttachment[] };
 
-interface AgentOption {
+/** 代理初始化选项 */
+export interface AgentOption {
   host?: string;
   token: string;
   silent?: boolean | string | number;
