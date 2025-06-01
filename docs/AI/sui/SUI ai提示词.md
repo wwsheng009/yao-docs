@@ -877,11 +877,17 @@ messages:
   ```html
   <div s:trans>需要翻译的文本</div>
   ```
-- 使用 `::` 修饰符标记需要翻译的变量：
+- 使用 `::` 修饰符标记需要翻译的变量或是属性：
+
   ```html
+  <!-- 内容翻译 -->
   <div>{{ "::hello world" }}</div>
+
+  <!-- 属性翻译 -->
+  <input type="email" id="email" placeholder="{{ '::Email' }}"
   ```
-- 在脚本中使用 `__m` 函数进行翻译：
+
+- 在前端脚本`.ts`与后端脚本`.backedn.ts`中都可以使用函数 `__m` 进行多语言翻译：
   ```ts
   console.log(__m('hello') + name);
   ```
