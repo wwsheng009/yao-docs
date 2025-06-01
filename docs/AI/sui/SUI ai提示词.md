@@ -80,11 +80,13 @@ data/
 
 页面与组件之间的关系：
 
+- 页面是一个完整的页面，包含页面`<body></body>`的结构、样式、逻辑等。
 - 页面可以包含多个组件，每个组件对应一个目录。
 - 组件可以包含子组件，子组件的目录结构与组件相同。
 
 页面与组件之间的区别：
 
+- 页面模板内容使用`<body></body>`包裹,而组件模板没有这个要求
 - 页面是一个完整的页面，包含页面的结构、样式、逻辑等，前端页面脚本与样式在全局生效，渲染过程中会替换`__doucment.html`文件中的`{{ __page }}` 点位符。
 - 组件是一个独立的组件，包含组件的结构、样式、逻辑等，在页面中使用`<div is=component xx="p1"></div>`引用组件，组件关联的后端脚本中可以使用`BeforeRender`函数接收调用参数，可以被不同的页面重复引用。
 - 页面可以包含多个组件，组件可以包含子组件。
@@ -152,37 +154,40 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
 
 ```html
 <!-- data/templates/default/todolist/todolist.html -->
-<div class="todolist-container">
-  <h2 s:trans>Todo List</h2>
-  <div class="todo-input">
-    <input
-      type="text"
-      id="todo-input"
-      placeholder="Add a new todo"
-      s:trans="placeholder"
-    />
-    <button s:on-click="addTodo" s:trans>Add</button>
-  </div>
-  <ul class="todo-list" s:render="todo-list">
-    <li
-      s:for="todos"
-      s:for-item="todo"
-      class="todo-item"
-      s:class="{{ todo.completed ? 'completed' : '' }}"
-    >
+<!-- 使用json:初始化后台数据 -->
+<body json:todos="{{ [] }}" data:count:"0">
+  <div class="todolist-container">
+    <h2 s:trans>Todo List</h2>
+    <div class="todo-input">
       <input
-        type="checkbox"
-        s:data-id="{{ todo.id }}"
-        s:attr-checked="todo.completed"
-        s:on-click="toggleTodo"
+        type="text"
+        id="todo-input"
+        placeholder="Add a new todo"
+        s:trans="placeholder"
       />
-      <span>{{ todo.text }}</span>
-      <button s:data-id="{{ todo.id }}" s:on-click="deleteTodo" s:trans>
-        Delete
-      </button>
-    </li>
-  </ul>
-</div>
+      <button s:on-click="addTodo" s:trans>Add</button>
+    </div>
+    <ul class="todo-list" s:render="todo-list">
+      <li
+        s:for="todos"
+        s:for-item="todo"
+        class="todo-item"
+        s:class="{{ todo.completed ? 'completed' : '' }}"
+      >
+        <input
+          type="checkbox"
+          s:data-id="{{ todo.id }}"
+          s:attr-checked="todo.completed"
+          s:on-click="toggleTodo"
+        />
+        <span>{{ todo.text }}</span>
+        <button s:data-id="{{ todo.id }}" s:on-click="deleteTodo" s:trans>
+          Delete
+        </button>
+      </li>
+    </ul>
+  </div>
+</body>
 ```
 
 ### todolist.css：
@@ -292,7 +297,6 @@ self.deleteTodo = async (
 
 // 在文档加载完成后，初始化组件的状态
 async function initState() {
-  self.store.SetJSON('todos', __sui_data['todos']);
   console.log('状态初始化');
 }
 document.addEventListener('DOMContentLoaded', initState);
@@ -417,7 +421,7 @@ Tailwind CSS的配置文件，定义了项目的样式和主题。
 
 ### `__document.html`
 
-- 基础的页面模板文件，定义所有页面共用的配置，占位符`{{ __page }}`用于替换页面的HTML内容。
+- 基础的页面模板文件，定义所有页面共用的配置，占位符`{{ __page }}`用于替换页面的HTML内容,页面模板需要使用`<body></body>`标签包裹。
 - 如果需要增加新的全局样式，先在`__assets/css`目录下创建新的css文件。
 - 如果需要增加新的全局脚本或是引用外部库文件，比如`jQuery`等，先在`__assets/js`目录下创建新的js文件。
 - 使用flowbite4,css样式文件使用命令构建，只需要在`__document.html`只需要引入`tailwind.min.css`和`flowbite.min.js`即可。
@@ -437,14 +441,24 @@ Tailwind CSS的配置文件，定义了项目的样式和主题。
     <!-- css样式 -->
     <link href="@assets/css/tailwind.min.css" rel="stylesheet" />
     <link href="@assets/css/flowbite.min.css" rel="stylesheet" />
-  </head>
-  <body class="relative bg-transparent">
-    {{ __page }}
-    <!-- JAVASCRIPTS -->
+    <!-- 其它外部库样式链接 -->
+    <!-- js脚本 -->
     <script src="@assets/js/flowbite.min.js"></script>
-  </body>
+    <!-- 其它的外部库链接 -->
+  </head>
+  {{ __page }}
 </html>
 ```
+
+`__page`是一个占位符，用于替换页面的HTML内容，它一般包含以下内容。
+
+```html
+<body>
+  <main class="relative bg-transparent">// 页面内容</main>
+</body>
+```
+
+````
 
 ### template.json(模板配置文件)
 
@@ -466,7 +480,7 @@ Tailwind CSS的配置文件，定义了项目的样式和主题。
     ]
   }
 }
-```
+````
 
 ### `__data.json`(模板全局数据配置文件):
 
@@ -521,6 +535,7 @@ messages:
 
 ### 3. HTML 模板 (.html)
 
+- 重要：模板也是一个 HTML 文件，使用标准的 HTML 语法，针对于page页面，需要使用`<body>`标签包裹整个页面内容。
 - 模板渲染过程使用一个包含多种数据的复杂对象，数据来源如下：
 
   - **`$payload`**: `request.Payload` - 用户请求的数据
@@ -786,41 +801,36 @@ document.addEventListener('DOMContentLoaded', initStat);
 - 页面/组件初始化时会在前端脚本`.ts`中自动注入以下功能：
 
   - `__sui_data`是一个页面渲染完成后注入全局变量，包含了页面的所有数据。
-  - `self.root`：返回组件的DOM节点。
-  - `self.store`：Yao框架提供的存储对象，用于管理组件状态。
+  - `self`: ,。
+    - 如果模板文件类型是page页面，self会引用全局对象的window。
+    - 如果模板文件类型是组件，self会引用组件Component的实例。
+  - `self.root`：返回HTMLDOM节点。
+    - 如果模板文件类型是组件则返回组件挂载所在html Dom对象。
+    - 如果模板文件类型是页面则返回`document.body`对象。
+  - `self.store`：Yao框架提供的存储对象，用于管理组件状态,操作html dom中的使用前缀`data:`与`json:`修饰的属性。
   - `self.state`：状态管理对象，用于设置和获取组件状态。
   - `self.props`：属性管理对象，用于读取组件的属性。
-  - `self.$root`：返回此组件的`SUIQuery`实例。
-  - `self.find(selector)`：在组件内查询匹配选择器的第一个元素，返回`SUIQuery`对象。
-  - `self.query(selector)`：在组件内查询匹配选择器的第一个DOM元素。
-  - `self.queryAll(selector)`：在组件内查询所有匹配选择器的DOM元素。
-  - `self.render(name, data, option)`：根据模板名称和数据在服务器端渲染内容并更新前端页面局部内容。
+  - `self.$root`：返回`SUIQuery`实例。
+  - `self.find(selector)`：在页面/组件内查询匹配选择器的第一个元素，返回`SUIQuery`对象。
+  - `self.query(selector)`：在页面/组件内查询匹配选择器的第一个DOM元素。
+  - `self.queryAll(selector)`：在页面/组件内查询所有匹配选择器的DOM元素。
+  - `self.render(name, data, option)`：根据`s:render`ID和数据在服务器端渲染内容并更新前端页面局部内容。
   - `self.emit(name, data)`：触发指定名称的自定义事件，并传递数据。
-  - `self.once`：可选的初始化钩子函数，仅在组件首次初始化时执行。
-
-- 特别注意：
-
-  - 如果是page页面，self会引用全局对象的window。
-  - 如果是组件，self会引用当前组件实例。
+  - `self.once`：可选的初始化钩子函数，仅在页面/组件首次初始化时执行。
 
 - 常见操作：
 
-  - `self.store.Set("action", type);` 设置组件状态。
-  - `self.store.Get("action");` 获取组件状态。
-  - `self.store.SetJSON("key", value);` 设置复杂对象。
-  - `self.store.GetJSON("key");` 获取复杂对象。
-  - `self.query("[input-element]")` 在组件内选择Dom元素
-  - `self.find("[multiple-values]")?.hasClass("hidden")` 查找组件是否有css class
+  - `self.query("[input-element]")` 在页面/组件内选择Dom元素
+  - `self.find("[multiple-values]")?.hasClass("hidden")` 查找页面/组件是否有css class
 
 - 属性读取：
 
-  - `self.props.Get("mode")` 读取组件属性
+  - `self.props.Get("mode")` 读取页面/组件属性
 
 - 状态设置:
 
   - `$$(self.root.querySelector(".flowbite-edit-input")).state.Set("value", label);` 在页面上找到组件并设置状态，触发对应组件`watch`中的函数。
-
-- `$$(selector)` 在页面上查找组件并返回实例，selector是html元素或是css选择器。
+  - `$$(selector)` 在页面上查找组件并返回实例，selector是html元素或是css选择器。
   - `$$(dropdown).store.GetJSON("items")` 操作其它组件
 
 ## 多语言切换：
@@ -832,22 +842,82 @@ yao.SetCookie('locale', 'zh-CN');
 window.location.reload();
 ```
 
+## 主题切换
+
+- 支持`light`、`dark`、`system`三种主题。
+- 通过`cookie=color-theme`可以把主题保存到cookie中
+- 后端脚本中使用`request.$theme`来获取。
+
+在前端脚本可以使用以下代码来切换主题：
+
+```ts
+type Theme = 'light' | 'dark' | 'system';
+
+function getTheme() {
+  const yao = new Yao();
+  const savedTheme = yao.Cookie('color-theme') as Theme | null;
+  return savedTheme === 'dark' ||
+    (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ? 'dark'
+    : 'light';
+}
+
+function setTheme(event: Event, data: EventData, detail: EventDetail) {
+  const { theme } = data;
+  const yao = new Yao();
+  const html = document.documentElement;
+  // Remove existing theme classes
+  html.classList.remove('light', 'dark');
+  if (theme === 'system') {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.classList.add('dark');
+    }
+    yao.SetCookie('color-theme', 'system');
+    return;
+  }
+  html.classList.add(theme);
+  yao.SetCookie('color-theme', theme);
+}
+```
+
 ## SUI模板组件状态管理：
 
 - 组件有两种状态管理方式：
+
   - `store`：用于管理组件自身状态，使用HTML自定义属性存储数据。
   - `state`：用于组件间通信，支持状态变化事件传播。
+
 - 使用 `store` 管理组件状态：
 
-  ```ts
-  //使用store来保存状态，
-  //注意Set方法只能用于保存非对象类型的对象
-  self.store.Set('key', value); // 设置状态
-  const value = self.store.Get('key'); // 获取状态
+  在模板中配置`data:`与`json:`属性给前端脚本初始化数据。
+  `.json`数据配置文件。
 
-  //保存复杂类型的对象需要使用SetJSON方法。
+  ```json
+  {
+    "item": [
+      {
+        "name": "Item 1"
+      }
+    ],
+    "key": "value"
+  }
+  ```
+
+  在模板中使用`data:`与`json:`属性来初始化数据,可以使用`{{}}` 引用数据配置文件。
+
+  ```html
+  <body json:item="{{chart_data}}" data:key="{{key}}"></body>
+  ```
+
+  ```ts
+  //在前端脚本中使用store.GetJSON来读取Jsong复杂数据。
   self.store.GetJSON('item');
+  //保存复杂类型的对象需要使用SetJSON方法。
   self.store.SetJSON('item', { ...item, selected: false });
+  //使用store来读取模板中的配置信息，
+  const value = self.store.Get('key'); // 获取值value
+  //注意Set方法只能用于保存非对象类型的对象
+  self.store.Set('key', value); // 设置临时状态
   ```
 
 - 跨组件状态监听：
@@ -872,20 +942,22 @@ window.location.reload();
 
 - 通过import的方式引用组件。
   ```html
-  <import s:as="Anchor" s:from="/flowbite/components/anchor"></import>
-  <Anchor></Anchor>
-  <Anchor></Anchor>
-  <Anchor></Anchor>
+  <body>
+    <import s:as="Anchor" s:from="/flowbite/components/anchor"></import>
+    <Anchor></Anchor>
+    <Anchor></Anchor>
+    <Anchor></Anchor>
+  </body>
   ```
 - 通过`is`属性引用组件。
 
   ```html
-  <div>
+  <body>
     <header is="/header" active="/blog"></header>
     <title is="/blog/title" title="Blog"></title>
     <list is="/blog/list"></list>
     <footer is="/footer"></footer>
-  </div>
+  </body>
   ```
 
 - 父子组件通信：
@@ -955,11 +1027,11 @@ self.emitEvent = () => {
   </button>
   ```
 
-## 前端页面局部渲染：
+## 模板局域重复渲染：
 
-- 在页面中使用 `s:render` 属性标记可以调用api接口进行渲染的区域。
+- 在模板中使用 `s:render` 属性标记可以重复渲染的区域，即可以在加载时渲染，也可以单独使用API接口进行后端渲染。
+- 重要：即使html元素增加了`s:render`属性，也需要添加模板内容定义，不可以缺少模板定义。
 - `s:render`标识使用`querySelectorAll`筛选所有的子节点，不包含自身，需要注意此属性所在的层次，避免缺失html元素。
-- 即使标识了`s:render`属性，也需要在页面中增加相关的模板定义，不可以缺少模板定义。
 - 此区域一般是需要包含动态内容的区域，API接口通过传入不同的数据返回不同的页面源代码。
   ```html
   <div s:render="content">
@@ -967,14 +1039,14 @@ self.emitEvent = () => {
     {{ product }}
   </div>
   ```
-- 如果需要局部更新组件，在前端`组件.ts`中调用 `render` 方法更新内容：
+- 如果需要重复渲染模板，在前端`组件.ts`中调用 `render` 方法更新内容：
   ```ts
   //调用服务器api在服务器端渲染组件，返回html内容
   await self.render(
     'content', // 关联的需要渲染的区域s:render="content"
     { data: 'value' }, // 模板渲染需要的数据
     {
-      showLoader: true, // 显示加载状态
+      showLoader: true, // 在api加载过程中显示加载状态
       replace: true, // 替换内容
       withPageData: true // 包含页面全局变量__sui_data
     }
@@ -986,20 +1058,20 @@ self.emitEvent = () => {
 - 后端脚本中的函数不要使用export导出，因为后端脚本是在node环境中执行的，不能使用export导出。
 - 每个页面/组件可以包含一个后端脚本文件,后缀名是`.backend.ts`，用于实现页面/组件在服务器端的逻辑。
 - 脚本文件的内容为一个TypeScript模块，只需要在ts文件中增加业务处理逻辑，引擎在页面渲染过程中自动调用相关函数。
-- 对于页面模板，不要实施函数`BeforeRender`。
-- 对于组件模板，可选择实现函数`BeforeRender`，用于在组件渲染前处理数据。
+- 对于类型是页面的模板，不要实施函数`BeforeRender`。
+- 对于类型是组件的模板，可选择实现函数`BeforeRender`，用于在组件渲染前处理数据。
 - 函数`BeforeRender`接收父组件的属性传递值，函数返回处理过的属性数据，在属性配置上使用`{{ }}` 接收新的属性配置。
 - 前后端脚本常量数据共享，在脚本`.backend.ts`中定义一个常量`Constants`,在前端脚本`.ts`中可以使用`self.Constants`来读取。
 
-关联的json配置：
+`.json`(模板数据配置)：
 
 ```json
 {
-  "$list": "@ProcessData"
+  "$list": "@ProcessData" //调用后端函数
 }
 ```
 
-`.backend.ts`
+`.backend.ts`(后端脚本)：
 
 ```typescript
 import { Request } from '@yao/sui';
@@ -1013,7 +1085,7 @@ function BeforeRender(request: Request, props: any) {
   return { ...data };
 }
 
-// API 方法
+// API 方法，暴露的API方法可以在前端脚本中使用，需要使用Api前缀修饰此函数。
 function ApiMethod(param: any) {
   // 处理逻辑
   return {
@@ -1238,44 +1310,6 @@ const Constants = {
       "method": "bearer-jwt"
     }
   }
-}
-```
-
-## 主题切换
-
-- 支持`light`、`dark`、`system`三种主题。
-- 通过`cookie=color-theme`可以把主题保存到cookie中
-- 后端脚本中使用`request.$theme`来获取。
-
-在前端脚本可以使用以下代码来切换主题：
-
-```ts
-type Theme = 'light' | 'dark' | 'system';
-
-function getTheme() {
-  const yao = new Yao();
-  const savedTheme = yao.Cookie('color-theme') as Theme | null;
-  return savedTheme === 'dark' ||
-    (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ? 'dark'
-    : 'light';
-}
-
-function setTheme(event: Event, data: EventData, detail: EventDetail) {
-  const { theme } = data;
-  const yao = new Yao();
-  const html = document.documentElement;
-  // Remove existing theme classes
-  html.classList.remove('light', 'dark');
-  if (theme === 'system') {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      html.classList.add('dark');
-    }
-    yao.SetCookie('color-theme', 'system');
-    return;
-  }
-  html.classList.add(theme);
-  yao.SetCookie('color-theme', theme);
 }
 ```
 
