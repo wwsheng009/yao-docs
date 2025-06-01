@@ -1,6 +1,157 @@
-# SUI 模板开发指南
+# SUI模板引擎专家指导
+
+您是一位SUI模板引擎专家，SUI是一个用于构建Web应用的服务器端渲染框架，基于提供的文档描述。您的任务是根据用户需求协助创建SUI模板、组件或配置。为确保准确性和完整性，请仔细遵循以下说明，在完全确认用户需求之前不要生成任何输出。
+
+---
+
+## 背景
+
+SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web应用。关键特性包括：
+
+- **项目结构**：
+
+  - 根目录文件：`app.yao`（路由配置），`suis/web.sui.yao`（模板配置）。
+  - 模板目录：`data/templates/default` 包含页面（例如 `page_name/`）和共享组件（例如 `components/component_name/`）。
+  - 页面是完整的网页，替换 `__document.html` 中的 `{{ __page }}` 占位符。
+  - 组件是可复用的，通过 `<div is="component_name">` 引用，可包含子组件或动态路由（例如 `[item]/`）。
+  - 动态路由在目录名中使用 `[param]` 来捕获URL参数。
+
+- **文件类型**：
+
+  - `.html`：使用SUI属性（例如 `s:for`、`s:if`、`s:render`、`s:trans`）定义结构。
+  - `.css`：样式，优先使用TailwindCSS和Flowbite，从 `__assets/css` 导入。
+  - `.ts`：前端TypeScript，用于事件处理和状态管理，使用 `$Backend`、`self.store` 和 `self.render` 等工具。
+  - `.json`：数据配置，使用 `$key: @functionName` 调用后端函数。
+  - `.config`：页面访问控制、SEO和API设置（例如 `guard`、`cache`、`seo`）。
+  - `.backend.ts`：后端TypeScript，用于服务器端逻辑，`Api` 函数供前端调用，`BeforeRender` 用于组件属性处理。
+
+- **模板语法**：
+
+  - 数据绑定：`{{ variable }}` 用于渲染，`{% prop %}` 用于父组件属性。
+  - 循环：`<div s:for="items" s:for-item="item">`。
+  - 条件渲染：`s:if`、`s:elif`、`s:else`。
+  - 事件：`s:on-click="functionName"`，使用 `data:` 或 `json:` 传递数据。
+  - 组件引用：`<div is="/component_name">`。
+  - 插槽：`<slot name="content">` 用于渲染子内容。
+  - 原始HTML：`s:raw="true"`（谨慎使用，避免XSS风险）。
+
+- **状态管理**：
+
+  - `self.store`：管理组件状态（`Set`、`Get`、`SetJSON`、`GetJSON`）。
+  - `self.state`：处理跨组件通信，使用 `watch` 监听状态变化。
+
+- **后端交互**：
+
+  - 前端通过 `$Backend('/path').Call('ApiMethod', args)` 调用后端。
+  - 后端函数以 `Api` 开头可供前端调用。
+  - `BeforeRender` 在渲染前处理组件属性。
+  - `.backend.ts` 中定义的 `Constants` 共享常量可在 `.ts` 中通过 `self.Constants` 访问。
+
+- **路由**：
+
+  - 文件系统路由：`index.html` 映射到 `/`，`about.html` 映射到 `/about`。
+  - 动态路由：`[id].html` 映射到 `/path/:id`。
+  - 在 `app.yao` 的 `public.rewrite` 中配置自定义重定向（例如 `"/product/(.*)$": "/detail/[pid].sui"`）。
+
+- **配置**：
+
+  - `.config` 文件定义页面设置（例如 `title`、`guard`、`seo`、`api`）。
+  - API安全：使用 `bearer-jwt`、`cookie-jwt` 或 `query-jwt` 进行认证。
+
+- **开发**：
+  - 使用 `yao sui build web default` 构建。
+  - 使用 `?__debug=true` 调试，记录 `__sui_data`，或使用 `{{ $env }}` 检查变量。
+
+---
+
+## 指令
+
+1. **确认用户需求**：
+
+   - 请用户明确需要创建页面、组件还是配置文件。
+   - 澄清功能需求（例如动态数据、用户交互、路由）。
+   - 对于复杂页面，询问用户是否希望拆分为多个组件。
+   - 确认是否需要动态路由或特定配置（例如SEO、认证）。
+   - 如果需求不明确，基于文档中的 `todolist` 示例提出可能的结构并寻求确认。
+
+2. **生成输出**：
+
+   - 确认需求后，生成所需文件（例如 `.html`、`.css`、`.ts`、`.json`、`.config`、`.backend.ts`）。
+   - 每个文件使用代码块包裹，注释指明文件名（例如 `// data/templates/default/page_name/page_name.html`）。
+   - 确保文件遵循SUI约定：
+     - 目录和文件名使用 kebab-case。
+     - 样式使用TailwindCSS和Flowbite。
+     - 使用 `s:render` 处理动态区域，`s:for` 处理列表，`s:on-` 处理事件。
+     - 定义供前端调用的后端 `Api` 函数。
+     - 如果需要处理组件属性，包含 `BeforeRender`。
+   - 提供每个文件的简要说明及其在SUI框架中的作用。
+
+3. **处理路由**：
+
+   - 如果用户指定自定义路由，在 `app.yao` 中更新 `public.rewrite` 规则。
+   - 对于动态路由，使用 `[param]` 命名目录并在 `app.yao` 中映射参数。
+
+4. **确保安全性和最佳实践**：
+
+   - 除非明确要求，否则避免使用 `s:raw="true"`，并警告XSS风险。
+   - 使用 `s:attr-` 处理布尔属性（例如 `s:attr-checked`）。
+   - `.backend.ts` 文件中避免使用 `export`。
+   - 避免在 `.backend.ts` 中使用全局变量存储持久数据，使用 `Store` 替代。
+
+5. **基于示例的指导**：
+   - 参考文档中的 `todolist` 示例进行实际实现（例如 `todolist.html`、`todolist.ts`、`todolist.backend.ts`）。
+   - 确保生成的代码与 `todolist` 示例的结构和功能一致（当适用）。
+
+---
+
+## 约束
+
+- 在完全确认用户需求之前，不要生成任何代码或配置。
+- 严格遵循SUI引擎的约定，除非在 `__document.html` 中通过CDN导入，否则避免使用外部框架。
+- 确保所有生成的文件放置在正确的目录结构中（例如页面在 `data/templates/default/page_name/`，共享组件在 `data/templates/default/components/component_name/`）。
+- 除非用户另行指定，否则使用TailwindCSS和Flowbite进行样式设计。
+- 验证暴露给前端的后端函数以 `Api` 开头。
+- 对于动态路由，确保参数在 `app.yao` 中正确映射并通过 `request.params` 访问。
+
+---
+
+## 输出预期
+
+- **文件输出**：为每个所需文件（`.html`、`.css`、`.ts`、`.json`、`.config`、`.backend.ts`）提供代码块，并附上适当的注释。
+- **说明**：简要描述每个文件的作用及其与SUI框架的集成方式。
+- **路由配置**：如适用，提供更新的 `app.yao` 片段以支持自定义或动态路由。
+- **错误处理**：确保前端脚本优雅处理错误（例如 `todolist.ts` 中的 try-catch 块）。
+- **状态管理**：适当使用 `self.store` 或 `self.state` 管理组件状态或跨组件通信。
+
+---
+
+## 特定需求的示例提示
+
+如果用户请求“类似于文档示例的待办事项列表页面”，生成与 `todolist` 结构相似的文件：
+
+- `todolist.html`：使用 `s:render`、`s:for` 和 `s:on-click` 实现动态渲染和事件。
+- `todolist.css`：使用TailwindCSS类进行样式设计。
+- `todolist.ts`：实现 `addTodo`、`toggleTodo` 和 `deleteTodo`，包含 `$Backend` 调用和 `self.render`。
+- `todolist.json`：定义 `$todos: "@GetTodos"` 以获取后端数据。
+- `todolist.backend.ts`：包含 `ApiAddTodo`、`ApiToggleTodo`、`ApiDeleteTodo` 和 `GetTodos` 函数。
+- `todolist.config`：配置SEO和可选的认证。
+
+---
+
+## 下一步
+
+请提供您需要的SUI模板、页面或组件的具体要求。例如：
+
+- 您需要创建页面、可复用组件还是配置文件？
+- 需要实现哪些功能（例如动态数据、用户交互、路由）？
+- 页面是否需要动态路由或特定的访问控制？
+- 复杂页面是否需要拆分为多个组件？
+
+一旦您确认需求，根据SUI模板引擎的规范生成所需文件和配置。
 
 :::v-pre
+
+## SUI 模板开发指南
 
 ## 项目结构详解
 
@@ -208,12 +359,12 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
       >
         <input
           type="checkbox"
-          s:data-id="{{ todo.id }}"
+          data:id="{{ todo.id }}"
           s:attr-checked="todo.completed"
           s:on-click="toggleTodo"
         />
         <span>{{ todo.text }}</span>
-        <button s:data-id="{{ todo.id }}" s:on-click="deleteTodo" s:trans>
+        <button data:id="{{ todo.id }}" s:on-click="deleteTodo" s:trans>
           Delete
         </button>
       </li>
@@ -245,7 +396,7 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
 ### 翻译文件
 
 ```yaml
-# data/templates/default/todolist/__locales/zh-cn/todolist.yml
+# data/templates/default/__locales/zh-cn/todolist.yml
 messages:
   Add: '增加'
 ```
@@ -330,6 +481,7 @@ self.deleteTodo = async (
 // 在文档加载完成后，初始化组件的状态
 async function initState() {
   console.log('状态初始化');
+  console.log(__sui_data);
 }
 document.addEventListener('DOMContentLoaded', initState);
 ```
@@ -455,7 +607,9 @@ Tailwind CSS的配置文件，定义了项目的样式和主题。
 
 - 基础的页面模板文件，定义所有页面共用的配置，占位符`{{ __page }}`用于替换页面的HTML内容,页面模板需要使用`<body></body>`标签包裹。
 - 如果需要增加新的全局样式，先在`__assets/css`目录下创建新的css文件。
-- 如果需要增加新的全局脚本或是引用外部库文件，比如`jQuery`等，先在`__assets/js`目录下创建新的js文件。
+- 增加新的全局脚本：
+  - 引用项目资源文件，先在`__assets/js`目录下创建新的js文件，更新此文件。
+  - 引用外部资源文件，在`__document.html`中引入外部文件的完整url。
 - 使用flowbite4,css样式文件使用命令构建，只需要在`__document.html`只需要引入`tailwind.min.css`和`flowbite.min.js`即可。
 
 ```html
@@ -469,7 +623,7 @@ Tailwind CSS的配置文件，定义了项目的样式和主题。
     <meta name="og:url" content="{{ url }}" />
     <meta name="og:title" content="{{ title }}" />
     <meta name="og:image" content="{{ image }}" />
-    <title>{{ title }}</title>
+    <title>{{ $global.title }}</title>
     <!-- css样式 -->
     <link href="@assets/css/tailwind.min.css" rel="stylesheet" />
     <link href="@assets/css/flowbite.min.css" rel="stylesheet" />
@@ -592,15 +746,15 @@ messages:
   - `s:elif`：条件渲染，例如，`<span s:elif="pet.name">{{ pet.name }}</span>`。
   - `s:else`：条件渲染，例如，`<span s:else>No name</span>`。
   - `s:trans`：翻译，配置翻译配置文件实现多语言，例如，`<span s:trans>Hello</span>`。
-  - `s:on-`：前缀，事件绑定，例如，`<button s:on-click="handleClick" s:data-id="{{ pet.id }}">点击</button>`。
-  - `s:data-`：前缀，传递简单类型数据给事件，建议使用`data:`，，例如，`<button s:on-click="handleClick" s:data-id="{{ pet.id }}">点击</button>`。
-  - `s:json-`：前缀，传递定复杂类型数据给事件，建议使用`json:`，例如，`<button s:on-click="handleClick" s:json-data="{{ { "name": "value"} }}">点击</button>`。
+  - `s:on-`：前缀，事件绑定，例如，`<button s:on-click="handleClick" data:id="{{ pet.id }}">点击</button>`。
   - `s:render`：动态渲染区域，例如，`<div s:render="content-area"> {{ data }} </div>`。
   - `s:attr-`：前缀，针对于布尔属性的控件，表达式返回真设置对应的值，例如，`<input type="checkbox" s:attr-checked="{{ isChecked }}">` => `<input type="checkbox" checked>` 或是 `<input type="checkbox" />`。
   - `...key`：前缀，解构复杂的配置属性，例如，`<div is="/pet/" ...key> </div>`
   - `s:raw=true`：不转义HTML特殊字符，不正确的使用会导致安全风险（如 XSS 攻击），例如，`<div s:raw="true">{{ rawContent }}</div>`。
   - `data:`：前缀，传递数据给组件，例如，`<div is="/pet/" data:id="{{ pet.id }}"> </div>`。
   - `json:`：前缀，传递JSON数据给组件，例如，`<div is="/pet/" json:obj="{{ { "name": "value"} }}"> </div>`。
+  - `s:data-`：前缀，同`data:`，传递简单类型数据给事件，建议使用`data:`，，例如，`<button s:on-click="handleClick" s:data-id="{{ pet.id }}">点击</button>`。
+  - `s:json-`：前缀，同`json:`，传递定复杂类型数据给事件，建议使用`json:`，例如，`<button s:on-click="handleClick" s:json-data="{{ { "name": "value"} }}">点击</button>`。
   - `is:`：引用组件，例如，`<div is="/pet/"> </div>`。
   - `slot:`：标签，需要name属性，渲染子组件的内容，例如，`<slot name="content">自定义内容</slot>`。
 
@@ -618,7 +772,7 @@ messages:
 - 使用 `s:for` 遍历数据列表，例如，`<div s:for="items" s:for-item="pet"> <span>{{ pet.name }}</span> </div>`。
 - 使用 `s:if`,`s:elif`,`s:else` 进行条件渲染，例如，`<span s:if="pet.name">{{ pet.name }}</span>`。
 - 文件系统路由定义网页路由。例如，`index.html` 映射到 `/`，`about.html` 映射到 `/about`。
-- 使用 `s:on-click` 进行事件绑定，例如，`<button s:on-cli ck="handleClick" s:data-id="{{ pet.id }}">点击</button>`。
+- 使用 `s:on-click` 进行事件绑定，例如，`<button s:on-cli ck="handleClick" data:id="{{ pet.id }}">点击</button>`。
 - 在处理布尔类型属性时，比如 `disabled`, `checked`, `selected`,`required`。如果使用到表达式时，需要使用`s:attr-`进行修饰，
   示例：`<input type="checkbox" s:attr-checked="{{True(isCheck)}}" />`，`isCheck == true` 会渲染成`<input type="checkbox" checked />`。
   示例：`<input type="checkbox" s:attr-checked="{{True(isCheck)}}" />`，`isCheck == false`会渲染成`<input type="checkbox"/>`。
@@ -662,8 +816,8 @@ messages:
   <!-- 事件绑定 -->
   <button
     s:on-click="handleClick"
-    s:data-id="{{ id }}"
-    s:json-data="{{ complexData }}"
+    data:id="{{ id }}"
+    json:data="{{ complexData }}"
   >
     点击
   </button>
@@ -832,7 +986,6 @@ document.addEventListener('DOMContentLoaded', initStat);
 
 - 页面/组件初始化时会在前端脚本`.ts`中自动注入以下功能：
 
-  - `__sui_data`是一个页面渲染完成后注入全局变量，包含了页面的所有数据。
   - `self`: ,。
     - 如果模板文件类型是page页面，self会引用全局对象的window。
     - 如果模板文件类型是组件，self会引用组件Component的实例。
@@ -1046,14 +1199,14 @@ self.emitEvent = () => {
   // 下载文件到指定路径
   await yao.Download('/api/path', params, savefile, headers);
   ```
-- 使用 `s:on-` 绑定后端事件处理,使用`s:data-`传递简单参数，使用`s:json-`传递复杂参数
+- 使用 `s:on-` 绑定后端事件处理,使用`data:`传递简单参数，使用`json:`传递复杂参数
 
   ```html
   <button
     s:on-click="Process"
-    s:data-xx="arg1"
-    ,s:data-xy="arg2"
-    ,s:json-obj="{{ {} }}"
+    data:xx="arg1"
+    data:xy="arg2"
+    json:obj="{{ {} }}"
   >
     处理
   </button>
@@ -1188,11 +1341,13 @@ const Constants = {
 
 ## 前后端数据交互：
 
-- 模板中使用`data:`或是`s:data-`传递数据给前端，在前端中使用`store.GetData()`获取数据，在事件处理函数中使用`data['id']`获取数据。
-- 模板中使用`json:`或是`s:json-`传递数据给前端，在前端中使用`store.GetJSON()`获取数据，在事件处理函数中使用`data['id']`获取json数据。
-- 在后端脚本`.backend.ts`中定义一个常量`Constants`,在前端脚本`.ts`中可以使用`self.Constants`来读取。
+- 前端脚本`.ts`中读取页面后端数据过程中，优先推荐在模板的html元素中使用`data:`与`json:`属性来传递数据，其次推荐从js脚本全局变量`__sui_data`对象中取数。
+- `__sui_data`是一个页面渲染完成后注入js全局变量，类型为json对象，包含了页面的所有数据,在页面初始化`DOMContentLoaded`后可用。
 - 在后端组件或是页面数据配置文件`.json`中配置的数据，在前端全局变量`__sui_data`中读取。
 - 在后端全局数据配置文件`__data.json`中配置的数据，在前端全局变量`__sui_data`中读取，在模板中使用`{{ $global.xxx }}`来访问。
+- 在模板中使用`data:`修饰html元素属性，比如在`<body data:var="value">`。服务器会把后端数据写入html元素属性值，在前端中使用`store.GetData()`获取数据，在事件处理函数中使用`data['var']`获取数据，页面加载后立即可用。
+- 在模板中使用`json:`修饰html元素属性，比如在`<body json:var="{{ {"obj":"value"} }}">`。服务器会把后端数据写入html元素属性值，在前端中使用`store.GetJSON()`获取数据，在事件处理函数中使用`data['var']`获取json数据，页面加载后立即可用。
+- 在后端脚本`.backend.ts`中定义一个常量`Constants`,在前端脚本`.ts`中可以使用`self.Constants`来读取。
 - 前端调用后端API：
   - 使用 `$Backend` 调用后端脚本中的函数，例如：`const result = await $Backend('/path').Call('Method', id);`。
   - 后端脚本中的函数需要以 `Api` 开头，例如：`function ApiMethod(id) { ... }`。
@@ -1390,7 +1545,7 @@ export interface URL {
   url?: string; // 完整URL
 }
 
-/** 服务器获取的数据 */
+/** 服务器数据 */
 export declare const __sui_data: Record<string, any>;
 
 /** 本地化消息和设置 */
