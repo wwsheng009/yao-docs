@@ -19,7 +19,7 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 - **文件类型**：
 
   - `.html`：使用SUI属性（例如 `s:for`、`s:if`、`s:render`、`s:trans`）定义结构。
-  - `.css`：样式，优先使用TailwindCSS和Flowbite，从 `__assets/css` 导入。
+  - `.css`：与页面模板关联的样式文件，只使用标准的css的语法。
   - `.ts`：前端TypeScript，用于事件处理和状态管理，使用 `$Backend`、`self.store` 和 `self.render` 等工具。
   - `.json`：数据配置，使用 `$key: @functionName` 调用后端函数。
   - `.config`：页面访问控制、SEO和API设置（例如 `guard`、`cache`、`seo`）。
@@ -80,7 +80,7 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
    - 每个文件使用代码块包裹，注释指明文件名（例如 `// data/templates/default/page_name/page_name.html`）。
    - 确保文件遵循SUI约定：
      - 针对于长文件命名，目录和文件名使用 kebab-case。
-     - 样式使用TailwindCSS和Flowbite。
+     - 页面模板文件html中的样式使用TailwindCSS和Flowbite。
      - 使用 `s:render` 处理重复刷新区域，`s:for` 处理列表，`s:on-` 处理事件。
      - 定义供前端调用的后端 `Api` 函数。
      - 如果需要处理组件属性，包含 `BeforeRender`。
@@ -109,7 +109,7 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 - 在完全确认用户需求之前，不要生成任何代码或配置。
 - 严格遵循SUI引擎的约定，除非在 `__document.html` 中通过CDN导入，否则避免使用外部框架。
 - 确保所有生成的文件放置在正确的目录结构中（例如页面在 `data/templates/default/page_name/`，共享组件在 `data/templates/default/components/component_name/`）。
-- 除非用户另行指定，否则使用TailwindCSS和Flowbite进行样式设计。
+- 除非用户另行指定，模板文件中html中使用TailwindCSS和Flowbite进行样式设计。
 - 验证暴露给前端的后端函数以 `Api` 开头。
 - 对于动态路由，确保参数在 `app.yao` 中正确映射并通过 `request.params` 访问。
 
@@ -130,7 +130,7 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 如果用户请求“类似于文档示例的待办事项列表页面”，生成与 `todolist` 结构相似的文件：
 
 - `todolist.html`：使用 `s:render`、`s:for` 和 `s:on-click` 实现动态渲染和事件。
-- `todolist.css`：使用TailwindCSS类进行样式设计。
+- `todolist.css`：使用标准CSS进行样式设计。
 - `todolist.ts`：实现 `addTodo`、`toggleTodo` 和 `deleteTodo`，包含 `$Backend` 调用和 `self.render`。
 - `todolist.json`：定义 `$todos: "@GetTodos"` 以获取后端数据。
 - `todolist.backend.ts`：包含 `ApiAddTodo`、`ApiToggleTodo`、`ApiDeleteTodo` 和 `GetTodos` 函数。
@@ -259,7 +259,7 @@ data/
 2. **模板结构**：
 
    - 页面模板内容使用 `<body></body>` 包裹。
-   - 组件模板无此要求，仅作为普通HTML元素渲染。
+   - 组件模板内容使用 `<root></root>` 包裹,并且此标签不配置class与style。
 
 3. **服务器端逻辑**：
 
@@ -269,7 +269,7 @@ data/
 4. **渲染方式**：
 
    - 页面渲染后挂载在 `document.body` 节点，前端脚本和样式在全局生效。
-   - 组件渲染后作为普通HTML元素嵌入页面。
+   - 组件渲染后作为`<root>`HTML元素嵌入页面。
 
 5. **组件层级**：
    - 页面可包含多个组件，组件可包含子组件。
@@ -404,7 +404,8 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
 
 ### todolist.css：
 
-- 定义组件的样式，使用正常的css语法，可以使用`@assets/style.css`引用公共资源目录下的css文件。
+- 定义组件的样式，使用标准的css语法，可以使用`@assets/style.css`引用公共资源目录下的css文件。
+- 不能使用`@apply`等tailwindcss指令。
 
 ```css
 /* data/templates/default/todolist/todolist.css */
@@ -620,7 +621,9 @@ cp node_modules/flowbite/dist/flowbite.min.js __assets/js/flowbite.min.js
 
 ### `tailwind.css`
 
-Tailwind CSS的配置文件，定义了项目的样式和主题。
+`data/templates/default/__assets/css/tailwind.css`
+
+Tailwind CSS的配置文件，应用于整个项目的样式和主题。
 
 ```css
 @import 'tailwindcss';
@@ -766,7 +769,11 @@ messages:
 
 ### 3. HTML 模板 (.html)
 
-- 重要：模板也是一个 HTML 文件，使用标准的 HTML 语法，针对于page页面，需要使用`<body>`标签包裹整个页面内容。
+- 重要：模板也是一个 HTML 文件，使用标准的 HTML 语法。
+
+  - 针对于page页面，需要使用`<body>`标签包裹整个页面内容，在页面渲染后，页面模板会直接挂载在document.body节点。如果在模板中顶节点不是使用body标签，会这样的问题，比如在模板中使用`data:`或是`json:`定义的变量，在页面渲染后，这些变量不会被挂载在document.body节点上，而`store.Get/store.GetJSON`只会查找document.boy,导致无法找到配置的数据。
+  - 针对于component组件，最顶层需要使用`<root></root>`标签包裹整个页面内容，整个页面只使用一个顶层的`<root>`标签，这个`<root>`不设置class与style，因为在处理css组件scope时，组件关联的css样式都只会应用在`<root>`组件下面所有的元素。
+
 - 模板渲染过程使用一个包含多种数据的复杂对象，数据来源如下：
 
   - **`$payload`**: `request.Payload` - 用户请求的数据
@@ -808,7 +815,7 @@ messages:
 - 避免使用框架或库。如果需要，通过 script 标签导入库。
 - 渲染逻辑将由SUI模板引擎处理，所以你不需要实现它。使用 JS 文件来处理动画。
 - 对于第三方库，在 JS 文件中使用 `import '<CDN 链接>';` 包含 CDN 链接。
-- HTML 内容应该排除 `<head>` 和 `<body> `标签；这些由 SUI 引擎添加。
+- HTML 内容应该排除 `<head>`标签；这些由 SUI 引擎添加。
 - 分离通用 CSS 文件以保持一致的样式，如果需要，使用 `import '@assets/[name].css';` 将它们导入到 CSS 文件中。
 - 组件特定的CSS保存在与组件相同的文件夹中，例如：`component_id.css`,此文件不需要显式引用对应的html文件，由框架自动注入。
 - 为了保持一致性，使用与模型字段相同的 CSS 类名和 ID。
@@ -827,11 +834,11 @@ messages:
   子组件：
   ```html
   <!-- layout.html -->
-  <div>
+  <root>
     <header></header>
     <content></content>
     <footer></footer>
-  </div>
+  </root>
   ```
   父组件：
   ```html
@@ -844,38 +851,40 @@ messages:
   ```
 
 ```html
-<div class="component-container">
-  <!-- 数据绑定 -->
-  <h1>{{ title }}</h1>
+<body>
+  <div class="component-container">
+    <!-- 数据绑定 -->
+    <h1>{{ title }}</h1>
 
-  <!-- 接收父组件的属性传递 -->
-  <h1>{% name %}</h1>
+    <!-- 接收父组件的属性传递 -->
+    <h1>{% name %}</h1>
 
-  <!-- 条件渲染 -->
-  <div s:if="condition">条件内容</div>
+    <!-- 条件渲染 -->
+    <div s:if="condition">条件内容</div>
 
-  <!-- 列表渲染 -->
-  <ul>
-    <li s:for="items" s:for-item="item">{{ item.name }}</li>
-  </ul>
+    <!-- 列表渲染 -->
+    <ul>
+      <li s:for="items" s:for-item="item">{{ item.name }}</li>
+    </ul>
 
-  <!-- 事件绑定 -->
-  <button
-    s:on-click="handleClick"
-    data:id="{{ id }}"
-    json:data="{{ complexData }}"
-  >
-    点击
-  </button>
+    <!-- 事件绑定 -->
+    <button
+      s:on-click="handleClick"
+      data:id="{{ id }}"
+      json:data="{{ complexData }}"
+    >
+      点击
+    </button>
 
-  <!-- 动态渲染区域 -->
-  <div s:render="content-area">{{ data }}</div>
+    <!-- 动态渲染区域 -->
+    <div s:render="content-area">{{ data }}</div>
 
-  <!-- 组件引用 -->
-  <div is="/other-component">
-    <slot name="content">默认内容</slot>
+    <!-- 组件引用 -->
+    <div is="/other-component">
+      <slot name="content">默认内容</slot>
+    </div>
   </div>
-</div>
+</body>
 ```
 
 #### 属性展开：
@@ -939,7 +948,8 @@ messages:
 
 #### 样式文件 (.css)
 
-- 模板推荐使用tailwindcss的样式和脚本，使用flowbite的样式和脚本。
+- 模板文件html可以使用tailwindcss/flowbite等样式库，也可以使用自定义的样式文件。
+- 独立的`.css`文件只使用标准的css语法，不能使用flowbite/tailwindcss语法。
 
 ```css
 /* 样式 */
@@ -1222,17 +1232,17 @@ function setTheme(event: Event, data: EventData, detail: EventDetail) {
 
 ```html
 <!-- 父组件 -->
-<div
+<root
   is="child-component"
   data="{{ parentData }}"
   s:on-custom-event="handleCustomEvent"
-></div>
+></root>
 
 <!-- 子组件 -->
-<div>
+<root>
   <span>{{ data }}</span>
   <button s:on-click="emitEvent">触发事件</button>
-</div>
+</root>
 ```
 
 ```typescript
