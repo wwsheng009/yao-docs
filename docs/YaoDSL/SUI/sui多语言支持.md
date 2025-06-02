@@ -31,7 +31,7 @@
 
 ## 多语言脚本翻译
 
-除了在页面中使用多语言，也可以在脚本中使用内置函数**m来进行多语言处理，**m函数运行期间查找翻译文本。
+除了在页面模板中直接翻译多语言，也可以在前端脚本`.ts`与后端脚本`.backend.ts`中使用内置函数**m来进行多语言处理，**m函数运行期间查找翻译文本。
 
 ```js
 function hello(name) {
@@ -49,7 +49,7 @@ SUI提供了一个工具，可以根据页面的文本信息，自动生成翻�
 
 在模板配置文件template.json中添加需要生成的语言列表。
 
-suis/sui_id/template_id/template.json
+`suis/sui_id/template_id/template.json`
 
 ```json
 {
@@ -64,21 +64,33 @@ suis/sui_id/template_id/template.json
 
 或是在模板目录下创建需要翻译页面的子目录。比如：
 
-- suis/sui_id/template_id/\_\_locales/en-us
-- suis/sui_id/template_id/\_\_locales/zh-CN
-- suis/sui_id/template_id/\_\_locales/ja-jp
-- suis/sui_id/template_id/\_\_locales/zh-hk
-
-执行yao trans命令生成翻译文件。
+- `suis/sui_id/template_id/__locales/en-us`
+- `suis/sui_id/template_id/__locales/zh-CN`
+- `suis/sui_id/template_id/__locales/ja-jp`
+- `suis/sui_id/template_id/__locales/zh-hk`
 
 如果配置了translator，会自动的调用ai处理器进行处理。
 
-配置：/aigcs/translate.ai.yml
+在connectors目录下创建一个ai的连接器配置,key配置在`.env`文件中。
+`connectors/deepseek-chat.conn.yao`
+
+```json
+{
+  "label": "deepseek chat",
+  "type": "openai",
+  "options": {
+    "model": "deepseek-chat",
+    "key": "$ENV.DEEPSEEK_KEY",
+    "proxy": "https://api.deepseek.com"
+  }
+}
+```
+
+在aigc目录下创建一个调用ai的配置：`/aigcs/translate.ai.yml`
 
 ```yaml
 # Translate
 name: Translate
-# connector: moapi:gpt-4-turbo
 connector: deepseek-chat
 prompts:
   - role: system
@@ -149,7 +161,16 @@ export function Default(
 
 ```
 
-可使用-d来进行调试，编译的脚本不会自动压缩，而且会自动的全局变量打印到控制台。
+## 翻译命令
+
+使用命令`yao sui trans`来进行翻译，此命令会扫描在页面模板中所有的需要翻译的文本信息，然后调用ai处理器进行翻译。
+
+命令会自动的创建对应的翻译文件。
+
+- 页面中使用了属性`s:trans`进行修饰的文本信息
+- 变量中使用了`::`进行修饰的文本信息
+
+执行命令时可使用参数`-D`来进行调试，编译的脚本不会自动压缩，而且会自动的全局变量打印到控制台。
 
 ```sh
 yao sui trans sui_id template_id -D

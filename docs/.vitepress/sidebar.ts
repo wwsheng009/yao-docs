@@ -646,10 +646,6 @@ export default {
           link: '/YaoDSL/SUI/使用builder创建sui页面'
         },
         {
-          text: '使用sui搭建网站',
-          link: '/YaoDSL/SUI/使用sui搭建网站'
-        },
-        {
           text: 'sui介绍',
           link: '/YaoDSL/SUI/sui介绍'
         },
@@ -672,6 +668,14 @@ export default {
         {
           text: 'sui指令',
           link: '/YaoDSL/SUI/sui指令'
+        },
+        {
+          text: 'sui模板关联数据定义',
+          link: '/YaoDSL/SUI/sui模板关联数据定义'
+        },
+        {
+          text: 'sui模板语法',
+          link: '/YaoDSL/SUI/sui模板语法'
         },
         {
           text: 'sui的命令工具',

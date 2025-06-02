@@ -79,16 +79,16 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
    - 确认需求后，生成所需文件（例如 `.html`、`.css`、`.ts`、`.json`、`.config`、`.backend.ts`）。
    - 每个文件使用代码块包裹，注释指明文件名（例如 `// data/templates/default/page_name/page_name.html`）。
    - 确保文件遵循SUI约定：
-     - 目录和文件名使用 kebab-case。
+     - 针对于长文件命名，目录和文件名使用 kebab-case。
      - 样式使用TailwindCSS和Flowbite。
-     - 使用 `s:render` 处理动态区域，`s:for` 处理列表，`s:on-` 处理事件。
+     - 使用 `s:render` 处理重复刷新区域，`s:for` 处理列表，`s:on-` 处理事件。
      - 定义供前端调用的后端 `Api` 函数。
      - 如果需要处理组件属性，包含 `BeforeRender`。
    - 提供每个文件的简要说明及其在SUI框架中的作用。
 
 3. **处理路由**：
 
-   - 如果用户指定自定义路由，在 `app.yao` 中更新 `public.rewrite` 规则。
+   - 如果存在动态路由，比如多个链接都共用同一个模板文件，在 `app.yao` 中更新 `public.rewrite` 规则。
    - 对于动态路由，使用 `[param]` 命名目录并在 `app.yao` 中映射参数。
 
 4. **确保安全性和最佳实践**：
@@ -231,6 +231,19 @@ data/
 - **page**：页面目录，对应 `data/templates/template_id/page_name` 目录，位于 `template_id` 目录下的第一层级。
 - **component**：组件目录，对应 `data/templates/template_id/page_name/component_name` 目录。
 
+## 文件说明
+
+- **`app.yao`**：项目配置文件，包含整个网站的路由重定向配置。
+- **`web.sui.yao`**：Web默认模板的目录映射配置文件。
+- **`components/`**：存储模板级共用组件，所有页面均可引用。
+- **`page_name/`**：页面目录，包含页面的HTML结构、数据配置、前后端逻辑、样式及访问控制配置。
+- **`__locales/`**：模板级多语言配置目录，支持页面级和模板级多语言配置文件。
+- **`__assets/`**：公共资源目录，包含JS和CSS文件，可通过 `import '@assets/style.css'` 引用。
+- **`__data.json`**：模板级全局数据，组件可通过 `{{ $global.xx }}` 访问。
+- **`template.json`**：模板配置文件，包含多语言支持配置信息。
+- **`package.json`**：外部依赖包配置文件。
+- **`__document.html`**：所有页面的基础HTML骨架，包含 `<head>` 和 `<body>` 结构。
+
 ## 页面与组件的关系
 
 - **页面page**：一个完整的页面，包含页面的结构、样式、逻辑等，映射到特定的URL，可以单独配置SEO信息和认证方式。页面模板内容使用 `<body></body>` 包裹，渲染后会替换 `__document.html` 文件中的 `{{ __page }}` 占位符。
@@ -263,24 +276,40 @@ data/
    - 专用组件放置在页面目录的子目录下。
    - 共用组件放置在模板根目录的 `components` 子目录下。
 
-## 文件说明
+### 目录结构示例
 
-- **`app.yao`**：项目配置文件，包含整个网站的路由重定向配置。
-- **`web.sui.yao`**：Web默认模板的目录映射配置文件。
-- **`components/`**：存储模板级共用组件，所有页面均可引用。
-- **`page_name/`**：页面目录，包含页面的HTML结构、数据配置、前后端逻辑、样式及访问控制配置。
-- **`__locales/`**：模板级多语言配置目录，支持页面级和模板级多语言配置文件。
-- **`__assets/`**：公共资源目录，包含JS和CSS文件，可通过 `import '@assets/style.css'` 引用。
-- **`__data.json`**：模板级全局数据，组件可通过 `{{ $global.xx }}` 访问。
-- **`template.json`**：模板配置文件，包含多语言支持配置信息。
-- **`package.json`**：外部依赖包配置文件。
-- **`__document.html`**：所有页面的基础HTML骨架，包含 `<head>` 和 `<body>` 结构。
+比如开发一个产品详细页面，页面结构一般包含：
 
-### 3. 组件目录结构
+- 共用组件components
+  - 顶部导航栏，header组件[共用]
+    - logo title组件
+    - 搜索框,search组件
+    - 登录按钮，login组件
+  - 底部导航栏,footer组件[共用]
+    - 版权信息,copy组件
+    - 友情链接,links组件
+    - 客服信息,service组件
+- 产品列表页面 list page
+  - 顶部导航栏，header组件[共用]
+  - 产品列表，product list组件
+    - 产品项,product组件
+  - 底部导航栏,footer组件[共用]
+- 产品信息页面 detail page
+  - 顶部导航栏，header组件[共用]
+  - 产品详情信息,product组件
+    - 产品图片,image组件
+    - 产品描述,description组件
+  - 产品评论列表,comments组件
+    - 评论项,comment组件
+  - 产品相关推荐,related组件
+    - 推荐产品项,product组件
+  - 底部导航栏,footer组件[共用]
+
+### 组件目录结构
 
 每个页面目录都遵循以下结构：
 
-两者都使用json格式，但是需要区分配置文件`.json`与`.config`文件用途。
+需要区分配置文件`.json`与`.config`文件用途。
 
 - `.json`文件是组件的模板数据配置文件，内容由开发者自由定义，可调用后端服务获取数据。
 - `.config`文件是页面的访问配置文件，配置格式固定，开发者需要按要求填写，比如访问认证，seo标题、描述、关键词等。
@@ -388,7 +417,7 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
 
 ```json
 {
-  "$todos": "@GetTodos", //调用后端脚本中的函数，初始化组件的状态
+  "$todos": "@GetTodos", //调用后端脚本中的函数，初始化组件的状态，对应的函数会接收request参数
   "title": "Todo List"
 }
 ```
@@ -644,8 +673,6 @@ Tailwind CSS的配置文件，定义了项目的样式和主题。
 </body>
 ```
 
-````
-
 ### template.json(模板配置文件)
 
 - 模板配置文件增加语言配置，增加支持的语言列表，配置默认的语言。
@@ -666,7 +693,7 @@ Tailwind CSS的配置文件，定义了项目的样式和主题。
     ]
   }
 }
-````
+```
 
 ### `__data.json`(模板全局数据配置文件):
 
@@ -688,11 +715,29 @@ Tailwind CSS的配置文件，定义了项目的样式和主题。
 - SUI引擎渲染使用了SSR技术，在服务器端渲染过程，会读取组件或是页面数据配置文件`page_name.json`或是`component_name.json`获取渲染数据数据
 - 动态数据使用`$key:@functionName`的方式来调用后端脚本`.backend.ts`中的函数。
 - 静态数据可以直接在JSON文件中定义。
+
   ```json
   {
     "$catalog": "@Catalog",
     "name": "John Doe"
     //其它静态数据
+  }
+  ```
+
+  对应的后端脚本`.backend.ts`函数：
+
+  ```ts
+  function Catalog(request: Request) {
+    return [
+      {
+        id: '1',
+        name: 'John Doe'
+      },
+      {
+        id: '2',
+        name: 'Jane Smith'
+      }
+    ];
   }
   ```
 
@@ -1268,12 +1313,18 @@ self.emitEvent = () => {
 }
 ```
 
-`.backend.ts`(后端脚本)：
+`.backend.ts`后端脚本中除了普通的ts函数，还有三种特殊函数与一个常量`Constants`：
+
+- `BeforeRender`：组件渲染前处理，接收父组件的属性传递值，函数返回处理过的属性数据，在属性配置上使用`{{ }}` 接收新的属性配置。
+- `ApiMethod`：暴露的API方法可以在前端脚本中使用，需要使用Api前缀修饰此函数，函数参数在前端调用函数`$Backend(route).call(Method,arg1,arg2,...)`指定。
+- `ProcessData`：数据处理方法,可以json配置文件中使用`@ProcessData`调用，并接收Request类型的参数。
+- `Constants`：常量对象，在前端脚本中可以使用`self.Constants`来读取。
 
 ```typescript
 import { Request } from '@yao/sui';
 
 // 组件渲染前处理
+// 参数1 是请求对象
 // props是page传给组件的属性列表
 function BeforeRender(request: Request, props: any) {
   // 根据父节点传入的属性与请求参数，生成组件所需要的属性信息
@@ -1283,7 +1334,7 @@ function BeforeRender(request: Request, props: any) {
 }
 
 // API 方法，暴露的API方法可以在前端脚本中使用，需要使用Api前缀修饰此函数。
-function ApiMethod(param: any) {
+function ApiMethod(arg1: any, arg2: any, ...args: any[]) {
   // 处理逻辑
   return {
     result: 'success'
@@ -1331,7 +1382,7 @@ const Constants = {
   ```ts
   // 组件初始化逻辑
   function BeforeRender(
-    request: sui.Request,
+    request: Request,
     props: Record<string, string>//page传入的属性参数
   ): Record<string, any> {
     console.log('old props:', props);
@@ -1533,6 +1584,7 @@ const Constants = {
 // 维护者: https://yaoapps.com
 
 /** HTTP请求接口 */
+// 在后端脚本中使用，由`.json`数据文件中使用`@`修饰的函数调用
 export interface Request {
   method: string; // 请求方法，如"GET"或"POST"
   asset_root?: string; // 资产访问根URL，可选

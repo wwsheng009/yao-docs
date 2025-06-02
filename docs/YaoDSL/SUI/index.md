@@ -29,13 +29,14 @@ SUI采用三层结构设计：
 <!-- links begin -->
 
 - [使用builder创建sui页面](使用builder创建sui页面.md)
-- [使用sui搭建网站](使用sui搭建网站.md)
 - [sui介绍](sui介绍.md)
 - [sui前端工具库](sui前端工具库.md)
 - [sui前端静态资源引用](sui前端静态资源引用.md)
 - [sui多语言支持](sui多语言支持.md)
 - [sui局部渲染](sui局部渲染.md)
 - [sui指令](sui指令.md)
+- [sui模板关联数据定义](sui模板关联数据定义.md)
+- [sui模板语法](sui模板语法.md)
 - [sui的命令工具](sui的命令工具.md)
 - [sui组件初始化的细节](sui组件初始化的细节.md)
 - [sui组件化开发](sui组件化开发.md)
