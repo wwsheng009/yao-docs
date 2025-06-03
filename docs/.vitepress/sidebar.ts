@@ -174,10 +174,6 @@ export default {
       link: '/AI/使用AI开发YAO应用'
     },
     {
-      text: '提示词',
-      link: '/AI/提示词'
-    },
-    {
       text: 'AI生成模型模板',
       link: '/AI/AI生成模型模板'
     },
@@ -189,6 +185,10 @@ export default {
       text: 'Prompts',
       collapsed: true,
       items: [
+        {
+          text: '提示词',
+          link: '/AI/Prompts/提示词'
+        },
         {
           text: 'model_without_relations',
           link: '/AI/Prompts/model_without_relations'

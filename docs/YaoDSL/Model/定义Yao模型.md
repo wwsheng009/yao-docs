@@ -12,21 +12,31 @@ Yao 模型是 Yao 框架中用于定义业务数据结构的基础组件。通�
 
 ## 文件结构
 
-在 Yao 中，模型配置文件需要保存在应用目录的子目录 `models` 下，如果不存在此目录，需要手工创建。文件命名通常遵循 `modelname.yao` 的格式。如果模型的名称为 `user`，则文件名为 `user.yao`。
+在 Yao 中，模型配置文件需要保存在应用目录的子目录 `models` 下，如果不存在此目录，需要手工创建。文件名可以使用后缀`.mod.yao`,`.mod.jsonc`,`.mod.json`,一般使用具有辨识度的`.mod.yao`,文件命名通常遵循 `modelname.mod.yao` 的格式。如果模型的名称为 `user`，则文件名为 `user.mod.yao`。
 
-模型文件的名称建议使用小写，如果存在下划线或是驼峰的名称，建议使用创建多层目录。比如 `my_name` 模型建议的文件名是 `my/name.yao`，`autoCar` 模型建议的文件名为 `auto/car.yao`。
+模型文件的名称建议使用小写，如果存在下划线或是驼峰的名称，建议使用创建多层目录。比如 `my_name` 模型建议的文件名是 `my/name.mod.yao`，`autoCar` 模型建议的文件名为 `auto/car.mod.yao`。
 
 每一个模型文件在 yao 框架加载后会以文件路径与文件组成一个唯一的标识符，在程序中可以通过这个唯一标识符来引用模型。例如：
 
-- `models/user.yao` 这个文件的模型标识为 `user`。
-- `models/my/name.yao` 这个文件的模型标识为 `my.name`。
-- `models/auto/car.yao` 这个文件的模型标识为 `auto.car`。
+- `models/user.mod.yao` 这个文件的模型标识为 `user`。
+- `models/my/name.mod.yao` 这个文件的模型标识为 `my.name`。
+- `models/auto/car.mod.yao` 这个文件的模型标识为 `auto.car`。
 
 ## 文件格式
 
 Yao 中模型定义总是以 `json` 格式编写，如果文件的后缀名是`.jsonc`或是`.yao`，则可以在文件中使用注释。
 
 以下是系统内置模型的示例：
+
+- name,指定模型名称
+- table,指定数据表定义
+  - name,指定数据表名称
+  - comment,指定数据表注释
+  - engine,指定数据表引擎
+- columns,指定字段列表定义
+- relations,指定模型间的关系
+- values,指定默认数据
+- option,指定模型配置选项
 
 ```json
 {
@@ -516,8 +526,8 @@ Yao 提供了强大的字段验证功能：
 
 ## Yao 模型字段校验
 
-有以下的校验方法列表：
-yao/yao-app-sources/gou/validation.go
+在validation中可以使用有以下的校验方法来校验字段数据：
+参考源代码`yao/yao-app-sources/gou/model/validation.go`定义：
 
 ```go
 	"typeof":     // 校验数值类型 string, integer, float, number, datetime, timestamp,bool
@@ -531,7 +541,9 @@ yao/yao-app-sources/gou/validation.go
 	"mobile":     // 手机号
 ```
 
-### 类型判断，参数是允许的数据类型：string, integer, float, number, datetime, timestamp
+### 类型判断
+
+typeof方法的参数有以下允许的数据类型：string, integer, float, number, datetime, timestamp，bool
 
 ```json
 {
@@ -540,6 +552,11 @@ yao/yao-app-sources/gou/validation.go
       "method": "typeof",
       "args": ["string"],
       "message": "::{{input}} Error, {{label}} should be string"
+    },
+    {
+      "method": "typeof",
+      "args": ["bool"],
+      "message": "::{{input}} Error, {{label}} should be bool"
     }
   ]
 }
@@ -659,6 +676,8 @@ yao/yao-app-sources/gou/validation.go
 ```
 
 ### 用户名检验
+
+这里演示了一个简单的用户名校验，包括长度限制和字符类型限制：
 
 ```json
 {
@@ -864,10 +883,6 @@ yao/yao-app-sources/gou/validation.go
 
 ### 一个用户对应多个供应商
 
-```sh
-yao run models.user.Find 1 '::{"withs":{"many_suppliers":{}}}'
-```
-
 `user.mod.json`关联关系定义：
 
 ```json
@@ -881,11 +896,13 @@ yao run models.user.Find 1 '::{"withs":{"many_suppliers":{}}}'
 }
 ```
 
-等于筛选条件：`user.id == suppliers.user_id`，`suppliers.user_id`保存了对模型`user.id`的引用。按这个条件可以找到用户对应的多个供应商。使用`hasMany`比较合适
+执行命令：
 
 ```sh
-yao run models.user.Find 1 '::{"withs":{"one_supplier":{}}}'
+yao run models.user.Find 1 '::{"withs":{"many_suppliers":{}}}'
 ```
+
+等于筛选条件：`user.id == suppliers.user_id`，`suppliers.user_id`保存了对模型`user.id`的引用。按这个条件可以找到用户对应的多个供应商。使用`hasMany`比较合适
 
 返回结果是数组。
 
@@ -914,10 +931,6 @@ yao run models.user.Find 1 '::{"withs":{"one_supplier":{}}}'
 
 ### 一个用户对应一个供应商
 
-```sh
-yao run models.user.Find 1 '::{"withs":{"one_supplier":{}}}'
-```
-
 `user.mod.json`关联关系定义：
 
 ```json
@@ -929,6 +942,12 @@ yao run models.user.Find 1 '::{"withs":{"one_supplier":{}}}'
     "type": "hasOne"
   }
 }
+```
+
+执行命令：
+
+```sh
+yao run models.user.Find 1 '::{"withs":{"one_supplier":{}}}'
 ```
 
 等于筛选条件：`user.supplier_id == supplier.id`。由于 supplier.id 是主键，只可能会有一条记录存在，所有使用 hasOne 比较合适。
@@ -956,11 +975,6 @@ yao run models.user.Find 1 '::{"withs":{"one_supplier":{}}}'
 
 模型`user`与`supplier`中都定义了一个`app_id`的字段。
 
-```sh
-yao run models.user.Find 2 '::{"withs":{"apps":{}}}'
-
-```
-
 关联关系定义。等于筛选条件：`user.app_id == supplier.app_id`。
 
 ```json
@@ -972,6 +986,12 @@ yao run models.user.Find 2 '::{"withs":{"apps":{}}}'
     "type": "hasMany"
   }
 }
+```
+
+执行命令：
+
+```sh
+yao run models.user.Find 2 '::{"withs":{"apps":{}}}'
 ```
 
 等于筛选条件`user.app_id == supplier.app_id`,非主键关联，设置类型为`hasMany`。
@@ -1146,11 +1166,97 @@ Yao 提供了强大的模型迁移功能，可以自动同步模型定义到数�
 | models.<ID\>.EachSave            | `<记录数组>, <记录(共有字段)>`              | 创建或更新的记录主键值数组 | 保存多条记录, 不存在创建记录, 存在更新记录, 返回记录 ID 集合 [示例](#eachsave)                          |
 | models.<ID\>.EachSaveAfterDelete | `<主键值数组>,<记录数组>, <记录(共有字段)>` | 创建或更新的记录主键值数组 | 删除一组给定 ID 的记录后，保存多条记录, 不存在创建, 存在更新, 返回 ID 集合 [示例](#eachsaveafterdelete) |
 
+### 模型处理条件的类型定义
+
+在Yao模型处理器中，经常使用到查询条件（QueryParam）来定义查询的具体条件，以下的查询条件类型定义：
+
+```ts
+/**QueryParam 数据查询器参数 */
+export interface QueryParam {
+  /**备注【管理字段】 */
+  comment?: string;
+  /**模型名称 */
+  model?: string;
+  /**表格名称 */
+  table?: string;
+  /**别名 */
+  alias?: string;
+  /**导出数据时的前缀 */
+  export?: string;
+  /**选择字段清单*/
+  select?: string[];
+  /**查询条件*/
+  wheres?: QueryWhere[];
+  /**排序条件*/
+  orders?: QueryOrder[];
+  /**限制返回记录条目*/
+  limit?: number;
+  /**当前页码*/
+  page?: number;
+  /**每页显示记录数量*/
+  pagesize?: number;
+  /**读取关联模型*/
+  withs?: { [key: string]: QueryWith }; //Map<string, QueryWith>;
+}
+
+/**QueryOrder Order 查询排序 */
+export interface QueryOrder {
+  /**如按关联模型的字段排序，则填写关联模型名称*/
+  rel?: string;
+  /**字段名称*/
+  column: string;
+  /**排序方式， `desc`, `asc`, 默认为 `asc`*/
+  option?: string;
+}
+/**
+ *  QueryWhere Where 查询条件
+ */
+export interface QueryWhere {
+  /**如按关联模型的字段查询，则填写关联模型名称 */
+  rel?: string;
+  /**字段名称*/
+  column?: string;
+  /**匹配数值*/
+  value?: any;
+  /**查询方法 `where`,`orwhere`, `wherein`, `orwherein`... 默认为 `where`,
+   *
+   *| 查询方法 | 说明                                  |
+   *| -------- | ------------------------------------- |
+   *| where    | WHERE 字段 = 数值, WHERE 字段 >= 数值 |
+   *| orwhere  | ... OR WHERE 字段 = 数值              |
+   */
+  method?: string;
+  /**默认为 `eq`
+   *
+   *| 匹配关系 | 说明                             |
+   *| -------- | -------------------------------- |
+   *| eq       | 默认值 等于 WHERE 字段 = 数值    |
+   *| like     | 匹配 WHERE 字段 like 数值        |
+   *| match    | 匹配 WHERE 字段 全文检索 数值    |
+   *| gt       | 大于 WHERE 字段 > 数值           |
+   *| ge       | 大于等于 WHERE 字段 >= 数值      |
+   *| lt       | 小于 WHERE 字段 < 数值           |
+   *| le       | 小于等于 WHERE 字段 <= 数值      |
+   *| null     | 为空 WHERE 字段 IS NULL          |
+   *| notnull  | 不为空 WHERE 字段 IS NOT NULL    |
+   *| in       | 列表包含 WHERE 字段 IN (数值...) |
+   *| ne       | 不等于匹配值                     |
+   */
+  op?: string;
+  /**分组查询 */
+  wheres?: QueryWhere[];
+}
+
+/**With relations 关联查询 */
+export interface QueryWith {
+  name?: string;
+  query?: QueryParam;
+}
+```
+
 ## 创建数据
 
-### Create
-
-创建单条记录, 返回新创建记录的主键。
+### Create 创建单条记录, 返回新创建记录的主键
 
 处理器：`models.模型标识.Create`。
 
@@ -1168,9 +1274,9 @@ const id = Process('models.category.create', {
 return id;
 ```
 
-### Insert
+### Insert 一次性插入多条数据记录，返回插入行数
 
-一次性插入多条数据记录，返回插入行数。如果单纯是插入数据，方法 Insert 会比 EachSave 快。
+如果单纯是插入数据，方法 Insert 会比 EachSave 快。
 
 处理器：`models.模型标识.Insert`。
 
@@ -1194,7 +1300,8 @@ function Insert() {
 }
 ```
 
-通常需要配合处理器`utils.arr.split`进行处理。
+通常需要配合处理器`utils.arr.split`进行处理，这个处理器会把对象数组拆分为列数组与值数组。
+示例：
 
 ```js
 const data = [
@@ -1210,9 +1317,7 @@ return Process('models.category.insert', columns, values);
 
 ## 更新数据
 
-### Update
-
-根据主键 id 更新单条数据记录。
+### Update 根据主键 id 更新单条数据记录
 
 处理器：`models.模型标识.Update`。
 
@@ -1232,7 +1337,7 @@ function Update() {
 }
 ```
 
-### UpdateWhere
+### UpdateWhere 根据条件更新数据记录
 
 根据条件更新数据记录, 返回更新行数。
 
@@ -1251,7 +1356,7 @@ function UpdateWhere() {
     'models.category.updatewhere',
     {
       wheres: [{ column: 'parent_id', value: 1 }]
-    },
+    } as QueryParam,
     {
       name: '数学'
     }
@@ -1259,9 +1364,9 @@ function UpdateWhere() {
 }
 ```
 
-### Save
+### Save 创建或更新单条记录
 
-创建或更新单条记录。如数据记录中包含 id 则更新，不包含 id 则创建记录；返回创建或更新的记录 ID。
+如数据记录中包含 id 则更新，不包含 id 则创建记录；返回创建或更新的记录 ID。
 
 处理器：`models.模型标识.Save`。
 
@@ -1280,7 +1385,7 @@ function Save() {
 }
 ```
 
-### EachSave
+### EachSave 批量创建或是更新多条记录
 
 批量创建或是更新多条记录, 不包含主键字段则创建记录, 存在更新记录。
 
@@ -1305,9 +1410,9 @@ return ids;
 
 注：每次保存都会调用一次数据库操作。
 
-### EachSaveAfterDelete
+### EachSaveAfterDelete 删除并保存数据
 
-删除并保存数据，删除给定 ID 的记录后，保存多条记录数据, 不包含主键字段则创建记录, 存在更新记录, 返回记录 ID 集合 ，返回创建或更新的记录 ID 集合。
+删除给定 ID 的记录后，保存多条记录数据, 不包含主键字段则创建记录, 存在更新记录, 返回记录 ID 集合 ，返回创建或更新的记录 ID 集合。
 
 处理器：`models.模型标识.EachSaveAfterDelete`。
 
@@ -1332,9 +1437,9 @@ return ids;
 
 ## 删除数据
 
-### Delete
+### Delete 根据 id 删除数据
 
-根据 id 删除数据，如模型定义时未开启 `soft_deletes` 则真删除数据记录。
+如模型定义时未开启 `soft_deletes` 则真删除数据记录。
 
 处理器：`models.模型标识.Delete`。
 
@@ -1345,14 +1450,12 @@ return ids;
 示例：
 
 ```javascript
-function deletes() {
-  return Process('models.category.delete', 10);
+function deleteById(id) {
+  return Process('models.category.delete', id);
 }
 ```
 
-### DeleteWhere
-
-根据条件删除数据。
+### DeleteWhere 根据条件删除数据
 
 如模型定义时未开启 `soft_deletes` 则真删除数据记录。
 
@@ -1366,13 +1469,11 @@ function deletes() {
 function Deletewhere() {
   return Process('models.category.deletewhere', {
     wheres: [{ column: 'parent_id', value: 4 }]
-  });
+  } as QueryParam);
 }
 ```
 
-### Destroy
-
-根据主键 id 真删除单条数据记录。
+### Destroy 根据主键 id 真删除单条数据记录
 
 处理器：`models.模型标识.Destroy`。
 
@@ -1388,9 +1489,7 @@ function Destroy() {
 }
 ```
 
-### DestroyWhere
-
-根据条件真删除数据。
+### DestroyWhere 根据条件真删除数据
 
 处理器：`models.模型标识.DestroyWhere`。
 
@@ -1404,15 +1503,13 @@ function Destroy() {
 function Destroywhere() {
   return Process('models.category.destroywhere', {
     wheres: [{ column: 'parent_id', value: 4 }]
-  });
+  } as QueryParam);
 }
 ```
 
 ## 查找数据
 
-### find
-
-根据主键 id 查询单条记录。
+### find,根据主键 id 查询单条记录
 
 处理器：`models.模型标识.Find`。
 
@@ -1429,13 +1526,11 @@ AES 字段自动解密。 关联模型作为一个独立字段，字段名称为
 function Find() {
   return Process('models.user.find', 1, {
     withs: { manu: {}, mother: {}, addresses: {} }
-  });
+  } as QueryParam);
 }
 ```
 
-### get
-
-根据条件查询数据记录, 返回符合条件的结果集。相关于 SQL 中的 select,使用比较频繁的处理器。
+### get 根据条件查询数据记录, 返回符合条件的结果集
 
 处理器：`models.模型标识.Get`。
 
@@ -1451,7 +1546,7 @@ function Find() {
 function Get() {
   return Process('models.category.get', {
     wheres: [{ column: 'parent_id', value: null }]
-  });
+  }) as QueryParam;
 }
 ```
 
@@ -1470,7 +1565,7 @@ return Process('models.ai.setting.Get', {
       Value: null
     }
   ]
-})[0];
+} as QueryParam)[0];
 
 //使用解构的方法
 const [user] = Process('models.admin.user.get', {
@@ -1480,12 +1575,10 @@ const [user] = Process('models.admin.user.get', {
     { method: 'orwhere', column: 'email', value: account }
   ],
   limit: 1
-});
+} as QueryParam);
 ```
 
-### Paginate
-
-根据条件查询数据记录, 返回带有分页信息的数据对象。
+### Paginate 根据条件查询数据记录, 返回带有分页信息的数据对象
 
 处理器：`models.模型标识.Paginate`。
 
@@ -1528,7 +1621,7 @@ function Paginate() {
         { column: 'status', value: 'enabled' } // 查询条件：仅查询状态为"enabled"的用户
       ],
       limit: 2 // 限制结果集中的记录数量为2条
-    },
+    } as QueryParam,
     1, // 当前页码：第1页
     2 // 每页记录数量：每页2条记录
   );

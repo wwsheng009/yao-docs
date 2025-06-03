@@ -162,6 +162,10 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 ```json
 project_root/
 ├── app.yao                    # 应用配置文件，包含路由规则
+├── scripts/
+│   └── *.ts           # Yao自定义js处理器
+├── models/
+│   └── *.mod.yao      # Yao模型定义
 ├── suis/
 │   └── web.sui.yao           # SUI 模板配置
 └── data/
@@ -178,7 +182,12 @@ project_root/
 ```sh
 app.yao                             # 项目配置文件，包含路由重定向配置，控制整个网站的路由
 suis/
-└── web.sui.yao                     # Web默认模板的配置文件，存储目录映射信息
+├── scripts/
+│   └── *.ts            # Yao自定义js处理器
+├── models/
+│   └── *.mod.yao       # Yao模型定义
+├── suis/
+│   └── web.sui.yao           # SUI 模板配置
 data/
 └── templates/                      # 模板目录，每个模板对应一个目录
     └── default/                    # 默认模板，模板ID为default，包含多套组件
@@ -246,7 +255,7 @@ data/
 
 ## 页面与组件的关系
 
-- **页面page**：一个完整的页面，包含页面的结构、样式、逻辑等，映射到特定的URL，可以单独配置SEO信息和认证方式。页面模板内容使用 `<body></body>` 包裹，渲染后会替换 `__document.html` 文件中的 `{{ __page }}` 占位符。
+- **页面page**：一个完整的页面，包含页面的结构、样式、逻辑等，映射到特定的URL，可以单独配置SEO信息和认证方式。页面模板内容使用 `<body><sui-page></sui-page></body>` 包裹，渲染后会替换 `__document.html` 文件中的 `{{ __page }}` 占位符。
 - **组件component**：类似于HTML自定义组件，可以在多个页面中重复使用，或被其他组件嵌套引用。组件通过 `<div is=component xx="p1"></div>` 在页面中引用，其后端脚本（`.backend.ts`）可使用 `BeforeRender` 函数接收调用参数。
 
 ### 页面与组件的区别
@@ -258,8 +267,8 @@ data/
 
 2. **模板结构**：
 
-   - 页面模板内容使用 `<body></body>` 包裹。
-   - 组件模板内容使用 `<root></root>` 包裹,并且此标签不配置class与style。
+   - 页面模板内容使用 `<body><sui-page></sui-page></body>` 包裹,页面级别的class在page标签上设置。
+   - 组件模板内容使用 `<sui-component></sui-component>` 包裹,并且此标签不配置class与style。
 
 3. **服务器端逻辑**：
 
@@ -269,7 +278,7 @@ data/
 4. **渲染方式**：
 
    - 页面渲染后挂载在 `document.body` 节点，前端脚本和样式在全局生效。
-   - 组件渲染后作为`<root>`HTML元素嵌入页面。
+   - 组件渲染后作为`<sui-component>`HTML元素嵌入页面。
 
 5. **组件层级**：
    - 页面可包含多个组件，组件可包含子组件。
@@ -368,6 +377,7 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
 <!-- data/templates/default/todolist/todolist.html -->
 <!-- 使用json:初始化后台数据 -->
 <body json:todos="{{ [] }}" data:count:"0">
+  <sui-page>
   <div class="todolist-container">
     <h2 s:trans>Todo List</h2>
     <div class="todo-input">
@@ -399,6 +409,7 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
       </li>
     </ul>
   </div>
+  </sui-page>
 </body>
 ```
 
@@ -637,12 +648,13 @@ Tailwind CSS的配置文件，应用于整个项目的样式和主题。
 
 ### `__document.html`
 
-- 基础的页面模板文件，定义所有页面共用的配置，占位符`{{ __page }}`用于替换页面的HTML内容,页面模板需要使用`<body></body>`标签包裹。
+- 基础的页面模板文件，定义所有页面共用的配置，占位符`{{ __page }}`用于替换页面的HTML内容,page页面模板需要使用`<body><sui-page></sui-page></body>`标签包裹。
 - 如果需要增加新的全局样式，先在`__assets/css`目录下创建新的css文件。
 - 增加新的全局脚本：
   - 引用项目资源文件，先在`__assets/js`目录下创建新的js文件，更新此文件。
   - 引用外部资源文件，在`__document.html`中引入外部文件的完整url。
 - 使用flowbite4,css样式文件使用命令构建，只需要在`__document.html`只需要引入`tailwind.min.css`和`flowbite.min.js`即可。
+- 如果所的的page页面需要增加全局同样的header，也可以在`__document.html`中增加组件引用，比如`<div is="/header">`,这样所有的页面都使用同样的header组件。
 
 ```html
 <!DOCTYPE html>
@@ -664,15 +676,23 @@ Tailwind CSS的配置文件，应用于整个项目的样式和主题。
     <script src="@assets/js/flowbite.min.js"></script>
     <!-- 其它的外部库链接 -->
   </head>
-  {{ __page }}
+  <body>
+    <!-- 全局header，如果需要 -->
+    <!-- <div is="/header"></div> -->
+
+    <!-- 替换page -->
+    {{ __page }}
+  </body>
 </html>
 ```
 
-`__page`是一个占位符，用于替换页面的HTML内容，它一般包含以下内容。
+`__page`是一个占位符，用于替换页面的HTML内容，它一般包含以下内容,page中的body标签属性会合并到`__document.html`中的body标签属性。
 
 ```html
 <body>
-  <main class="relative bg-transparent">// 页面内容</main>
+  <sui-page>
+    <main class="relative bg-transparent">页面内容</main>
+  </sui-page>
 </body>
 ```
 
@@ -716,31 +736,143 @@ Tailwind CSS的配置文件，应用于整个项目的样式和主题。
 ### 页面/组件数据配置文件 (.json)
 
 - SUI引擎渲染使用了SSR技术，在服务器端渲染过程，会读取组件或是页面数据配置文件`page_name.json`或是`component_name.json`获取渲染数据数据
-- 动态数据使用`$key:@functionName`的方式来调用后端脚本`.backend.ts`中的函数。
+- 数据配置文件支持引用渲染的全局变量。
+- key使用`$`修饰，调用后台的处理器或是脚本函数。
+- key使用`$`修饰，value使用`@`前缀调用后端脚本`.backend.ts`中的函数，比如`$key:@Catalog`的方式来调用后端脚本`.backend.ts`中的函数Catalog,函数的调用优先级高于处理器。
 - 静态数据可以直接在JSON文件中定义。
 
+#### 引用渲染全局变量
+
+- **`$payload`**: `request.Payload` - 用户请求的数据
+- **`$query`**: `request.Query` - 请求查询参数
+- **`$param`**: `request.Params` - 请求路径参数
+- **`$cookie`**: `cookies` - Cookie 数据
+- **`$url`**: `request.URL` - 请求地址
+- **`$theme`**: `cookies["color-theme"]` - 用户通过 Cookie 设置的前端主题
+- **`$locale`**: `cookies["locale"]` - 用户通过 Cookie 设置的语言
+- **`$timezone`**: `"+08:00"` - 后端服务器系统时区
+- **`$direction`**: `'ltr'` - 默认语言方向
+
+`.json`文件：
+
+```json
+{
+  "url": { "path": "$url.path" }
+  //其它配置
+}
+```
+
+#### 静态数据
+
+- 静态数据可以直接在JSON文件中定义。
+- 静态数据可以是字符串、数字、布尔值、数组、对象等。
+- 静态数据可以是引用渲染的全局变量。
+
+```json
+{
+  "name": "John Doe",
+  "categories": [
+    {
+      "name": "technology",
+      "count": 15,
+      "icon": "💻",
+      "description": "科技前沿与创新技术"
+    },
+    {
+      "name": "business",
+      "count": 8,
+      "icon": "💼",
+      "description": "商业管理与市场趋势"
+    },
+    {
+      "name": "science",
+      "count": 12,
+      "icon": "🔬",
+      "description": "科学研究与发现"
+    },
+    {
+      "name": "health",
+      "count": 7,
+      "icon": "🏥",
+      "description": "健康与医疗资讯"
+    },
+    {
+      "name": "education",
+      "count": 9,
+      "icon": "📚",
+      "description": "教育与学习资源"
+    }
+  ],
+  "input": { "data": "hello world" }
+}
+```
+
+#### 后台函数调用
+
+`.json`文件：
+
+```json
+{
+  "$catalog": "@Catalog"
+  //其它静态数据
+}
+```
+
+后端脚本`.backend.ts`函数：
+
+```ts
+function Catalog(request: Request) {
+  //js逻辑
+}
+```
+
+#### 处理器调用
+
+- Yao处理器是Yao框架提供的一种处理数据的机制，它可以在服务器端执行一些逻辑操作，比如调用API、处理数据、返回结果等。
+- Yao处理器主要包含Yao框架的内置处理器和自定义处理器，自定义处理器需要在`scripts`目录下创建`.ts`文件，然后在`.json`文件中使用`scripts.模块名.处理器名`来调用。
+- Yao处理器的调用方式有两种：
+  - 默认参数调用：在`.json`文件中直接使用处理器名称来调用，比如`$scripts.article.Search`，对应函数会使用默认参数Request。
+  - 明确参数调用：在`.json`中使用对象配置处理器调用，使用process属性指定处理器名称，使用args属性指定处理器参数，比如`{ "process": "$scripts.article.ShowImage", "args": ["$query.show"] }`。
+  - 在数组中调用：需要在对象中使用`__exec`属性来标识是否执行处理器函数，比如`{ "$scripts.article.Search": { "__exec": true } }`。
+- 处理器主要根据处理器的名称来调用，处理器名称的格式为`scripts.模块名.处理器名`。处理器的参数类似于js的函数参数，参数可以使用args进行传递或是使用默认参数。
+- 在`.json`文件中可以使用多种方式调用Yao处理器函数。
+  `order.json`文件：
   ```json
   {
-    "$catalog": "@Catalog",
-    "name": "John Doe"
-    //其它静态数据
+    "$articles": "scripts.article.Search",
+    "comments": "$scripts.article.Comments",
+    "$showImage": {
+      "process": "scripts.article.ShowImage",
+      "args": ["$query.show"]
+    },
+    "array": [
+      "item-1",
+      "$scripts.article.Setting",
+      { "$images": "scripts.article.Images" },
+      {
+        "process": "scripts.article.Thumbs",
+        "args": ["$query.show"],
+        "__exec": true
+      }
+    ]
   }
   ```
-
-  对应的后端脚本`.backend.ts`函数：
-
+- 对应的处理器函数定义`scripts/article.ts`：
   ```ts
-  function Catalog(request: Request) {
-    return [
-      {
-        id: '1',
-        name: 'John Doe'
-      },
-      {
-        id: '2',
-        name: 'Jane Smith'
-      }
-    ];
+  function Search(request: Request) {
+    //js逻辑
+  }
+  function Comments(request: Request) {
+    //js逻辑
+  }
+  function Setting(request: Request) {
+    //js逻辑
+  }
+  function Images(request: Request) {
+    //js逻辑
+  }
+  function Thumbs(show: boolean) {
+    //js逻辑
   }
   ```
 
@@ -767,12 +899,22 @@ messages:
 
 ### 2. 模板语法规范
 
-### 3. HTML 模板 (.html)
-
+- 定义page页面，需要使用`<body><sui-page></sui-page></body>`标签包裹整个页面内容。
+- 在page页面中定义的`<body>`标签会合并到`__doucment.html`中的`<body>`标签中，所以在page页面中定义的`<body>`标签的属性也会合并到`__document.html`的`<body>`标签上。利用这个特性，可以在page页面中定义`<body>`标签的属性，比如`data:`或是`json:`定义的变量，在页面渲染后，这些变量会被挂载在document.body节点上，从而可以在页面中使用这些变量。
+- 定义component组件，需要使用`<sui-component></sui-component>`标签包裹整个页面内容，整个页面只使用一个顶层的`<sui-component>`标签，这个`<sui-component>`不设置class与style，因为在处理css组件scope时，组件关联的css样式都只会应用在`<sui-component>`组件下面所有的元素，否则会导致组件样式应用失败。
 - 重要：模板也是一个 HTML 文件，使用标准的 HTML 语法。
+- 每个模板应该由单独的纯 HTML、CSS 和 TypeScript 文件组成。使用相同的名称但不同的扩展名（例如，`component_id.html`、`component_id.css`、`component_id.ts`）。
+- 避免使用框架或库。如果需要，通过 script 标签导入库。
+- 渲染逻辑将由SUI模板引擎处理，所以你不需要实现它。使用 JS 文件来处理动画。
+- 对于第三方库，在 JS 文件中使用 `import '<CDN 链接>';` 包含 CDN 链接。
+- page与component内容应该排除 `<head>`标签；这些由 SUI 引擎添加。
+- 分离通用 CSS 文件以保持一致的样式，如果需要，使用 `import '@assets/[name].css';` 将它们导入到 CSS 文件中。
+- 组件特定的CSS保存在与组件相同的文件夹中，例如：`component_id.css`,此文件不需要显式引用对应的html文件，由框架自动注入。
+- 为了保持一致性，使用与模型字段相同的 CSS 类名和 ID。
+- 每个文件应该用代码块包裹，顶部注释文件名。
+- 文件系统路由定义网页路由。例如，`index.html` 映射到 `/`，`about.html` 映射到 `/about`。
 
-  - 针对于page页面，需要使用`<body>`标签包裹整个页面内容，在页面渲染后，页面模板会直接挂载在document.body节点。如果在模板中顶节点不是使用body标签，会这样的问题，比如在模板中使用`data:`或是`json:`定义的变量，在页面渲染后，这些变量不会被挂载在document.body节点上，而`store.Get/store.GetJSON`只会查找document.boy,导致无法找到配置的数据。
-  - 针对于component组件，最顶层需要使用`<root></root>`标签包裹整个页面内容，整个页面只使用一个顶层的`<root>`标签，这个`<root>`不设置class与style，因为在处理css组件scope时，组件关联的css样式都只会应用在`<root>`组件下面所有的元素。
+### 模板数据来源
 
 - 模板渲染过程使用一个包含多种数据的复杂对象，数据来源如下：
 
@@ -789,7 +931,9 @@ messages:
   - **模板关联配置文件**: 模板对应的 `.json` 配置文件中的变量
   - **模板自定义变量**: 页面通过 `Set` 指令配置的变量
 
-- sui引擎自定义属性说明：
+### 3. HTML 模板 (.html)
+
+- 在模板中，可以使用以下的自定义属性进行数据处理与逻辑表达：
 
   - `s:for`：遍历数据列表，例如，`<div s:for="items" s:for-item="item"> <span>{{ item.name }}</span> </div>`。
   - `s:for-item`: 遍历数据列表，获取当前项，例如，`<div s:for="items" s:for-item="item"> <span>{{ item.name }}</span> </div>`。
@@ -811,20 +955,10 @@ messages:
   - `slot:`：标签，需要name属性，渲染子组件的内容，例如，`<slot name="content">自定义内容</slot>`。
   - `prop:`：前缀，接收父组件传递的属性，例如，父组件`<com name="{{ pet.name }}"></com>`,子组件`<div prop:name="pet.name"> </div>`。
 
-- 每个模板应该由单独的纯 HTML、CSS 和 TypeScript 文件组成。使用相同的名称但不同的扩展名（例如，`component_id.html`、`component_id.css`、`component_id.ts`）。
-- 避免使用框架或库。如果需要，通过 script 标签导入库。
-- 渲染逻辑将由SUI模板引擎处理，所以你不需要实现它。使用 JS 文件来处理动画。
-- 对于第三方库，在 JS 文件中使用 `import '<CDN 链接>';` 包含 CDN 链接。
-- HTML 内容应该排除 `<head>`标签；这些由 SUI 引擎添加。
-- 分离通用 CSS 文件以保持一致的样式，如果需要，使用 `import '@assets/[name].css';` 将它们导入到 CSS 文件中。
-- 组件特定的CSS保存在与组件相同的文件夹中，例如：`component_id.css`,此文件不需要显式引用对应的html文件，由框架自动注入。
-- 为了保持一致性，使用与模型字段相同的 CSS 类名和 ID。
-- 每个文件应该用代码块包裹，顶部注释文件名。
 - 在 HTML 标签内使用 `{{ variable }}` 语法进行数据渲染。
 - 子组件使用表达式`{% %}`渲染父组件传递的属性信息
 - 使用 `s:for` 遍历数据列表，例如，`<div s:for="items" s:for-item="pet"> <span>{{ pet.name }}</span> </div>`。
 - 使用 `s:if`,`s:elif`,`s:else` 进行条件渲染，例如，`<span s:if="pet.name">{{ pet.name }}</span>`。
-- 文件系统路由定义网页路由。例如，`index.html` 映射到 `/`，`about.html` 映射到 `/about`。
 - 使用 `s:on-click` 进行事件绑定，例如，`<button s:on-cli ck="handleClick" data:id="{{ pet.id }}">点击</button>`。
 - 在处理布尔类型属性时，比如 `disabled`, `checked`, `selected`,`required`。如果使用到表达式时，需要使用`s:attr-`进行修饰，
   示例：`<input type="checkbox" s:attr-checked="{{True(isCheck)}}" />`，`isCheck == true` 会渲染成`<input type="checkbox" checked />`。
@@ -834,11 +968,13 @@ messages:
   子组件：
   ```html
   <!-- layout.html -->
-  <root>
-    <header></header>
-    <content></content>
-    <footer></footer>
-  </root>
+  <body>
+    <sui-page>
+      <header></header>
+      <content></content>
+      <footer></footer>
+    </sui-page>
+  </body>
   ```
   父组件：
   ```html
@@ -852,38 +988,40 @@ messages:
 
 ```html
 <body>
-  <div class="component-container">
-    <!-- 数据绑定 -->
-    <h1>{{ title }}</h1>
+  <sui-page>
+    <div class="component-container">
+      <!-- 数据绑定 -->
+      <h1>{{ title }}</h1>
 
-    <!-- 接收父组件的属性传递 -->
-    <h1>{% name %}</h1>
+      <!-- 接收父组件的属性传递 -->
+      <h1>{% name %}</h1>
 
-    <!-- 条件渲染 -->
-    <div s:if="condition">条件内容</div>
+      <!-- 条件渲染 -->
+      <div s:if="condition">条件内容</div>
 
-    <!-- 列表渲染 -->
-    <ul>
-      <li s:for="items" s:for-item="item">{{ item.name }}</li>
-    </ul>
+      <!-- 列表渲染 -->
+      <ul>
+        <li s:for="items" s:for-item="item">{{ item.name }}</li>
+      </ul>
 
-    <!-- 事件绑定 -->
-    <button
-      s:on-click="handleClick"
-      data:id="{{ id }}"
-      json:data="{{ complexData }}"
-    >
-      点击
-    </button>
+      <!-- 事件绑定 -->
+      <button
+        s:on-click="handleClick"
+        data:id="{{ id }}"
+        json:data="{{ complexData }}"
+      >
+        点击
+      </button>
 
-    <!-- 动态渲染区域 -->
-    <div s:render="content-area">{{ data }}</div>
+      <!-- 动态渲染区域 -->
+      <div s:render="content-area">{{ data }}</div>
 
-    <!-- 组件引用 -->
-    <div is="/other-component">
-      <slot name="content">默认内容</slot>
+      <!-- 组件引用 -->
+      <div is="/other-component">
+        <slot name="content">默认内容</slot>
+      </div>
     </div>
-  </div>
+  </sui-page>
 </body>
 ```
 
@@ -1195,20 +1333,24 @@ function setTheme(event: Event, data: EventData, detail: EventDetail) {
 - 通过import的方式引用组件。
   ```html
   <body>
-    <import s:as="Anchor" s:from="/flowbite/components/anchor"></import>
-    <Anchor></Anchor>
-    <Anchor></Anchor>
-    <Anchor></Anchor>
+    <sui-page>
+      <import s:as="Anchor" s:from="/flowbite/components/anchor"></import>
+      <Anchor></Anchor>
+      <Anchor></Anchor>
+      <Anchor></Anchor>
+    </sui-page>
   </body>
   ```
 - 通过`is`属性引用组件。
 
   ```html
   <body>
-    <header is="/header" active="/blog"></header>
-    <title is="/blog/title" title="Blog"></title>
-    <list is="/blog/list"></list>
-    <footer is="/footer"></footer>
+    <sui-page>
+      <header is="/header" active="/blog"></header>
+      <title is="/blog/title" title="Blog"></title>
+      <list is="/blog/list"></list>
+      <footer is="/footer"></footer>
+    </sui-page>
   </body>
   ```
 
@@ -1232,17 +1374,17 @@ function setTheme(event: Event, data: EventData, detail: EventDetail) {
 
 ```html
 <!-- 父组件 -->
-<root
+<sui-component
   is="child-component"
   data="{{ parentData }}"
   s:on-custom-event="handleCustomEvent"
-></root>
+></sui-component>
 
 <!-- 子组件 -->
-<root>
+<sui-component>
   <span>{{ data }}</span>
   <button s:on-click="emitEvent">触发事件</button>
-</root>
+</sui-component>
 ```
 
 ```typescript
@@ -1310,25 +1452,34 @@ self.emitEvent = () => {
 - 后端脚本中的函数不要使用export导出，因为后端脚本是在node环境中执行的，不能使用export导出。
 - 每个页面/组件可以包含一个后端脚本文件,后缀名是`.backend.ts`，用于实现页面/组件在服务器端的逻辑。
 - 脚本文件的内容为一个TypeScript模块，只需要在ts文件中增加业务处理逻辑，引擎在页面渲染过程中自动调用相关函数。
-- 对于类型是页面的模板，不要实施函数`BeforeRender`。
-- 对于类型是组件的模板，可选择实现函数`BeforeRender`，用于在组件渲染前处理数据。
-- 函数`BeforeRender`接收父组件的属性传递值，函数返回处理过的属性数据，在属性配置上使用`{{ }}` 接收新的属性配置。
 - 前后端脚本常量数据共享，在脚本`.backend.ts`中定义一个常量`Constants`,在前端脚本`.ts`中可以使用`self.Constants`来读取。
+- `.backend.ts`后端脚本中除了可以定义普通的ts函数，还有三种特殊函数与一个常量`Constants`：
+  - `BeforeRender`：组件渲染前处理，接收父组件的属性传递值，函数返回处理过的属性数据，在属性配置上使用`{{ }}` 接收新的属性配置。
+  - `ApiMethod`：暴露的API方法可以在前端脚本中使用，需要使用Api前缀修饰此函数，函数参数在前端调用函数`$Backend(route).call(Method,arg1,arg2,...)`指定。
+  - `ProcessData`：数据处理方法,可以json配置文件中使用`@ProcessData`调用，并接收Request类型的参数。
+  - `Constants`：常量对象，在前端脚本中可以使用`self.Constants`来读取。
 
-`.json`(模板数据配置)：
+### 前后端共用的常量：
 
-```json
-{
-  "$list": "@ProcessData" //调用后端函数
-}
-```
+- 前后端共用的常量数据共享，在脚本`.backend.ts`中定义一个常量`Constants`,在前端脚本`.ts`中可以使用`self.Constants`来读取。
+- 常量数据是对象类型,这里不能使用任何后端代码或函数，只能使用静态数据。
+  ```ts
+  // 常量属性
+  const Constants = {
+    // 常量属性
+  };
+  ```
+- 在前端脚本中使用`self.Constants`来读取常量数据。
+  ```ts
+  // 前端脚本
+  self.Constants; // 读取常量数据
+  ```
 
-`.backend.ts`后端脚本中除了普通的ts函数，还有三种特殊函数与一个常量`Constants`：
+### component组件初始化
 
-- `BeforeRender`：组件渲染前处理，接收父组件的属性传递值，函数返回处理过的属性数据，在属性配置上使用`{{ }}` 接收新的属性配置。
-- `ApiMethod`：暴露的API方法可以在前端脚本中使用，需要使用Api前缀修饰此函数，函数参数在前端调用函数`$Backend(route).call(Method,arg1,arg2,...)`指定。
-- `ProcessData`：数据处理方法,可以json配置文件中使用`@ProcessData`调用，并接收Request类型的参数。
-- `Constants`：常量对象，在前端脚本中可以使用`self.Constants`来读取。
+- 针对于组件component，可以在`.backend.ts`中定义一个特定的函数`BeforeRender`来增强处理父组件/页面page调用组件时传递的属性参数。
+- 函数`BeforeRender`接收父组件的属性传递值，函数返回处理过的属性数据，在属性配置上使用`{{ }}` 接收新的属性配置。
+- 对于类型是page页面的模板，不要实施函数`BeforeRender`。
 
 ```typescript
 import { Request } from '@yao/sui';
@@ -1342,50 +1493,34 @@ function BeforeRender(request: Request, props: any) {
   const data: Record<string, any> = { ...Constants.defaults, ...props }; // Copy the props
   return { ...data };
 }
-
-// API 方法，暴露的API方法可以在前端脚本中使用，需要使用Api前缀修饰此函数。
-function ApiMethod(arg1: any, arg2: any, ...args: any[]) {
-  // 处理逻辑
-  return {
-    result: 'success'
-  };
-}
-
-// 数据处理方法,可以json配置文件中使用@ProcessData调用
-function ProcessData(request: Request) {
-  // 数据处理逻辑
-  // 在动态组件中使用request.params获取动态参数
-  // 例如：/item/[item]
-  const itemId = request.params.item; // Access dynamic parameter [item]
-  return { itemId, data: {} };
-}
-
-/**
- * 组件常量
- * 这个对象将在后端和前端脚本之间共享
- * 这里不能使用任何后端代码或函数，只能使用静态数据
- */
-const Constants = {
-  // 常量属性
-};
 ```
 
 ### 后端脚本拦截处理组件参数传递示例：
 
 - 父组件：
   ```html
-  <div is="/component" title="{{ 'title' }}" description="{{ 'desc' }}"></div>
+  <body>
+    <sui-page>
+      <div
+        is="/component"
+        title="{{ 'title' }}"
+        description="{{ 'desc' }}"
+      ></div>
+    </sui-page>
+  </body>
   ```
 - 子组件：
   ```html
-  <root
-    title="{{ title }}"
-    description="{{ description }}"
-    type="flowbite-dropdown"
-  >
-    <h1>{% title %}</h1>
-    <p>{% description %}</p>
-  </root>
+  <sui-component>
+    <div
+      title="{{ title }}"
+      description="{{ description }}"
+      type="flowbite-dropdown"
+    >
+      <h1>{% title %}</h1>
+      <p>{% description %}</p>
+    </div>
+  </sui-component>
   ```
 - 子组件脚本`backend.ts`：
 
@@ -1406,10 +1541,58 @@ const Constants = {
   输出：
 
   ```html
-  <div title="hello" description="world" type="flowbite-dropdown">
-    <h1>hello</h1>
-    <p>world</p>
-  </div>
+  <body>
+    <sui-component>
+      <div title="hello" description="world" type="flowbite-dropdown">
+        <h1>hello</h1>
+        <p>world</p>
+      </div>
+    </sui-component>
+  </body>
+  ```
+
+### 在数据配置中使用后端函数：
+
+- 在数据配置文件中使用`@ProcessData`来调用后端函数。
+- 在`.backend.ts`中定义一个函数`ProcessData`，函数接收一个`Request`类型的参数，函数返回一个对象，对象的key为模板数据配置的key，value为模板数据配置的值。
+  ```ts
+  // 数据处理方法,可以json配置文件中使用@ProcessData调用
+  function ProcessData(request: Request) {
+    // 数据处理逻辑
+    // 在动态组件中使用request.params获取动态参数
+    // 例如：/item/[item]
+    const itemId = request.params.item; // Access dynamic parameter [item]
+    return { itemId, data: {} };
+  }
+  ```
+- `.json`(模板数据配置)：
+
+```json
+{
+  "$list": "@ProcessData" //调用后端函数
+}
+```
+
+### 暴露API方法：
+
+- 在后端脚本`.backend.ts`中使用特定前缀进行修饰，默认是`Api`前缀修饰函数，函数参数在前端调用函数`$Backend(route).call(Method,arg1,arg2,...)`指定。
+- 定义Api方法：
+
+  ```ts
+  // 暴露的API方法可以在前端脚本中使用，需要使用Api前缀修饰此函数。
+  function ApiMethod(arg1: any, arg2: any, ...args: any[]) {
+    // 处理逻辑
+    return {
+      result: 'success'
+    };
+  }
+  ```
+
+- 前端`.ts`调用Api方法：
+
+  ```ts
+  // 调用Api方法，需要使用Api前缀修饰函数
+  const result = await $Backend('/path').Call('ApiMethod', arg1, arg2);
   ```
 
 ## 前后端数据交互：
