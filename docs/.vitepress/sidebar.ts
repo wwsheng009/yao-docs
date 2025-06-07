@@ -178,8 +178,16 @@ export default {
       link: '/AI/AI生成模型模板'
     },
     {
+      text: 'SUI 提示词',
+      link: '/AI/SUI 提示词'
+    },
+    {
       text: 'Vscode编辑器使用插件快速开发模型',
       link: '/AI/Vscode编辑器使用插件快速开发模型'
+    },
+    {
+      text: 'Yao模型提示词',
+      link: '/AI/Yao模型提示词'
     },
     {
       text: 'Prompts',
@@ -211,10 +219,6 @@ export default {
         {
           text: '简化',
           link: '/AI/sui/简化'
-        },
-        {
-          text: 'SUI ai提示词',
-          link: '/AI/sui/SUI ai提示词'
         }
       ],
       link: '/AI/sui/'
@@ -708,6 +712,10 @@ export default {
         {
           text: 'sui项目中使用flowbite',
           link: '/YaoDSL/SUI/sui项目中使用flowbite'
+        },
+        {
+          text: 'SUI模板引擎',
+          link: '/YaoDSL/SUI/SUI模板引擎'
         }
       ],
       link: '/YaoDSL/SUI/'

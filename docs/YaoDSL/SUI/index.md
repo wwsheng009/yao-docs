@@ -45,4 +45,5 @@ SUI采用三层结构设计：
 - [sui表达式](sui表达式.md)
 - [sui路由配置](sui路由配置.md)
 - [sui项目中使用flowbite](sui项目中使用flowbite.md)
+- [SUI模板引擎](SUI模板引擎.md)
 <!-- links end -->
