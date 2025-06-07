@@ -79,7 +79,7 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
    - 确认需求后，生成所需文件（例如 `.html`、`.css`、`.ts`、`.json`、`.config`、`.backend.ts`）。
    - 每个文件使用代码块包裹，注释指明文件名（例如 `// data/templates/default/page_name/page_name.html`）。
    - 确保文件遵循SUI约定：
-     - 针对于长文件命名，目录和文件名使用 kebab-case。
+     - 针对于长文件命名，目录和文件名使用下划线连接的"蛇形命名法"（snake_case）。
      - 页面模板文件html中的样式使用TailwindCSS和Flowbite。
      - 使用 `s:render` 处理重复刷新区域，`s:for` 处理列表，`s:on-` 处理事件。
      - 定义供前端调用的后端 `Api` 函数。
@@ -127,7 +127,7 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 
 ## 特定需求的示例提示
 
-如果用户请求“类似于文档示例的待办事项列表页面”，生成与 `todolist` 结构相似的文件：
+如果用户请求类似于文档示例的待办事项列表页面，生成与 `todolist` 结构相似的文件：
 
 - `todolist.html`：使用 `s:render`、`s:for` 和 `s:on-click` 实现动态渲染和事件。
 - `todolist.css`：使用标准CSS进行样式设计。
@@ -237,8 +237,8 @@ data/
 
 - **sui_id**：模板ID，对应 `suis` 目录下的配置文件，例如 `web.sui.yao`。
 - **template_id**：模板ID，对应 `data/templates` 目录下的模板目录。
-- **page**：页面目录，对应 `data/templates/template_id/page_name` 目录，位于 `template_id` 目录下的第一层级。
-- **component**：组件目录，对应 `data/templates/template_id/page_name/component_name` 目录。
+- **page**：页面目录，对应 `data/templates/template_id/page_name` 目录，位于 `template_id` 目录下的第一层级,长文件名使用"蛇形命名法"（snake_case）。
+- **component**：组件目录，对应 `data/templates/template_id/page_name/component_name` 目录，长文件名使用"蛇形命名法"（snake_case）。
 
 ## 文件说明
 
@@ -374,7 +374,6 @@ SUI其它的配置文件，比如：suis目录下的配置文件与app.yao文件
 - `s:for`绑定需要渲染的变量
 
 ```html
-<!-- data/templates/default/todolist/todolist.html -->
 <!-- 使用json:初始化后台数据 -->
 <body json:todos="{{ [] }}" data:count:"0">
   <sui-page>
@@ -777,31 +776,8 @@ Tailwind CSS的配置文件，应用于整个项目的样式和主题。
       "count": 15,
       "icon": "💻",
       "description": "科技前沿与创新技术"
-    },
-    {
-      "name": "business",
-      "count": 8,
-      "icon": "💼",
-      "description": "商业管理与市场趋势"
-    },
-    {
-      "name": "science",
-      "count": 12,
-      "icon": "🔬",
-      "description": "科学研究与发现"
-    },
-    {
-      "name": "health",
-      "count": 7,
-      "icon": "🏥",
-      "description": "健康与医疗资讯"
-    },
-    {
-      "name": "education",
-      "count": 9,
-      "icon": "📚",
-      "description": "教育与学习资源"
     }
+    //其它
   ],
   "input": { "data": "hello world" }
 }
@@ -911,7 +887,6 @@ messages:
 - 分离通用 CSS 文件以保持一致的样式，如果需要，使用 `import '@assets/[name].css';` 将它们导入到 CSS 文件中。
 - 组件特定的CSS保存在与组件相同的文件夹中，例如：`component_id.css`,此文件不需要显式引用对应的html文件，由框架自动注入。
 - 为了保持一致性，使用与模型字段相同的 CSS 类名和 ID。
-- 每个文件应该用代码块包裹，顶部注释文件名。
 - 文件系统路由定义网页路由。例如，`index.html` 映射到 `/`，`about.html` 映射到 `/about`。
 
 ### 模板数据来源
@@ -935,18 +910,18 @@ messages:
 
 - 在模板中，可以使用以下的自定义属性进行数据处理与逻辑表达：
 
-  - `s:for`：遍历数据列表，例如，`<div s:for="items" s:for-item="item"> <span>{{ item.name }}</span> </div>`。
+  - `s:for`：遍历数据列表,默认当前项为item,当前索引为index，例如，`<div s:for="items" s:for-item="item"> <span>{{ item.name }}</span> </div>`。
   - `s:for-item`: 遍历数据列表，获取当前项，例如，`<div s:for="items" s:for-item="item"> <span>{{ item.name }}</span> </div>`。
   - `s:for-index`：遍历数据列表，获取当前索引，例如，`<div s:for="items" s:for-item="item" s:for-index="index"> <span>{{ index }}</span> </div>`。
-  - `s:if`：条件渲染，例如，`<span s:if="pet.name">{{ pet.name }}</span>`。
-  - `s:elif`：条件渲染，例如，`<span s:elif="pet.name">{{ pet.name }}</span>`。
+  - `s:if`：条件渲染，例如，`<span s:if="pet.name != null ">{{ pet.name }}</span>`。
+  - `s:elif`：条件渲染，例如，`<span s:elif="pet.name != null ">{{ pet.name }}</span>`。
   - `s:else`：条件渲染，例如，`<span s:else>No name</span>`。
   - `s:trans`：翻译，配置翻译配置文件实现多语言，例如，`<span s:trans>Hello</span>`。
   - `s:on-`：前缀，事件绑定，例如，`<button s:on-click="handleClick" data:id="{{ pet.id }}">点击</button>`。
   - `s:render`：动态渲染区域，例如，`<div s:render="content-area"> {{ data }} </div>`。
   - `s:attr-`：前缀，针对于布尔属性的控件，表达式返回真设置对应的值，例如，`<input type="checkbox" s:attr-checked="{{ isChecked }}">` => `<input type="checkbox" checked>` 或是 `<input type="checkbox" />`。
   - `...key`：前缀，解构复杂的配置属性，例如，`<div is="/pet/" ...key> </div>`
-  - `s:raw=true`：不转义HTML特殊字符，不正确的使用会导致安全风险（如 XSS 攻击），例如，`<div s:raw="true">{{ rawContent }}</div>`。
+  - `s:raw="true"`：不转义HTML特殊字符，不正确的使用会导致安全风险（如 XSS 攻击），例如，`<div s:raw="true">{{ rawContent }}</div>`。
   - `data:`：前缀，传递数据给组件，例如，`<div is="/pet/" data:id="{{ pet.id }}"> </div>`。
   - `json:`：前缀，传递JSON数据给组件，例如，`<div is="/pet/" json:obj="{{ { "name": "value"} }}"> </div>`。
   - `s:data-`：前缀，同`data:`，传递简单类型数据给事件，建议使用`data:`，，例如，`<button s:on-click="handleClick" s:data-id="{{ pet.id }}">点击</button>`。
@@ -958,7 +933,7 @@ messages:
 - 在 HTML 标签内使用 `{{ variable }}` 语法进行数据渲染。
 - 子组件使用表达式`{% %}`渲染父组件传递的属性信息
 - 使用 `s:for` 遍历数据列表，例如，`<div s:for="items" s:for-item="pet"> <span>{{ pet.name }}</span> </div>`。
-- 使用 `s:if`,`s:elif`,`s:else` 进行条件渲染，例如，`<span s:if="pet.name">{{ pet.name }}</span>`。
+- 使用 `s:if`,`s:elif`,`s:else` 进行条件渲染，例如，`<span s:if="pet.name != null ">{{ pet.name }}</span>`。
 - 使用 `s:on-click` 进行事件绑定，例如，`<button s:on-cli ck="handleClick" data:id="{{ pet.id }}">点击</button>`。
 - 在处理布尔类型属性时，比如 `disabled`, `checked`, `selected`,`required`。如果使用到表达式时，需要使用`s:attr-`进行修饰，
   示例：`<input type="checkbox" s:attr-checked="{{True(isCheck)}}" />`，`isCheck == true` 会渲染成`<input type="checkbox" checked />`。
@@ -1029,7 +1004,7 @@ messages:
 
 在页面/组件的json配置文件中，定义一个obj对象，包含html属性，值为一个对象，对象的key为属性名，value为属性值，在页面上使用`...key`来展开属性。
 
-需要注意对象名不要使用驼峰命名，html属性不支持驼峰命名，需要使用连字符命名。
+需要注意属性名要使用小写或是"蛇形命名法"（snake_case），不要使用驼峰命名，html属性不支持驼峰命名，需要使用连字符命名。
 
 ```json
 {
@@ -1597,16 +1572,111 @@ function BeforeRender(request: Request, props: any) {
 
 ## 前后端数据交互：
 
-- 前端脚本`.ts`中读取页面后端数据过程中，优先推荐在模板的html元素中使用`data:`与`json:`属性来传递数据，其次推荐从js脚本全局变量`__sui_data`对象中取数。
+- 前端脚本`.ts`中读取页面后端数据过程中，优先推荐在模板的html顶级元素中使用`data:`与`json:`属性来传递数据，其次推荐从js脚本全局变量`__sui_data`对象中取数。
 - `__sui_data`是一个页面渲染完成后注入js全局变量，类型为json对象，包含了页面的所有数据,在页面初始化`DOMContentLoaded`后可用。
-- 在后端组件或是页面数据配置文件`.json`中配置的数据，在前端全局变量`__sui_data`中读取。
+- 在数据配置文件`.json`中配置的数据，在前端`.ts`全局变量`__sui_data`中读取。
 - 在后端全局数据配置文件`__data.json`中配置的数据，在前端全局变量`__sui_data`中读取，在模板中使用`{{ $global.xxx }}`来访问。
-- 在模板中使用`data:`修饰html元素属性，比如在`<body data:var="value">`。服务器会把后端数据写入html元素属性值，在前端中使用`store.GetData()`获取数据，在事件处理函数中使用`data['var']`获取数据，页面加载后立即可用。
-- 在模板中使用`json:`修饰html元素属性，比如在`<body json:var="{{ {"obj":"value"} }}">`。服务器会把后端数据写入html元素属性值，在前端中使用`store.GetJSON()`获取数据，在事件处理函数中使用`data['var']`获取json数据，页面加载后立即可用。
+- 模板`data:`修饰模板顶级元素属性，比如在`<body data:var="value">`。在页面渲染时服务器会把后端数据写入html模板顶级元素属性值，在前端中使用`store.GetData()`获取数据，在事件处理函数中使用`data['var']`获取数据，页面加载后立即可用。
+- 模板`json:`修饰html模板顶级元素属性，比如在`<body json:var="{{ {"obj":"value"} }}">`。服务器渲染时会把后端数据写入html模板顶级元素属性值，在前端中使用`store.GetJSON()`获取数据，在事件处理函数中使用`data['var']`获取json数据，页面加载后立即可用。
 - 在后端脚本`.backend.ts`中定义一个常量`Constants`,在前端脚本`.ts`中可以使用`self.Constants`来读取。
 - 前端调用后端API：
-  - 使用 `$Backend` 调用后端脚本中的函数，例如：`const result = await $Backend('/path').Call('Method', id);`。
   - 后端脚本中的函数需要以 `Api` 开头，例如：`function ApiMethod(id) { ... }`。
+  - 使用 `$Backend` 调用后端脚本中的函数，例如：`const result = await $Backend('/path').Call('Method', id);`。
+
+### 关键点
+
+- 优先级：推荐使用data:/json:绑定数据到模板顶级元素，便于self.store管理。
+- 动态数据：通过$Backend调用以Api开头的后端函数。
+- 安全：{{ }}自动转义，避免XSS；谨慎使用s:raw="true"。
+
+### 数据流转
+
+1. **数据来源**：
+
+   - **静态数据**：在`.json`配置文件中定义静态数据。
+   - **动态数据**：通过`.json`中`$key: "@FunctionName"`调用`.backend.ts`函数。
+   - **全局数据**：`__data.json`定义全局变量，通过`{{ $global.xxx }}`访问。
+   - **顶级元素属性**：模板中使用`data:`或`json:`绑定数据，渲染到HTML属性。
+
+2. **前端访问**：
+
+   - **全局变量**：`__sui_data`包含页面所有数据，在`DOMContentLoaded`后可用。
+   - **状态管理**：`self.store`读取/更新`data:`/`json:`属性数据。
+   - **常量共享**：`.backend.ts`定义`Constants`，前端通过`self.Constants`访问。
+   - **后端调用**：使用`$Backend('/path').Call('ApiMethod', args)`调用后端API。
+
+3. **模板渲染**：
+   - 使用`{{ variable }}`渲染数据。
+   - 父组件属性通过`{% prop %}`渲染。
+
+### 示例代码
+
+#### 1. 后端数据配置（`page_name.json`）
+
+```json
+{
+  "$todos": "@GetTodos", // 调用后端GetTodos函数
+  "title": "Todo List"
+}
+```
+
+#### 2.页面模板（page_name.html）
+
+```html
+<!-- 在顶级节点 data: 与 json: 可以在前端使用 store.GetData() 与 store.GetJSON() 来获取数据 -->
+<body json:todos="{{ [] }}" data:title="{{ title }}">
+  <h1>{{ title }}</h1>
+  <ul s:render="todo-list">
+    <li s:for="todos" s:for-item="todo">
+      <span>{{ todo.text }}</span>
+      <button s:on-click="addTodo" data:text="New Task">添加</button>
+    </li>
+  </ul>
+</body>
+```
+
+#### 3.后端脚本（page_name.backend.ts）
+
+```ts
+import { Request, Store } from '@yaoapps/client';
+
+const Constants = { defaultStatus: 'pending' }; // 共享常量
+
+//为数据配置文件提供动态数量
+function GetTodos(r: Request) {
+  return new Store('cache').Get('todos') || [];
+}
+
+// 响应前端脚本的API请求
+function ApiAddTodo(text: string) {
+  const todos = new Store('cache').Get('todos') || [];
+  const newTodo = { id: (todos.length + 1).toString(), text, completed: false };
+  todos.push(newTodo);
+  new Store('cache').Set('todos', todos);
+  return newTodo;
+}
+```
+
+#### 4. 前端脚本（page_name.ts）
+
+```ts
+import { Component, EventData, $Backend } from '@yao/sui';
+const self = this as Component;
+
+self.addTodo = async (event: Event, data: EventData) => {
+  const text = data['text'];
+  const newTodo = await $Backend('/page_name').Call('AddTodo', text);
+  const todos = self.store.GetJSON('todos') || [];
+  todos.push(newTodo);
+  self.store.SetJSON('todos', todos);
+  await self.render('todo-list', { todos });
+  console.log(self.Constants.defaultStatus); // 访问常量
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log(__sui_data); // 访问全局数据
+});
+```
 
 ## URL路由配置
 

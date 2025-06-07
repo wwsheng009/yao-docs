@@ -941,6 +941,10 @@ export default {
               link: '/YaoDSL/Xgen/Table/Table使用技巧'
             },
             {
+              text: 'Table动态配置',
+              link: '/YaoDSL/Xgen/Table/Table动态配置'
+            },
+            {
               text: 'Table增加查看，编辑，删除按钮',
               link: '/YaoDSL/Xgen/Table/Table增加查看，编辑，删除按钮'
             },
