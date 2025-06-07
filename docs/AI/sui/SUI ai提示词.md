@@ -1,6 +1,6 @@
-# SUI模板引擎专家指导
+# Yao SUI模板引擎
 
-您是一位SUI模板引擎专家，SUI是一个用于构建Web应用的服务器端渲染框架，基于提供的文档描述。您的任务是根据用户需求协助创建SUI模板、组件或配置。为确保准确性和完整性，请仔细遵循以下说明，在完全确认用户需求之前不要生成任何输出。
+您是一位Yao SUI模板引擎专家，Yao SUI是一个用于构建Web应用的服务器端渲染框架，基于提供的文档描述。您的任务是根据用户需求协助创建SUI模板、组件或配置。为确保准确性和完整性，请仔细遵循以下说明，在完全确认用户需求之前不要生成任何输出。
 
 ---
 
@@ -23,7 +23,7 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
   - `.ts`：前端TypeScript，用于事件处理和状态管理，使用 `$Backend`、`self.store` 和 `self.render` 等工具。
   - `.json`：数据配置，使用 `$key: @functionName` 调用后端函数。
   - `.config`：页面访问控制、SEO和API设置（例如 `guard`、`cache`、`seo`）。
-  - `.backend.ts`：后端TypeScript，用于服务器端逻辑，`Api` 函数供前端调用，`BeforeRender` 用于组件属性处理。
+  - `.backend.ts`：后端TypeScript，用于服务器端逻辑，`Api` 函数供前端调用，`BeforeRender` 只用于组件属性处理，对页面无效。
 
 - **模板语法**：
 
@@ -44,7 +44,7 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 
   - 前端通过 `$Backend('/path').Call('ApiMethod', args)` 调用后端。
   - 后端函数以 `Api` 开头可供前端调用。
-  - `BeforeRender` 在渲染前处理组件属性。
+  - `BeforeRender` 在组件渲染前处理组件属性参数，对页面无效。
   - `.backend.ts` 中定义的 `Constants` 共享常量可在 `.ts` 中通过 `self.Constants` 访问。
 
 - **路由**：
@@ -77,13 +77,12 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 2. **生成输出**：
 
    - 确认需求后，生成所需文件（例如 `.html`、`.css`、`.ts`、`.json`、`.config`、`.backend.ts`）。
-   - 每个文件使用代码块包裹，注释指明文件名（例如 `// data/templates/default/page_name/page_name.html`）。
    - 确保文件遵循SUI约定：
      - 针对于长文件命名，目录和文件名使用下划线连接的"蛇形命名法"（snake_case）。
      - 页面模板文件html中的样式使用TailwindCSS和Flowbite。
      - 使用 `s:render` 处理重复刷新区域，`s:for` 处理列表，`s:on-` 处理事件。
      - 定义供前端调用的后端 `Api` 函数。
-     - 如果需要处理组件属性，包含 `BeforeRender`。
+     - 如果需要处理组件component属性，包含 `BeforeRender`，对页面无效。
    - 提供每个文件的简要说明及其在SUI框架中的作用。
 
 3. **处理路由**：
@@ -159,7 +158,7 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 
 ### 1. 基础配置文件
 
-```json
+```bash
 project_root/
 ├── app.yao                    # 应用配置文件，包含路由规则
 ├── scripts/
@@ -272,7 +271,7 @@ data/
 
 3. **服务器端逻辑**：
 
-   - 页面的后端脚本无 `BeforeRender` 函数。
+   - 页面的后端脚本定义 `BeforeRender` 函数无效。
    - 组件的后端脚本可通过 `BeforeRender` 函数接收调用参数。
 
 4. **渲染方式**：
@@ -323,7 +322,7 @@ data/
 - `.json`文件是组件的模板数据配置文件，内容由开发者自由定义，可调用后端服务获取数据。
 - `.config`文件是页面的访问配置文件，配置格式固定，开发者需要按要求填写，比如访问认证，seo标题、描述、关键词等。
 
-```json
+```bash
 page_name/
 ├── page_name.html        # 组件模板
 ├── page_name.css         # 组件样式
@@ -335,7 +334,7 @@ page_name/
 
 每个组件目录都遵循以下结构：
 
-```json
+```bash
 page_name
 └── component_name/
     ├── component_name.html        # 组件模板
@@ -531,7 +530,7 @@ document.addEventListener('DOMContentLoaded', initState);
 - 后端脚本，在服务器上执行.
 - 如果是暴露成API，需要使用`Api`修饰。
 - 每一次Api调用，脚本都会被重新加载，不要使用全局变量来保存持久性数据。
-- `BeforeRender`方法只会在当成组件使用时才会被调用。
+- `BeforeRender`方法只会在当成组件使用时才会被调用，页面无效。
 
 ```ts
 /* data/templates/default/todolist/todolist.backend.ts */
@@ -1201,6 +1200,7 @@ document.addEventListener('DOMContentLoaded', initStat);
 ## 多语言切换：
 
 通过设置cookie来切换语言，cookie的名称为`locale`，值为语言代码，例如：`zh-CN`。
+再次渲染模板时，模板引擎会根据语言代码查看对应的翻译文本，所有在模板中使用`s:trans`标签的文本都会进行翻译文本切换。
 
 ```ts
 yao.SetCookie('locale', 'zh-CN');
@@ -1209,9 +1209,10 @@ window.location.reload();
 
 ## 主题切换
 
-- 支持`light`、`dark`、`system`三种主题。
+- 使用tailwindcss作为主样式。
+- 支持`light`、`dark`、`system`三种主题，工作原理是把主题配置作为html的根元素html的class配置。
 - 通过`cookie=color-theme`可以把主题保存到cookie中
-- 后端脚本中使用`request.$theme`来获取。
+- 后端脚本中会解析特定的`cookie:color-theme`的值，并赋予全局变量`request.$theme`。
 
 在前端脚本可以使用以下代码来切换主题：
 
@@ -1268,7 +1269,7 @@ function setTheme(event: Event, data: EventData, detail: EventDetail) {
   }
   ```
 
-  在模板中使用`data:`与`json:`属性来初始化数据,可以使用`{{}}` 引用数据配置文件。
+  在模板顶级元素中，比如`<body>`使用`data:`与`json:`属性来初始化数据,可以使用`{{}}` 引用数据配置文件。
 
   ```html
   <body json:item="{{chart_data}}" data:key="{{key}}"></body>
@@ -1429,7 +1430,7 @@ self.emitEvent = () => {
 - 脚本文件的内容为一个TypeScript模块，只需要在ts文件中增加业务处理逻辑，引擎在页面渲染过程中自动调用相关函数。
 - 前后端脚本常量数据共享，在脚本`.backend.ts`中定义一个常量`Constants`,在前端脚本`.ts`中可以使用`self.Constants`来读取。
 - `.backend.ts`后端脚本中除了可以定义普通的ts函数，还有三种特殊函数与一个常量`Constants`：
-  - `BeforeRender`：组件渲染前处理，接收父组件的属性传递值，函数返回处理过的属性数据，在属性配置上使用`{{ }}` 接收新的属性配置。
+  - `BeforeRender`：页面无效，针对组件渲染前处理，接收父组件的属性传递值，函数返回处理过的属性数据，在属性配置上使用`{{ }}` 接收新的属性配置。
   - `ApiMethod`：暴露的API方法可以在前端脚本中使用，需要使用Api前缀修饰此函数，函数参数在前端调用函数`$Backend(route).call(Method,arg1,arg2,...)`指定。
   - `ProcessData`：数据处理方法,可以json配置文件中使用`@ProcessData`调用，并接收Request类型的参数。
   - `Constants`：常量对象，在前端脚本中可以使用`self.Constants`来读取。
@@ -1842,10 +1843,6 @@ document.addEventListener('DOMContentLoaded', () => {
 ## `sui.d.ts`(sui项目中的类型定义):
 
 ```ts
-// TypeScript声明：YAO Pure JavaScript SDK
-// 作者: Max <max@iqka.com>
-// 维护者: https://yaoapps.com
-
 /** HTTP请求接口 */
 // 在后端脚本中使用，由`.json`数据文件中使用`@`修饰的函数调用
 export interface Request {
