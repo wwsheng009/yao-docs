@@ -462,6 +462,29 @@ export default {
       link: '/YaoDSL/Flow/'
     },
     {
+      text: 'mcp',
+      collapsed: true,
+      items: [
+        {
+          text: '官方文档',
+          link: '/YaoDSL/mcp/官方文档'
+        },
+        {
+          text: '架构',
+          link: '/YaoDSL/mcp/架构'
+        },
+        {
+          text: 'jsapi',
+          link: '/YaoDSL/mcp/jsapi'
+        },
+        {
+          text: 'resouce配置',
+          link: '/YaoDSL/mcp/resouce配置'
+        }
+      ],
+      link: '/YaoDSL/mcp/'
+    },
+    {
       text: 'Model',
       collapsed: true,
       items: [
@@ -545,6 +568,49 @@ export default {
         }
       ],
       link: '/YaoDSL/neo/'
+    },
+    {
+      text: 'openapi',
+      collapsed: true,
+      items: [
+        {
+          text: '别名',
+          link: '/YaoDSL/openapi/别名'
+        },
+        {
+          text: '权限角色一',
+          link: '/YaoDSL/openapi/权限角色一'
+        },
+        {
+          text: '权限角色二',
+          link: '/YaoDSL/openapi/权限角色二'
+        },
+        {
+          text: '特性',
+          link: '/YaoDSL/openapi/特性'
+        },
+        {
+          text: '限流机制',
+          link: '/YaoDSL/openapi/限流机制'
+        },
+        {
+          text: '消息通知',
+          link: '/YaoDSL/openapi/消息通知'
+        },
+        {
+          text: '自定义用户验证',
+          link: '/YaoDSL/openapi/自定义用户验证'
+        },
+        {
+          text: 'OpenAPI 模块架构与源码解析入门文档',
+          link: '/YaoDSL/openapi/OpenAPI 模块架构与源码解析入门文档'
+        },
+        {
+          text: 'OpenAPI-综合说明文档',
+          link: '/YaoDSL/openapi/OpenAPI-综合说明文档'
+        }
+      ],
+      link: '/YaoDSL/openapi/'
     },
     {
       text: 'Pipe',
@@ -917,6 +983,17 @@ export default {
           link: '/YaoDSL/Xgen/Neo/'
         },
         {
+          text: 'openapi',
+          collapsed: true,
+          items: [
+            {
+              text: 'crypto.subtle',
+              link: '/YaoDSL/Xgen/openapi/crypto.subtle'
+            }
+          ],
+          link: '/YaoDSL/Xgen/openapi/'
+        },
+        {
           text: 'Table',
           collapsed: true,
           items: [
@@ -970,6 +1047,17 @@ export default {
             }
           ],
           link: '/YaoDSL/Xgen/Table/'
+        },
+        {
+          text: 'v1.0',
+          collapsed: true,
+          items: [
+            {
+              text: '聊天布局配置',
+              link: '/YaoDSL/Xgen/v1.0/聊天布局配置'
+            }
+          ],
+          link: '/YaoDSL/Xgen/v1.0/'
         },
         {
           text: 'Xgen控件',
@@ -1356,6 +1444,10 @@ export default {
         {
           text: '处理器yao.component.selectoptions修正',
           link: '/源代码/Yao/处理器yao.component.selectoptions修正'
+        },
+        {
+          text: '调试',
+          link: '/源代码/Yao/调试'
         },
         {
           text: 'Compute 处理器无法处理关联表',
