@@ -138,13 +138,13 @@ Use(MCP, 'customer', (client) => {
 
 // Subscribe to resource updates
 Use(MCP, 'customer', (client) => {
-  await client.SubscribeResource('customers://123');
+  client.SubscribeResource('customers://123');
   console.log('Subscribed to customer updates');
 });
 
 // Unsubscribe from resource updates
 Use(MCP, 'customer', (client) => {
-  await client.UnsubscribeResource('customers://123');
+  client.UnsubscribeResource('customers://123');
   console.log('Unsubscribed from customer updates');
 });
 ```
@@ -193,8 +193,8 @@ Use(MCP, 'client_id', (client) => {
 ```javascript
 // Connect to MCP server with options
 Use(MCP, 'github', (client) => {
-  await client.Connect({
-    headers: { 'Authorization': 'Bearer token' },
+  client.Connect({
+    headers: { Authorization: 'Bearer token' },
     timeout: 5000,
     max_retries: 3,
     retry_delay: 1000
@@ -203,18 +203,18 @@ Use(MCP, 'github', (client) => {
 
 // Initialize the MCP session
 Use(MCP, 'github', (client) => {
-  const initResult = await client.Initialize();
+  const initResult = client.Initialize();
   console.log('Server capabilities:', initResult.capabilities);
 });
 
 // Mark the session as initialized
 Use(MCP, 'github', (client) => {
-  await client.Initialized();
+  client.Initialized();
 });
 
 // Disconnect from MCP server
 Use(MCP, 'github', (client) => {
-  await client.Disconnect();
+  client.Disconnect();
   console.log('Disconnected');
 });
 
@@ -242,7 +242,7 @@ Use(MCP, 'github', (client) => {
 ```javascript
 // Set log level
 Use(MCP, 'github', (client) => {
-  await client.SetLogLevel('debug'); // "debug" | "info" | "warn" | "error"
+  client.SetLogLevel('debug'); // "debug" | "info" | "warn" | "error"
 });
 ```
 
@@ -251,7 +251,7 @@ Use(MCP, 'github', (client) => {
 ```javascript
 // Cancel a request
 Use(MCP, 'github', (client) => {
-  await client.CancelRequest('request_id_123');
+  client.CancelRequest('request_id_123');
   console.log('Request cancelled');
 });
 ```
@@ -261,14 +261,14 @@ Use(MCP, 'github', (client) => {
 ```javascript
 // Create a progress token
 Use(MCP, 'github', (client) => {
-  const token = await client.CreateProgress(100);
+  const token = client.CreateProgress(100);
   console.log('Progress token:', token);
   return token;
 });
 
 // Update progress
 Use(MCP, 'github', (client) => {
-  await client.UpdateProgress(token, 50);
+  client.UpdateProgress(token, 50);
   console.log('Progress: 50%');
 });
 ```

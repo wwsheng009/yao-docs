@@ -1,0 +1,312 @@
+{
+  "name": "::Category List",
+  "action": {
+    "bind": {
+      "model": "category",
+      "option": {
+        "soft_deletes": true
+      }
+    },
+    "setting": {
+      "name": "yao.list.Setting",
+      "guard": "bearer-jwt",
+      "process": "yao.list.Xgen",
+      "default": [null, null]
+    },
+    "get": {
+      "name": "yao.list.Get", 
+      "guard": "bearer-jwt",
+      "default": [null]
+    },
+    "save": {
+      "name": "yao.list.Save",
+      "guard": "bearer-jwt", 
+      "default": [null]
+    }
+  },
+  "layout": {
+    "list": {
+      "props": {
+        "bordered": true,
+        "size": "middle",
+        "scroll": {
+          "x": 1200
+        }
+      },
+      "columns": [
+        {
+          "name": "id",
+          "title": "::ID",
+          "width": 6
+        },
+        {
+          "name": "name",
+          "title": "::Name",
+          "width": 8
+        },
+        {
+          "name": "description", 
+          "title": "::Description",
+          "width": 10
+        },
+        {
+          "name": "parent_id",
+          "title": "::Parent Category",
+          "width": 6
+        },
+        {
+          "name": "sort",
+          "title": "::Sort Order", 
+          "width": 4
+        },
+        {
+          "name": "status",
+          "title": "::Status",
+          "width": 4
+        },
+        {
+          "name": "created_at",
+          "title": "::Created At",
+          "width": 6
+        },
+        {
+          "name": "updated_at", 
+          "title": "::Updated At",
+          "width": 6
+        }
+      ]
+    },
+    "config": {
+      "pagination": {
+        "pageSize": 20,
+        "showSizeChanger": true,
+        "showQuickJumper": true
+      },
+      "rowSelection": {
+        "type": "checkbox"
+      }
+    }
+  },
+  "fields": {
+    "list": {
+      "id": {
+        "key": "id",
+        "bind": "id",
+        "title": "::ID",
+        "type": "integer",
+        "view": {
+          "type": "Text",
+          "props": {
+            "copyable": true
+          }
+        },
+        "edit": {
+          "type": "Hidden"
+        }
+      },
+      "name": {
+        "key": "name", 
+        "bind": "name",
+        "title": "::Name",
+        "type": "string",
+        "view": {
+          "type": "Text",
+          "props": {
+            "ellipsis": true,
+            "copyable": true
+          }
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "::Enter category name",
+            "maxLength": 100,
+            "required": true
+          }
+        }
+      },
+      "description": {
+        "key": "description",
+        "bind": "description", 
+        "title": "::Description",
+        "type": "text",
+        "view": {
+          "type": "Text",
+          "props": {
+            "ellipsis": true,
+            "rows": 2
+          }
+        },
+        "edit": {
+          "type": "TextArea",
+          "props": {
+            "placeholder": "::Enter category description",
+            "rows": 4,
+            "maxLength": 500,
+            "showCount": true
+          }
+        }
+      },
+      "parent_id": {
+        "key": "parent_id",
+        "bind": "parent_id",
+        "title": "::Parent Category",
+        "type": "integer",
+        "view": {
+          "type": "Text",
+          "props": {
+            "value": "$L(category.parent.name)"
+          }
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "::Select parent category",
+            "allowClear": true,
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.GetOptions",
+                "args": ["category"]
+              }
+            }
+          }
+        }
+      },
+      "sort": {
+        "key": "sort",
+        "bind": "sort",
+        "title": "::Sort Order",
+        "type": "integer",
+        "view": {
+          "type": "Text"
+        },
+        "edit": {
+          "type": "Number",
+          "props": {
+            "placeholder": "::Enter sort order",
+            "min": 0,
+            "max": 9999,
+            "defaultValue": 0
+          }
+        }
+      },
+      "status": {
+        "key": "status",
+        "bind": "status",
+        "title": "::Status",
+        "type": "string",
+        "view": {
+          "type": "Tag",
+          "props": {
+            "color": "$L(status.color)"
+          }
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "::Select status",
+            "options": [
+              {
+                "label": "::Active",
+                "value": "active",
+                "color": "green"
+              },
+              {
+                "label": "::Inactive", 
+                "value": "inactive",
+                "color": "red"
+              }
+            ],
+            "defaultValue": "active"
+          }
+        }
+      },
+      "created_at": {
+        "key": "created_at",
+        "bind": "created_at",
+        "title": "::Created At",
+        "type": "datetime",
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        },
+        "edit": {
+          "type": "Hidden"
+        }
+      },
+      "updated_at": {
+        "key": "updated_at", 
+        "bind": "updated_at",
+        "title": "::Updated At",
+        "type": "datetime",
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        },
+        "edit": {
+          "type": "Hidden"
+        }
+      }
+    }
+  },
+  "config": {
+    "full": true,
+    "actions": {
+      "create": {
+        "title": "::New Category",
+        "icon": "icon-plus",
+        "type": "primary"
+      },
+      "edit": {
+        "title": "::Edit", 
+        "icon": "icon-edit"
+      },
+      "delete": {
+        "title": "::Delete",
+        "icon": "icon-trash-2",
+        "type": "danger",
+        "confirm": {
+          "title": "::Confirm Delete",
+          "content": "::Are you sure you want to delete this category?"
+        }
+      },
+      "refresh": {
+        "title": "::Refresh",
+        "icon": "icon-refresh-cw"
+      }
+    },
+    "filters": [
+      {
+        "name": "name",
+        "label": "::Name",
+        "type": "input",
+        "placeholder": "::Search by name"
+      },
+      {
+        "name": "status",
+        "label": "::Status",
+        "type": "select", 
+        "options": [
+          {"label": "::All", "value": ""},
+          {"label": "::Active", "value": "active"},
+          {"label": "::Inactive", "value": "inactive"}
+        ]
+      },
+      {
+        "name": "parent_id",
+        "label": "::Parent Category",
+        "type": "select",
+        "xProps": {
+          "$remote": {
+            "process": "yao.component.GetOptions", 
+            "args": ["category"]
+          }
+        }
+      }
+    ]
+  }
+}
