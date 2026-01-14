@@ -135,6 +135,18 @@ Use(MCP, 'customer', (client) => {
   const content = client.ReadResource('customers://123');
   return content.contents;
 });
+
+// Subscribe to resource updates
+Use(MCP, 'customer', (client) => {
+  await client.SubscribeResource('customers://123');
+  console.log('Subscribed to customer updates');
+});
+
+// Unsubscribe from resource updates
+Use(MCP, 'customer', (client) => {
+  await client.UnsubscribeResource('customers://123');
+  console.log('Unsubscribed from customer updates');
+});
 ```
 
 ### Prompt Operations
@@ -174,6 +186,180 @@ Use(MCP, 'client_id', (client) => {
 Use(MCP, 'client_id', (client) => {
   return client.ListSamples('resource', 'resource_name');
 });
+```
+
+### Connection Operations
+
+```javascript
+// Connect to MCP server with options
+Use(MCP, 'github', (client) => {
+  await client.Connect({
+    headers: { 'Authorization': 'Bearer token' },
+    timeout: 5000,
+    max_retries: 3,
+    retry_delay: 1000
+  });
+});
+
+// Initialize the MCP session
+Use(MCP, 'github', (client) => {
+  const initResult = await client.Initialize();
+  console.log('Server capabilities:', initResult.capabilities);
+});
+
+// Mark the session as initialized
+Use(MCP, 'github', (client) => {
+  await client.Initialized();
+});
+
+// Disconnect from MCP server
+Use(MCP, 'github', (client) => {
+  await client.Disconnect();
+  console.log('Disconnected');
+});
+
+// Check connection status
+Use(MCP, 'github', (client) => {
+  const connected = client.IsConnected();
+  console.log('Connected:', connected);
+});
+
+// Get current connection state
+Use(MCP, 'github', (client) => {
+  const state = client.State();
+  console.log('Current state:', state);
+});
+
+// Get client information
+Use(MCP, 'github', (client) => {
+  const info = client.Info();
+  console.log('Client info:', info);
+});
+```
+
+### Logging Operations
+
+```javascript
+// Set log level
+Use(MCP, 'github', (client) => {
+  await client.SetLogLevel('debug'); // "debug" | "info" | "warn" | "error"
+});
+```
+
+### Request Management
+
+```javascript
+// Cancel a request
+Use(MCP, 'github', (client) => {
+  await client.CancelRequest('request_id_123');
+  console.log('Request cancelled');
+});
+```
+
+### Progress Tracking
+
+```javascript
+// Create a progress token
+Use(MCP, 'github', (client) => {
+  const token = await client.CreateProgress(100);
+  console.log('Progress token:', token);
+  return token;
+});
+
+// Update progress
+Use(MCP, 'github', (client) => {
+  await client.UpdateProgress(token, 50);
+  console.log('Progress: 50%');
+});
+```
+
+### Meta Info
+
+```javascript
+// Get client metadata
+Use(MCP, 'github', (client) => {
+  const meta = client.GetMetaInfo();
+  console.log('Meta info:', meta);
+  return meta;
+});
+```
+
+### Event Handling
+
+**Important**: Due to V8 context thread-safety limitations, JavaScript function callbacks are NOT supported. Only Yao process handlers are supported.
+
+```javascript
+// Register event handler with Yao process
+Use(MCP, 'github', (client) => {
+  // First argument: event type
+  // Second argument: Yao process name
+  // Additional arguments: custom data to pass to the process
+  client.OnEvent('connected', 'scripts.mcp.handleConnectedEvent', 'github');
+
+  client.OnEvent('disconnected', 'scripts.mcp.handleDisconnectedEvent');
+
+  client.OnEvent('error', 'scripts.mcp.handleErrorEvent', {
+    clientId: 'github'
+  });
+});
+
+// Register notification handler with Yao process
+Use(MCP, 'github', (client) => {
+  // First argument: notification method
+  // Second argument: Yao process name
+  // Additional arguments: custom data to pass to the process
+  client.OnNotification(
+    'notifications/message',
+    'scripts.mcp.handleNotification',
+    'github'
+  );
+
+  client.OnNotification(
+    'notifications/progress',
+    'scripts.mcp.handleProgress',
+    { updateUI: true }
+  );
+});
+
+// Register error handler with Yao process
+Use(MCP, 'github', (client) => {
+  // First argument: Yao process name
+  // Additional arguments: custom data to pass to the process
+  client.OnError('scripts.mcp.handleError', { clientId: 'github' });
+
+  client.OnError('scripts.mcp.logError', 'error-log-file');
+});
+```
+
+**Event Handler Process Signature**:
+
+Your Yao process will receive event data as the first argument, followed by any additional arguments you passed:
+
+```javascript
+// In your Yao process (e.g., scripts/mcp/handleConnectedEvent.yao)
+// Args: [event, ...customArgs]
+function handleConnectedEvent(event, clientId) {
+  console.log('Connected event:', event);
+  console.log('Client ID:', clientId);
+  // Process event...
+  return;
+}
+```
+
+**Connection Options**:
+
+When calling `Connect()`, you can provide the following options:
+
+```javascript
+{
+  headers: {              // Optional: HTTP headers
+    'Authorization': 'Bearer token',
+    'Custom-Header': 'value'
+  },
+  timeout: 5000,         // Optional: Timeout in milliseconds
+  max_retries: 3,       // Optional: Maximum retry attempts
+  retry_delay: 1000      // Optional: Delay between retries in milliseconds
+}
 ```
 
 ## Complete Examples
@@ -296,6 +482,8 @@ function complexWorkflow(customerId) {
 
 - `ListResources(cursor?: string): ListResourcesResponse` - List all available resources
 - `ReadResource(uri: string): ReadResourceResponse` - Read a resource by URI
+- `SubscribeResource(uri: string): Promise<void>` - Subscribe to resource updates
+- `UnsubscribeResource(uri: string): Promise<void>` - Unsubscribe from resource updates
 
 ### Prompt Methods
 
@@ -306,6 +494,41 @@ function complexWorkflow(customerId) {
 
 - `ListSamples(itemType: "tool"|"resource", itemName: string): ListSamplesResponse` - List samples for a tool or resource
 - `GetSample(itemType: "tool"|"resource", itemName: string, index: number): SampleData` - Get a specific sample by index
+
+### Connection Methods
+
+- `Connect(options?: ConnectionOptions): Promise<void>` - Connect to MCP server with optional options
+- `Initialize(): Promise<InitializeResponse>` - Initialize the MCP session
+- `Initialized(): Promise<void>` - Mark the session as initialized
+- `Disconnect(): Promise<void>` - Disconnect from MCP server
+- `IsConnected(): boolean` - Check if connected to MCP server
+- `State(): ConnectionState` - Get current connection state
+- `Info(): ClientInfo` - Get client information
+
+### Logging Methods
+
+- `SetLogLevel(level: "debug"|"info"|"warn"|"error"): Promise<void>` - Set the log level
+
+### Request Management Methods
+
+- `CancelRequest(requestID: string|number): Promise<void>` - Cancel an ongoing request
+
+### Progress Tracking Methods
+
+- `CreateProgress(total: number): Promise<number>` - Create a progress token and return it
+- `UpdateProgress(token: number, progress: number): Promise<void>` - Update progress for a token
+
+### Meta Info Methods
+
+- `GetMetaInfo(): MetaInfo` - Get metadata about the client
+
+### Event Handler Methods
+
+- `OnEvent(eventType: string, handler: string, ...args): void` - Register event handler
+- `OnNotification(method: string, handler: string, ...args): void` - Register notification handler
+- `OnError(handler: string, ...args): void` - Register error handler
+
+**Important**: Due to V8 context thread-safety limitations, JavaScript function callbacks are **NOT supported**. Only Yao process handlers are supported.
 
 ### Resource Management Methods
 
