@@ -100,13 +100,11 @@ CUI（通用用户界面）动态表格配置用于在没有数据库模型定�
 ### 逻辑说明
 
 1. **字段定义**：
-
    - `fields.filter`：定义筛选区域的字段，例如“模型”字段使用 `Select` 组件，支持下拉选择。
    - `fields.table`：定义表格展示字段，例如“模型”字段使用 `Text` 组件展示数据。
    - `bind` 属性用于将字段与数据源或查询条件关联，例如 `where.model.eq` 表示筛选条件，`model` 表示数据字段。
 
 2. **布局定义**：
-
    - `layout.header`：定义表头区域，可包含操作按钮或预设内容。
    - `layout.filter`：定义筛选区域的布局，指定显示的筛选字段。
    - `layout.table`：定义表格主体的列，包含列名、宽度等属性。
@@ -235,18 +233,15 @@ function search(
 ### 逻辑说明
 
 1. **配置文件**：
-
    - 仅定义 `action.setting` 和 `action.search` 处理器路径。
    - 不包含 `fields` 和 `layout`，这些内容由 `setting` 函数动态生成。
 
 2. **setting 处理器**：
-
    - `setting` 函数返回完整的表格配置，包括 `fields` 和 `layout`。
    - 字段定义与静态配置一致，但支持动态生成。例如，可根据 `tableId` 或其他运行时参数动态调整 `options` 或列宽。
    - 不需要额外的 `layout` 节点，配置直接嵌入返回对象。
 
 3. **search 处理器**：
-
    - `search` 函数返回表格数据，包含分页信息（`page`、`pagecnt`、`pagesize`等）和数据内容（`data`）。
    - 数据结构需与 `setting` 函数定义的字段一致，例如包含 `model` 字段。
 
@@ -270,12 +265,10 @@ function search(
 ### 联系
 
 1. **无需模型绑定**：
-
    - 两者均无需绑定数据库模型（即无需 `"bind": "models"`）。
    - 适用于无数据库表或临时数据展示的场景。
 
 2. **处理器支持**：
-
    - 两者均通过 `action.search` 处理器获取数据。
    - 配置文件均位于 `tables/models.json`。
 

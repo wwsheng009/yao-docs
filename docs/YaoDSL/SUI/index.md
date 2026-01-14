@@ -38,6 +38,7 @@ SUI采用三层结构设计：
 - [sui模板关联数据定义](sui模板关联数据定义.md)
 - [sui模板语法](sui模板语法.md)
 - [sui的命令工具](sui的命令工具.md)
+- [sui简化](sui简化.md)
 - [sui组件初始化的细节](sui组件初始化的细节.md)
 - [sui组件化开发](sui组件化开发.md)
 - [sui组件的状态管理state](sui组件的状态管理state.md)

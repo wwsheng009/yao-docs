@@ -4,6 +4,7 @@
 
 - [环境变量](环境变量.md)
 - [处理器](处理器/index)
+- [Agent](Agent/index)
 - [AIGC](AIGC/index)
 - [API](API/index)
 - [Connector](Connector/index)

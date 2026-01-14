@@ -11,7 +11,6 @@ pipe 的核心设计结构如下：
   - 使用 `$out[0]，$out[1]...` 来设置节点的输出数据
 - pipe 支持多种类型的节点，每种类型都有其特定的功能：
   :::
-
   - Process：调用 Yao 处理器，执行预定义的处理逻辑
   - Switch：根据条件判断执行不同的分支节点
   - AI：调用 AI 处理器，支持智能对话和处理
@@ -180,10 +179,10 @@ type Context struct {
 
 使用处理器来调用 pipe.
 
-- pipe.run <pipe_id>
-- pipe.resume <pipe_id>
-- pipe.resumewith <pipe_id>
-- pipe.close <pipe_id>
+- pipe.run `<pipe_id>`
+- pipe.resume `<pipe_id>`
+- pipe.resumewith `<pipe_id>`
+- pipe.close `<pipe_id>`
 
 使用以下的处理器来调用 pipe：
 ::: v-pre
@@ -433,7 +432,6 @@ Process('pipe.CreateWith', dsl, { placeholder: 'hello world' });
 
 1. 接收用户输入命令
 2. 如果命令是`translate`,则调用 ai 翻译单词,在调用 ai 的过程中，又有子节点
-
    - 进行检查 ai 返回的信息。
    - 如果 ai 返回的信息符合要求，则跳转到`print`节点，打印输出结果，然后再等待用户输入，否则跳转到`EOF`节点。
 

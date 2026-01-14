@@ -97,13 +97,6 @@ yao run scripts.init.CreateForm salesorder
 
 新的 `Form` 访问地址: http://127.0.0.1:5099/admin/x/Form/salesorder/0/edit
 
-效果：
-
-Table:
-![Table](./examples/salesorder/chatgpt-salesorder3.png)
-Form:
-![Form](./examples/salesorder/chatgpt-salesorder4.png)
-
 ### Step4 修改菜单配置文件
 
 如果需要加入菜单，需要如下的操作。

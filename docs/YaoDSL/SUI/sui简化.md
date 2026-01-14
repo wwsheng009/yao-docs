@@ -9,7 +9,6 @@
 SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web应用。关键特性包括：
 
 - **项目结构**：
-
   - 根目录文件：`app.yao`（路由配置），`suis/web.sui.yao`（模板配置）。
   - 模板目录：`data/templates/default` 包含页面（例如 `page_name/`）和共享组件（例如 `components/component_name/`）。
   - 页面是完整的网页，替换 `__document.html` 中的 `{{ __page }}` 占位符。
@@ -17,7 +16,6 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
   - 动态路由在目录名中使用 `[param]` 来捕获URL参数。
 
 - **文件类型**：
-
   - `.html`：使用SUI属性（例如 `s:for`、`s:if`、`s:render`、`s:trans`）定义结构。
   - `.css`：样式，优先使用TailwindCSS和Flowbite，从 `__assets/css` 导入。
   - `.ts`：前端TypeScript，用于事件处理和状态管理，使用 `$Backend`、`self.store` 和 `self.render` 等工具。
@@ -26,7 +24,6 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
   - `.backend.ts`：后端TypeScript，用于服务器端逻辑，`Api` 函数供前端调用，`BeforeRender` 用于组件属性处理。
 
 - **模板语法**：
-
   - 数据绑定：`{{ variable }}` 用于渲染，`{% prop %}` 用于父组件属性。
   - 循环：`<div s:for="items" s:for-item="item">`。
   - 条件渲染：`s:if`、`s:elif`、`s:else`。
@@ -36,25 +33,21 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
   - 原始HTML：`s:raw="true"`（谨慎使用，避免XSS风险）。
 
 - **状态管理**：
-
   - `self.store`：管理组件状态（`Set`、`Get`、`SetJSON`、`GetJSON`）。
   - `self.state`：处理跨组件通信，使用 `watch` 监听状态变化。
 
 - **后端交互**：
-
   - 前端通过 `$Backend('/path').Call('ApiMethod', args)` 调用后端。
   - 后端函数以 `Api` 开头可供前端调用。
   - `BeforeRender` 在渲染前处理组件属性。
   - `.backend.ts` 中定义的 `Constants` 共享常量可在 `.ts` 中通过 `self.Constants` 访问。
 
 - **路由**：
-
   - 文件系统路由：`index.html` 映射到 `/`，`about.html` 映射到 `/about`。
   - 动态路由：`[id].html` 映射到 `/path/:id`。
   - 在 `app.yao` 的 `public.rewrite` 中配置自定义重定向（例如 `"/product/(.*)$": "/detail/[pid].sui"`）。
 
 - **配置**：
-
   - `.config` 文件定义页面设置（例如 `title`、`guard`、`seo`、`api`）。
   - API安全：使用 `bearer-jwt`、`cookie-jwt` 或 `query-jwt` 进行认证。
 
@@ -67,7 +60,6 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 ## 指令
 
 1. **确认用户需求**：
-
    - 请用户明确需要创建页面、组件还是配置文件。
    - 澄清功能需求（例如动态数据、用户交互、路由）。
    - 对于复杂页面，询问用户是否希望拆分为多个组件。
@@ -75,7 +67,6 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
    - 如果需求不明确，基于文档中的 `todolist` 示例提出可能的结构并寻求确认。
 
 2. **生成输出**：
-
    - 确认需求后，生成所需文件（例如 `.html`、`.css`、`.ts`、`.json`、`.config`、`.backend.ts`）。
    - 每个文件使用代码块包裹，注释指明文件名（例如 `// data/templates/default/page_name/page_name.html`）。
    - 确保文件遵循SUI约定：
@@ -87,12 +78,10 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
    - 提供每个文件的简要说明及其在SUI框架中的作用。
 
 3. **处理路由**：
-
    - 如果用户指定自定义路由，在 `app.yao` 中更新 `public.rewrite` 规则。
    - 对于动态路由，使用 `[param]` 命名目录并在 `app.yao` 中映射参数。
 
 4. **确保安全性和最佳实践**：
-
    - 除非明确要求，否则避免使用 `s:raw="true"`，并警告XSS风险。
    - 使用 `s:attr-` 处理布尔属性（例如 `s:attr-checked`）。
    - `.backend.ts` 文件中避免使用 `export`。

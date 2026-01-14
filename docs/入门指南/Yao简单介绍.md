@@ -67,7 +67,6 @@ YAO 使用以下核心技术栈：
 ### 后端模块
 
 1. **Yao API 服务**
-
    - 提供 API 网关功能
    - 支持 REST API 和 WebSocket
    - 内置用户认证
@@ -76,13 +75,11 @@ YAO 使用以下核心技术栈：
      [GitHub 仓库](https://github.com/yaoapp/yao)
 
 2. **Gou 引擎框架**
-
    - 流程编排处理器
    - JS V8 引擎集成
      [GitHub 仓库](https://github.com/yaoapp/gou)
 
 3. **Xun ORM**
-
    - 数据库驱动
      [GitHub 仓库](https://github.com/yaoapp/xun)
 

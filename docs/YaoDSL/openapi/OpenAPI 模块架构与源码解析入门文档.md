@@ -86,7 +86,6 @@ Yao 的系统 API 采用了一套完善的 OAuth2 风格认证机制。
 如果想基于此代码库进行二次开发或 Debug，请遵循以下步骤：
 
 1.  **环境搭建**:
-
     - 确保安装 Go 1.20+。
     - 查看 `Makefile`，通常包含 `make test` 或 `make run` 指令。
     - 查看 `go.mod` 了解依赖关系，特别是对 `yaoapp/gou` (运行时核心) 和 `yaoapp/xun` (ORM核心) 的依赖。
@@ -104,7 +103,6 @@ Yao 的系统 API 采用了一套完善的 OAuth2 风格认证机制。
     ```
 
 3.  **调试重点**:
-
     - **Trace**: 关注 `openapi/trace`。当你觉得 AI 回答很慢或者逻辑不对时，这个模块负责记录每一步的耗时和输入输出。
     - **Tests**: 目录下的 `openapi/tests/` 非常丰富。例如 `openapi/tests/chat_test.go` 或 `openapi/tests/kb/collection_test.go`。**运行这些单元测试是理解 API 输入输出格式的最快方式。**
 

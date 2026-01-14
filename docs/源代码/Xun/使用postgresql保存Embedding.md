@@ -11,7 +11,6 @@ pgvector 插件有一个重要的限制：向量维度索引不能超过 2000。
 ### pgvector vs pgvector-rs
 
 - pgvector：
-
   - 最大支持 2000 维向量
   - 安装配置简单
   - 社区活跃，维护良好

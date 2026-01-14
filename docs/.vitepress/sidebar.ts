@@ -166,28 +166,16 @@ export default {
   ],
   '/AI/': [
     {
-      text: '使用AI创建模型定义',
-      link: '/AI/使用AI创建模型定义'
-    },
-    {
       text: '使用AI开发YAO应用',
       link: '/AI/使用AI开发YAO应用'
     },
     {
-      text: 'AI生成模型模板',
-      link: '/AI/AI生成模型模板'
-    },
-    {
-      text: 'SUI 提示词',
-      link: '/AI/SUI 提示词'
+      text: 'ai编程',
+      link: '/AI/ai编程'
     },
     {
       text: 'Vscode编辑器使用插件快速开发模型',
       link: '/AI/Vscode编辑器使用插件快速开发模型'
-    },
-    {
-      text: 'Yao模型提示词',
-      link: '/AI/Yao模型提示词'
     },
     {
       text: 'Prompts',
@@ -211,17 +199,6 @@ export default {
         }
       ],
       link: '/AI/Prompts/'
-    },
-    {
-      text: 'sui',
-      collapsed: true,
-      items: [
-        {
-          text: '简化',
-          link: '/AI/sui/简化'
-        }
-      ],
-      link: '/AI/sui/'
     }
   ],
   '/Studio/': [
@@ -279,6 +256,10 @@ export default {
           link: '/YaoDSL/处理器/处理器列表'
         },
         {
+          text: '导入种子数据',
+          link: '/YaoDSL/处理器/导入种子数据'
+        },
+        {
           text: '会话数据',
           link: '/YaoDSL/处理器/会话数据'
         },
@@ -334,6 +315,87 @@ export default {
       link: '/YaoDSL/处理器/'
     },
     {
+      text: 'Agent',
+      collapsed: true,
+      items: [
+        {
+          text: '架构',
+          link: '/YaoDSL/Agent/架构'
+        },
+        {
+          text: '流式消息结构分析',
+          link: '/YaoDSL/Agent/流式消息结构分析'
+        },
+        {
+          text: '流式消息输出结构',
+          link: '/YaoDSL/Agent/流式消息输出结构'
+        },
+        {
+          text: '上下文管理',
+          link: '/YaoDSL/Agent/上下文管理'
+        },
+        {
+          text: '消息输出结构',
+          link: '/YaoDSL/Agent/消息输出结构'
+        },
+        {
+          text: 'agent配置',
+          link: '/YaoDSL/Agent/agent配置'
+        },
+        {
+          text: 'BUILTIN_TYPES',
+          link: '/YaoDSL/Agent/BUILTIN_TYPES'
+        },
+        {
+          text: 'hook',
+          link: '/YaoDSL/Agent/hook'
+        },
+        {
+          text: 'JSAPI',
+          link: '/YaoDSL/Agent/JSAPI'
+        },
+        {
+          text: 'llm架构',
+          link: '/YaoDSL/Agent/llm架构'
+        },
+        {
+          text: 'trace对象',
+          link: '/YaoDSL/Agent/trace对象'
+        },
+        {
+          text: '测试',
+          collapsed: true,
+          items: [
+            {
+              text: '框架',
+              link: '/YaoDSL/Agent/测试/框架'
+            },
+            {
+              text: 'agent测试',
+              link: '/YaoDSL/Agent/测试/agent测试'
+            },
+            {
+              text: 'agent测试框架',
+              link: '/YaoDSL/Agent/测试/agent测试框架'
+            }
+          ],
+          link: '/YaoDSL/Agent/测试/'
+        },
+        {
+          text: '搜索模块',
+          collapsed: true,
+          items: [
+            {
+              text: '搜索模块',
+              link: '/YaoDSL/Agent/搜索模块/搜索模块'
+            }
+          ],
+          link: '/YaoDSL/Agent/搜索模块/'
+        }
+      ],
+      link: '/YaoDSL/Agent/'
+    },
+    {
       text: 'AIGC',
       collapsed: true,
       items: [
@@ -377,12 +439,20 @@ export default {
           link: '/YaoDSL/API/文件上传下载接口'
         },
         {
+          text: '运行时架构深度分析',
+          link: '/YaoDSL/API/运行时架构深度分析'
+        },
+        {
           text: '自定义用户登陆login api',
           link: '/YaoDSL/API/自定义用户登陆login api'
         },
         {
           text: 'API Guard',
           link: '/YaoDSL/API/API Guard'
+        },
+        {
+          text: 'API 引擎与配置映射',
+          link: '/YaoDSL/API/API 引擎与配置映射'
         },
         {
           text: 'API会话session保持',
@@ -474,12 +544,32 @@ export default {
           link: '/YaoDSL/mcp/架构'
         },
         {
+          text: 'assistant mcp',
+          link: '/YaoDSL/mcp/assistant mcp'
+        },
+        {
           text: 'jsapi',
           link: '/YaoDSL/mcp/jsapi'
         },
         {
+          text: 'mcp命名规则',
+          link: '/YaoDSL/mcp/mcp命名规则'
+        },
+        {
+          text: 'mcp配置指引',
+          link: '/YaoDSL/mcp/mcp配置指引'
+        },
+        {
+          text: 'Mcp架构',
+          link: '/YaoDSL/mcp/Mcp架构'
+        },
+        {
           text: 'resouce配置',
           link: '/YaoDSL/mcp/resouce配置'
+        },
+        {
+          text: 'use函数',
+          link: '/YaoDSL/mcp/use函数'
         }
       ],
       link: '/YaoDSL/mcp/'
@@ -509,6 +599,10 @@ export default {
           link: '/YaoDSL/Model/模型更新数据'
         },
         {
+          text: '使用AI创建模型定义',
+          link: '/YaoDSL/Model/使用AI创建模型定义'
+        },
+        {
           text: '数据处理与钩子',
           link: '/YaoDSL/Model/数据处理与钩子'
         },
@@ -527,6 +621,10 @@ export default {
         {
           text: 'sqlite与mysql的差异',
           link: '/YaoDSL/Model/sqlite与mysql的差异'
+        },
+        {
+          text: 'Yao模型提示词',
+          link: '/YaoDSL/Model/Yao模型提示词'
         }
       ],
       link: '/YaoDSL/Model/'
@@ -682,10 +780,6 @@ export default {
           link: '/YaoDSL/Query/JSAPI'
         },
         {
-          text: 'QueryDsl',
-          link: '/YaoDSL/Query/QueryDsl'
-        },
-        {
           text: 'QueryParam与QueryDSL',
           link: '/YaoDSL/Query/QueryParam与QueryDSL'
         },
@@ -750,6 +844,10 @@ export default {
         {
           text: 'sui的命令工具',
           link: '/YaoDSL/SUI/sui的命令工具'
+        },
+        {
+          text: 'sui简化',
+          link: '/YaoDSL/SUI/sui简化'
         },
         {
           text: 'sui组件初始化的细节',
@@ -1358,8 +1456,16 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '关于js回调函数',
+          link: '/源代码/Gou/关于js回调函数'
+        },
+        {
           text: '加密处理器调用错误',
           link: '/源代码/Gou/加密处理器调用错误'
+        },
+        {
+          text: '脚本执行冲突问题',
+          link: '/源代码/Gou/脚本执行冲突问题'
         },
         {
           text: '两个HasMany问题',
@@ -1406,6 +1512,10 @@ export default {
         {
           text: 'xgen 批量上传功能',
           link: '/源代码/Xgen/xgen 批量上传功能'
+        },
+        {
+          text: 'xgen兼容性',
+          link: '/源代码/Xgen/xgen兼容性'
         }
       ],
       link: '/源代码/Xgen/'
@@ -1459,6 +1569,48 @@ export default {
         }
       ],
       link: '/源代码/Yao/'
+    }
+  ],
+  '/配置文档/': [
+    {
+      text: 'API',
+      link: '/配置文档/API'
+    },
+    {
+      text: 'connector',
+      link: '/配置文档/connector'
+    },
+    {
+      text: 'form',
+      link: '/配置文档/form'
+    },
+    {
+      text: 'model',
+      link: '/配置文档/model'
+    },
+    {
+      text: 'pipe',
+      link: '/配置文档/pipe'
+    },
+    {
+      text: 'schedule',
+      link: '/配置文档/schedule'
+    },
+    {
+      text: 'store',
+      link: '/配置文档/store'
+    },
+    {
+      text: 'SUI',
+      link: '/配置文档/SUI'
+    },
+    {
+      text: 'table',
+      link: '/配置文档/table'
+    },
+    {
+      text: 'task',
+      link: '/配置文档/task'
     }
   ]
 };

@@ -17,7 +17,6 @@
 ## 进阶
 
 - 学习使用 Yao 命令。命令提供了很多有用的工具
-
   - Yao migrate 更新模型数据表结构
   - Yao start 启动服务
   - Yao run 运行处理器

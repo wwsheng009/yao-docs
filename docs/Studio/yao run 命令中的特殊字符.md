@@ -70,7 +70,6 @@ if strings.HasPrefix(arg, "::") {
 ## 常见问题
 
 1. JSON 格式错误
-
    - 确保 JSON 字符串格式正确，特别是引号的使用
    - 在 Windows 命令行中，可能需要使用转义字符
 

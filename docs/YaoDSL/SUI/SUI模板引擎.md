@@ -5,7 +5,6 @@
 SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web应用。关键特性包括：
 
 - **项目结构**：
-
   - 根目录文件：`app.yao`（路由配置），`suis/web.sui.yao`（模板配置）。
   - 模板目录：`data/templates/default` 包含页面（例如 `page_name/`）和共享组件（例如 `components/component_name/`）。
   - 页面是完整的网页，替换 `__document.html` 中的 `{{ __page }}` 占位符。
@@ -13,7 +12,6 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
   - 动态路由在目录名中使用 `[param]` 来捕获URL参数。
 
 - **文件类型**：
-
   - `.html`：使用SUI属性（例如 `s:for`、`s:if`、`s:render`、`s:trans`）定义结构。
   - `.css`：与页面模板关联的样式文件，只使用标准的css的语法。
   - `.ts`：前端TypeScript，用于事件处理和状态管理，使用 `$Backend`、`self.store` 和 `self.render` 等工具。
@@ -22,7 +20,6 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
   - `.backend.ts`：后端TypeScript，用于服务器端逻辑，`Api` 函数供前端调用，`BeforeRender` 只用于组件属性处理，对页面无效。
 
 - **模板语法**：
-
   - 数据绑定：`{{ variable }}` 用于渲染，`{% prop %}` 用于父组件属性。
   - 循环：`<div s:for="items" s:for-item="item">`。
   - 条件渲染：`s:if`、`s:elif`、`s:else`。
@@ -32,25 +29,21 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
   - 原始HTML：`s:raw="true"`（谨慎使用，避免XSS风险）。
 
 - **状态管理**：
-
   - `self.store`：管理组件状态（`Set`、`Get`、`SetJSON`、`GetJSON`）。
   - `self.state`：处理跨组件通信，使用 `watch` 监听状态变化。
 
 - **后端交互**：
-
   - 前端通过 `$Backend('/path').Call('ApiMethod', args)` 调用后端。
   - 后端函数以 `Api` 开头可供前端调用。
   - `BeforeRender` 在组件渲染前处理组件属性参数，对页面无效。
   - `.backend.ts` 中定义的 `Constants` 共享常量可在 `.ts` 中通过 `self.Constants` 访问。
 
 - **路由**：
-
   - 文件系统路由：`index.html` 映射到 `/`，`about.html` 映射到 `/about`。
   - 动态路由：`[id].html` 映射到 `/path/:id`。
   - 在 `app.yao` 的 `public.rewrite` 中配置自定义重定向（例如 `"/product/(.*)$": "/detail/[pid].sui"`）。
 
 - **配置**：
-
   - `.config` 文件定义页面设置（例如 `title`、`guard`、`seo`、`api`）。
   - API安全：使用 `bearer-jwt`、`cookie-jwt` 或 `query-jwt` 进行认证。
 
@@ -63,7 +56,6 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
 ## 指令
 
 1. **确认用户需求**：
-
    - 请用户明确需要创建页面、组件还是配置文件。
    - 澄清功能需求（例如动态数据、用户交互、路由）。
    - 对于复杂页面，询问用户是否希望拆分为多个组件。
@@ -71,7 +63,6 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
    - 如果需求不明确，基于文档中的 `todolist` 示例提出可能的结构并寻求确认。
 
 2. **生成输出**：
-
    - 确认需求后，生成所需文件（例如 `.html`、`.css`、`.ts`、`.json`、`.config`、`.backend.ts`）。
    - 确保文件遵循SUI约定：
      - 针对于长文件命名，目录和文件名使用下划线连接的"蛇形命名法"（snake_case）。
@@ -82,12 +73,10 @@ SUI模板引擎使用结构化的项目目录和特定文件类型来构建Web�
    - 提供每个文件的简要说明及其在SUI框架中的作用。
 
 3. **处理路由**：
-
    - 如果存在动态路由，比如多个链接都共用同一个模板文件，在 `app.yao` 中更新 `public.rewrite` 规则。
    - 对于动态路由，使用 `[param]` 命名目录并在 `app.yao` 中映射参数。
 
 4. **确保安全性和最佳实践**：
-
    - 除非明确要求，否则避免使用 `s:raw="true"`，并警告XSS风险。
    - 使用 `s:attr-` 处理布尔属性（例如 `s:attr-checked`）。
    - `.backend.ts` 文件中避免使用 `export`。
@@ -256,22 +245,18 @@ data/
 ### 页面与组件的区别
 
 1. **功能定位**：
-
    - 页面用于响应用户请求，映射到特定URL，支持SEO和认证配置。
    - 组件是可复用的模块，可被多个页面或组件引用。
 
 2. **模板结构**：
-
    - 页面模板内容使用 `<body><sui-page></sui-page></body>` 包裹,页面级别的class在page标签上设置。
    - 组件模板内容使用 `<sui-component></sui-component>` 包裹,并且此标签不配置class与style。
 
 3. **服务器端逻辑**：
-
    - 页面的后端脚本定义 `BeforeRender` 函数无效。
    - 组件的后端脚本可通过 `BeforeRender` 函数接收调用参数。
 
 4. **渲染方式**：
-
    - 页面渲染后挂载在 `document.body` 节点，前端脚本和样式在全局生效。
    - 组件渲染后作为`<sui-component>`HTML元素嵌入页面。
 
@@ -887,7 +872,6 @@ messages:
 ### 模板数据来源
 
 - 模板渲染过程使用一个包含多种数据的复杂对象，数据来源如下：
-
   - **`$payload`**: `request.Payload` - 用户请求的数据
   - **`$query`**: `request.Query` - 请求查询参数
   - **`$param`**: `request.Params` - 请求路径参数
@@ -904,7 +888,6 @@ messages:
 ### 3. HTML 模板 (.html)
 
 - 在模板中，可以使用以下的自定义属性进行数据处理与逻辑表达：
-
   - `s:for`：遍历数据列表,默认当前项为item,当前索引为index，例如，`<div s:for="items" s:for-item="item"> <span>{{ item.name }}</span> </div>`。
   - `s:for-item`: 遍历数据列表，获取当前项，例如，`<div s:for="items" s:for-item="item"> <span>{{ item.name }}</span> </div>`。
   - `s:for-index`：遍历数据列表，获取当前索引，例如，`<div s:for="items" s:for-item="item" s:for-index="index"> <span>{{ index }}</span> </div>`。
@@ -1155,7 +1138,6 @@ document.addEventListener('DOMContentLoaded', initStat);
 ### 前端常用的操作：
 
 - 页面/组件初始化时会在前端脚本`.ts`中自动注入以下功能：
-
   - `self`: ,。
     - 如果模板文件类型是page页面，self会引用全局对象的window。
     - 如果模板文件类型是组件，self会引用组件Component的实例。
@@ -1174,7 +1156,6 @@ document.addEventListener('DOMContentLoaded', initStat);
   - `self.once`：可选的初始化钩子函数，仅在页面/组件首次初始化时执行。
 
 - 常见操作：
-
   - `self.query("[input-element]")` 在页面/组件内选择Dom元素
   - `self.find("[multiple-values]")?.hasClass("hidden")` 查找页面/组件是否有css class
 
@@ -1183,12 +1164,14 @@ document.addEventListener('DOMContentLoaded', initStat);
   - `custom-compoent` 组件
   - `page` 页面
   - `page` 页面传入了`custom-compoent`组件，并且传入了属性`mode`
+
   ```html
   <custom-compoent mode="light"></custom-compoent>
   ```
-  - `self.props.Get("mode")` 在custom-compoent组件读取page传入的属性
-- 状态设置:
 
+  - `self.props.Get("mode")` 在custom-compoent组件读取page传入的属性
+
+- 状态设置:
   - `$$(self.root.querySelector(".flowbite-edit-input")).state.Set("value", label);` 在页面上找到组件并设置状态，触发对应组件`watch`中的函数。
   - `$$(selector)` 在页面上查找组件并返回实例，selector是html元素或是css选择器。
   - `$$(dropdown).store.GetJSON("items")` 操作其它组件
@@ -1245,7 +1228,6 @@ function setTheme(event: Event, data: EventData, detail: EventDetail) {
 ## SUI模板组件状态管理：
 
 - 组件有两种状态管理方式：
-
   - `store`：用于管理组件自身状态，使用HTML自定义属性存储数据。
   - `state`：用于组件间通信，支持状态变化事件传播。
 
@@ -1589,14 +1571,12 @@ function BeforeRender(request: Request, props: any) {
 ### 数据流转
 
 1. **数据来源**：
-
    - **静态数据**：在`.json`配置文件中定义静态数据。
    - **动态数据**：通过`.json`中`$key: "@FunctionName"`调用`.backend.ts`函数。
    - **全局数据**：`__data.json`定义全局变量，通过`{{ $global.xxx }}`访问。
    - **顶级元素属性**：模板中使用`data:`或`json:`绑定数据，渲染到HTML属性。
 
 2. **前端访问**：
-
    - **全局变量**：`__sui_data`包含页面所有数据，在`DOMContentLoaded`后可用。
    - **状态管理**：`self.store`读取/更新`data:`/`json:`属性数据。
    - **常量共享**：`.backend.ts`定义`Constants`，前端通过`self.Constants`访问。
@@ -1708,7 +1688,6 @@ document.addEventListener('DOMContentLoaded', () => {
   ```
 
   前一部分使用正则表达式的分组来捕获URL参数，后面通过`$1`和`$2`来匹配路由中的参数。
-
   - 访问`/category/books/123` → 重定向到`public/123/books.sui`
   - `$1`匹配"books"，`$2`匹配"123"
 
@@ -1719,7 +1698,6 @@ document.addEventListener('DOMContentLoaded', () => {
   ```
 
   在前一部分使用正则表达式分组捕获URL参数，并将其作为命名参数`[pid]`传递给路由，按分组出现的顺序进行映射关系，`$1->[1]`,`$2->[2]`。
-
   - 访问`/product/abc123` → 重定向到`public/detail/[pid].sui`
   - 参数存入`request.params.pid = "abc123"`
 
@@ -1730,7 +1708,6 @@ document.addEventListener('DOMContentLoaded', () => {
   ```
 
   在路由中同时使用位置参数和命名参数，前一部分捕获URL参数并作为位置参数，后面的部分作为命名参数。
-
   - 先进行文件路径的替换：访问`/user/123` → 重定向到`public/[user]/[pid].sui`
   - 再进行参数的映射，参数存入：
     ```js

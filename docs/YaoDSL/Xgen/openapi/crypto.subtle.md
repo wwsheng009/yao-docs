@@ -8,7 +8,6 @@ xgen启用openapi后，需要使用localhost或https协议访问。
    这是最常见的根本原因。  
    Web Cryptography API（包括 `crypto.subtle`）属于“强大特性”（Powerful Feature），根据浏览器安全规范，只有在安全上下文（Secure Context）下才可用。  
    安全上下文的定义：
-
    - `https://`
    - `http://localhost` 或 `http://127.0.0.1`（包括其 IPv6 形式）
    - `file://` 协议不行
@@ -26,7 +25,6 @@ xgen启用openapi后，需要使用localhost或https协议访问。
    ```
 
 2. **某些浏览器或浏览器配置禁用了 Web Cryptography API**
-
    - 旧版本浏览器（例如 IE 全系列、很老的 Edge、Android 系统浏览器 4.x 以前）根本不支持
    - Firefox 在 `about:config` 中如果将 `security.ssl.require_safe_context` 设为 true 并在非安全上下文打开，也会禁用
    - 企业版 Chrome/Chromium 通过组策略禁用了该功能

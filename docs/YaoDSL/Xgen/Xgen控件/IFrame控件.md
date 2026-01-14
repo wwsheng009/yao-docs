@@ -16,23 +16,19 @@ iframe控件通过解析url参数获取内容，在iframe中进行数据渲染�
 ## 组件配置
 
 1. **基本配置**：
-
    - 通过`type: "Frame"`声明iframe类型
    - 可设置高度(height)、URL地址(url)等属性
 
 2. **参数传递**：
-
    - 支持通过`params`向iframe传递参数
    - 支持模板变量如`{{ name }}`
 
 3. **交互功能**：
-
    - 支持与父窗口通信(postMessage)
    - 可监听内容变化并通知父组件
    - 支持动态调整iframe尺寸
 
 4. **AI辅助**：
-
    - 内置AI提示功能(ai.placeholder)
 
 5. **样式定制**：

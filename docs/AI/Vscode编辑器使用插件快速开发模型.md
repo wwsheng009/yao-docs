@@ -15,12 +15,10 @@ AI 时代已经到来~,`yao`通过这种元数据配置编程理念恰好适合 
 根据你的操作系统，从以下地址下载最新的开发版本：
 
 - **Linux 用户**：
-
   - 下载地址：[Linux Release](https://github.com/YaoApp/yao/actions/workflows/release-linux.yml)
   - 在 Actions 页面找到最新的成功构建
 
 - **MacOS 用户**：
-
   - 下载地址：[MacOS Release](https://github.com/YaoApp/yao/actions/workflows/release-macos.yml)
   - 在 Actions 页面找到最新的成功构建
 
@@ -59,11 +57,7 @@ yao start
 
 - 选中模型文件中的所有内容，并按快捷键`F1`打开`vscode`的命令提示框。输入提示词`use the selected code as dsl template,create new model hospital,without any explanation`.AI 会使用你选中的代码作为模型，生成新的模型。当然你可以根据你的需求调整提示词。
 
-![](./vscode_quick_dev/vscode_ad_hoc_prompt.png)
-
 - 生成的代码会在编辑器的右边，复制生成的内容创建新的模型定义文件。需要把文件保存到目录`models`中，并且后缀名需要是`mod.json`。比如这里保存文件为：`/my-yao-app/models/hospital.mod.json`.
-
-![](./vscode_quick_dev/vscode_create_new_model.png)
 
 - 生成的文件基本上是可以满足要求的，有些字段显示黄色，说明这个字段不符合`Yao`的`DSL`语法。删除或是忽略即可。
 
@@ -86,7 +80,6 @@ yao start
 ```
 
 2. 使用浏览器访问管理界面：
-
    - 访问地址：`http://127.0.0.1:5099/admin/login/admin`
    - 默认用户名：`xiang@iqka.com`
    - 默认密码：`A123456p+`

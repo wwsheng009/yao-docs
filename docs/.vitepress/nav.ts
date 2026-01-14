@@ -27,5 +27,9 @@ export default [
   {
     text: '源代码',
     link: '/源代码/index'
+  },
+  {
+    text: '配置文档',
+    link: '/配置文档/index'
   }
 ];

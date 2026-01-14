@@ -13,7 +13,7 @@ log.Info('foo');
 
 输出以下信息:
 
-```
+```sh
 time="2022-08-25T10:00:28Z" level=error msg=foo
 time="2022-08-25T10:00:28Z" level=info msg=foo
 

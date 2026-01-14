@@ -113,18 +113,15 @@ function ValidateToken(path, params, query, payload, headers) {
 ## 最佳实践
 
 1. **合理设置 token 有效期**：
-
    - 主 token 设置较短的有效期（如 1 小时）
    - 刷新 token 设置较长的有效期（如 7 天）
 
 2. **安全性考虑**：
-
    - 刷新 token 接口必须使用 HTTPS
    - 验证当前 token 的有效性
    - 可以维护一个 token 黑名单，用于已注销的 token
 
 3. **错误处理**：
-
    - token 失效时返回合适的状态码（如 401）
    - 提供清晰的错误信息
    - 客户端收到 401 时跳转到登录页面
