@@ -7,5 +7,6 @@
 - [使用AI开发YAO应用](使用AI开发YAO应用.md)
 - [ai编程](ai编程.md)
 - [Vscode编辑器使用插件快速开发模型](Vscode编辑器使用插件快速开发模型.md)
+- [ai-docs](ai-docs/index)
 - [Prompts](Prompts/index)
 <!-- links end -->

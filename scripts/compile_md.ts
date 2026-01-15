@@ -21,6 +21,7 @@ interface SingleCompileConfig {
   outputDir: string;
   outputFileName: string;
   ignoreFiles: string[];
+  excludeConfig?: any; // ExcludeConfig - 由于循环导入，暂时使用 any
 }
 
 interface CompileConfig {
@@ -80,23 +81,90 @@ class MarkdownUtils {
 }
 
 // 递归获取所有 md 文件
-function getAllMdFiles(dir: string, ignoreFiles: string[]): string[] {
+function getAllMdFiles(
+  dir: string,
+  ignoreFiles: string[],
+  excludeConfig?: any
+): string[] {
   try {
     const files: string[] = [];
     const items = fs.readdirSync(dir);
+
+    // 如果提供了排除配置，检查当前目录是否应该被排除
+    if (
+      excludeConfig &&
+      typeof excludeConfig === 'object' &&
+      excludeConfig.directories
+    ) {
+      const dirName = path.basename(dir);
+      const shouldExclude = excludeConfig.directories.some((rule: any) => {
+        if (!rule.enabled) return false;
+        const pattern = rule.pattern;
+
+        switch (rule.type) {
+          case 'exact':
+            return dirName === pattern;
+          case 'wildcard':
+            return wildcardMatch(dirName, pattern);
+          case 'regex':
+            try {
+              const regex = new RegExp(pattern);
+              return regex.test(dirName);
+            } catch {
+              return false;
+            }
+          default:
+            return false;
+        }
+      });
+
+      if (shouldExclude) {
+        console.log(`目录已排除: ${dir}`);
+        return [];
+      }
+    }
 
     for (const item of items) {
       const fullPath = path.join(dir, item);
       const stat = fs.statSync(fullPath);
 
       if (stat.isDirectory()) {
-        files.push(...getAllMdFiles(fullPath, ignoreFiles));
-      } else if (
-        stat.isFile() &&
-        item.endsWith(CONSTANTS.MARKDOWN_EXT) &&
-        !ignoreFiles.includes(item)
-      ) {
-        files.push(fullPath);
+        files.push(...getAllMdFiles(fullPath, ignoreFiles, excludeConfig));
+      } else if (stat.isFile() && item.endsWith(CONSTANTS.MARKDOWN_EXT)) {
+        // 检查文件是否应该被排除
+        let shouldExcludeFile = false;
+        if (
+          excludeConfig &&
+          typeof excludeConfig === 'object' &&
+          excludeConfig.files
+        ) {
+          shouldExcludeFile = excludeConfig.files.some((rule: any) => {
+            if (!rule.enabled) return false;
+            const pattern = rule.pattern;
+
+            switch (rule.type) {
+              case 'exact':
+                return item === pattern;
+              case 'wildcard':
+                return wildcardMatch(item, pattern);
+              case 'regex':
+                try {
+                  const regex = new RegExp(pattern);
+                  return regex.test(item);
+                } catch {
+                  return false;
+                }
+              default:
+                return false;
+            }
+          });
+        }
+
+        if (!shouldExcludeFile && !ignoreFiles.includes(item)) {
+          files.push(fullPath);
+        } else if (shouldExcludeFile) {
+          console.log(`文件已排除: ${fullPath}`);
+        }
       }
     }
 
@@ -104,6 +172,20 @@ function getAllMdFiles(dir: string, ignoreFiles: string[]): string[] {
   } catch (error) {
     console.error(`Error reading directory ${dir}:`, error);
     return [];
+  }
+}
+
+// 简单的通配符匹配函数
+function wildcardMatch(str: string, pattern: string): boolean {
+  const regexPattern = pattern
+    .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+    .replace(/\*/g, '[^/]*');
+
+  try {
+    const regex = new RegExp(`^${regexPattern}$`);
+    return regex.test(str);
+  } catch {
+    return false;
   }
 }
 
@@ -115,19 +197,19 @@ function minifyMarkdown(markdown: string): string {
     .join('\n');
 }
 
-function optimizeMarkdown(markdown: string): string {
-  const lines = markdown.split('\n');
-  return lines
-    .map((line, index, arr) => {
-      if (line.match(/^=+$/) && arr[index - 1]) {
-        arr[index - 1] = `# ${arr[index - 1]}`;
-        return null;
-      }
-      return line.match(/^[-+]\s/) ? line.replace(/^[-+]/, '*') : line;
-    })
-    .filter((line): line is string => line !== null)
-    .join('\n');
-}
+// function optimizeMarkdown(markdown: string): string {
+//   const lines = markdown.split('\n');
+//   return lines
+//     .map((line, index, arr) => {
+//       if (line.match(/^=+$/) && arr[index - 1]) {
+//         arr[index - 1] = `# ${arr[index - 1]}`;
+//         return null;
+//       }
+//       return line.match(/^[-+]\s/) ? line.replace(/^[-+]/, '*') : line;
+//     })
+//     .filter((line): line is string => line !== null)
+//     .join('\n');
+// }
 
 // 处理文件内容
 function processContent(
@@ -220,7 +302,8 @@ async function compileMdFiles(
 
       const mdFiles = getAllMdFiles(
         singleConfig.sourceDir,
-        singleConfig.ignoreFiles
+        singleConfig.ignoreFiles,
+        singleConfig.excludeConfig
       );
       console.log(`找到 ${mdFiles.length} 个 Markdown 文件待处理`);
 

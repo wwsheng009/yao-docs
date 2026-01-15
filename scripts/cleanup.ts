@@ -1,9 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { BaseDocPath } from './generate_config';
+import {
+  BaseDocPath,
+  loadExcludeConfig,
+  ExcludeRuleMatcher,
+  type ExcludeConfig
+} from './generate_config';
 
-function CleanUp(suffix: string) {
-  deleteFilesWithBakSuffix(BaseDocPath, suffix);
+function CleanUp(suffix: string, excludeConfig?: ExcludeConfig) {
+  const config = excludeConfig || loadExcludeConfig();
+  deleteFilesWithBakSuffix(BaseDocPath, suffix, config);
 }
 
 // 检查目录及其子目录是否包含 .md 文件
@@ -27,8 +33,24 @@ function hasMarkdownFiles(dirPath: string): boolean {
 }
 
 // 定义删除函数
-function deleteFilesWithBakSuffix(dirPath: string, suffix: string) {
+function deleteFilesWithBakSuffix(
+  dirPath: string,
+  suffix: string,
+  excludeConfig: ExcludeConfig
+) {
   if (dirPath.startsWith('.vitepress')) {
+    return;
+  }
+
+  // 检查目录是否应该被排除
+  if (
+    ExcludeRuleMatcher.shouldExcludeDirectory(
+      dirPath,
+      excludeConfig,
+      BaseDocPath
+    )
+  ) {
+    console.log(`目录已排除: ${dirPath}`);
     return;
   }
 
@@ -46,7 +68,7 @@ function deleteFilesWithBakSuffix(dirPath: string, suffix: string) {
 
     if (stat.isDirectory()) {
       // 递归处理子目录
-      deleteFilesWithBakSuffix(filePath, suffix);
+      deleteFilesWithBakSuffix(filePath, suffix, excludeConfig);
 
       // 检查子目录是否为空
       const subFiles = fs.readdirSync(filePath);

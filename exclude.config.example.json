@@ -1,0 +1,90 @@
+{
+  "directories": [
+    {
+      "pattern": "node_modules",
+      "type": "exact",
+      "description": "Node.js 依赖目录",
+      "enabled": true
+    },
+    {
+      "pattern": ".git",
+      "type": "exact", 
+      "description": "Git 版本控制目录",
+      "enabled": true
+    },
+    {
+      "pattern": ".vitepress",
+      "type": "exact",
+      "description": "VitePress 配置目录",
+      "enabled": true
+    },
+    {
+      "pattern": "dist",
+      "type": "exact",
+      "description": "构建输出目录",
+      "enabled": true
+    },
+    {
+      "pattern": "__pycache__",
+      "type": "exact",
+      "description": "Python 缓存目录",
+      "enabled": true
+    },
+    {
+      "pattern": "test_*",
+      "type": "wildcard",
+      "description": "测试目录（通配符匹配）",
+      "enabled": true
+    },
+    {
+      "pattern": ".*_backup",
+      "type": "regex",
+      "description": "备份目录（正则匹配）",
+      "enabled": true
+    },
+    {
+      "pattern": "draft",
+      "type": "exact",
+      "description": "草稿目录",
+      "enabled": false
+    }
+  ],
+  "files": [
+    {
+      "pattern": "*.bak",
+      "type": "wildcard",
+      "description": "备份文件（通配符匹配）",
+      "enabled": true
+    },
+    {
+      "pattern": ".DS_Store",
+      "type": "exact",
+      "description": "macOS 系统文件",
+      "enabled": true
+    },
+    {
+      "pattern": "Thumbs.db",
+      "type": "exact", 
+      "description": "Windows 缩略图文件",
+      "enabled": true
+    },
+    {
+      "pattern": ".*\\.tmp$",
+      "type": "regex",
+      "description": "临时文件（正则匹配）",
+      "enabled": true
+    },
+    {
+      "pattern": "*.log",
+      "type": "wildcard",
+      "description": "日志文件（通配符匹配）",
+      "enabled": true
+    },
+    {
+      "pattern": "README.md",
+      "type": "exact",
+      "description": "README 文件（暂时禁用）",
+      "enabled": false
+    }
+  ]
+}

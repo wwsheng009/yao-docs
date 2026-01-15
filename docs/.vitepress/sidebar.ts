@@ -715,6 +715,46 @@ export default {
       collapsed: true,
       items: [
         {
+          text: '概览',
+          link: '/YaoDSL/Pipe/'
+        },
+        {
+          text: 'JSON 格式说明',
+          link: '/YaoDSL/Pipe/JSON-格式说明'
+        },
+        {
+          text: 'DSL 语法',
+          link: '/YaoDSL/Pipe/dsl'
+        },
+        {
+          text: '节点类型',
+          link: '/YaoDSL/Pipe/nodes'
+        },
+        {
+          text: '表达式引擎',
+          link: '/YaoDSL/Pipe/expression'
+        },
+        {
+          text: '执行流程',
+          link: '/YaoDSL/Pipe/execution'
+        },
+        {
+          text: 'API 参考',
+          link: '/YaoDSL/Pipe/api'
+        },
+        {
+          text: '架构设计',
+          link: '/YaoDSL/Pipe/architecture'
+        },
+        {
+          text: '最佳实践',
+          link: '/YaoDSL/Pipe/best-practices'
+        },
+        {
+          text: '示例代码',
+          link: '/YaoDSL/Pipe/examples'
+        },
+        {
           text: 'pipe管道',
           link: '/YaoDSL/Pipe/pipe管道'
         }

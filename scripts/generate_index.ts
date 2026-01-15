@@ -4,12 +4,22 @@ import {
   BaseDocPath,
   GetFilesUnderFolder,
   IgnoreIndexFiles,
+  loadExcludeConfig,
+  ExcludeRuleMatcher,
+  type ExcludeConfig
 } from './generate_config';
 
-export function CreateIndexMd(baseDir: string) {
-  checkAndCreateIndex(baseDir);
+export function CreateIndexMd(baseDir: string, excludeConfig?: ExcludeConfig) {
+  const config = excludeConfig || loadExcludeConfig();
+  checkAndCreateIndex(baseDir, config);
 
   const checkFolder = (d: string) => {
+    // 检查目录是否应该被排除
+    if (ExcludeRuleMatcher.shouldExcludeDirectory(d, config, baseDir)) {
+      console.log(`目录已排除: ${d}`);
+      return;
+    }
+
     const files = fs.readdirSync(d);
     files.forEach((file) => {
       const filePath = path.join(d, file);
@@ -17,7 +27,7 @@ export function CreateIndexMd(baseDir: string) {
 
       if (fileStat.isDirectory()) {
         checkFolder(filePath);
-        checkAndCreateIndex(filePath);
+        checkAndCreateIndex(filePath, config);
       }
     });
   };
@@ -26,9 +36,10 @@ export function CreateIndexMd(baseDir: string) {
 /**
  * check and create index.md file under folder
  * @param {string} folderp folder path
+ * @param {ExcludeConfig} excludeConfig 排除配置
  * @returns
  */
-function checkAndCreateIndex(folderp: string) {
+function checkAndCreateIndex(folderp: string, excludeConfig: ExcludeConfig) {
   const folder = path.resolve(folderp);
 
   if (BaseDocPath === folder) {
@@ -36,14 +47,24 @@ function checkAndCreateIndex(folderp: string) {
   }
   const FileExtensions = ['.md']; //
 
-  const files = GetFilesUnderFolder(folder, FileExtensions);
+  const files = GetFilesUnderFolder(
+    folder,
+    FileExtensions,
+    excludeConfig,
+    BaseDocPath
+  );
   // create markdown links for each file
   const fileLinks = files
     .map((file_obj) => {
       const file = file_obj.path;
       const fileName = path.basename(file);
       if (file_obj.type === 'folder') {
-        const files = GetFilesUnderFolder(file, FileExtensions);
+        const files = GetFilesUnderFolder(
+          file,
+          FileExtensions,
+          excludeConfig,
+          BaseDocPath
+        );
         if (files.length === 0) {
           return null;
         }
@@ -58,7 +79,7 @@ function checkAndCreateIndex(folderp: string) {
         // 对文件名中的特殊字符进行URL编码，保留中文字符
         const encodedFileName = fileName.replace(
           /[\s\(\)\[\]\{\}\'\"\`\~\!\@\#\$\%\^\&\*\+\=\|\\\<\>\?\,\.\;\/]/g,
-          (match) => encodeURIComponent(match),
+          (match) => encodeURIComponent(match)
         );
         return `- [${fileName}](${encodedFileName}/index)`;
       } else {
@@ -72,7 +93,7 @@ function checkAndCreateIndex(folderp: string) {
           // 对文件名中的特殊字符进行URL编码，保留中文字符
           const encodedFileName = fileName.replace(
             /[\s\(\)\[\]\{\}\'\"\`\~\!\@\#\$\%\^\&\*\+\=\|\\\<\>\?\,\.\;\/]/g,
-            (match) => encodeURIComponent(match),
+            (match) => encodeURIComponent(match)
           );
           return `- [${nameWithoutExt}](${encodedFileName})`;
         }
