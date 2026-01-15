@@ -1,0 +1,112 @@
+{
+  "name": "APP Menu",
+  "nodes": [],
+  "output": {
+    "items": [
+      {
+        "name": "图表",
+        "path": "/x/Chart/dashboard",
+        "icon": "icon-activity"
+      },
+      {
+        "name": "表格",
+        "icon": "icon-book",
+        "path": "/x/Table/pet",
+        "children": [
+          {
+            "name": "宠物列表",
+            "path": "/x/Table/pet",
+            "icon": "icon-book"
+          },
+          {
+            "name": "数据绑定",
+            "icon": "icon-link",
+            "children": [
+              {
+                "name": "绑定模型",
+                "path": "/x/Table/bind.model",
+                "icon": "icon-layers"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "表单",
+        "icon": "icon-clipboard",
+        "path": "/x/Form/pet/1/edit",
+        "children": [
+          {
+            "name": "编辑模式",
+            "path": "/x/Form/pet/1/edit",
+            "icon": "icon-edit"
+          },
+          {
+            "name": "数据绑定",
+            "icon": "icon-link",
+            "children": [
+              {
+                "name": "绑定模型",
+                "path": "/x/Form/bind.model/1/edit",
+                "icon": "icon-layers"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "列表",
+        "icon": "icon-list",
+        "path": "/x/Form/list/1/edit",
+        "children": [
+          {
+            "name": "查看模式",
+            "path": "/x/Form/list/1/edit",
+            "icon": "icon-eye"
+          },
+          {
+            "name": "在表单中使用",
+            "icon": "icon-clipboard",
+            "children": [
+              {
+                "name": "编辑模式",
+                "path": "/x/Form/list/1/edit",
+                "icon": "icon-edit"
+              }
+            ]
+          },
+          {
+            "name": "在页面中使用",
+            "icon": "icon-file",
+            "children": [
+              {
+                "name": "编辑模式",
+                "path": "/x/Form/list/1/edit",
+                "icon": "icon-edit"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "setting": [
+      {
+        "icon": "icon-settings",
+        "name": "系统设置",
+        "path": "/setting"
+      },
+      {
+        "icon": "icon-bell",
+        "name": "消息通知",
+        "path": "/x/Form/pet/1/edit"
+      }
+    ],
+    "quick": [
+      {
+        "icon": "icon-activity",
+        "name": "图表",
+        "path": "/x/Chart/dashboard"
+      }
+    ]
+  }
+}

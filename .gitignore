@@ -29,3 +29,7 @@ pnpm-debug.log*
 meta.json
 *.bkp
 debug.log
+
+docs/YaoApps/**/*.db
+docs/YaoApps/**/*.log
+docs/YaoApps/**/*.env

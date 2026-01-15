@@ -1,0 +1,8 @@
+{
+  "name": "My App",
+  "version": "1.0.0",
+    "menu": {
+    "process": "flows.app.menu",
+    "args": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "::User Login",
+  "action": {
+    "process": "scripts.amis.user.AmisLogin",
+    "args": [
+      ":payload"
+    ]
+  },
+  "layout": {
+    "entry": "/admin",
+    "slogan": "::Make Your Dream With Yao App Engine",
+    "site": "https://yaoapps.com/?from=instance-user-login"
+  }
+}
