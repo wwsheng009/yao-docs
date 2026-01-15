@@ -2,6 +2,8 @@
 
 应用配置文件是 Yao 应用程序的核心配置文件，用于定义应用的基本信息、存储设置、开发者信息等。支持多种格式：`app.yao`、`app.jsonc`、`app.json`。
 
+> 说明：`app.*` 同时也会被 `widgets/app` 用来生成 Xgen 前端运行时配置（`yao.app.Xgen`），但其解析结构体与 `AppInfo` 不同（更偏前端与登录体验）。详见 `xgen_config.md`，登录页 DSL 详见 `login.md`。
+
 ## 配置文件位置
 
 应用配置文件应放在应用根目录下，Yao 会按以下优先级顺序查找：
@@ -38,13 +40,13 @@ type AppInfo struct {
 
 ### 基本信息配置
 
-| 字段          | 类型   | 必填 | 说明                          |
-| ------------- | ------ | ---- | ----------------------------- |
-| `name`        | string | 否   | 应用名称                      |
-| `short`       | string | 否   | 应用简称                      |
-| `version`     | string | 否   | 应用版本号                    |
-| `description` | string | 否   | 应用描述                      |
-| `adminRoot`   | string | 否   | 管理后台根路径，默认为"admin" |
+| 字段          | 类型   | 必填 | 说明                        |
+| ------------- | ------ | ---- | --------------------------- |
+| `name`        | string | 否   | 应用名称                    |
+| `short`       | string | 否   | 应用简称                    |
+| `version`     | string | 否   | 应用版本号                  |
+| `description` | string | 否   | 应用描述                    |
+| `adminRoot`   | string | 否   | 管理后台根路径，默认为"yao" |
 
 ### 开发者信息 (Developer)
 
@@ -418,7 +420,7 @@ yao run
 
 ### 环境变量处理机制
 
-在 `engine/load.go` 中的实现：
+在 `engine/load.go`（引擎启动期解析 `AppInfo`）以及 `widgets/app`（生成 `yao.app.Xgen` 配置）中都会执行相同的替换逻辑：
 
 ```go
 // 替换 $ENV 为实际环境变量值

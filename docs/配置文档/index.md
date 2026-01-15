@@ -3,6 +3,9 @@
 <!-- links begin -->
 
 - [API](API.md)
+- [app](app.md)
+- [xgen_config](xgen_config.md)
+- [login](login.md)
 - [connector](connector.md)
 - [form](form.md)
 - [Flow](Flow.md)
