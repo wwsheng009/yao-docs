@@ -1,0 +1,48 @@
+{
+  "name": "Hello TUI",
+  "data": {
+    "title": "Welcome to Yao TUI!",
+    "message": "This is a test terminal user interface.",
+    "version": "1.0.0"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{message}}",
+          "align": "center",
+          "padding": [1, 2]
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Version: {{version}}",
+          "color": "240",
+          "italic": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "\nPress 'q' to quit, Ctrl+C to exit",
+          "color": "244"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {
+      "process": "tui.Quit"
+    }
+  }
+}

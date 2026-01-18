@@ -1,0 +1,92 @@
+{
+  "name": "Input Component Test",
+  "data": {
+    "username": "",
+    "email": "",
+    "password": "",
+    "message": "Enter your details below:",
+    "result": ""
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "content": "Input Components Demo",
+          "align": "center",
+          "color": "215",
+          "size": "large"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{message}}",
+          "color": "39"
+        }
+      },
+      {
+        "id": "username-input",
+        "type": "input",
+        "props": {
+          "placeholder": "Enter your username...",
+          "prompt": "👤 ",
+          "color": "255",
+          "background": "61",
+          "width": 40
+        }
+      },
+      {
+        "id": "email-input",
+        "type": "input",
+        "props": {
+          "placeholder": "Enter your email...",
+          "prompt": "📧 ",
+          "color": "255",
+          "background": "61",
+          "width": 40
+        }
+      },
+      {
+        "id": "password-input",
+        "type": "input",
+        "props": {
+          "placeholder": "Enter your password...",
+          "prompt": "🔒 ",
+          "color": "255",
+          "background": "61",
+          "width": 40
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press Tab to switch between inputs, Enter to submit",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Username: {{index($, \"username-input\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Email: {{index($, \"email-input\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Password: {{index($, \"password-input\")}}",
+          "color": "46"
+        }
+      }
+    ]
+  }
+}

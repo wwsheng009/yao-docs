@@ -1,0 +1,62 @@
+{
+  "name": "Footer Component Test",
+  "data": {
+    "appName": "TUI Application",
+    "version": "1.0.0",
+    "copyright": "© 2026 Your Company. All rights reserved.",
+    "status": "Ready",
+    "lastUpdated": "2026-01-16 10:30:00"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "Footer Component Demo",
+          "align": "center",
+          "color": "205",
+          "background": "235",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "This is a demonstration of various components with a footer.",
+          "align": "center",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Application Status: {{status}}",
+          "align": "center",
+          "color": "46",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Last Updated: {{lastUpdated}}",
+          "align": "center",
+          "color": "245"
+        }
+      },
+      {
+        "type": "spacer"
+      }
+    ]
+  },
+  "onLoad": {
+    "process": "yao.utils.time",
+    "args": ["now"]
+  },
+  "bindings": {
+    "q": {
+      "process": "yao.exit"
+    }
+  }
+}

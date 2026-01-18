@@ -42,6 +42,10 @@ Pipe 的根对象包含流程的基本信息、安全白名单、钩子以及核
 - **nodes** (Array): 流程节点列表，这是 Pipe 的核心。
 - **hooks** (Object): 钩子配置，例如 `progress` 用于定义进度回调脚本。
 - **whitelist** (Array): 安全白名单。在 Pipe 中调用的 Yao Process (处理器) 必须在此列表中声明，否则会报错。
+  - 支持 **精确匹配**：例如 `utils.fmt.Print`
+  - 支持 **前缀通配符**：例如 `utils.*` 会匹配 `utils.validate_age`、`utils.fmt.Print` 等
+  - 支持 **glob 通配符**（`* ? []`）：例如 `*.fmt.*` 可以匹配 `utils.fmt.Print`
+  - 特别说明：如果 `whitelist` 是空数组（`[]`），视为 **不限制**（等同未配置白名单）
 - **input** (Array): 定义 Pipe 启动时的输入参数结构。
 - **output** (Any): 定义 Pipe 执行结束后的最终返回值表达式。
 

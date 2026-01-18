@@ -1,0 +1,195 @@
+// admin.user模型必须包含以下字段，用于yao内置的登录处理器 yao.login.admin
+// 必需字段："id", "password", "name", "type", "email", "mobile", "extra", "status"
+// 缺少这些字段将导致登录处理器无法正常工作
+//
+// status 字段值必须是 "enabled" 才能登录
+// yao migrate -n admin.user
+{
+  "name": "用户",
+  "table": {
+    "name": "admin_user",
+    "comment": "管理员用户表",
+    "engine": "InnoDB"
+  },
+  "columns": [
+    {
+      "label": "ID",
+      "name": "id",
+      "type": "ID",
+      "comment": "主键标识符",
+      "primary": true
+    },
+    {
+      "label": "用户类型",
+      "name": "type",
+      "type": "enum",
+      "option": [
+        "super",
+        "admin", 
+        "staff",
+        "user"
+      ],
+      "comment": "用户类型：super超级管理员, admin管理员, staff员工, user普通用户",
+      "default": "user",
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "{{input}}类型错误，{{label}}应该为字符串"
+        },
+        {
+          "method": "enum",
+          "args": ["super", "admin", "staff", "user"],
+          "message": "{{input}}不在许可范围，{{label}}应该为 super/admin/staff/user"
+        }
+      ]
+    },
+    {
+      "label": "邮箱",
+      "name": "email",
+      "type": "string",
+      "length": 50,
+      "comment": "邮箱地址，用于登录",
+      "nullable": true,
+      "index": true,
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "{{input}}类型错误，{{label}}应该为字符串"
+        },
+        {
+          "method": "email",
+          "args": [],
+          "message": "{{input}}不是有效的邮箱地址"
+        }
+      ]
+    },
+    {
+      "label": "手机号",
+      "name": "mobile",
+      "type": "string",
+      "length": 20,
+      "comment": "手机号码，用于登录",
+      "nullable": true,
+      "index": true,
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "{{input}}类型错误，{{label}}应该为字符串"
+        },
+        {
+          "method": "mobile",
+          "args": [],
+          "message": "{{input}}不是有效的手机号码"
+        }
+      ]
+    },
+    {
+      "label": "登录密码",
+      "name": "password",
+      "type": "string",
+      "length": 256,
+      "comment": "登录密码，使用BCrypt加密存储",
+      "crypt": "PASSWORD",
+      "nullable": false,
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "{{input}}类型错误，{{label}}应该为字符串"
+        },
+        {
+          "method": "minLength",
+          "args": [6],
+          "message": "{{label}}长度不能少于6位"
+        },
+        {
+          "method": "maxLength",
+          "args": [50],
+          "message": "{{label}}长度不能超过50位"
+        }
+      ]
+    },
+    {
+      "label": "姓名",
+      "name": "name",
+      "type": "string",
+      "length": 80,
+      "comment": "用户姓名",
+      "nullable": true,
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "{{input}}类型错误，{{label}}应该为字符串"
+        },
+        {
+          "method": "minLength",
+          "args": [2],
+          "message": "{{label}}至少需要2个字符"
+        },
+        {
+          "method": "maxLength",
+          "args": [40],
+          "message": "{{label}}不能超过40个字符"
+        }
+      ]
+    },
+    {
+      "label": "扩展信息",
+      "name": "extra",
+      "type": "json",
+      "comment": "用户扩展信息，存储额外的用户属性",
+      "nullable": true
+    },
+    {
+      "label": "账户状态",
+      "name": "status",
+      "type": "enum",
+      "option": [
+        "enabled",
+        "disabled"
+      ],
+      "comment": "账户状态：enabled启用，disabled禁用。只有enabled状态的用户才能登录",
+      "default": "enabled",
+      "index": true,
+      "nullable": false,
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "{{input}}类型错误，{{label}}应该为字符串"
+        },
+        {
+          "method": "enum",
+          "args": ["enabled", "disabled"],
+          "message": "{{input}}不在许可范围，{{label}}应该为 enabled/disabled"
+        }
+      ]
+    }
+  ],
+  "relations": {},
+  "values": [
+    {
+      "type": "admin",
+      "email": "admin@demo.com",
+      "password": "123456",
+      "name": "系统管理员",
+      "status": "enabled"
+    },
+    {
+      "type": "user",
+      "mobile": "13800138000",
+      "password": "123456",
+      "name": "普通用户",
+      "status": "enabled"
+    }
+  ],
+  "option": {
+    "timestamps": true,
+    "soft_deletes": true
+  }
+}
+// yao migrate -n admin.user --reset

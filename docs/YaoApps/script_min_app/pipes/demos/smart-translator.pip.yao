@@ -1,0 +1,75 @@
+{
+  "name": "smart-translator",
+  "label": "智能翻译助手",
+  "description": "基于 AI 的多语言翻译工具",
+  "whitelist": ["ai.*", "utils.*", "language.*"],
+  "nodes": [
+    {
+      "name": "detect-language",
+      "ui": "cli",
+      "label": "请输入要翻译的文本："
+    },
+    {
+      "name": "language-detection",
+      "prompts": [
+        {
+          "role": "system",
+          "content": "你是一个语言检测专家，请检测输入文本的语言，只返回语言代码（如：zh, en, ja, fr 等）"
+        },
+        {
+          "role": "user",
+          "content": "{{ $in[0] }}"
+        }
+      ],
+      "model": "gpt-3.5-turbo",
+      "output": {
+        "source_text": "{{ $in[0] }}",
+        "detected_language": "{{ $out.choices[0].message.content }}"
+      }
+    },
+    {
+      "name": "select-target-language",
+      "ui": "cli",
+      "label": "请选择目标语言（en/ja/fr/es/de）："
+    },
+    {
+      "name": "translate",
+      "prompts": [
+        {
+          "role": "system",
+          "content": "你是一个专业翻译，请将文本从{{ $node.language-detection.out.detected_language }}翻译成{{ $in[0] }}，保持原文的语气和风格"
+        },
+        {
+          "role": "user",
+          "content": "{{ $node.language-detection.out.source_text }}"
+        }
+      ],
+      "model": "gpt-4",
+      "options": {
+        "temperature": 0.3,
+        "max_tokens": 1000
+      },
+      "output": {
+        "original_text": "{{ $node.language-detection.out.source_text }}",
+        "source_language": "{{ $node.language-detection.out.detected_language }}",
+        "target_language": "{{ $in[0] }}",
+        "translated_text": "{{ $out.choices[0].message.content }}",
+        "translator": "AI Assistant"
+      }
+    },
+    {
+      "name": "show-translation",
+      "ui": "cli",
+      "label": "翻译结果：",
+      "autofill": {
+        "value": "原文（{{ $node.translate.out.source_language }}）: {{ $node.translate.out.original_text }}\n译文（{{ $node.translate.out.target_language }}）: {{ $node.translate.out.translated_text }}\n翻译者：{{ $node.translate.out.translator }}",
+        "action": "exit"
+      }
+    }
+  ],
+  "output": {
+    "translation_result": "{{ $node.translate.out }}",
+    "timestamp": "{{ now() }}",
+    "session_id": "{{ $sid }}"
+  }
+}

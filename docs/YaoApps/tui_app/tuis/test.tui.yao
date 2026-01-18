@@ -1,0 +1,30 @@
+{
+  "name": "Test TUI",
+  "data": {
+    "title": "Test Application",
+    "message": "This is a test TUI for unit testing",
+    "count": 0
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{message}}"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {
+      "process": "tui.quit"
+    }
+  }
+}

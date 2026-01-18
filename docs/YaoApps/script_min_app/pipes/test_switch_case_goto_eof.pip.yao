@@ -1,0 +1,27 @@
+{
+  "name": "Test: switch case goto EOF (no nodes)",
+  "whitelist": ["utils.fmt.Print"],
+  "nodes": [
+    {
+      "name": "switch",
+      "case": {
+        "$in[0].cmd == 'exit'": { "goto": "EOF", "input": "{{ $input[0] }}" },
+        "default": { "goto": "print", "input": "{{ $input[0] }}" }
+      }
+    },
+    {
+      "name": "print",
+      "process": {
+        "name": "utils.fmt.Print",
+        "args": ["print", "{{ $in }}"]
+      },
+      "output": null,
+      "goto": "EOF"
+    }
+  ],
+  "output": {
+    "input": "{{ $input }}",
+    "output": "{{ $output }}",
+    "switch": "{{ switch }}"
+  }
+}

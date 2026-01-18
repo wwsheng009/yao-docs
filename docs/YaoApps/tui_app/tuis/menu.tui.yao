@@ -1,0 +1,122 @@
+{
+  "name": "Menu Example",
+  "data": {
+    "menuItems": [
+      {
+        "title": "Dashboard",
+        "description": "View system dashboard",
+        "value": "dashboard",
+        "action": {
+          "process": "yao.demo.dashboard",
+          "args": []
+        }
+      },
+      {
+        "title": "Users Management",
+        "description": "Manage user accounts",
+        "value": "users",
+        "action": {
+          "process": "yao.demo.users",
+          "args": []
+        }
+      },
+      {
+        "title": "Settings",
+        "description": "Application settings",
+        "value": "settings",
+        "action": {
+          "process": "yao.demo.settings",
+          "args": []
+        }
+      },
+      {
+        "title": "Reports",
+        "description": "Generate and view reports",
+        "value": "reports",
+        "action": {
+          "process": "yao.demo.reports",
+          "args": []
+        }
+      },
+      {
+        "title": "Exit",
+        "description": "Exit the application",
+        "value": "exit",
+        "action": {
+          "process": "tui.quit",
+          "args": []
+        }
+      }
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "Yao TUI Menu System",
+          "align": "center",
+          "color": "212",
+          "background": "57",
+          "bold": true
+        }
+      },
+      {
+        "type": "menu",
+        "props": {
+          "title": "Main Menu",
+          "items": "{{menuItems}}",
+          "height": 15,
+          "width": 60,
+          "showStatusBar": true,
+          "showFilter": false,
+          "activeItemStyle": {
+            "foreground": "226",
+            "background": "235",
+            "bold": true
+          },
+          "inactiveItemStyle": {
+            "foreground": "245",
+            "background": "233"
+          },
+          "selectedItemStyle": {
+            "foreground": "235",
+            "background": "212",
+            "bold": true
+          },
+          "disabledItemStyle": {
+            "foreground": "240",
+            "italic": true
+          }
+        }
+      },
+      {
+        "type": "footer",
+        "props": {
+          "text": "Use arrow keys to navigate, Enter to select, Esc to exit",
+          "align": "center",
+          "color": "245",
+          "background": "235",
+          "marginTop": 1
+        }
+      }
+    ]
+  },
+  "actions": {
+    "keypress": {
+      "ctrl+c": {
+        "process": "tui.quit",
+        "args": []
+      },
+      "q": {
+        "process": "tui.quit",
+        "args": []
+      },
+      "esc": {
+        "process": "tui.quit",
+        "args": []
+      }
+    }
+  }
+}

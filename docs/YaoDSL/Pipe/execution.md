@@ -77,14 +77,14 @@ type Context struct {
 
 ### 1. 初始化阶段
 
-```yaml
-# 1. 创建 Pipe 实例
+```go
+// 1. 创建 Pipe 实例
 pipe, err := New([]byte(dsl))
 
-# 2. 创建执行上下文
+// 2. 创建执行上下文
 ctx := pipe.Create()
 
-# 3. 配置上下文
+// 3. 配置上下文
 ctx.WithGlobal(data).WithSid(sid)
 ```
 

@@ -1,0 +1,274 @@
+{
+  "name": "order-processing",
+  "label": "订单处理系统",
+  "description": "完整的电商订单处理流程",
+  "whitelist": [
+    "order.*",
+    "inventory.*",
+    "payment.*",
+    "shipping.*",
+    "notification.*"
+  ],
+  "nodes": [
+    {
+      "name": "receive-order",
+      "input": ["{{ $global.order_data }}"],
+      "process": {
+        "name": "order.validate",
+        "args": ["{{ $in[0] }}"]
+      },
+      "output": {
+        "is_valid": "{{ $out.valid }}",
+        "order_data": "{{ $out.order_data }}",
+        "errors": "{{ $out.errors }}"
+      }
+    },
+    {
+      "name": "check-inventory",
+      "case": {
+        "{{ $node.receive-order.out.is_valid == true }}": {
+          "name": "valid-order",
+          "nodes": [
+            {
+              "name": "inventory-check",
+              "process": {
+                "name": "inventory.check_availability",
+                "args": ["{{ $node.receive-order.out.order_data.items }}"]
+              },
+              "output": {
+                "all_available": "{{ $out.all_available }}",
+                "unavailable_items": "{{ $out.unavailable_items }}",
+                "available_items": "{{ $out.available_items }}"
+              }
+            },
+            {
+              "name": "handle-inventory",
+              "switch": {
+                "{{ $node.inventory-check.out.all_available == true }}": {
+                  "name": "items-available",
+                  "nodes": [
+                    {
+                      "name": "reserve-inventory",
+                      "process": {
+                        "name": "inventory.reserve",
+                        "args": [
+                          "{{ $node.inventory-check.out.available_items }}",
+                          "{{ $node.receive-order.out.order_data.id }}"
+                        ]
+                      },
+                      "output": {
+                        "reservation_id": "{{ $out.reservation_id }}"
+                      }
+                    },
+                    {
+                      "name": "calculate-total",
+                      "process": {
+                        "name": "order.calculate_total",
+                        "args": [
+                          "{{ $node.inventory-check.out.available_items }}",
+                          "{{ $node.receive-order.out.order_data.shipping_method }}"
+                        ]
+                      },
+                      "output": {
+                        "subtotal": "{{ $out.subtotal }}",
+                        "shipping_cost": "{{ $out.shipping_cost }}",
+                        "tax": "{{ $out.tax }}",
+                        "total": "{{ $out.total }}",
+                        "currency": "{{ $out.currency }}"
+                      }
+                    },
+                    {
+                      "name": "process-payment",
+                      "prompts": [
+                        {
+                          "role": "system",
+                          "content": "你是一个支付处理助手，请协助处理订单支付"
+                        },
+                        {
+                          "role": "user",
+                          "content": "订单信息：\n订单ID：{{ $node.receive-order.out.order_data.id }}\n金额：{{ $node.calculate-total.out.total }} {{ $node.calculate-total.out.currency }}\n\n请选择支付方式：\n1. 信用卡\n2. 支付宝\n3. 微信支付\n4. 银行转账"
+                        }
+                      ],
+                      "ui": "cli",
+                      "label": "请选择支付方式：",
+                      "output": {
+                        "payment_method": "{{ $out[0] }}"
+                      }
+                    },
+                    {
+                      "name": "execute-payment",
+                      "process": {
+                        "name": "payment.process",
+                        "args": [
+                          "{{ $node.calculate-total.out.total }}",
+                          "{{ $node.process-payment.out.payment_method }}",
+                          "{{ $node.receive-order.out.order_data }}"
+                        ]
+                      },
+                      "output": {
+                        "payment_id": "{{ $out.payment_id }}",
+                        "payment_status": "{{ $out.status }}",
+                        "transaction_id": "{{ $out.transaction_id }}"
+                      }
+                    },
+                    {
+                      "name": "handle-payment-result",
+                      "switch": {
+                        "{{ $node.execute-payment.out.payment_status == 'success' }}": {
+                          "name": "payment-success",
+                          "nodes": [
+                            {
+                              "name": "confirm-inventory-deduction",
+                              "process": {
+                                "name": "inventory.confirm_deduction",
+                                "args": ["{{ $node.reserve-inventory.out.reservation_id }}"]
+                              },
+                              "output": {
+                                "deduction_confirmed": "{{ $out.confirmed }}"
+                              }
+                            },
+                            {
+                              "name": "create-shipment",
+                              "process": {
+                                "name": "shipping.create_shipment",
+                                "args": [
+                                  "{{ $node.receive-order.out.order_data }}",
+                                  "{{ $node.inventory-check.out.available_items }}"
+                                ]
+                              },
+                              "output": {
+                                "shipment_id": "{{ $out.shipment_id }}",
+                                "tracking_number": "{{ $out.tracking_number }}",
+                                "estimated_delivery": "{{ $out.estimated_delivery }}"
+                              }
+                            },
+                            {
+                              "name": "update-order-status",
+                              "process": {
+                                "name": "order.update_status",
+                                "args": [
+                                  "{{ $node.receive-order.out.order_data.id }}",
+                                  "paid",
+                                  {
+                                    "payment_id": "{{ $node.execute-payment.out.payment_id }}",
+                                    "shipment_id": "{{ $node.create-shipment.out.shipment_id }}"
+                                  }
+                                ]
+                              },
+                              "output": {
+                                "order_status": "{{ $out.status }}",
+                                "updated_at": "{{ $out.updated_at }}"
+                              }
+                            },
+                            {
+                              "name": "send-confirmation",
+                              "process": {
+                                "name": "notification.send_order_confirmation",
+                                "args": [
+                                  "{{ $node.receive-order.out.order_data.customer_email }}",
+                                  "{{ $node.receive-order.out.order_data }}",
+                                  "{{ $node.create-shipment.out }}",
+                                  "{{ $node.calculate-total.out }}"
+                                ]
+                              },
+                              "output": {
+                                "notification_sent": "{{ $out.sent }}",
+                                "message_id": "{{ $out.message_id }}"
+                              }
+                            },
+                            {
+                              "name": "show-order-success",
+                              "ui": "cli",
+                              "label": "订单处理成功！",
+                              "autofill": {
+                                "value": "🛒 订单处理成功！\n\n订单号：{{ $node.receive-order.out.order_data.id }}\n支付金额：{{ $node.calculate-total.out.total }} {{ $node.calculate-total.out.currency }}\n支付方式：{{ $node.process-payment.out.payment_method }}\n交易号：{{ $node.execute-payment.out.transaction_id }}\n\n📦 发货信息：\n发货单号：{{ $node.create-shipment.out.shipment_id }}\n快递单号：{{ $node.create-shipment.out.tracking_number }}\n预计送达：{{ $node.create-shipment.out.estimated_delivery }}\n\n📧 确认邮件已发送至：{{ $node.receive-order.out.order_data.customer_email }}\n\n感谢您的购买！",
+                                "action": "exit"
+                              }
+                            }
+                          ]
+                        },
+                        "default": {
+                          "name": "payment-failed",
+                          "nodes": [
+                            {
+                              "name": "release-inventory",
+                              "process": {
+                                "name": "inventory.release",
+                                "args": ["{{ $node.reserve-inventory.out.reservation_id }}"]
+                              }
+                            },
+                            {
+                              "name": "update-payment-failed",
+                              "process": {
+                                "name": "order.update_status",
+                                "args": [
+                                  "{{ $node.receive-order.out.order_data.id }}",
+                                  "payment_failed",
+                                  {
+                                    "payment_error": "{{ $node.execute-payment.out.payment_status }}"
+                                  }
+                                ]
+                              },
+                              "output": {
+                                "order_status": "{{ $out.status }}"
+                              }
+                            },
+                            {
+                              "name": "show-payment-error",
+                              "ui": "cli",
+                              "label": "支付失败：",
+                              "autofill": {
+                                "value": "❌ 支付失败\n\n错误原因：{{ $node.execute-payment.out.payment_status }}\n订单状态：{{ $node.update-payment-failed.out.order_status }}\n\n库存已释放，您可以重新尝试支付。",
+                                "action": "exit"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                "default": {
+                  "name": "items-unavailable",
+                  "nodes": [
+                    {
+                      "name": "show-inventory-error",
+                      "ui": "cli",
+                      "label": "库存不足：",
+                      "autofill": {
+                        "value": "❌ 库存不足\n\n以下商品库存不足：\n{{ join($node.inventory-check.out.unavailable_items, '\\n') }}\n\n可购买商品：\n{{ join($node.inventory-check.out.available_items.map(#item => `${#item.name} x ${#item.quantity}`), '\\n') }}\n\n请调整订单后重新提交。",
+                        "action": "exit"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "default": {
+          "name": "invalid-order",
+          "nodes": [
+            {
+              "name": "show-validation-error",
+              "ui": "cli",
+              "label": "订单验证失败：",
+              "autofill": {
+                "value": "❌ 订单验证失败\n\n错误信息：\n{{ join($node.receive-order.out.errors, '\\n') }}\n\n请检查订单信息后重新提交。",
+                "action": "exit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "output": {
+    "order_result": "{{ $node.receive-order.out.is_valid ? ($node.handle-inventory.out.valid-order != null ? ($node.handle-inventory.out.valid-order.items-available != null ? ($node.handle-inventory.out.valid-order.items-available.handle-payment-result.out.payment-success != null ? { \"status\": \"success\", \"order_id\": $node.receive-order.out.order_data.id, \"shipment_id\": $node.create-shipment.out.shipment_id } : { \"status\": \"payment_failed\", \"order_id\": $node.receive-order.out.order_data.id }) : { \"status\": \"inventory_unavailable\", \"unavailable_items\": $node.inventory-check.out.unavailable_items }) : { \"status\": \"invalid_order\", \"errors\": $node.receive-order.out.errors }) : { \"status\": \"invalid_order\", \"errors\": $node.receive-order.out.errors }}",
+    "processing_summary": {
+      "started_at": "{{ now() }}",
+      "session_id": "{{ $sid }}",
+      "order_id": "{{ $node.receive-order.out.order_data.id ?? 'N/A' }}"
+    }
+  }
+}

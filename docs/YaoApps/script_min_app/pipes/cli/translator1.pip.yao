@@ -1,0 +1,41 @@
+{
+  "name": "AI Translator",
+  "hooks": { "progress": "scripts.pipe.onProgress" },
+  "whitelist": ["utils.json.Validate", "utils.fmt.Print", "utils.app.Ping"],
+  "nodes": [
+    {
+      "name": "user",
+      "label": "Enter the command",
+      "ui": "cli",
+      "autofill": { "value": "{{ $in[0].placeholder }}", "action": "exit" },
+      "output": { "cmd": "{{$out[0]}}", "args": "{{$out[1:]}}" }
+    },
+    {
+      "name": "switch",
+      "case": {
+        "default": { "goto": "help", "input": "{{ user }}" }
+      }
+    },
+    {
+      "name": "print",
+      "process": { "name": "utils.fmt.Print", "args": "{{ $in }}" },
+      "output": null,
+      "goto": "EOF"
+    },
+    {
+      "name": "help",
+      "process": {
+        "name": "utils.fmt.Print",
+        "args": ["help", "{{ $in }}"]
+      },
+      "output": null
+    }
+  ],
+  "output": {
+    "switch": "{{ switch }}",
+    "output": "{{ $output }}",
+    "input": "{{ $input }}",
+    "sid": "{{ $sid }}",
+    "global": "{{ $global }}"
+  }
+}

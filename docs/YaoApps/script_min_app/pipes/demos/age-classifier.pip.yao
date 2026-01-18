@@ -1,0 +1,71 @@
+{
+  "name": "age-classifier",
+  "label": "年龄分类器",
+  "description": "根据年龄将用户分为不同类别",
+  "whitelist": ["user.*", "utils.*"],
+  "input": ["{{ $global.age }}"],
+  "nodes": [
+    {
+      "name": "validate-age",
+      "process": {
+        "name": "utils.validate_age",
+        "args": ["{{ $in[0] }}"]
+      }
+    },
+    {
+      "name": "classify-age",
+      "case": {
+        "{{ $in[0] >= 65 }}": {
+          "name": "senior",
+          "nodes": [
+            {
+              "name": "senior-message",
+              "process": {
+                "name": "utils.generate_message",
+                "args": ["senior", "您是老年用户"]
+              }
+            }
+          ]
+        },
+        "{{ $in[0] >= 18 }}": {
+          "name": "adult",
+          "nodes": [
+            {
+              "name": "adult-message",
+              "process": {
+                "name": "utils.generate_message",
+                "args": ["adult", "您是成年用户"]
+              }
+            }
+          ]
+        },
+        "default": {
+          "name": "minor",
+          "nodes": [
+            {
+              "name": "minor-message",
+              "process": {
+                "name": "utils.generate_message",
+                "args": ["minor", "您是未成年用户"]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "display-result",
+      "ui": "cli",
+      "label": "分类结果：",
+      "autofill": {
+        "value": "{{ $out }}",
+        "action": "exit"
+      }
+    }
+  ],
+  "output": {
+    "category": "{{ $out[0] }}",
+    "message": "{{ $out[1] }}",
+    "processed_at": "{{ now() }}"
+  }
+}

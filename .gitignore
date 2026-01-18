@@ -33,3 +33,4 @@ debug.log
 docs/YaoApps/**/*.db
 docs/YaoApps/**/*.log
 docs/YaoApps/**/*.env
+docs/YaoApps/**/outdir

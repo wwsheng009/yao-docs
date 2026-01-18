@@ -1,0 +1,208 @@
+{
+  "name": "smart-customer-service",
+  "label": "多语言智能客服",
+  "description": "基于 AI 的智能客服系统，支持多语言和多种服务类型",
+  "whitelist": [
+    "ai.*",
+    "customer.*",
+    "knowledge.*",
+    "translation.*",
+    "ticket.*"
+  ],
+  "nodes": [
+    {
+      "name": "welcome",
+      "ui": "cli",
+      "label": "🤖 智能客服系统\n\n请选择服务类型：\n1. 产品咨询\n2. 技术支持\n3. 订单问题\n4. 账户问题\n5. 投诉建议\n0. 人工客服\n\n请输入数字选择：",
+      "output": {
+        "service_type": "{{ $out[0] }}"
+      }
+    },
+    {
+      "name": "language-setup",
+      "ui": "cli",
+      "label": "🌐 语言设置 / Language\n\n请选择语言 / Please select language：\n1. 中文\n2. English\n3. 日本語\n4. Français\n5. Español\n\n请输入数字选择：",
+      "output": {
+        "language_code": "{{ $out[0] == '1' ? 'zh' : ($out[0] == '2' ? 'en' : ($out[0] == '3' ? 'ja' : ($out[0] == '4' ? 'fr' : 'es'))) }}",
+        "language_name": "{{ $out[0] == '1' ? '中文' : ($out[0] == '2' ? 'English' : ($out[0] == '3' ? '日本語' : ($out[0] == '4' ? 'Français' : 'Español'))) }}"
+      }
+    },
+    {
+      "name": "get-user-info",
+      "ui": "cli",
+      "label": "👤 用户信息\n\n请输入您的邮箱或手机号（可选）：",
+      "output": {
+        "user_contact": "{{ $out[0] }}"
+      }
+    },
+    {
+      "name": "lookup-user-history",
+      "case": {
+        "{{ $node.get-user-info.out.user_contact != null and $node.get-user-info.out.user_contact != '' }}": {
+          "name": "has-contact",
+          "nodes": [
+            {
+              "name": "search-user",
+              "process": {
+                "name": "customer.search_by_contact",
+                "args": ["{{ $node.get-user-info.out.user_contact }}"]
+              },
+              "output": {
+                "user_found": "{{ $out.found }}",
+                "user_data": "{{ $out.user_data }}",
+                "recent_tickets": "{{ $out.recent_tickets }}"
+              }
+            }
+          ]
+        },
+        "default": {
+          "name": "no-contact",
+          "output": {
+            "user_found": false,
+            "user_data": {},
+            "recent_tickets": []
+          }
+        }
+      }
+    },
+    {
+      "name": "main-dialog",
+      "case": {
+        "{{ $node.welcome.out.service_type == '5' }}": {
+          "name": "human-agent",
+          "nodes": [
+            {
+              "name": "transfer-to-human",
+              "ui": "cli",
+              "label": "📞 正在为您转接人工客服...\n\n预计等待时间：3-5分钟\n请保持在线，客服人员将尽快为您服务。",
+              "autofill": {
+                "value": "🎫 人工客服请求已创建\n工单号：{{ now().Unix() }}\n等待位置：队列第{{ $global.queue_position ?? 3 }}位\n\n如需紧急服务，请拨打客服热线：400-123-4567",
+                "action": "exit"
+              }
+            }
+          ]
+        },
+        "default": {
+          "name": "ai-service",
+          "nodes": [
+            {
+              "name": "get-problem-description",
+              "ui": "cli",
+              "label": "💬 请详细描述您的问题：\n\n（支持文字输入，建议包含以下信息）\n• 问题发生的具体时间\n• 相关的产品或服务名称\n• 问题现象的详细描述\n• 您期望的解决方案",
+              "output": {
+                "problem_description": "{{ $out[0] }}"
+              }
+            },
+            {
+              "name": "ai-analysis",
+              "prompts": [
+                {
+                  "role": "system",
+                  "content": "你是一个专业的AI客服助手，请根据用户提供的信息进行分析和回复。\n\n当前服务类型：{{ $node.welcome.out.service_type == '1' ? '产品咨询' : ($node.welcome.out.service_type == '2' ? '技术支持' : ($node.welcome.out.service_type == '3' ? '订单问题' : ($node.welcome.out.service_type == '4' ? '账户问题' : '其他'))) }}\n用户语言：{{ $node.language-setup.out.language_name }}\n\n{{ $node.lookup-user-history.out.user_found == true ? `用户历史信息：${$json($node.lookup-user-history.out.user_data)} 最近工单：${$json($node.lookup-user-history.out.recent_tickets)}` : '新用户' }}\n\n回复要求：\n1. 使用{{ $node.language-setup.out.language_name }}回复\n2. 语气友好专业\n3. 针对具体问题提供解决方案\n4. 如果无法解决，建议升级到人工客服\n5. 提供相关的帮助链接或联系方式"
+                },
+                {
+                  "role": "user",
+                  "content": "服务类型：{{ $node.welcome.out.service_type }}\n用户联系方式：{{ $node.get-user-info.out.user_contact ?? '未提供' }}\n问题描述：{{ $node.get-problem-description.out.problem_description }}\n\n请分析并回复。"
+                }
+              ],
+              "connector": "deepseek-chat",
+              "options": {
+                "temperature": 0.3,
+                "max_tokens": 1500
+              },
+              "output": {
+                "ai_response": "{{ $out.choices[0].message.content }}",
+                "analysis_result": "{{ $out.choices[0].message.content }}"
+              }
+            },
+            {
+              "name": "knowledge-search",
+              "process": {
+                "name": "knowledge.search",
+                "args": [
+                  "{{ $node.get-problem-description.out.problem_description }}",
+                  "{{ $node.language-setup.out.language_code }}",
+                  "{{ $node.welcome.out.service_type }}"
+                ]
+              },
+              "output": {
+                "knowledge_results": "{{ $out.results }}",
+                "relevant_articles": "{{ $out.articles }}"
+              }
+            },
+            {
+              "name": "enhanced-response",
+              "prompts": [
+                {
+                  "role": "system",
+                  "content": "基于AI分析和知识库查询结果，生成更准确和详细的回复。\n\nAI分析：{{ $node.ai-analysis.out.ai_response }}\n知识库结果：{{ $json($node.knowledge-search.out.knowledge_results) }}\n\n请生成最终的客服回复，包含：\n1. 问题确认和理解\n2. 具体解决方案\n3. 相关资源链接\n4. 后续跟进建议"
+                },
+                {
+                  "role": "assistant",
+                  "content": "基于AI分析和知识库，我将为您提供详细的解决方案。"
+                }
+              ],
+              "connector": "deepseek-chat",
+              "options": {
+                "temperature": 0.2,
+                "max_tokens": 2000
+              },
+              "output": {
+                "final_response": "{{ $out.choices[0].message.content }}",
+                "solution_type": "{{ $out.choices[0].message.content.contains('解决') ? 'resolved' : 'escalated' }}"
+              }
+            },
+            {
+              "name": "show-response",
+              "ui": "cli",
+              "label": "🤖 AI客服回复",
+              "autofill": {
+                "value": "{{ $node.enhanced-response.out.final_response }}\n\n──────────────────────────────────\n📊 服务统计\n服务类型：{{ $node.welcome.out.service_type == '1' ? '产品咨询' : ($node.welcome.out.service_type == '2' ? '技术支持' : ($node.welcome.out.service_type == '3' ? '订单问题' : ($node.welcome.out.service_type == '4' ? '账户问题' : '其他'))) }}\n处理时间：{{ now().Format('15:04:05') }}\n语言：{{ $node.language-setup.out.language_name }}\n\n{{ $node.enhanced-response.out.solution_type == 'escalated' ? '⚠️ 如需进一步协助，请回复 \"转人工\" 联系人工客服。' : '✅ 问题已解决，如还有疑问请继续提问。' }}",
+                "action": "exit"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "create-service-record",
+      "process": {
+        "name": "ticket.create",
+        "args": [
+          "{{ $node.get-user-info.out.user_contact }}",
+          "{{ $node.welcome.out.service_type }}",
+          "{{ $node.get-problem-description.out.problem_description }}",
+          "{{ $node.enhanced-response.out.final_response }}",
+          {
+            "language": "{{ $node.language-setup.out.language_code }}",
+            "user_found": "{{ $node.lookup-user-history.out.user_found }}",
+            "ai_response": "{{ $node.ai-analysis.out.ai_response }}",
+            "knowledge_used": "{{ $node.knowledge-search.out.knowledge_results }}"
+          }
+        ]
+      },
+      "output": {
+        "ticket_id": "{{ $out.ticket_id }}",
+        "created_at": "{{ $out.created_at }}"
+      }
+    }
+  ],
+  "output": {
+    "service_result": {
+      "service_type": "{{ $node.welcome.out.service_type }}",
+      "language": "{{ $node.language-setup.out.language_code }}",
+      "user_contact": "{{ $node.get-user-info.out.user_contact }}",
+      "problem_description": "{{ $node.get-problem-description.out.problem_description }}",
+      "ai_response": "{{ $node.enhanced-response.out.final_response }}",
+      "solution_type": "{{ $node.enhanced-response.out.solution_type }}",
+      "ticket_id": "{{ $node.create-service-record.out.ticket_id }}"
+    },
+    "session_summary": {
+      "session_id": "{{ $sid }}",
+      "start_time": "{{ now() }}",
+      "user_found": "{{ $node.lookup-user-history.out.user_found }}",
+      "knowledge_search_results": "{{ $node.knowledge-search.out.knowledge_results }}"
+    }
+  }
+}

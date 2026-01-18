@@ -122,7 +122,7 @@ yao run pipe.Create <DSL> [args...]
 yao run pipe.Create 'name: "test"; nodes: [{name: "node1", process: {name: "utils.hello"}}]'
 
 # 复杂 DSL（建议使用文件）
-yao run pipe.Create "$(cat pipe-config.yml)"
+yao run pipe.Create "$(cat pipe-config.json)"
 
 # 带参数
 yao run pipe.Create "$dsl_content" "arg1" "arg2"
@@ -130,18 +130,25 @@ yao run pipe.Create "$dsl_content" "arg1" "arg2"
 
 #### DSL 示例
 
-```yaml
-name: 'quick-pipe'
-label: '快速管道'
-nodes:
-  - name: 'input'
-    ui: 'cli'
-    label: '请输入：'
-
-  - name: 'process'
-    process:
-      name: 'utils.echo'
-      args: ['{{ $in[0] }}']
+```json
+{
+  "name": "quick-pipe",
+  "label": "快速管道",
+  "nodes": [
+    {
+      "name": "input",
+      "ui": "cli",
+      "label": "请输入："
+    },
+    {
+      "name": "process",
+      "process": {
+        "name": "utils.echo",
+        "args": ["{{ $in[0] }}"]
+      }
+    }
+  ]
+}
 ```
 
 ### 4. pipe.CreateWith
@@ -328,13 +335,17 @@ func New(source []byte) (*Pipe, error)
 #### 示例
 
 ```go
-dsl := []byte(`
-name: "test-pipe"
-nodes:
-  - name: "node1"
-    process:
-      name: "utils.hello"
-`)
+dsl := []byte(`{
+  "name": "test-pipe",
+  "nodes": [
+    {
+      "name": "node1",
+      "process": {
+        "name": "utils.hello"
+      }
+    }
+  ]
+}`)
 
 pipe, err := New(dsl)
 if err != nil {
@@ -498,26 +509,33 @@ import (
 
 func main() {
     // 1. 创建 Pipe
-    dsl := `
-name: "hello-world"
-label: "问候世界"
-nodes:
-  - name: "input"
-    ui: "cli"
-    label: "请输入您的名字："
-
-  - name: "greet"
-    process:
-      name: "utils.greet"
-      args: ["{{ $in[0] }}"]
-
-  - name: "output"
-    ui: "cli"
-    label: "问候结果："
-    autofill:
-      value: "{{ $out }}"
-      action: "exit"
-`
+    dsl := `{
+  "name": "hello-world",
+  "label": "问候世界",
+  "nodes": [
+    {
+      "name": "input",
+      "ui": "cli",
+      "label": "请输入您的名字："
+    },
+    {
+      "name": "greet",
+      "process": {
+        "name": "utils.greet",
+        "args": ["{{ $in[0] }}"]
+      }
+    },
+    {
+      "name": "output",
+      "ui": "cli",
+      "label": "问候结果：",
+      "autofill": {
+        "value": "{{ $out }}",
+        "action": "exit"
+      }
+    }
+  ]
+}`
 
     pipe, err := pipe.New([]byte(dsl))
     if err != nil {
@@ -542,37 +560,57 @@ nodes:
 
 ```go
 func demonstrateFlowControl() {
-    dsl := `
-name: "conditional-flow"
-nodes:
-  - name: "get-number"
-    ui: "cli"
-    label: "请输入一个数字："
-
-  - name: "check-range"
-    switch:
-      "{{ $in[0] > 100 }}":
-        name: "large"
-        nodes:
-          - name: "handle-large"
-            process:
-              name: "math.large_number"
-              args: ["{{ $in[0] }}"]
-      "{{ $in[0] > 10 }}":
-        name: "medium"
-        nodes:
-          - name: "handle-medium"
-            process:
-              name: "math.medium_number"
-              args: ["{{ $in[0] }}"]
-      default:
-        name: "small"
-        nodes:
-          - name: "handle-small"
-            process:
-              name: "math.small_number"
-              args: ["{{ $in[0] }}"]
-`
+    dsl := `{
+  "name": "conditional-flow",
+  "nodes": [
+    {
+      "name": "get-number",
+      "ui": "cli",
+      "label": "请输入一个数字："
+    },
+    {
+      "name": "check-range",
+      "switch": {
+        "{{ $in[0] > 100 }}": {
+          "name": "large",
+          "nodes": [
+            {
+              "name": "handle-large",
+              "process": {
+                "name": "math.large_number",
+                "args": ["{{ $in[0] }}"]
+              }
+            }
+          ]
+        },
+        "{{ $in[0] > 10 }}": {
+          "name": "medium",
+          "nodes": [
+            {
+              "name": "handle-medium",
+              "process": {
+                "name": "math.medium_number",
+                "args": ["{{ $in[0] }}"]
+              }
+            }
+          ]
+        },
+        "default": {
+          "name": "small",
+          "nodes": [
+            {
+              "name": "handle-small",
+              "process": {
+                "name": "math.small_number",
+                "args": ["{{ $in[0] }}"]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}`
 
     pipe, _ := pipe.New([]byte(dsl))
     ctx := pipe.Create()
@@ -592,32 +630,44 @@ nodes:
 
 ```go
 func demonstrateAI() {
-    dsl := `
-name: "ai-assistant"
-whitelist: ["ai.*"]
-nodes:
-  - name: "user-query"
-    ui: "cli"
-    label: "请输入您的问题："
-
-  - name: "ai-response"
-    prompts:
-      - role: "system"
-        content: "你是一个专业的AI助手"
-      - role: "user"
-        content: "{{ $in[0] }}"
-    model: "gpt-3.5-turbo"
-    options:
-      temperature: 0.7
-      max_tokens: 500
-
-  - name: "show-response"
-    ui: "cli"
-    label: "AI 回答："
-    autofill:
-      value: "{{ $out.choices[0].message.content }}"
-      action: "exit"
-`
+    dsl := `{
+  "name": "ai-assistant",
+  "whitelist": ["ai.*"],
+  "nodes": [
+    {
+      "name": "user-query",
+      "ui": "cli",
+      "label": "请输入您的问题："
+    },
+    {
+      "name": "ai-response",
+      "prompts": [
+        {
+          "role": "system",
+          "content": "你是一个专业的AI助手"
+        },
+        {
+          "role": "user",
+          "content": "{{ $in[0] }}"
+        }
+      ],
+      "model": "gpt-3.5-turbo",
+      "options": {
+        "temperature": 0.7,
+        "max_tokens": 500
+      }
+    },
+    {
+      "name": "show-response",
+      "ui": "cli",
+      "label": "AI 回答：",
+      "autofill": {
+        "value": "{{ $out.choices[0].message.content }}",
+        "action": "exit"
+      }
+    }
+  ]
+}`
 
     pipe, _ := pipe.New([]byte(dsl))
     ctx := pipe.Create()
@@ -631,28 +681,36 @@ nodes:
 
 ```go
 func demonstrateErrorHandling() {
-    dsl := `
-name: "error-handling-demo"
-nodes:
-  - name: "validate-input"
-    process:
-      name: "utils.validate_email"
-      args: ["{{ $in[0] }}"]
-
-  - name: "handle-invalid"
-    process:
-      name: "utils.handle_error"
-      args: ["{{ $out.is_valid }}"]
-    goto: "{{ $out.is_valid ? 'success' : 'error' }}"
-
-  - name: "success"
-    ui: "cli"
-    label: "验证成功！"
-
-  - name: "error"
-    ui: "cli"
-    label: "验证失败，请检查输入。"
-`
+    dsl := `{
+  "name": "error-handling-demo",
+  "nodes": [
+    {
+      "name": "validate-input",
+      "process": {
+        "name": "utils.validate_email",
+        "args": ["{{ $in[0] }}"]
+      }
+    },
+    {
+      "name": "handle-invalid",
+      "process": {
+        "name": "utils.handle_error",
+        "args": ["{{ $out.is_valid }}"]
+      },
+      "goto": "{{ $out.is_valid ? 'success' : 'error' }}"
+    },
+    {
+      "name": "success",
+      "ui": "cli",
+      "label": "验证成功！"
+    },
+    {
+      "name": "error",
+      "ui": "cli",
+      "label": "验证失败，请检查输入。"
+    }
+  ]
+}`
 
     pipe, _ := pipe.New([]byte(dsl))
     ctx := pipe.Create()

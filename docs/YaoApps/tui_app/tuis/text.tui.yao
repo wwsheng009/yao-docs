@@ -1,0 +1,101 @@
+{
+  "name": "Text Component Test",
+  "data": {
+    "welcome_message": "Welcome to the TUI Application!",
+    "description": "This is a sample application demonstrating the text component.",
+    "features": [
+      "Rich text formatting",
+      "Color support",
+      "Alignment options",
+      "Styling capabilities"
+    ],
+    "stats": {
+      "users": 1250,
+      "messages": 3420,
+      "documents": 89
+    }
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "Text Component Demo",
+          "align": "center",
+          "color": "205",
+          "background": "235",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{welcome_message}}",
+          "align": "center",
+          "color": "212",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}",
+          "align": "left",
+          "color": "245",
+          "italic": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Application Features:",
+          "align": "left",
+          "color": "220",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{features.0}}",
+          "align": "left",
+          "color": "150"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "- {{features.1}}",
+          "align": "left",
+          "color": "150"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "- {{features.2}}",
+          "align": "left",
+          "color": "150"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "- {{features.3}}",
+          "align": "left",
+          "color": "150"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Stats - Users: {{stats.users}}, Messages: {{stats.messages}}, Documents: {{stats.documents}}",
+          "align": "center",
+          "color": "200",
+          "bold": true
+        }
+      }
+    ]
+  }
+}

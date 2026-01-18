@@ -7,7 +7,7 @@ Pipe 采用模块化的架构设计，各个组件职责清晰，便于维护和
 ```mermaid
 graph TB
     subgraph "DSL Layer"
-        A[Pipe DSL] --> B[YAML Parser]
+        A[Pipe DSL] --> B[JSON Parser]
         B --> C[Configuration Validator]
     end
 

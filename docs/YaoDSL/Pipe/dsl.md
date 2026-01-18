@@ -79,6 +79,7 @@ Pipe 使用 JSON 格式的 DSL (Domain Specific Language) 来定义流程配置�
   "type": "ai", // 可选，会自动推断
   "label": "AI 翻译",
   "model": "gpt-3.5-turbo", // 模型名称（可选）
+  "connector": "openai-connector", // AI 连接器 ID（可选）
   "prompts": [
     // 提示词列表（必需）
     {
@@ -96,6 +97,91 @@ Pipe 使用 JSON 格式的 DSL (Domain Specific Language) 来定义流程配置�
     "max_tokens": 1000
   },
   "output": "{{ $out.choices[0].message.content }}"
+}
+```
+
+#### AI 节点配置项详解
+
+**connector 配置**
+
+`connector` 字段用于指定使用自定义的 AI 连接器：
+
+- **connector (string, 可选)**: AI 连接器 ID
+  - 如果配置了 `connector`，则使用指定的连接器
+  - 如果未配置，则使用默认的 moapi 服务
+  - 连接器需要在 Yao 的 connector 配置中预先定义
+
+```json
+// 使用自定义连接器
+{
+  "name": "custom-ai",
+  "connector": "openai-connector",  // 使用指定的连接器
+  "prompts": [
+    {
+      "role": "system",
+      "content": "你是一个 AI 助手"
+    },
+    {
+      "role": "user",
+      "content": "{{ $in[0] }}"
+    }
+  ]
+}
+
+// 使用默认 moapi 服务
+{
+  "name": "default-ai",
+  "model": "gpt-3.5-turbo",  // 不配置 connector，使用默认服务
+  "prompts": [
+    {
+      "role": "system",
+      "content": "你是一个 AI 助手"
+    },
+    {
+      "role": "user",
+      "content": "{{ $in[0] }}"
+    }
+  ]
+}
+```
+
+**model 配置**
+
+支持的模型名称取决于具体的 AI 服务配置：
+
+```json
+// OpenAI 模型
+{"model": "gpt-4"}
+{"model": "gpt-3.5-turbo"}
+{"model": "gpt-4-turbo"}
+
+// 其他模型（取决于配置）
+{"model": "claude-3"}
+{"model": "gemini-pro"}
+```
+
+**prompts 配置**
+
+支持多轮对话的提示词数组：
+
+- 每个提示词包含 `role` 和 `content` 字段
+- `role` 可选值: `system`, `user`, `assistant`
+- `content` 支持表达式插值
+
+**options 配置**
+
+常用的 AI 选项：
+
+```json
+{
+  "options": {
+    "temperature": 0.7,
+    "max_tokens": 1000,
+    "top_p": 0.9,
+    "frequency_penalty": 0.5,
+    "presence_penalty": 0.5,
+    "stream": true
+  }
 }
 ```
 

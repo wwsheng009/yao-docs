@@ -1,0 +1,111 @@
+{
+  "name": "AI Translator",
+  "hooks": { "progress": "scripts.pipe.onProgress" },
+  "whitelist": ["utils.json.Validate", "utils.fmt.Print", "utils.app.Ping"],
+  "nodes": [
+    {
+      "name": "user",
+      "label": "Enter the command",
+      "ui": "cli",
+      "autofill": { "value": "{{ $in[0].placeholder }}", "action": "exit" },
+      "output": { "cmd": "{{$out[0]}}", "args": "{{$out[1:]}}" }
+    },
+    {
+      "name": "switch",
+      "case": {
+        "user.cmd == 'translate'": {
+          "input": "{{ user.args[0] }}",
+          "nodes": [
+            {
+              "name": "translate",
+              "prompts": [
+                {
+                  "role": "system",
+                  "content": "you will act as a translator, helping me translate the words I give you into Chinese and Arabic."
+                },
+                {
+                  "role": "system",
+                  "content": "Use the following JSON format to answer my question. {\"Chinese\":\"...\", \"Arabic\", \"...\"}"
+                },
+                { "role": "user", "content": "{{ $in[0] }}" }
+              ]
+            },
+            {
+              "name": "validate",
+              "process": {
+                "name": "utils.json.Validate",
+                "args": [
+                  "{{ translate }}",
+                  [{ "haskey": "Chinese" }, { "haskey": "Arabic" }]
+                ]
+              },
+              "goto": "{{ $out == false ? 'print' : 'EOF' }}"
+            },
+            {
+              "name": "print",
+              "process": {
+                "name": "utils.fmt.Print",
+                "args": "{{ translate }}"
+              },
+              "output": null
+            },
+            {
+              "name": "user",
+              "label": "Enter the words to translate",
+              "ui": "cli",
+              "output": { "args": "{{ $out[0] }}" },
+              "autofill": { "value": "{{ translate }}" },
+              "goto": "translate"
+            }
+          ],
+
+          "output": ["{{ translate.Chinese }}", "{{ translate.Arabic }}"],
+          "goto": "print"
+        },
+
+        "user.cmd == 'run'": {
+          "input": "{{ user.args }}",
+          "nodes": [
+            {
+              "name": "ping",
+              "process": { "name": "utils.app.Ping", "args": "{{ $in[1:] }}" }
+            }
+          ],
+          "output": ["run", "{{ ping.engine  }}", "{{ ping.version }}"],
+          "goto": "print"
+        },
+
+        "user.cmd == 'print'": {
+          "input": "{{ user.args }}",
+          "output": ["print", "{{ user.args }}"],
+          "goto": "print"
+        },
+
+        "user.cmd == 'exit'": { "goto": "EOF" },
+
+        "default": { "goto": "help", "input": "{{ user }}" }
+      }
+    },
+    {
+      "name": "print",
+      "process": { "name": "utils.fmt.Print", "args": "{{ $in }}" },
+      "output": null,
+      "goto": "EOF"
+    },
+    {
+      "name": "help",
+      "process": {
+        "name": "utils.fmt.Print",
+        "args": ["help", "{{ $in }}"]
+      },
+      "output": null
+    }
+  ],
+  "output": {
+    "switch": "{{ switch }}",
+    "output": "{{ $output }}",
+    "input": "{{ $input }}",
+    "sid": "{{ $sid }}",
+    "global": "{{ $global }}"
+  }
+}

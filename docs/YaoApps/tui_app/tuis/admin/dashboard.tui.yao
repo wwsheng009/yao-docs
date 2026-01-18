@@ -1,0 +1,33 @@
+{
+  "name": "Dashboard",
+  "data": {
+    "title": "Admin Dashboard",
+    "stats": {
+      "users": 42,
+      "orders": 128,
+      "revenue": 8560
+    }
+  },
+  "layout": {
+    "direction": "horizontal",
+    "children": [
+      {
+        "type": "text",
+        "props": {
+          "content": "{{title}}",
+          "color": "blue",
+          "bold": true
+        }
+      },
+      {
+        "type": "table",
+        "bind": "stats"
+      }
+    ]
+  },
+  "bindings": {
+    "q": {
+      "process": "tui.Quit"
+    }
+  }
+}

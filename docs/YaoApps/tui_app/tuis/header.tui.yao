@@ -1,0 +1,42 @@
+{
+  "name": "Header Component Test",
+  "data": {
+    "title": "Welcome to TUI App",
+    "subtitle": "Testing Header Component",
+    "user": {
+      "name": "Alice",
+      "role": "Admin"
+    }
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "205",
+          "background": "235",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{subtitle}}",
+          "align": "center",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "User: {{user.name}} ({{user.role}})",
+          "align": "center",
+          "color": "250"
+        }
+      }
+    ]
+  }
+}

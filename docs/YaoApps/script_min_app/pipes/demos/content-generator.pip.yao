@@ -1,0 +1,104 @@
+{
+  "name": "content-generator",
+  "label": "AI 内容生成器",
+  "description": "根据用户需求生成各种类型的内容",
+  "whitelist": [
+    "ai.*",
+    "content.*",
+    "utils.*"
+  ],
+  "nodes": [
+    {
+      "name": "select-content-type",
+      "ui": "cli",
+      "label": "请选择内容类型（blog/email/social/ad/story）："
+    },
+    {
+      "name": "get-topic",
+      "ui": "cli",
+      "label": "请输入内容主题："
+    },
+    {
+      "name": "generate-content",
+      "prompts": [
+        {
+          "role": "system",
+          "content": "你是一个专业的内容创作者。请根据用户要求生成高质量的{{ $node.select-content-type.out[0] }}内容。\\n要求：\\n1. 内容要专业、准确、有价值\\n2. 语言要流畅自然\\n3. 结构要清晰合理\\n4. 符合{{ $node.select-content-type.out[0] }}的写作规范\\n\\n{{ $node.select-content-type.out[0] }}类型的具体要求：\\n- blog: 需要有引言、正文、结论，字数800-1200字\\n- email: 需要有主题、正文、署名，简洁明了\\n- social: 需要有吸引力，适合社交媒体传播，包含相关标签\\n- ad: 需要有标题、正文、行动号召，具有说服力\\n- story: 需要有开头、发展、高潮、结尾，情节生动有趣"
+        },
+        {
+          "role": "user",
+          "content": "内容类型：{{ $node.select-content-type.out[0] }}\\n主题：{{ $node.get-topic.out[0] }}\\n请生成相关内容。\\n\\n附加要求：\\n{{ $global.additional_requirements ?? \\\"无\\\" }}"
+        }
+      ],
+      "model": "gpt-4",
+      "options": {
+        "temperature": 0.7,
+        "max_tokens": 2000,
+        "stream": true
+      },
+      "output": {
+        "content_type": "{{ $node.select-content-type.out[0] }}",
+        "topic": "{{ $node.get-topic.out[0] }}",
+        "generated_content": "{{ $out.choices[0].message.content }}",
+        "word_count": "{{ len($out.choices[0].message.content.split(' ')) }}",
+        "generated_at": "{{ now() }}"
+      }
+    },
+    {
+      "name": "optimize-content",
+      "case": {
+        "{{ $global.auto_optimize == true }}": {
+          "name": "optimize",
+          "nodes": [
+            {
+              "name": "ai-optimize",
+              "prompts": [
+                {
+                  "role": "system",
+                  "content": "你是一个内容优化专家，请优化以下内容，使其更加完善和专业"
+                },
+                {
+                  "role": "user",
+                  "content": "{{ $node.generate-content.out.generated_content }}"
+                }
+              ],
+              "model": "gpt-4",
+              "options": {
+                "temperature": 0.3
+              },
+              "output": {
+                "optimized_content": "{{ $out.choices[0].message.content }}",
+                "original_content": "{{ $node.generate-content.out.generated_content }}"
+              }
+            }
+          ]
+        },
+        "default": {
+          "name": "no-optimize",
+          "output": {
+            "optimized_content": "{{ $node.generate-content.out.generated_content }}",
+            "original_content": "{{ $node.generate-content.out.generated_content }}"
+          }
+        }
+      }
+    },
+    {
+      "name": "show-result",
+      "ui": "cli",
+      "label": "生成的内容：",
+      "autofill": {
+        "value": "┌─────────────────────────────────────┐\\n│ 内容类型：{{ $node.generate-content.out.content_type }}\\n│ 主题：{{ $node.generate-content.out.topic }}\\n│ 字数：{{ $node.generate-content.out.word_count }}\\n│ 生成时间：{{ $node.generate-content.out.generated_at }}\\n└─────────────────────────────────────┘\\n\\n{{ $node.optimize-content.out.optimized_content }}",
+        "action": "exit"
+      }
+    }
+  ],
+  "output": {
+    "content_info": "{{ $node.generate-content.out }}",
+    "optimized_content": "{{ $node.optimize-content.out.optimized_content }}",
+    "metadata": {
+      "session_id": "{{ $sid }}",
+      "processing_time": "{{ now() }}",
+      "version": "1.0"
+    }
+  }
+}

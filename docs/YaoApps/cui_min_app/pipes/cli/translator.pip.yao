@@ -88,7 +88,7 @@
     },
     {
       "name": "print",
-      "process": { "name": "utils.fmt.Print", "args": "{{ $in }}" },
+      "process": { "name": "utils.fmt.Print", "args": "hello:{{ $in }}" },
       "output": null,
       "goto": "EOF"
     },

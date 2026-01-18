@@ -1,0 +1,39 @@
+{
+  "name": "Test: switch child output (no nodes)",
+  "whitelist": ["utils.fmt.Print"],
+  "nodes": [
+    {
+      "name": "switch",
+      "case": {
+        "$in[0].cmd == 'route'": {
+          "input": "{{ $input[0] }}",
+          "output": {
+            "route": "route",
+            "cmd": "{{ $input[0].cmd }}",
+            "args": "{{ $input[0].args }}"
+          },
+          "goto": "print"
+        },
+        "default": {
+          "input": "{{ $input[0] }}",
+          "output": { "route": "default", "cmd": "{{ $input[0].cmd }}" },
+          "goto": "print"
+        }
+      }
+    },
+    {
+      "name": "print",
+      "process": {
+        "name": "utils.fmt.Print",
+        "args": ["switch-out", "{{ $in }}", "{{ switch }}"]
+      },
+      "output": null,
+      "goto": "EOF"
+    }
+  ],
+  "output": {
+    "switch": "{{ switch }}",
+    "input": "{{ $input }}",
+    "output": "{{ $output }}"
+  }
+}

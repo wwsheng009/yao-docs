@@ -10,6 +10,7 @@
 - [examples](examples.md)
 - [execution](execution.md)
 - [expression](expression.md)
+- [variables](variables.md)
 - [JSON-格式说明](JSON-格式说明.md)
 - [nodes](nodes.md)
 - [pipe概览](pipe概览.md)

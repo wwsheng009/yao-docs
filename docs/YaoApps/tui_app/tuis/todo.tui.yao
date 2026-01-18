@@ -1,0 +1,84 @@
+{
+  "name": "Todo Application",
+  "data": {
+    "todos": [
+      {
+        "id": 1,
+        "text": "Learn TUI scripting",
+        "completed": false
+      },
+      {
+        "id": 2,
+        "text": "Build a sample app",
+        "completed": true
+      }
+    ],
+    "input": "",
+    "stats": {
+      "total": 2,
+      "completed": 1,
+      "active": 1
+    }
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {"title": "Todo App - {{len(todos)}} items"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "Input: {{input}} (Press 'i' to edit)"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "----------------------------------------"}
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Todo items count: {{len(todos)}}\nFirst item: {{len(todos) > 0 ? todos[0].text : \"No items\"}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {"content": "----------------------------------------"}
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Stats: Total={{stats.total}}, Active={{stats.active}}, Completed={{stats.completed}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {"content": "Controls: '+'-add, 'a'-mark all, 'c'-clear completed, 'q'-quit"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "Edit: 'h'-help, 'ctrl+1/2'-edit item 1/2, 's'-save edit, 'x'-cancel edit"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "{{helpMessage}}"}
+      }
+    ]
+  },
+  "bindings": {
+    "+": {"script": "scripts/tui/todo", "method": "addItem"},
+    "a": {"script": "scripts/tui/todo", "method": "markAllComplete"},
+    "c": {"script": "scripts/tui/todo", "method": "clearCompleted"},
+    "q": {"script": "scripts/tui/todo", "method": "quit"},
+    "h": {"script": "scripts/tui/todo", "method": "showEditHelp"},
+    "g": {"script": "scripts/tui/todo", "method": "getStats"},
+    "t1": {"script": "scripts/tui/todo", "method": "toggleItem", "args": [1]},
+    "t2": {"script": "scripts/tui/todo", "method": "toggleItem", "args": [2]},
+    "3": {"script": "scripts/tui/todo", "method": "deleteItem", "args": [1]},
+    "4": {"script": "scripts/tui/todo", "method": "deleteItem", "args": [2]},
+    "1": {"script": "scripts/tui/todo", "method": "startEdit", "args": [1]},
+    "2": {"script": "scripts/tui/todo", "method": "startEdit", "args": [2]},
+    "s": {"script": "scripts/tui/todo", "method": "saveEdit"},
+    "x": {"script": "scripts/tui/todo", "method": "cancelEdit"}
+  }
+}

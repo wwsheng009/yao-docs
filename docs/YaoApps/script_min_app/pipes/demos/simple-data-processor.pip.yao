@@ -1,0 +1,33 @@
+{
+  "name": "simple-data-processor",
+  "label": "简单数据处理器",
+  "description": "演示基本的输入、处理和输出流程",
+  "whitelist": ["utils.*"],
+  "nodes": [
+    {
+      "name": "get-input",
+      "ui": "cli",
+      "label": "请输入要处理的数据："
+    },
+    {
+      "name": "transform-data",
+      "process": {
+        "name": "utils.transform",
+        "args": [
+          "{{ $in[0] }}",
+          "uppercase"
+        ]
+      },
+      "output": "{{ $out.result }}"
+    },
+    {
+      "name": "show-result",
+      "ui": "cli",
+      "label": "处理结果：",
+      "autofill": {
+        "value": "{{ $out }}",
+        "action": "exit"
+      }
+    }
+  ]
+}

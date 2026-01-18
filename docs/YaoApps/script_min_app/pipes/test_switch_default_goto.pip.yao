@@ -1,0 +1,26 @@
+{
+  "name": "Test: switch default goto (no nodes)",
+  "whitelist": ["utils.fmt.Print"],
+  "nodes": [
+    {
+      "name": "switch",
+      "case": {
+        "default": { "goto": "help", "input": "{{ $input[0] }}" }
+      }
+    },
+    {
+      "name": "help",
+      "process": {
+        "name": "utils.fmt.Print",
+        "args": ["help", "{{ $in }}"]
+      },
+      "output": null,
+      "goto": "EOF"
+    }
+  ],
+  "output": {
+    "input": "{{ $input }}",
+    "output": "{{ $output }}",
+    "switch": "{{ switch }}"
+  }
+}

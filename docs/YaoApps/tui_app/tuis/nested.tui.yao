@@ -1,0 +1,32 @@
+{
+  "name": "Nested Test TUI",
+  "data": {
+    "user": {
+      "name": "Alice",
+      "age": 30
+    }
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "User Profile"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Name: {{user.name}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Age: {{user.age}}"
+        }
+      }
+    ]
+  }
+}

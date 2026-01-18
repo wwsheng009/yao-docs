@@ -1,0 +1,172 @@
+{
+  "name": "Table Component Test",
+  "data": {
+    "users": [
+      {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "role": "Admin",
+        "status": "Active"
+      },
+      {
+        "id": 2,
+        "name": "Jane Smith",
+        "email": "jane@example.com",
+        "role": "Editor",
+        "status": "Active"
+      },
+      {
+        "id": 3,
+        "name": "Bob Johnson",
+        "email": "bob@example.com",
+        "role": "Viewer",
+        "status": "Inactive"
+      },
+      {
+        "id": 4,
+        "name": "Alice Williams",
+        "email": "alice@example.com",
+        "role": "Editor",
+        "status": "Active"
+      },
+      {
+        "id": 5,
+        "name": "Charlie Brown",
+        "email": "charlie@example.com",
+        "role": "Admin",
+        "status": "Pending"
+      }
+    ],
+    "products": [
+      {
+        "id": "PROD-001",
+        "name": "Laptop",
+        "category": "Electronics",
+        "price": 999.99,
+        "stock": 25
+      },
+      {
+        "id": "PROD-002",
+        "name": "Mouse",
+        "category": "Accessories",
+        "price": 29.99,
+        "stock": 150
+      },
+      {
+        "id": "PROD-003",
+        "name": "Keyboard",
+        "category": "Accessories",
+        "price": 79.99,
+        "stock": 80
+      }
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "Table Component Demo",
+          "align": "center",
+          "color": "205",
+          "background": "235",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Users Table",
+          "align": "left",
+          "color": "220",
+          "bold": true
+        }
+      },
+      {
+        "type": "table",
+        "bind": "users",
+        "props": {
+          "columns": [
+            {
+              "key": "id",
+              "title": "ID",
+              "width": 10
+            },
+            {
+              "key": "name",
+              "title": "Name",
+              "width": 20
+            },
+            {
+              "key": "email",
+              "title": "Email",
+              "width": 30
+            },
+            {
+              "key": "role",
+              "title": "Role",
+              "width": 15
+            },
+            {
+              "key": "status",
+              "title": "Status",
+              "width": 15
+            }
+          ],
+          "data": "{{users}}",
+          "height": 10,
+          "width": 0,
+          "showBorder": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Products Table",
+          "align": "left",
+          "color": "220",
+          "bold": true
+        }
+      },
+      {
+        "type": "table",
+        "bind": "products",
+        "props": {
+          "columns": [
+            {
+              "key": "id",
+              "title": "ID",
+              "width": 15
+            },
+            {
+              "key": "name",
+              "title": "Product Name",
+              "width": 20
+            },
+            {
+              "key": "category",
+              "title": "Category",
+              "width": 20
+            },
+            {
+              "key": "price",
+              "title": "Price",
+              "width": 10
+            },
+            {
+              "key": "stock",
+              "title": "Stock",
+              "width": 10
+            }
+          ],
+          "data": "{{products}}",
+          "height": 8,
+          "width": 0,
+          "showBorder": true
+        }
+      }
+    ]
+  }
+}

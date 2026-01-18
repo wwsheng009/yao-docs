@@ -12,35 +12,35 @@ Pipe 使用强大的表达式引擎来处理数据绑定、条件判断和动态
 
 表达式使用双花括号 `{{ }}` 包裹：
 
-```yaml
-# 简单变量引用
+```json
+// 简单变量引用
 {{ $global.user_id }}
 
-# 表达式计算
+// 表达式计算
 {{ $in[0] + $in[1] }}
 
-# 条件表达式
+// 条件表达式
 {{ $in[0] > 10 ? 'large' : 'small' }}
 
-# 函数调用
+// 函数调用
 {{ now() }}
 
-# 对象访问
+// 对象访问
 {{ $user.profile.name }}
 ```
 
 ### 表达式中的 HTML 编码
 
-在 YAML 中需要注意特殊字符的转义：
+在 JSON 中需要注意特殊字符的转义：
 
-```yaml
-# ❌ 错误：双引号在表达式中
+```json
+// ❌ 错误：双引号在表达式中
 {{ $in[0].say "hello" }}
 
-# ✅ 正确：使用 HTML 编码
+// ✅ 正确：使用 HTML 编码
 {{ $in[0].say &#34;hello&#34; }}
 
-# ✅ 正确：使用单引号
+// ✅ 正确：使用单引号
 {{ $in[0].say 'hello' }}
 ```
 
@@ -73,366 +73,402 @@ Pipe 使用强大的表达式引擎来处理数据绑定、条件判断和动态
 
 ### 基本类型
 
-```yaml
-# 字符串
-{{ $global.name }}
+```json
+// 字符串
+"{{ $global.name }}"
 
-# 数字
-{{ $global.age }}
+// 数字
+"{{ $global.age }}"
 
-# 布尔值
-{{ $global.is_active }}
+// 布尔值
+"{{ $global.is_active }}"
 
-# 空值
-{{ $global.data == null }}
+// 空值
+"{{ $global.data == null }}"
 ```
 
 ### 数组操作
 
-```yaml
-# 数组访问
-{{ $in[0] }}
-{{ $items[1].name }}
+```json
+// 数组访问
+"{{ $in[0] }}"
+"{{ $items[1].name }}"
 
-# 数组长度
-{{ len($items) }}
+// 数组长度
+"{{ len($items) }}"
 
-# 数组遍历（在支持的环境中）
-{{ $items[0].name }}
-{{ $items[1].price }}
+// 数组遍历（在支持的环境中）
+"{{ $items[0].name }}"
+"{{ $items[1].price }}"
 ```
 
 ### 对象操作
 
-```yaml
-# 对象属性
-{{ $user.name }}
-{{ $user.profile.email }}
+```json
+// 对象属性
+"{{ $user.name }}"
+"{{ $user.profile.email }}"
 
-# 嵌套访问
-{{ $data.items[0].specs.color }}
+// 嵌套访问
+"{{ $data.items[0].specs.color }}"
 
-# 安全访问（如果属性可能不存在）
-{{ $user?.name }}
+// 安全访问（如果属性可能不存在）
+"{{ $user?.name }}"
 ```
 
 ## 运算符
 
 ### 算术运算
 
-```yaml
-{{ a + b }}        # 加法
-{{ a - b }}        # 减法
-{{ a * b }}        # 乘法
-{{ a / b }}        # 除法
-{{ a % b }}        # 取模
-{{ a ** b }}       # 幂运算
+```json
+// 加法
+"{{ a + b }}"
+// 减法
+"{{ a - b }}"
+// 乘法
+"{{ a * b }}"
+// 除法
+"{{ a / b }}"
+// 取模
+"{{ a % b }}"
+// 幂运算
+"{{ a ** b }}"
 ```
 
 ### 比较运算
 
-```yaml
-{{ a == b }}       # 等于
-{{ a != b }}       # 不等于
-{{ a < b }}        # 小于
-{{ a <= b }}       # 小于等于
-{{ a > b }}        # 大于
-{{ a >= b }}       # 大于等于
+```json
+// 等于
+"{{ a == b }}"
+// 不等于
+"{{ a != b }}"
+// 小于
+"{{ a < b }}"
+// 小于等于
+"{{ a <= b }}"
+// 大于
+"{{ a > b }}"
+// 大于等于
+"{{ a >= b }}"
 ```
 
 ### 逻辑运算
 
-```yaml
-{{ a and b }}      # 逻辑与
-{{ a or b }}       # 逻辑或
-{{ not a }}        # 逻辑非
-{{ a ? b : c }}    # 三元运算符
+```json
+// 逻辑与
+"{{ a and b }}"
+// 逻辑或
+"{{ a or b }}"
+// 逻辑非
+"{{ not a }}"
+// 三元运算符
+"{{ a ? b : c }}"
 ```
 
 ### 字符串运算
 
-```yaml
-{{ str1 + str2 }}  # 字符串连接
-{{ str1 == str2 }} # 字符串相等
-{{ str1 != str2 }} # 字符串不等
+```json
+// 字符串连接
+"{{ str1 + str2 }}"
+// 字符串相等
+"{{ str1 == str2 }}"
+// 字符串不等
+"{{ str1 != str2 }}"
 ```
 
 ## 内置函数
 
 ### 时间函数
 
-```yaml
-{{ now() }}                    # 当前时间
-{{ now().Unix() }}            # Unix 时间戳
-{{ now().Format('2006-01-02') }} # 格式化时间
+```json
+// 当前时间
+"{{ now() }}"
+// Unix 时间戳
+"{{ now().Unix() }}"
+// 格式化时间
+"{{ now().Format('2006-01-02') }}"
 ```
 
 ### 字符串函数
 
-```yaml
-{{ upper('hello') }}          # 转大写 -> HELLO
-{{ lower('WORLD') }}          # 转小写 -> world
-{{ len('hello') }}            # 字符串长度 -> 5
-{{ split('a,b,c', ',') }}     # 分割字符串 -> [a, b, c]
-{{ join(['a', 'b'], ',') }}   # 连接数组 -> a,b
-{{ trim('  hello  ') }}        # 去除首尾空格 -> hello
+```json
+// 转大写 -> HELLO
+"{{ upper('hello') }}"
+// 转小写 -> world
+"{{ lower('WORLD') }}"
+// 字符串长度 -> 5
+"{{ len('hello') }}"
+// 分割字符串 -> [a, b, c]
+"{{ split('a,b,c', ',') }}"
+// 连接数组 -> a,b
+"{{ join(['a', 'b'], ',') }}"
+// 去除首尾空格 -> hello
+"{{ trim('  hello  ') }}"
 ```
 
 ### 数组函数
 
-```yaml
-{{ len([1, 2, 3]) }}          # 数组长度 -> 3
-{{ first([1, 2, 3]) }}        # 第一个元素 -> 1
-{{ last([1, 2, 3]) }}         # 最后一个元素 -> 3
-{{ sum([1, 2, 3]) }}          # 求和 -> 6
+```json
+// 数组长度 -> 3
+"{{ len([1, 2, 3]) }}"
+// 第一个元素 -> 1
+"{{ first([1, 2, 3]) }}"
+// 最后一个元素 -> 3
+"{{ last([1, 2, 3]) }}"
+// 求和 -> 6
+"{{ sum([1, 2, 3]) }}"
 ```
 
 ### 数学函数
 
-```yaml
-{{ abs(-5) }}                 # 绝对值 -> 5
-{{ max(1, 5, 3) }}            # 最大值 -> 5
-{{ min(1, 5, 3) }}            # 最小值 -> 1
-{{ round(3.14159, 2) }}       # 四舍五入 -> 3.14
+```json
+// 绝对值 -> 5
+"{{ abs(-5) }}"
+// 最大值 -> 5
+"{{ max(1, 5, 3) }}"
+// 最小值 -> 1
+"{{ min(1, 5, 3) }}"
+// 四舍五入 -> 3.14
+"{{ round(3.14159, 2) }}"
 ```
 
 ### 类型转换
 
-```yaml
-{{ string(123) }}             # 转字符串 -> "123"
-{{ int("456") }}              # 转整数 -> 456
-{{ float("3.14") }}           # 转浮点数 -> 3.14
-{{ bool("true") }}            # 转布尔值 -> true
+```json
+// 转字符串 -> "123"
+"{{ string(123) }}"
+// 转整数 -> 456
+"{{ int("456") }}"
+// 转浮点数 -> 3.14
+"{{ float("3.14") }}"
+// 转布尔值 -> true
+"{{ bool("true") }}"
 ```
 
 ## 高级特性
 
 ### 条件表达式
 
-```yaml
-# 三元运算符
-{{ $in[0] > 10 ? 'large' : 'small' }}
+```json
+// 三元运算符
+"{{ $in[0] > 10 ? 'large' : 'small' }}"
 
-# 嵌套条件
-{{ $user.type == 'vip' ? ($user.level > 5 ? 'vip5+' : 'vip') : 'normal' }}
+// 嵌套条件
+"{{ $user.type == 'vip' ? ($user.level > 5 ? 'vip5+' : 'vip') : 'normal' }}"
 
-# 多条件
-{{ $age >= 18 and $has_id ? 'adult' : 'minor' }}
+// 多条件
+"{{ $age >= 18 and $has_id ? 'adult' : 'minor' }}"
 ```
 
 ### 数组操作
 
-```yaml
-# 数组过滤
-{{ [1, 2, 3, 4, 5].filter(#value > 3) }}    # [4, 5]
+```json
+// 数组过滤
+{{ [1, 2, 3, 4, 5].filter(#value > 3) }}    // [4, 5]
 
-# 数组映射
-{{ [1, 2, 3].map(#value * 2) }}              # [2, 4, 6]
+// 数组映射
+{{ [1, 2, 3].map(#value * 2) }}              // [2, 4, 6]
 
-# 数组包含
-{{ [1, 2, 3].includes(2) }}                  # true
+// 数组包含
+{{ [1, 2, 3].includes(2) }}                  // true
 ```
 
 ### 对象操作
 
-```yaml
-# 对象创建
+```json
+// 对象创建
 {{ {"name": "John", "age": 30} }}
 
-# 对象属性访问
+// 对象属性访问
 {{ user.profile?.email }}
 
-# 对象键值对
+// 对象键值对
 {{ Object.keys(user) }}
 ```
 
 ### 正则表达式
 
-```yaml
-# 正则匹配
-{{ "hello123".matches("^[a-z]+") }}          # true
+```json
+// 正则匹配
+{{ "hello123".matches("^[a-z]+") }}          // true
 
-# 正则替换
-{{ "hello world".replace("world", "everyone") }} # hello everyone
+// 正则替换
+{{ "hello world".replace("world", "everyone") }} // hello everyone
 ```
 
 ## 使用场景
 
 ### 输入数据处理
 
-```yaml
-# 节点输入配置
-input:
-  - '{{ $global.api_key }}' # 使用全局配置
-  - '{{ $input[0] }}' # 使用管道输入
-  - "{{ now().Format('2006-01-02') }}" # 使用当前时间
-  - "{{ $user.id ?? 'anonymous' }}" # 使用默认值
+```json
+// 节点输入配置
+{
+  "input": [
+    "{{ $global.api_key }}", // 使用全局配置
+    "{{ $input[0] }}", // 使用管道输入
+    "{{ now().Format('2006-01-02') }}", // 使用当前时间
+    "{{ $user.id ?? 'anonymous' }}" // 使用默认值
+  ]
+}
 ```
 
 ### 输出数据格式化
 
-```yaml
-# 节点输出配置
-output:
-  result: '{{ $out.data }}' # 简单映射
-  success: '{{ $out.error == null }}' # 条件判断
-  timestamp: '{{ now().Unix() }}' # 时间戳
-  user_info:
-    id: '{{ $global.user.id }}'
-    name: '{{ $global.user.name }}'
-    type: "{{ $global.user.type ?? 'guest' }}"
+```json
+// 节点输出配置
+{
+  "output": {
+    "result": "{{ $out.data }}", // 简单映射
+    "success": "{{ $out.error == null }}", // 条件判断
+    "timestamp": "{{ now().Unix() }}", // 时间戳
+    "user_info": {
+      "id": "{{ $global.user.id }}",
+      "name": "{{ $global.user.name }}",
+      "type": "{{ $global.user.type ?? 'guest' }}"
+    }
+  }
+}
 ```
 
 ### 条件分支
 
-```yaml
-# Switch 节点配置
-switch:
-  "{{ $in[0].type == 'image' }}":
-    # 图像处理分支
-
-  "{{ $in[0].type == 'text' and len($in[0].content) > 100 }}":
-    # 长文本处理分支
-
-  "{{ contains($in[0].tags, 'urgent') or $global.priority == 'high' }}":
-    # 紧急处理分支
+```json
+// Switch 节点配置
+{
+  "switch": {
+    "{{ $in[0].type == 'image' }}": {
+      // 图像处理分支
+    },
+    "{{ $in[0].type == 'text' and len($in[0].content) > 100 }}": {
+      // 长文本处理分支
+    },
+    "{{ contains($in[0].tags, 'urgent') or $global.priority == 'high' }}": {
+      // 紧急处理分支
+    }
+  }
+}
 ```
 
 ### AI 提示词动态生成
 
-```yaml
-# AI 节点提示词
-prompts:
-  - role: 'system'
-    content: '你是{{ $global.assistant_name }}，专门处理{{ $global.domain}}相关问题'
-  - role: 'user'
-    content: |
-      用户类型：{{ $global.user.type ?? '普通用户' }}
-      问题内容：{{ $in[0] }}
-      上下文：{{ $global.context ?? '无' }}
-
-      请根据用户类型提供相应的回答。
+```json
+// AI 节点提示词
+{
+  "prompts": [
+    {
+      "role": "system",
+      "content": "你是{{ $global.assistant_name }}，专门处理{{ $global.domain}}相关问题"
+    },
+    {
+      "role": "user",
+      "content": "用户类型：{{ $global.user.type ?? '普通用户' }}\n问题内容：{{ $in[0] }}\n上下文：{{ $global.context ?? '无' }}\n\n请根据用户类型提供相应的回答。"
+    }
+  ]
+}
 ```
 
 ### 跳转控制
 
-```yaml
-# Goto 配置
-goto: "{{ $out.success ? 'next-step' : 'error-handler' }}"
+```json
+// Goto 配置
+{
+  "goto": "{{ $out.success ? 'next-step' : 'error-handler' }}"
+}
 
-# 复杂跳转逻辑
-goto: |
-  {{
-    $out.status == 'completed' ? 'complete' :
-    $out.status == 'error' ? 'retry' :
-    $out.requires_approval ? 'approve' :
-    'default-handler'
-  }}
+// 复杂跳转逻辑
+{
+  "goto": "{{ $out.status == 'completed' ? 'complete' : $out.status == 'error' ? 'retry' : $out.requires_approval ? 'approve' : 'default-handler' }}"
+}
 ```
 
 ## 数据转换示例
 
 ### 复杂数据结构处理
 
-```yaml
-# 从 API 响应中提取数据
-output:
-  users: "{{ $out.data.users.map(#user => { 'id': #user.id, 'name': #user.name, 'email': #user.email }) }}"
-  total: '{{ $out.data.pagination.total }}'
-  has_more: '{{ $out.data.pagination.page < $out.data.pagination.total_pages }}'
+```json
+// 从 API 响应中提取数据
+{
+  "output": {
+    "users": "{{ $out.data.users.map(#user => { 'id': #user.id, 'name': #user.name, 'email': #user.email }) }}",
+    "total": "{{ $out.data.pagination.total }}",
+    "has_more": "{{ $out.data.pagination.page < $out.data.pagination.total_pages }}"
+  }
+}
 ```
 
 ### 数据验证
 
-```yaml
-# 输入验证
-output:
-  is_valid: |
-    {{
-      $in[0] != null and
-      len($in[0].name) > 0 and
-      $in[0].email.matches('^[^@]+@[^@]+\.[^@]+$') and
-      $in[0].age >= 18 and $in[0].age <= 120
-    }}
-  errors: |
-    {{
-      $in[0] == null ? ['输入不能为空'] :
-      len($in[0].name) == 0 ? ['姓名不能为空'] :
-      !$in[0].email.matches('^[^@]+@[^@]+\.[^@]+$') ? ['邮箱格式不正确'] :
-      $in[0].age < 18 ? ['年龄必须大于18岁'] :
-      $in[0].age > 120 ? ['年龄不能超过120岁'] :
-      []
-    }}
+```json
+// 输入验证
+{
+  "output": {
+    "is_valid": "{{ $in[0] != null and len($in[0].name) > 0 and $in[0].email.matches('^[^@]+@[^@]+\\.[^@]+$') and $in[0].age >= 18 and $in[0].age <= 120 }}",
+    "errors": "{{ $in[0] == null ? ['输入不能为空'] : len($in[0].name) == 0 ? ['姓名不能为空'] : !$in[0].email.matches('^[^@]+@[^@]+\\.[^@]+$') ? ['邮箱格式不正确'] : $in[0].age < 18 ? ['年龄必须大于18岁'] : $in[0].age > 120 ? ['年龄不能超过120岁'] : [] }}"
+  }
+}
 ```
 
 ### 格式化输出
 
-```yaml
-# 多种格式输出
-output:
-  json_format: '{{ $json($out) }}' # JSON 字符串
-  csv_format: "{{ join($out.map(#item => `${#item.id},${#item.name}`), '\n') }}"
-  summary: '共{{ len($out) }}条记录，总计{{ sum($out.map(#item => #item.amount)) }}元'
-  detailed_report: |
-    {{
-      `数据报告：
-      处理时间：${now().Format('2006-01-02 15:04:05')}
-      记录数量：${len($out)}
-      成功率：${len($out.filter(#item => #item.status == 'success')) / len($out) * 100}%
-      详细数据：${$json($out)}`
-    }}
+```json
+// 多种格式输出
+{
+  "output": {
+    "json_format": "{{ $json($out) }}", // JSON 字符串
+    "csv_format": "{{ join($out.map(#item => `${#item.id},${#item.name}`), '\\n') }}",
+    "summary": "共{{ len($out) }}条记录，总计{{ sum($out.map(#item => #item.amount)) }}元",
+    "detailed_report": "{{ `数据报告：\\n处理时间：${now().Format('2006-01-02 15:04:05')}\\n记录数量：${len($out)}\\n成功率：${len($out.filter(#item => #item.status == 'success')) / len($out) * 100}%\\n详细数据：${$json($out)}` }}"
+  }
+}
 ```
 
 ## 最佳实践
 
 ### 1. 表达式可读性
 
-```yaml
-# ✅ 好的做法：使用有意义的变量名
+```json
+// ✅ 好的做法：使用有意义的变量名
 {{ $user.is_vip ? 'vip_price' : 'normal_price' }}
 
-# ✅ 好的做法：多行复杂表达式
-goto: |
-  {{
-    $out.status == 'success' ? 'next-step' :
-    $out.status == 'pending' ? 'wait-approval' :
-    'error-handler'
-  }}
+// ✅ 好的做法：多行复杂表达式
+{
+  "goto": "{{ $out.status == 'success' ? 'next-step' : $out.status == 'pending' ? 'wait-approval' : 'error-handler' }}"
+}
 
-# ❌ 避免的做法：过于复杂的单行表达式
+// ❌ 避免的做法：过于复杂的单行表达式
 {{ $out.status=='success'?'next-step':$out.status=='pending'?'wait-approval':'error-handler' }}
 ```
 
 ### 2. 错误处理
 
-```yaml
-# ✅ 使用空值安全操作符
+```json
+// ✅ 使用空值安全操作符
 {{ $user?.profile?.email ?? 'no-email@example.com' }}
 
-# ✅ 提供默认值
+// ✅ 提供默认值
 {{ $global.timeout ?? 30 }}
 
-# ✅ 条件检查
+// ✅ 条件检查
 {{ $in[0] != null ? $in[0].name : 'unknown' }}
 ```
 
 ### 3. 性能考虑
 
-```yaml
-# ✅ 避免重复计算（在复杂表达式中）
+```json
+// ✅ 避免重复计算（在复杂表达式中）
 {{ let total = sum($items.map(#item => #item.price * #item.quantity)); total > 1000 ? total * 0.9 : total }}
 
-# ✅ 使用适当的函数
-{{ contains($tags, 'urgent') }}  # 比 $tags.includes('urgent') 更明确
+// ✅ 使用适当的函数
+{{ contains($tags, 'urgent') }}  // 比 $tags.includes('urgent') 更明确
 ```
 
 ### 4. 安全性
 
-```yaml
-# ✅ 输入验证
+```json
+// ✅ 输入验证
 {{ $input.matches('^[a-zA-Z0-9]+$') ? $input : 'invalid' }}
 
-# ✅ 长度限制
+// ✅ 长度限制
 {{ len($in[0]) > 1000 ? $in[0][:1000] : $in[0] }}
 ```
 
@@ -440,40 +476,40 @@ goto: |
 
 ### Q: 如何处理 JSON 数据？
 
-```yaml
-# 将对象转为 JSON 字符串
+```json
+// 将对象转为 JSON 字符串
 {{ $json($out) }}
 
-# 将 JSON 字符串解析为对象
+// 将 JSON 字符串解析为对象
 {{ $parseJson($input) }}
 ```
 
 ### Q: 如何处理数组中的空值？
 
-```yaml
-# 过滤空值
+```json
+// 过滤空值
 {{ $items.filter(#item => #item != null) }}
 
-# 使用默认值
+// 使用默认值
 {{ $items[0] ?? 'default_value' }}
 ```
 
 ### Q: 如何格式化数字？
 
-```yaml
-# 保留小数位
+```json
+// 保留小数位
 {{ round($price, 2) }}
 
-# 添加千位分隔符
+// 添加千位分隔符
 {{ formatNumber($amount, 'en-US') }}
 ```
 
 ### Q: 如何处理日期时间？
 
-```yaml
-# 格式化日期
+```json
+// 格式化日期
 {{ now().Format('2006-01-02 15:04:05') }}
 
-# 日期计算
-{{ now().AddDate(0, 0, 7).Format('2006-01-02') }}  # 7天后的日期
+// 日期计算
+{{ now().AddDate(0, 0, 7).Format('2006-01-02') }}  // 7天后的日期
 ```

@@ -1,0 +1,30 @@
+{
+  "name": "Test: switch child input expands array",
+  "whitelist": ["utils.fmt.Print"],
+  "nodes": [
+    {
+      "name": "switch",
+      "case": {
+        "$in[0].cmd == 'expand'": {
+          "input": ["start", "{{ $input[0].args }}", "end"],
+          "goto": "print"
+        },
+        "default": { "goto": "print", "input": ["no-expand", "{{ $input[0].args }}"] }
+      }
+    },
+    {
+      "name": "print",
+      "process": {
+        "name": "utils.fmt.Print",
+        "args": ["expanded-input", "{{ $in }}"]
+      },
+      "output": null,
+      "goto": "EOF"
+    }
+  ],
+  "output": {
+    "input": "{{ $input }}",
+    "output": "{{ $output }}",
+    "switch": "{{ switch }}"
+  }
+}

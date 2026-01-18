@@ -1,0 +1,203 @@
+{
+  "name": "user-registration",
+  "label": "用户注册流程",
+  "description": "完整的用户注册流程，包括验证、创建和通知",
+  "whitelist": [
+    "user.*",
+    "validation.*",
+    "notification.*",
+    "security.*"
+  ],
+  "nodes": [
+    {
+      "name": "collect-user-info",
+      "ui": "cli",
+      "label": "请输入用户信息（格式：邮箱,用户名,密码）："
+    },
+    {
+      "name": "parse-input",
+      "process": {
+        "name": "utils.parse_user_input",
+        "args": ["{{ $in[0] }}"]
+      },
+      "output": {
+        "email": "{{ $out.email }}",
+        "username": "{{ $out.username }}",
+        "password": "{{ $out.password }}"
+      }
+    },
+    {
+      "name": "validate-input",
+      "process": {
+        "name": "validation.comprehensive",
+        "args": [
+          "{{ $node.parse-input.out }}",
+          {
+            "email": {
+              "required": true,
+              "pattern": "^[^@]+@[^@]+\\.[^@]+$"
+            },
+            "username": {
+              "required": true,
+              "min_length": 3,
+              "max_length": 20,
+              "pattern": "^[a-zA-Z0-9_]+$"
+            },
+            "password": {
+              "required": true,
+              "min_length": 8,
+              "complexity": true
+            }
+          }
+        ]
+      },
+      "output": {
+        "is_valid": "{{ $out.valid }}",
+        "errors": "{{ $out.errors }}",
+        "cleaned_data": "{{ $out.cleaned }}"
+      }
+    },
+    {
+      "name": "handle-validation",
+      "case": {
+        "{{ $node.validate-input.out.is_valid == true }}": {
+          "name": "valid-input",
+          "nodes": [
+            {
+              "name": "check-email-unique",
+              "process": {
+                "name": "user.check_email_unique",
+                "args": ["{{ $node.validate-input.out.cleaned_data.email }}"]
+              },
+              "output": {
+                "email_available": "{{ $out.available }}"
+              }
+            },
+            {
+              "name": "check-username-unique",
+              "process": {
+                "name": "user.check_username_unique",
+                "args": ["{{ $node.validate-input.out.cleaned_data.username }}"]
+              },
+              "output": {
+                "username_available": "{{ $out.available }}"
+              }
+            },
+            {
+              "name": "handle-uniqueness",
+              "case": {
+                "{{ $node.check-email-unique.out.email_available == true and $node.check-username-unique.out.username_available == true }}": {
+                  "name": "unique-data",
+                  "nodes": [
+                    {
+                      "name": "hash-password",
+                      "process": {
+                        "name": "security.hash_password",
+                        "args": ["{{ $node.validate-input.out.cleaned_data.password }}"]
+                      },
+                      "output": {
+                        "hashed_password": "{{ $out.hash }}"
+                      }
+                    },
+                    {
+                      "name": "create-user",
+                      "process": {
+                        "name": "user.create",
+                        "args": [
+                          "{{ $node.validate-input.out.cleaned_data.email }}",
+                          "{{ $node.validate-input.out.cleaned_data.username }}",
+                          "{{ $node.hash-password.out.hashed_password }}",
+                          "{{ now() }}"
+                        ]
+                      },
+                      "output": {
+                        "user_id": "{{ $out.user_id }}",
+                        "user_data": "{{ $out }}"
+                      }
+                    },
+                    {
+                      "name": "generate-verification-token",
+                      "process": {
+                        "name": "security.generate_token",
+                        "args": [
+                          "{{ $node.create-user.out.user_id }}",
+                          "email_verification",
+                          3600
+                        ]
+                      },
+                      "output": {
+                        "token": "{{ $out.token }}",
+                        "expires_at": "{{ $out.expires_at }}"
+                      }
+                    },
+                    {
+                      "name": "send-verification-email",
+                      "process": {
+                        "name": "notification.send_email",
+                        "args": [
+                          "{{ $node.validate-input.out.cleaned_data.email }}",
+                          "email_verification",
+                          {
+                            "token": "{{ $node.generate-verification-token.out.token }}",
+                            "username": "{{ $node.validate-input.out.cleaned_data.username }}",
+                            "expires_at": "{{ $node.generate-verification-token.out.expires_at }}"
+                          }
+                        ]
+                      },
+                      "output": {
+                        "email_sent": "{{ $out.sent }}",
+                        "message_id": "{{ $out.message_id }}"
+                      }
+                    },
+                    {
+                      "name": "show-success",
+                      "ui": "cli",
+                      "label": "注册成功！",
+                      "autofill": {
+                        "value": "🎉 注册成功！\n\n用户ID：{{ $node.create-user.out.user_id }}\n用户名：{{ $node.validate-input.out.cleaned_data.username }}\n邮箱：{{ $node.validate-input.out.cleaned_data.email }}\n\n📧 验证邮件已发送，请检查邮箱并点击链接激活账户。\n验证链接有效期：1小时\n\n如未收到邮件，请联系客服。",
+                        "action": "exit"
+                      }
+                    }
+                  ]
+                },
+                "default": {
+                  "name": "not-unique",
+                  "nodes": [
+                    {
+                      "name": "show-duplicate-error",
+                      "ui": "cli",
+                      "label": "注册失败：",
+                      "autofill": {
+                        "value": "❌ 注册失败\n\n{{ $node.check-email-unique.out.email_available == false ? '• 该邮箱已被注册\\n' : '' }}{{ $node.check-username-unique.out.username_available == false ? '• 该用户名已被使用\\n' : '' }}\n\n请使用其他邮箱或用户名重新注册。",
+                        "action": "exit"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "default": {
+          "name": "invalid-input",
+          "nodes": [
+            {
+              "name": "show-validation-errors",
+              "ui": "cli",
+              "label": "输入验证失败：",
+              "autofill": {
+                "value": "❌ 输入验证失败\n\n错误详情：\n{{ join($node.validate-input.out.errors, '\\n') }}\n\n请修正后重新输入。\n格式：邮箱,用户名,密码\n\n要求：\n• 邮箱：有效的邮箱地址\n• 用户名：3-20位字母数字下划线\n• 密码：至少8位，包含大小写字母和数字",
+                "action": "exit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "output": {
+    "registration_result": "{{ $node.handle-validation.out.valid-input != null ? ($node.handle-validation.out.valid-input.unique-data != null ? { \"status\": \"success\", \"user_id\": $node.create-user.out.user_id, \"email\": $node.validate-input.out.cleaned_data.email, \"message\": \"Registration successful\" } : { \"status\": \"failed\", \"reason\": \"duplicate\", \"message\": \"Email or username already exists\" }) : { \"status\": \"failed\", \"reason\": \"validation_error\", \"errors\": $node.validate-input.out.errors }}",
+    "timestamp": "{{ now() }}",
+    "session_id": "{{ $sid }}"
+  }
+}

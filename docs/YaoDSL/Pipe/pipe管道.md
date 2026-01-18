@@ -57,6 +57,7 @@ type Node struct {
 	  Process  *Process         `json:"process,omitempty"`  // Yao Process
 	  Prompts  []Prompt         `json:"prompts,omitempty"`  // AI prompts
 	  Model    string           `json:"model,omitempty"`    // AI model name (optional)
+	  Connector string          `json:"connector,omitempty"` // AI connector id (optional)
 	  Options  map[string]any   `json:"options,omitempty"`  // AI or Request options (optional)
 	  Request  *Request         `json:"request,omitempty"`  // Http Request
 	  UI       string           `json:"ui,omitempty"`       // The User Interface cli, web, app, wxapp ...
@@ -140,6 +141,15 @@ type DeltaStruct struct {
 }
 
 ```
+
+## whitelist（安全白名单）
+
+`whitelist` 用于限制 Pipe 中 `process.name` 允许调用的处理器。
+
+- 支持 **精确匹配**：例如 `utils.fmt.Print`
+- 支持 **前缀通配符**：例如 `utils.*`
+- 支持 **glob 通配符**（`* ? []`）：例如 `*.fmt.*`
+- 如果 `whitelist` 为 `[]`（空数组），视为 **不限制**（等同未配置）
 
 Context 定义,用于保存节点的执行状态。
 

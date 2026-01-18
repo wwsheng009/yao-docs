@@ -60,12 +60,16 @@
 | 变量名               | 默认值           | 类型   | 可选值                        | 说明                                        |
 | -------------------- | ---------------- | ------ | ----------------------------- | ------------------------------------------- |
 | `YAO_ENV`            | `production`     | string | `production` \| `development` | 应用启动模式，影响日志级别、错误处理等行为  |
-| `YAO_APP_SOURCE`     | 与 YAO_ROOT 相同 | string | -                             | 应用源码根目录，指定应用源代码的根路径      |
 | `YAO_ROOT`           | `.`              | string | -                             | 应用根目录，其他相对路径都基于此路径        |
+| `YAO_APP_SOURCE`     | 与 YAO_ROOT 相同 | string | -                             | 应用源码根目录，指定应用源代码的根路径      |
 | `YAO_LANG`           | `en-us`          | string | -                             | 默认语言设置，用于国际化                    |
 | `YAO_TIMEZONE`       | 无               | string | -                             | 默认时区，影响时间处理                      |
 | `YAO_DATA_ROOT`      | 空字符串         | string | -                             | 数据根目录，存放应用数据文件的根目录        |
 | `YAO_EXTENSION_ROOT` | 空               | string | -                             | 扩展根目录，插件和 WebAssembly 文件的根目录 |
+
+一般情况下`YAO_ROOT` 和 `YAO_APP_SOURCE` 的值是相同的，即应用源码根目录和应用根目录是同一个目录,如果没有明显的设置`YAO_ROOT` 会是yao程序运行的当前目录，如果设置了`YAO_ROOT` 则会以`YAO_ROOT` 为根目录。
+
+另外在开发测试过程中还可以设置`YAO_TEST_APPLICATION`，来指定测试应用的目录，这样就可以在测试的时候使用不同的应用目录了。
 
 ## 服务器配置
 

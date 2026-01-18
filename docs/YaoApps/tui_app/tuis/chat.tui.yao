@@ -1,0 +1,66 @@
+{
+  "name": "Chat Demo",
+  "data": {
+    "messages": [
+      {
+        "id": "1",
+        "role": "assistant",
+        "content": "Hello! How can I help you today?",
+        "timestamp": "2024-01-16T10:00:00Z"
+      }
+    ],
+    "input": "",
+    "title": "AI Chat Interface"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}"
+        }
+      },
+      {
+        "type": "chat",
+        "props": {
+          "messages": "{{messages}}",
+          "inputPlaceholder": "Type your message here...",
+          "showInput": true,
+          "enableMarkdown": true,
+          "glamourStyle": "dark",
+          "width": 80,
+          "height": 30,
+          "inputHeight": 3,
+          "userMessageStyle": {
+            "background": "blue",
+            "color": "white",
+            "padding": [1, 1]
+          },
+          "assistantMessageStyle": {
+            "background": "green",
+            "color": "white",
+            "padding": [1, 1]
+          },
+          "inputStyle": {
+            "border": "rounded",
+            "borderColor": "blue"
+          }
+        }
+      },
+      {
+        "type": "footer",
+        "props": {
+          "text": "Press 'q' to quit, 's' to send message",
+          "align": "center",
+          "color": "white",
+          "background": "black"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"script": "scripts/tui/chat", "method": "quit"},
+    "s": {"script": "scripts/tui/chat", "method": "sendMessage"}
+  }
+}

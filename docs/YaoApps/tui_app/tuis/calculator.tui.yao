@@ -1,0 +1,78 @@
+{
+  "name": "Calculator Application",
+  "data": {
+    "input": "0",
+    "previousValue": null,
+    "operator": null,
+    "memory": 0
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {"title": "Calculator App"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "Memory: {{memory}}"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "-------------------------"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "Display: {{input}}"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "-------------------------"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "[C]lear  [M+]  [M-]  [MR]  [MC]"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "[7]  [8]  [9]  [/]  [x]"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "[4]  [5]  [6]  [-]  [+]"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "[1]  [2]  [3]  [=]  [.]"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "[0]           [Quit]"}
+      }
+    ]
+  },
+  "bindings": {
+    "0": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "1": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "2": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "3": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "4": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "5": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "6": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "7": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "8": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "9": {"script": "scripts/tui/calculator", "method": "addDigit"},
+    "+": {"script": "scripts/tui/calculator", "method": "addOperator"},
+    "-": {"script": "scripts/tui/calculator", "method": "addOperator"},
+    "*": {"script": "scripts/tui/calculator", "method": "addOperator"},
+    "/": {"script": "scripts/tui/calculator", "method": "addOperator"},
+    "=": {"script": "scripts/tui/calculator", "method": "calculateResult"},
+    ".": {"script": "scripts/tui/calculator", "method": "addDecimal"},
+    "c": {"script": "scripts/tui/calculator", "method": "clearAll"},
+    "q": {"script": "scripts/tui/calculator", "method": "quit"},
+    "M": {"script": "scripts/tui/calculator", "method": "memoryAdd"},
+    "s": {"script": "scripts/tui/calculator", "method": "memorySubtract"},
+    "r": {"script": "scripts/tui/calculator", "method": "memoryRecall"},
+    "C": {"script": "scripts/tui/calculator", "method": "memoryClear"}
+  }
+}

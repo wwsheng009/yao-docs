@@ -1,0 +1,22 @@
+{
+  "name": "Counter Demo",
+  "data": {"count": 0},
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header", 
+        "props": {"title": "Counter: {{count}}"}
+      },
+      {
+        "type": "text",
+        "props": {"content": "Press '+' to increment, '-' to decrement, 'r' to reset, 'q' to quit"}
+      }
+    ]
+  },
+  "bindings": {
+    "+": {"script": "scripts/tui/counter", "method": "increment"},
+    "-": {"script": "scripts/tui/counter", "method": "decrement"},
+    "r": {"script": "scripts/tui/counter", "method": "reset"}
+  }
+}
