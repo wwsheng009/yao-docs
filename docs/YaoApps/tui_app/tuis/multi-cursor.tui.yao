@@ -1,0 +1,260 @@
+{
+  "name": "Multi-Cursor Test",
+  "data": {
+    "title": "Multi-Cursor Component Test",
+    "description": "Testing multiple fields with different cursor settings",
+    "message": "Each field has its own independent cursor settings",
+    "text1": "",
+    "text2": "",
+    "text3": "",
+    "text4": "",
+    "cursorStatus": "All cursors independent"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "215",
+          "size": "large"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}",
+          "color": "39",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{message}}",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Independent Cursor Fields ===",
+          "color": "226"
+        }
+      },
+      {
+        "id": "input-1",
+        "type": "input",
+        "props": {
+          "placeholder": "Blink cursor with pipe...",
+          "prompt": "① ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "blink",
+          "cursorChar": "|"
+        }
+      },
+      {
+        "id": "input-2",
+        "type": "input",
+        "props": {
+          "placeholder": "Blink cursor with block...",
+          "prompt": "② ",
+          "color": "255",
+          "background": "57",
+          "width": 40,
+          "cursorMode": "blink",
+          "cursorChar": "█"
+        }
+      },
+      {
+        "id": "input-3",
+        "type": "input",
+        "props": {
+          "placeholder": "Static cursor with underline...",
+          "prompt": "③ ",
+          "color": "255",
+          "background": "53",
+          "width": 40,
+          "cursorMode": "static",
+          "cursorChar": "▏"
+        }
+      },
+      {
+        "id": "input-4",
+        "type": "input",
+        "props": {
+          "placeholder": "Static cursor with block...",
+          "prompt": "④ ",
+          "color": "255",
+          "background": "56",
+          "width": 40,
+          "cursorMode": "static",
+          "cursorChar": "█"
+        }
+      },
+      {
+        "id": "text-1",
+        "type": "textarea",
+        "props": {
+          "placeholder": "Textarea with blink cursor...",
+          "prompt": "⑤ ",
+          "color": "255",
+          "background": "63",
+          "width": 40,
+          "height": 3,
+          "cursorMode": "blink",
+          "cursorChar": "|"
+        }
+      },
+      {
+        "id": "text-2",
+        "type": "textarea",
+        "props": {
+          "placeholder": "Textarea with static cursor...",
+          "prompt": "⑥ ",
+          "color": "255",
+          "background": "69",
+          "width": 40,
+          "height": 3,
+          "cursorMode": "static",
+          "cursorChar": "█"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Cursor Status ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{cursorStatus}}",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field ①: blink | |",
+          "color": "214"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field ②: blink █",
+          "color": "214"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field ③: static ▏",
+          "color": "214"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field ④: static █",
+          "color": "214"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field ⑤: blink |",
+          "color": "214"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field ⑥: static █",
+          "color": "214"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Controls ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'tab' to switch between fields",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'q' to quit",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Input Values ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "① {{index($, \"input-1\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "② {{index($, \"input-2\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "③ {{index($, \"input-3\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "④ {{index($, \"input-4\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "⑤ {{index($, \"text-1\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "⑥ {{index($, \"text-2\")}}",
+          "color": "46"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "tab": {"process": "tui.focusNext"},
+    "shift+tab": {"process": "tui.focusPrevious"},
+    "q": {"process": "tui.quit"}
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "name": "Cursor Animation Test",
+  "data": {
+    "title": "Cursor Animation Test",
+    "description": "Testing cursor blink speed and animation",
+    "mode": "blink",
+    "char": "|",
+    "blinkSpeed": 530,
+    "visible": true,
+    "animationStatus": "Animation running"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "215",
+          "size": "large"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}",
+          "color": "39",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Cursor Settings ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Mode: {{mode}} | Char: {{char}} | Speed: {{blinkSpeed}}ms",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Visible: {{visible ? 'Yes' : 'No'}}",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Status: {{animationStatus}}",
+          "color": "214"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Demo Fields ===",
+          "color": "226"
+        }
+      },
+      {
+        "id": "field-1",
+        "type": "input",
+        "props": {
+          "placeholder": "Fast blink cursor (200ms)...",
+          "prompt": "⚡ ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "blink",
+          "cursorChar": "|",
+          "cursorBlinkSpeed": 200
+        }
+      },
+      {
+        "id": "field-2",
+        "type": "input",
+        "props": {
+          "placeholder": "Normal blink cursor (530ms)...",
+          "prompt": "👁 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "blink",
+          "cursorChar": "█",
+          "cursorBlinkSpeed": 530
+        }
+      },
+      {
+        "id": "field-3",
+        "type": "input",
+        "props": {
+          "placeholder": "Slow blink cursor (1000ms)...",
+          "prompt": "🐢 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "blink",
+          "cursorChar": "▏",
+          "cursorBlinkSpeed": 1000
+        }
+      },
+      {
+        "id": "field-4",
+        "type": "input",
+        "props": {
+          "placeholder": "Static cursor...",
+          "prompt": "📌 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "static",
+          "cursorChar": "█",
+          "cursorBlinkSpeed": 0
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Controls ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'tab' to switch fields and see different blink speeds",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'c' to cycle cursor characters (|/█/▏)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'm' to toggle cursor mode (blink/static/hide)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'v' to toggle visibility",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'tab' to switch fields, 'q' to quit",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Field Values ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field 1: {{index($, \"field-1\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field 2: {{index($, \"field-2\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field 3: {{index($, \"field-3\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Field 4: {{index($, \"field-4\")}}",
+          "color": "46"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "s": {
+      "script": "scripts/tui/cursor-animation.ts",
+      "method": "cycleBlinkSpeed"
+    },
+    "c": {
+      "script": "scripts/tui/cursor-animation.ts",
+      "method": "cycleCursorChar"
+    },
+    "m": {
+      "script": "scripts/tui/cursor-animation.ts",
+      "method": "toggleCursorMode"
+    },
+    "v": {
+      "script": "scripts/tui/cursor-animation.ts",
+      "method": "toggleVisible"
+    },
+    "tab": {"process": "tui.focusNext"},
+    "shift+tab": {"process": "tui.focusPrevious"},
+    "q": {"process": "tui.quit"}
+  }
+}

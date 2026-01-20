@@ -1,0 +1,197 @@
+{
+  "name": "Cursor Helper Components Test",
+  "data": {
+    "title": "Cursor Helper Components Test",
+    "message": "Testing cursor management with CursorHelper",
+    "username": "",
+    "email": "",
+    "password": "",
+    "notes": "",
+    "cursorMode": "blink",
+    "cursorChar": "|",
+    "cursorInfo": "Mode: blink, Char: |, Blink Speed: 530ms"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "215",
+          "size": "large"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{message}}",
+          "color": "39",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{cursorInfo}}",
+          "color": "240",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Input Components with Cursor ===",
+          "color": "226"
+        }
+      },
+      {
+        "id": "username-input",
+        "type": "input",
+        "props": {
+          "placeholder": "Enter your username...",
+          "prompt": "👤 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "{{cursorMode}}",
+          "cursorChar": "{{cursorChar}}",
+          "cursorBlinkSpeed": 530
+        }
+      },
+      {
+        "id": "email-input",
+        "type": "input",
+        "props": {
+          "placeholder": "Enter your email...",
+          "prompt": "📧 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "{{cursorMode}}",
+          "cursorChar": "{{cursorChar}}",
+          "cursorBlinkSpeed": 530
+        }
+      },
+      {
+        "id": "password-input",
+        "type": "input",
+        "props": {
+          "placeholder": "Enter your password...",
+          "prompt": "🔒 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "{{cursorMode}}",
+          "cursorChar": "{{cursorChar}}",
+          "cursorBlinkSpeed": 530
+        }
+      },
+      {
+        "id": "notes-input",
+        "type": "textarea",
+        "props": {
+          "placeholder": "Enter your notes...",
+          "prompt": "📝 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "height": 5,
+          "cursorMode": "{{cursorMode}}",
+          "cursorChar": "{{cursorChar}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Cursor Control ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'c' to toggle cursor mode (blink/static/hide)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 's' to cycle cursor characters (|/█/▏)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'q' to quit",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Real-time Values ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Username: {{index($, \"username-input\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Email: {{index($, \"email-input\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Password: {{index($, \"password-input\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Notes: {{index($, \"notes-input\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Cursor Mode: {{cursorMode}} | Cursor Char: {{cursorChar}}",
+          "color": "214"
+        }
+      }
+    ]
+  },
+  "actions": {
+    "onFocus": {
+      "type": "script",
+      "script": "scripts/tui/cursor-helper.ts",
+      "method": "onFocus"
+    }
+  },
+  "bindings": {
+    "c": {
+      "script": "scripts/tui/cursor-helper.ts",
+      "method": "toggleCursorMode"
+    },
+    "s": {
+      "script": "scripts/tui/cursor-helper.ts",
+      "method": "cycleCursorChar"
+    },
+    "tab": {"process": "tui.focusNext"},
+    "shift+tab": {"process": "tui.focusPrevious"},
+    "q": {"process": "tui.quit"}
+  }
+}

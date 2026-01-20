@@ -1,0 +1,70 @@
+{
+  "name": "Progress Component Test",
+  "data": {
+    "title": "Progress Component",
+    "description": "Tests for Progress component - linear progress bar",
+    "progress": 0,
+    "maxProgress": 100,
+    "status": "Ready"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Status: {{status}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Progress: {{progress}}% ({{progress}}/{{maxProgress}})"
+        }
+      },
+      {
+        "type": "progress",
+        "id": "progressBar",
+        "props": {
+          "percent": "{{progress}}",
+          "width": 50,
+          "color": "#212"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press '+' to increase, '-' to decrease, 'r' to reset, 'q' to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "+": {
+      "script": "scripts/tui/progress.ts",
+      "method": "increase"
+    },
+    "-": {
+      "script": "scripts/tui/progress.ts",
+      "method": "decrease"
+    },
+    "r": {
+      "script": "scripts/tui/progress.ts",
+      "method": "reset"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "name": "Key Component Test",
+  "data": {
+    "title": "Key Component",
+    "description": "Tests for Key component - key display",
+    "showKeys": true,
+    "keyBindings": [
+      {"key": "q", "action": "Quit"},
+      {"key": "r", "action": "Refresh"},
+      {"key": "h", "action": "Help"},
+      {"key": "Tab", "action": "Next Input"}
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Available Key Shortcuts:"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{range keyBindings}}  {{key}} - {{action}}\n{{end}}"
+        }
+      },
+      {
+        "type": "key",
+        "id": "keyDisplay",
+        "props": {
+          "bindings": "{{keyBindings}}",
+          "showLabels": true,
+          "color": "#212",
+          "width": 80
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'k' to toggle key display, 'q' to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "k": {
+      "script": "scripts/tui/key.ts",
+      "method": "toggle"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

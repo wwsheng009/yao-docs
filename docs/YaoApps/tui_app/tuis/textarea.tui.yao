@@ -1,0 +1,67 @@
+{
+  "name": "Textarea Component Test",
+  "data": {
+    "title": "Textarea Component",
+    "description": "Tests for Textarea component - multi-line input",
+    "placeholder": "Enter your message here...",
+    "longText": "This is a long text that spans multiple lines.\n\nLine 1\nLine 2\nLine 3\n\nParagraph 2 with more content to test scrolling."
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Multi-line Input:"
+        }
+      },
+      {
+        "type": "textarea",
+        "id": "messageInput",
+        "bind": "message",
+        "props": {
+          "placeholder": "{{placeholder}}",
+          "height": 10,
+          "width": 60,
+          "prompt": "> "
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Content length: {{len(index($, 'message-input'))}} characters"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'c' to clear, 'l' to load sample text, 'q' to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+      "c": {
+        "script": "scripts/tui/textarea.ts",
+        "method": "clear"
+      },
+      "l": {
+        "script": "scripts/tui/textarea.ts",
+        "method": "loadSample"
+      },
+    "q": {"process": "tui.quit"}
+  }
+}

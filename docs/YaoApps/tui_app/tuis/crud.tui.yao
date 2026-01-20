@@ -1,0 +1,80 @@
+{
+  "name": "CRUD Component Test",
+  "data": {
+    "title": "CRUD Component",
+    "description": "Tests for CRUD component - Create, Read, Update, Delete",
+    "mode": "list",
+    "items": [
+      {"id": 1, "name": "Alice", "email": "alice@example.com", "role": "Admin"},
+      {"id": 2, "name": "Bob", "email": "bob@example.com", "role": "User"},
+      {"id": 3, "name": "Charlie", "email": "charlie@example.com", "role": "User"},
+      {"id": 4, "name": "Diana", "email": "diana@example.com", "role": "Admin"},
+      {"id": 5, "name": "Eve", "email": "eve@example.com", "role": "User"}
+    ],
+    "selectedItem": null,
+    "editMode": false
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}} - {{mode === 'list' ? 'List View' : mode === 'add' ? 'Add Item' : 'Edit Item'}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "crud",
+        "id": "userCrud",
+        "bind": "items",
+        "props": {
+          "showAdd": true,
+          "showEdit": true,
+          "showDelete": true,
+          "height": 10,
+          "width": 80
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Total items: {{len(items)}} | Selected: {{selectedItem ? selectedItem.name : 'None'}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Controls:"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "  ↑↓ - Navigate | Enter - Select | 'n' - New | 'e' - Edit | 'd' - Delete | 'q' - Quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "n": {
+      "script": "scripts/tui/crud",
+      "method": "newItem"
+    },
+    "e": {
+      "script": "scripts/tui/crud",
+      "method": "editItem"
+    },
+    "d": {
+      "script": "scripts/tui/crud",
+      "method": "deleteItem"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

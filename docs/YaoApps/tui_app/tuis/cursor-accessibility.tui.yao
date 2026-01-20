@@ -1,0 +1,224 @@
+{
+  "name": "Cursor Accessibility Test",
+  "data": {
+    "title": "Cursor Accessibility Features Test",
+    "description": "Testing cursor accessibility options for users with different needs",
+    "accessibleMode": "standard",
+    "message": "Testing accessibility features",
+    "username": "",
+    "password": "",
+    "notes": "",
+    "accessibilityInfo": "Standard cursor settings"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "215",
+          "size": "large"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}",
+          "color": "39",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{message}}",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{accessibilityInfo}}",
+          "color": "214",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Accessibility Profiles ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press '1' for Standard Mode (normal blink, |)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press '2' for High Visibility Mode (slow blink, █)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press '3' for Static Mode (no blink, █ block)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press '4' for Minimal Mode (slow blink, thin line)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Test Fields ===",
+          "color": "226"
+        }
+      },
+      {
+        "id": "username",
+        "type": "input",
+        "props": {
+          "placeholder": "Enter username...",
+          "prompt": "👤 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "blink",
+          "cursorChar": "|"
+        }
+      },
+      {
+        "id": "password",
+        "type": "input",
+        "props": {
+          "placeholder": "Enter password...",
+          "prompt": "🔒 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "cursorMode": "blink",
+          "cursorChar": "|"
+        }
+      },
+      {
+        "id": "notes",
+        "type": "textarea",
+        "props": {
+          "placeholder": "Enter your notes...",
+          "prompt": "📝 ",
+          "color": "255",
+          "background": "61",
+          "width": 40,
+          "height": 5,
+          "cursorMode": "blink",
+          "cursorChar": "|"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Current Profile Details ===",
+          "color": "226"
+        }
+      },
+      {
+        "id": "profile-info",
+        "type": "text",
+        "props": {
+          "content": "",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Controls ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press '1-4' to switch accessibility profiles",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'tab' to switch fields, 'q' to quit",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Field Values ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Username: {{index($, \"username\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Password: {{index($, \"password\")}}",
+          "color": "46"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Notes: {{index($, \"notes\")}}",
+          "color": "46"
+        }
+      }
+    ]
+  },
+  "actions": {
+    "onProfileChange": {
+      "type": "script",
+      "script": "scripts/tui/cursor-accessibility.ts",
+      "method": "onProfileChange"
+    }
+  },
+  "bindings": {
+    "1": {
+      "script": "scripts/tui/cursor-accessibility.ts",
+      "method": "setStandardMode"
+    },
+    "2": {
+      "script": "scripts/tui/cursor-accessibility.ts",
+      "method": "setHighVisibilityMode"
+    },
+    "3": {
+      "script": "scripts/tui/cursor-accessibility.ts",
+      "method": "setStaticMode"
+    },
+    "4": {
+      "script": "scripts/tui/cursor-accessibility.ts",
+      "method": "setMinimalMode"
+    },
+    "tab": {"process": "tui.focusNext"},
+    "shift+tab": {"process": "tui.focusPrevious"},
+    "q": {"process": "tui.quit"}
+  }
+}

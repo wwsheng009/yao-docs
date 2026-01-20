@@ -1,0 +1,76 @@
+{
+  "name": "FilePicker Component Test",
+  "data": {
+    "title": "FilePicker Component",
+    "description": "Tests for FilePicker component - file selection",
+    "currentPath": ".",
+    "selectedFile": null,
+    "fileCount": 0,
+    "directoryCount": 0
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Current Path: {{currentPath}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Selected: {{selectedFile ? selectedFile : 'None'}}"
+        }
+      },
+      {
+        "type": "filepicker",
+        "id": "filePicker",
+        "props": {
+          "path": "{{currentPath}}",
+          "height": 12,
+          "width": 80,
+          "showHidden": false
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Files: {{fileCount}} | Directories: {{directoryCount}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Controls:"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "  ↑↓ - Navigate | Enter - Open/Select | Esc - Back | '.' - Toggle hidden | 'q' - Quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    ".": {
+      "script": "scripts/tui/filepicker.ts",
+      "method": "toggleHidden"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "name": "Multi-Input Form Test",
+  "data": {
+    "title": "Multi-Input Form",
+    "description": "Complex form with multiple input fields and validation",
+    "formData": {
+      "name": "",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "city": "",
+      "zip": ""
+    },
+    "errors": {},
+    "submitted": false
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "#212",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "form",
+        "id": "userForm",
+        "props": {
+          "title": "User Information",
+          "fields": [
+            {
+              "type": "input",
+              "name": "name",
+              "label": "Name",
+              "placeholder": "Enter your name",
+              "required": true
+            },
+            {
+              "type": "input",
+              "name": "email",
+              "label": "Email",
+              "placeholder": "Enter your email",
+              "required": true
+            },
+            {
+              "type": "input",
+              "name": "phone",
+              "label": "Phone",
+              "placeholder": "Enter your phone"
+            },
+            {
+              "type": "textarea",
+              "name": "address",
+              "label": "Address",
+              "placeholder": "Enter your full address",
+              "height": 3
+            },
+            {
+              "type": "input",
+              "name": "city",
+              "label": "City",
+              "placeholder": "Enter your city"
+            },
+            {
+              "type": "input",
+              "name": "zip",
+              "label": "Zip Code",
+              "placeholder": "Enter zip code"
+            }
+          ],
+          "submitLabel": "Submit Form",
+          "cancelLabel": "Clear"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Form Status: {{submitted ? 'Submitted' : 'Draft'}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press Tab to navigate fields, Enter to submit, Esc to clear, q to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "enter": {
+      "script": "scripts/tui/multi-form.ts",
+      "method": "submit"
+    },
+    "esc": {
+      "script": "scripts/tui/multi-form.ts",
+      "method": "clear"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

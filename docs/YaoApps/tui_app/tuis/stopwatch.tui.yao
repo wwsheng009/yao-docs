@@ -1,0 +1,89 @@
+{
+  "name": "Stopwatch Component Test",
+  "data": {
+    "title": "Stopwatch Component",
+    "description": "Tests for Stopwatch component - lap timer",
+    "hours": 0,
+    "minutes": 0,
+    "seconds": 0,
+    "milliseconds": 0,
+    "isRunning": false,
+    "status": "Stopped",
+    "laps": []
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Status: {{status}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Time: {{hours}}:{{minutes < 10 ? '0' : ''}}{{minutes}}:{{seconds < 10 ? '0' : ''}}{{seconds}}.{{milliseconds}}"
+        }
+      },
+      {
+        "type": "stopwatch",
+        "id": "stopwatchTimer",
+        "props": {
+          "hours": "{{hours}}",
+          "minutes": "{{minutes}}",
+          "seconds": "{{seconds}}",
+          "milliseconds": "{{milliseconds}}",
+          "running": "{{isRunning}}",
+          "color": "#212"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Laps: {{len(laps)}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Controls:"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "  's' - Start/Stop | 'r' - Reset  | 'l' - Lap | 'q' - Quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "s": {
+      "script": "scripts/tui/stopwatch",
+      "method": "toggle"
+    },
+    "r": {
+      "script": "scripts/tui/stopwatch",
+      "method": "reset"
+    },
+    "l": {
+      "script": "scripts/tui/stopwatch",
+      "method": "lap"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

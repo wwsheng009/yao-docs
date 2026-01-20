@@ -1,0 +1,136 @@
+{
+  "name": "Nested Layouts Test",
+  "data": {
+    "title": "Nested Layouts",
+    "description": "Tests for complex nested layouts with multiple components",
+    "menuItems": [
+      {"id": 1, "name": "Dashboard", "value": "dash"},
+      {"id": 2, "name": "Users", "value": "users"},
+      {"id": 3, "name": "Settings", "value": "settings"}
+    ],
+    "stats": {
+      "totalUsers": 1250,
+      "activeUsers": 890,
+      "online": 342
+    }
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "#212",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}",
+          "align": "center",
+          "color": "#245"
+        }
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "Sidebar",
+                  "align": "left",
+                  "color": "#205",
+                  "bold": true
+                }
+              },
+              {
+                "type": "menu",
+                "id": "sideMenu",
+                "props": {
+                  "title": "Navigation",
+                  "items": "{{menuItems}}",
+                  "height": 10,
+                  "width": 30
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "Main Content",
+                  "align": "left",
+                  "color": "#214",
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Statistics:",
+                  "color": "#220",
+                  "bold": true
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Total Users: {{stats.totalUsers}}"
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Active Users: {{stats.activeUsers}}"
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Online Now: {{stats.online}}"
+                }
+              },
+              {
+                "type": "progress",
+                "props": {
+                  "percent": 71,
+                  "width": 40,
+                  "color": "#212"
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "User Activity: 71%"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "footer",
+        "props": {
+          "text": "Press 'q' to quit | Navigate with arrows | Select with Enter",
+          "align": "center",
+          "marginTop": 1
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"}
+  }
+}

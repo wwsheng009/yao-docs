@@ -1,0 +1,120 @@
+{
+  "name": "Split Screen Test",
+  "data": {
+    "title": "Split Screen",
+    "description": "Two independent panels in split view",
+    "leftPanel": {
+      "title": "Left Panel",
+      "content": "This is the left panel content.",
+      "items": ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
+    },
+    "rightPanel": {
+      "title": "Right Panel",
+      "content": "This is the right panel content.",
+      "progress": 65
+    }
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "{{leftPanel.title}}",
+                  "align": "center",
+                  "color": "#205"
+                }
+              },
+              {
+                "type": "list",
+                "id": "leftList",
+                "props": {
+                  "items": "{{leftPanel.items}}",
+                  "height": 10,
+                  "width": 35
+                }
+              },
+              {
+                "type": "viewport",
+                "props": {
+                  "content": "{{leftPanel.content}}",
+                  "height": 6,
+                  "width": 35
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "{{rightPanel.title}}",
+                  "align": "center",
+                  "color": "#214"
+                }
+              },
+              {
+                "type": "progress",
+                "props": {
+                  "percent": "{{rightPanel.progress}}",
+                  "width": 35
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Progress: {{rightPanel.progress}}%"
+                }
+              },
+              {
+                "type": "menu",
+                "props": {
+                  "title": "Options",
+                  "items": [
+                    {"title": "Option A", "value": "a"},
+                    {"title": "Option B", "value": "b"},
+                    {"title": "Option C", "value": "c"}
+                  ],
+                  "height": 5
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Two panels with independent content and navigation"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"}
+  }
+}

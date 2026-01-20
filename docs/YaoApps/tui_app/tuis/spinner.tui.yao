@@ -1,0 +1,65 @@
+{
+  "name": "Spinner Component Test",
+  "data": {
+    "title": "Spinner Component",
+    "description": "Tests for Spinner component - loading animation",
+    "loading": true,
+    "status": "Loading...",
+    "spinnerType": 0
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Status: {{status}}"
+        }
+      },
+      {
+        "type": "spinner",
+        "id": "loadingSpinner",
+        "props": {
+          "type": "dots",
+          "color": "#212"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Please wait while we load the data..."
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 's' to start/stop, 't' to toggle type, 'q' to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "s": {
+      "script": "scripts/tui/spinner.ts",
+      "method": "toggle"
+    },
+    "t": {
+      "script": "scripts/tui/spinner.ts",
+      "method": "nextType"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

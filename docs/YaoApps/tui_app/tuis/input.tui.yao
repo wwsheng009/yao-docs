@@ -13,7 +13,7 @@
       {
         "type": "header",
         "props": {
-          "content": "Input Components Demo",
+          "title": "Input Components Demo",
           "align": "center",
           "color": "215",
           "size": "large"
@@ -89,4 +89,4 @@
       }
     ]
   }
-}
+} 

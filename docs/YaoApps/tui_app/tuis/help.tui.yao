@@ -1,0 +1,80 @@
+{
+  "name": "Help Component Test",
+  "data": {
+    "title": "Help Component",
+    "description": "Tests for Help component - keyboard shortcuts",
+    "helpSections": [
+      {
+        "title": "Navigation",
+        "items": [
+          {"key": "Tab", "description": "Focus next input"},
+          {"key": "Shift+Tab", "description": "Focus previous input"},
+          {"key": "↑ / ↓", "description": "Navigate up/down"},
+          {"key": "← / →", "description": "Navigate left/right"}
+        ]
+      },
+      {
+        "title": "Actions",
+        "items": [
+          {"key": "Enter", "description": "Submit/Confirm"},
+          {"key": "Esc", "description": "Cancel/Back"},
+          {"key": "q", "description": "Quit application"}
+        ]
+      },
+      {
+        "title": "General",
+        "items": [
+          {"key": "Ctrl+C", "description": "Force quit"},
+          {"key": "Ctrl+R", "description": "Refresh UI"},
+          {"key": "Ctrl+Z", "description": "Suspend application"}
+        ]
+      }
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Keyboard Shortcuts:"
+        }
+      },
+      {
+        "type": "help",
+        "id": "helpMenu",
+        "props": {
+          "sections": "{{helpSections}}",
+          "height": 15,
+          "width": 80
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'h' to toggle help, 'q' to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "h": {
+      "script": "scripts/tui/help.ts",
+      "method": "toggle"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "name": "Timer Component Test",
+  "data": {
+    "title": "Timer Component",
+    "description": "Tests for Timer component - countdown timer",
+    "minutes": 0,
+    "seconds": 0,
+    "isRunning": false,
+    "status": "Stopped"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Status: {{status}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Time: {{minutes}}:{{seconds < 10 ? '0' : ''}}{{seconds}}"
+        }
+      },
+      {
+        "type": "timer",
+        "id": "countdownTimer",
+        "props": {
+          "minutes": "{{minutes}}",
+          "seconds": "{{seconds}}",
+          "running": "{{isRunning}}",
+          "color": "#212"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Controls:"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "  's' - Start/Stop | 'r' - Reset  | 'q' - Quit"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "  '+' - Add 10s    | '-' - Remove 10s"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "s": {
+      "script": "scripts/tui/timer",
+      "method": "toggle"
+    },
+    "r": {
+      "script": "scripts/tui/timer",
+      "method": "reset"
+    },
+    "+": {
+      "script": "scripts/tui/timer",
+      "method": "addTime"
+    },
+    "-": {
+      "script": "scripts/tui/timer",
+      "method": "removeTime"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

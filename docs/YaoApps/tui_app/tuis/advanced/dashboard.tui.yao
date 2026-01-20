@@ -1,0 +1,142 @@
+{
+  "name": "Dashboard Test",
+  "data": {
+    "title": "Dashboard",
+    "description": "Complete dashboard with multiple component types",
+    "stats": {
+      "users": 1250,
+      "messages": 8900,
+      "documents": 342,
+      "tasks": 156
+    },
+    "recentActivity": [
+      {"time": "10:30", "user": "Alice", "action": "Created document"},
+      {"time": "10:25", "user": "Bob", "action": "Updated profile"},
+      {"time": "10:20", "user": "Charlie", "action": "Deleted task"},
+      {"time": "10:15", "user": "Diana", "action": "Added user"}
+    ],
+    "quickActions": [
+      {"title": "New User", "action": "newUser"},
+      {"title": "New Document", "action": "newDoc"},
+      {"title": "Settings", "action": "settings"},
+      {"title": "Help", "action": "help"}
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "#212",
+          "background": "#235"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "Statistics",
+                  "align": "center"
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Users: {{stats.users}}"
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Messages: {{stats.messages}}"
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Documents: {{stats.documents}}"
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Tasks: {{stats.tasks}}"
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "Quick Actions",
+                  "align": "center"
+                }
+              },
+              {
+                "type": "menu",
+                "id": "quickMenu",
+                "props": {
+                  "title": "",
+                  "items": "{{quickActions}}",
+                  "height": 6
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "props": {
+          "title": "Recent Activity",
+          "align": "left"
+        }
+      },
+      {
+        "type": "table",
+        "props": {
+          "columns": [
+            {"key": "time", "title": "Time", "width": 10},
+            {"key": "user", "title": "User", "width": 15},
+            {"key": "action", "title": "Action", "width": 30}
+          ],
+          "data": "{{recentActivity}}",
+          "height": 6,
+          "showBorder": true
+        }
+      },
+      {
+        "type": "footer",
+        "props": {
+          "text": "Dashboard | Total Items: {{stats.users + stats.messages + stats.documents + stats.tasks}}",
+          "align": "center",
+          "marginTop": 1
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"}
+  }
+}

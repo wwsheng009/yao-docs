@@ -1,0 +1,130 @@
+{
+  "name": "Grid Layout Test",
+  "data": {
+    "title": "Grid Layout",
+    "description": "Tests for 2x2 grid layout with different components",
+    "cells": [
+      {"title": "Cell 1", "type": "header", "content": "Header"},
+      {"title": "Cell 2", "type": "text", "content": "Text content"},
+      {"title": "Cell 3", "type": "menu", "content": "Menu"},
+      {"title": "Cell 4", "type": "progress", "content": "Progress"}
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "{{cells[0].title}}",
+                  "align": "center"
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "{{cells[0].content}}",
+                  "align": "center"
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "{{cells[1].title}}",
+                  "align": "center"
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "{{cells[1].content}}",
+                  "align": "center"
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "{{cells[2].title}}",
+                  "align": "center"
+                }
+              },
+              {
+                "type": "menu",
+                "props": {
+                  "title": "Quick Actions",
+                  "items": [
+                    {"title": "Option 1", "value": "opt1"},
+                    {"title": "Option 2", "value": "opt2"},
+                    {"title": "Option 3", "value": "opt3"}
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "{{cells[3].title}}",
+                  "align": "center"
+                }
+              },
+              {
+                "type": "progress",
+                "props": {
+                  "percent": 75,
+                  "width": 30
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Grid layout with 4 cells"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"}
+  }
+}

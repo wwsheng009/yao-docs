@@ -1,0 +1,65 @@
+{
+  "name": "Cursor Component Test",
+  "data": {
+    "title": "Cursor Component",
+    "description": "Tests for Cursor component - cursor styling",
+    "cursorVisible": true,
+    "cursorStyle": "block"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Cursor Status: {{cursorVisible ? 'Visible' : 'Hidden'}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Cursor Style: {{cursorStyle}}"
+        }
+      },
+      {
+        "type": "cursor",
+        "id": "mainCursor",
+        "props": {
+          "visible": "{{cursorVisible}}",
+          "style": "{{cursorStyle}}",
+          "color": "#212"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'v' to toggle visibility, 's' to cycle styles, 'q' to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "v": {
+      "script": "scripts/tui/cursor.ts",
+      "method": "toggleVisible"
+    },
+    "s": {
+      "script": "scripts/tui/cursor.ts",
+      "method": "cycleStyle"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "name": "Form Cursor Management Test",
+  "data": {
+    "title": "Form Cursor Management Test",
+    "description": "Testing unified cursor management in forms",
+    "firstName": "",
+    "lastName": "",
+    "email": "",
+    "phone": "",
+    "address": "",
+    "city": "",
+    "zipCode": "",
+    "message": "Please fill out the form below:",
+    "formCursorPosition": "first",
+    "cursorMode": "blink",
+    "cursorChar": "|",
+    "status": "Form ready"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "215",
+          "size": "large"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}",
+          "color": "39",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{message}}",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Personal Information ===",
+          "color": "226"
+        }
+      },
+      {
+        "id": "form-1",
+        "type": "form",
+        "props": {
+          "title": "User Registration",
+          "submitLabel": "[ Submit ]",
+          "cancelLabel": "[ Cancel ]",
+          "autoFocus": true,
+          "cursorMode": "{{cursorMode}}",
+          "cursorChar": "{{cursorChar}}",
+          "style": {
+            "foreground": "255",
+            "background": ""
+          },
+          "labelStyle": {
+            "foreground": "226",
+            "bold": true
+          },
+          "buttonStyle": {
+            "foreground": "215",
+            "bold": true
+          },
+          "fields": [
+            {
+              "type": "input",
+              "name": "firstName",
+              "label": "First Name",
+              "placeholder": "Enter first name",
+              "required": true,
+              "width": 40
+            },
+            {
+              "type": "input",
+              "name": "lastName",
+              "label": "Last Name",
+              "placeholder": "Enter last name",
+              "required": true,
+              "width": 40
+            },
+            {
+              "type": "input",
+              "name": "email",
+              "label": "Email Address",
+              "placeholder": "Enter email address",
+              "required": true,
+              "width": 40
+            },
+            {
+              "type": "input",
+              "name": "phone",
+              "label": "Phone Number",
+              "placeholder": "Enter phone number",
+              "required": false,
+              "width": 40
+            },
+            {
+              "type": "textarea",
+              "name": "address",
+              "label": "Address",
+              "placeholder": "Enter address",
+              "required": false,
+              "width": 40,
+              "height": 3
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Contact Information ===",
+          "color": "226"
+        }
+      },
+      {
+        "id": "form-2",
+        "type": "form",
+        "props": {
+          "title": "Contact Details",
+          "submitLabel": "[ Save ]",
+          "cancelLabel": "[ Clear ]",
+          "autoFocus": false,
+          "cursorMode": "{{cursorMode}}",
+          "cursorChar": "{{cursorChar}}",
+          "style": {
+            "foreground": "255",
+            "background": ""
+          },
+          "labelStyle": {
+            "foreground": "226",
+            "bold": true
+          },
+          "buttonStyle": {
+            "foreground": "215",
+            "bold": true
+          },
+          "fields": [
+            {
+              "type": "input",
+              "name": "city",
+              "label": "City",
+              "placeholder": "Enter city",
+              "required": true,
+              "width": 40
+            },
+            {
+              "type": "input",
+              "name": "zipCode",
+              "label": "ZIP Code",
+              "placeholder": "Enter ZIP code",
+              "required": true,
+              "width": 40
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Cursor Management ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'm' to toggle cursor mode (blink/static/hide)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'c' to cycle cursor characters (|/█/▏)",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'f1' to focus first form, 'f2' to focus second form",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'q' to quit",
+          "color": "240"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "=== Form Data ===",
+          "color": "226"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Status: {{status}}",
+          "color": "214"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Cursor Mode: {{cursorMode}} | Cursor Char: {{cursorChar}}",
+          "color": "46"
+        }
+      }
+    ]
+  },
+  "actions": {
+    "onFormSubmit": {
+      "type": "script",
+      "script": "scripts/tui/form-cursor.ts",
+      "method": "handleFormSubmit"
+    }
+  },
+  "bindings": {
+    "m": {
+      "script": "scripts/tui/form-cursor.ts",
+      "method": "toggleCursorMode"
+    },
+    "c": {
+      "script": "scripts/tui/form-cursor.ts",
+      "method": "cycleCursorChar"
+    },
+    "f1": {
+      "script": "scripts/tui/form-cursor.ts",
+      "method": "focusForm1"
+    },
+    "f2": {
+      "script": "scripts/tui/form-cursor.ts",
+      "method": "focusForm2"
+    },
+    "tab": {"process": "tui.focusNext"},
+    "shift+tab": {"process": "tui.focusPrevious"},
+    "q": {"process": "tui.quit"}
+  }
+}

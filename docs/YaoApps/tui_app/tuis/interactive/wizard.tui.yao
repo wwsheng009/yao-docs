@@ -1,0 +1,84 @@
+{
+  "name": "Wizard Form Test",
+  "data": {
+    "title": "Wizard Form",
+    "description": "Multi-step wizard with navigation",
+    "currentStep": 1,
+    "totalSteps": 3,
+    "wizardData": {
+      "step1": {"name": "", "email": ""},
+      "step2": {"address": "", "city": ""},
+      "step3": {"payment": "", "notes": ""}
+    },
+    "stepNames": [
+      "Step 1: Personal Information",
+      "Step 2: Address Information",
+      "Step 3: Payment & Notes"
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "color": "#212",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "progress",
+        "props": {
+          "percent": "{{(currentStep / totalSteps) * 100}}",
+          "width": 50
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{stepNames[currentStep - 1]}}"
+        }
+      },
+      {
+        "type": "form",
+        "id": "wizardForm",
+        "props": {
+          "fields": "{{currentStep === 1 ? wizardData.step1 : currentStep === 2 ? wizardData.step2 : wizardData.step3}}",
+          "submitLabel": "Next",
+          "cancelLabel": "Back"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Step {{currentStep}} of {{totalSteps}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press Enter to continue, Esc to go back, q to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "enter": {
+      "script": "scripts/tui/wizard.ts",
+      "method": "next"
+    },
+    "esc": {
+      "script": "scripts/tui/wizard.ts",
+      "method": "previous"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

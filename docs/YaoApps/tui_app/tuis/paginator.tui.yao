@@ -1,0 +1,77 @@
+{
+  "name": "Paginator Component Test",
+  "data": {
+    "title": "Paginator Component",
+    "description": "Tests for Paginator component - pagination control",
+    "currentPage": 1,
+    "totalPages": 10,
+    "itemsPerPage": 10,
+    "totalItems": 95,
+    "startItem": 1,
+    "endItem": 10
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Showing items {{startItem}}-{{endItem}} of {{totalItems}} (Page {{currentPage}}/{{totalPages}})"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Total items: {{totalItems}} | Items per page: {{itemsPerPage}} | Total pages: {{totalPages}}"
+        }
+      },
+      {
+        "type": "paginator",
+        "id": "paginator",
+        "props": {
+          "currentPage": "{{currentPage}}",
+          "totalPages": "{{totalPages}}",
+          "perPage": "{{itemsPerPage}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Use ← / → to navigate, Home/End for first/last, 'q' to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "right": {
+      "script": "scripts/tui/paginator.ts",
+      "method": "nextPage"
+    },
+    "left": {
+      "script": "scripts/tui/paginator.ts",
+      "method": "prevPage"
+    },
+    "home": {
+      "script": "scripts/tui/paginator.ts",
+      "method": "firstPage"
+    },
+    "end": {
+      "script": "scripts/tui/paginator.ts",
+      "method": "lastPage"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}

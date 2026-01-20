@@ -1,0 +1,114 @@
+{
+  "name": "Event System Test",
+  "data": {
+    "title": "Event System Test",
+    "description": "Tests event publishing and subscription",
+    "events": [
+      {"id": 1, "type": "USER_LOGIN", "data": "Alice logged in"},
+      {"id": 2, "type": "MESSAGE_SENT", "data": "Bob sent message"},
+      {"id": 3, "type": "FILE_UPLOADED", "data": "Document.pdf uploaded"},
+      {"id": 4, "type": "TASK_COMPLETED", "data": "Task #123 completed"},
+      {"id": 5, "type": "ERROR_OCCURRED", "data": "Connection timeout"}
+    ],
+    "selectedEvent": null,
+    "eventLog": []
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{description}}"
+        }
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "Available Events",
+                  "align": "center"
+                }
+              },
+              {
+                "type": "table",
+                "id": "eventsTable",
+                "props": {
+                  "columns": [
+                    {"key": "id", "title": "ID", "width": 6},
+                    {"key": "type", "title": "Type", "width": 20},
+                    {"key": "data", "title": "Data", "width": 30}
+                  ],
+                  "data": "{{events}}",
+                  "height": 8,
+                  "focused": true
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout",
+            "direction": "vertical",
+            "children": [
+              {
+                "type": "header",
+                "props": {
+                  "title": "Event Log",
+                  "align": "center"
+                }
+              },
+              {
+                "type": "viewport",
+                "id": "eventViewport",
+                "props": {
+                  "content": "{{len(eventLog) > 0 ? 'Event Log:\n' + eventLog : 'No events triggered yet'}}",
+                  "height": 10,
+                  "width": 50
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Selected: {{selectedEvent ? selectedEvent.type + ' - ' + selectedEvent.data : 'None'}}"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Total events: {{len(events)}} | Logged: {{len(eventLog)}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Navigate table and press Enter to trigger event, q to quit"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "enter": {
+      "script": "scripts/tui/events.ts",
+      "method": "triggerEvent"
+    },
+    "q": {"process": "tui.quit"}
+  }
+}
