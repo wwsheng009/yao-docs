@@ -1,0 +1,130 @@
+{
+  "input_example": {
+    "type": "input",
+    "id": "username",
+    "placeholder": "请输入用户名",
+    "bindings": [
+      {
+        "key": "ctrl+s",
+        "action": {
+          "process": "users.save",
+          "args": ["{{value}}", "{{componentID}}"],
+          "onSuccess": "saveResult",
+          "onError": "__error"
+        },
+        "enabled": true,
+        "description": "保存到服务器"
+      },
+      {
+        "key": "f1",
+        "event": "show_help",
+        "enabled": true,
+        "description": "显示帮助"
+      }
+    ]
+  },
+  
+  "table_example": {
+    "type": "table",
+    "id": "data_table",
+    "bindings": [
+      {
+        "key": "f5",
+        "action": {
+          "script": "scripts/data",
+          "method": "refreshTable",
+          "args": ["{{componentID}}"],
+          "onSuccess": "tableData",
+          "onError": "__error"
+        },
+        "enabled": true,
+        "description": "刷新数据"
+      },
+      {
+        "key": "d",
+        "action": {
+          "script": "scripts/data",
+          "method": "deleteRow",
+          "args": ["{{selected}}"]
+        },
+        "enabled": true,
+        "description": "删除选中行"
+      }
+    ]
+  },
+  
+  "list_example": {
+    "type": "list",
+    "id": "file_list",
+    "bindings": [
+      {
+        "key": "t",
+        "action": {
+          "payload": {
+            "showTooltip": "toggle"
+          }
+        },
+        "enabled": true,
+        "description": "切换帮助提示"
+      }
+    ]
+  },
+  
+  "menu_example": {
+    "type": "list",
+    "id": "menu",
+    "bindings": [
+      {
+        "key": "d",
+        "event": "delete_item",
+        "enabled": true,
+        "description": "删除选中项"
+      },
+      {
+        "key": "r",
+        "event": "rename_item",
+        "enabled": true,
+        "description": "重命名选中项"
+      }
+    ]
+  },
+  
+  "search_example": {
+    "type": "input",
+    "id": "search_box",
+    "bindings": [
+      {
+        "key": "enter",
+        "action": {
+          "process": "search.execute",
+          "args": ["{{value}}"]
+        },
+        "description": "执行搜索"
+      },
+      {
+        "key": "esc",
+        "useDefault": true,
+        "description": "失焦（默认行为）"
+      }
+    ]
+  },
+  
+  "password_example": {
+    "type": "input",
+    "id": "password",
+    "bindings": [
+      {
+        "key": "ctrl+c",
+        "event": "block_copy",
+        "enabled": true,
+        "description": "禁止复制"
+      },
+      {
+        "key": "ctrl+v",
+        "event": "block_paste",
+        "enabled": true,
+        "description": "禁止粘贴"
+      }
+    ]
+  }
+}
