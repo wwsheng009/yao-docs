@@ -1,0 +1,24 @@
+Gemini
+
+
+Recent
+                           Today
+
+ Project Planning          ð¤You: Can you help me understand the Yao TUI layou
+ Let's plan the Q1 roadmap...
+                           ðGemini: Of course! The Yao TUI runtime uses a fle
+                               algorithm with three phases: Measure, Layout, and
+ Code Review
+ Can you review my PR?     ð¤You: That sounds interesting. How do I create a s
+
+                           Yesterday
+ Bug Discussion
+ Issue with database connecðGemini: Use a row container with a fixed-width si
+                               for the main content area.
+
+                           ð¤You: Great! And what about nested layouts?
+
+                           Previous 7 days
+
+ [Type a message...]                                                           c
+                               themselves containers with their own direction (r
