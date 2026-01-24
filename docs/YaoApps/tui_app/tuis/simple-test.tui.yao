@@ -1,0 +1,20 @@
+{
+  "name": "Simple Test",
+  "id": "simple-test",
+  "data": {
+    "message": "Hello, World!"
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "id": "text1",
+        "type": "text",
+        "props": {
+          "content": "{{message}}"
+        }
+      }
+    ]
+  },
+  "logLevel": "trace"
+}

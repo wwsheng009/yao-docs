@@ -1,0 +1,222 @@
+{
+  "name": "Nested Layout Demo",
+  "id": "nested-demo",
+  "data": {
+    "title": "Deep Nested Layout",
+    "status": "online",
+    "users": [
+      {"name": "Alice", "role": "Admin"},
+      {"name": "Bob", "role": "User"}
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "padding": [1, 2, 1, 2],
+    "children": [
+      {
+        "id": "top-bar",
+        "type": "layout",
+        "props": {
+          "layout": {
+            "direction": "horizontal"
+          }
+        },
+        "children": [
+          {
+            "id": "app-name",
+            "type": "text",
+            "props": {
+              "content": "{{title}}"
+            }
+          },
+          {
+            "id": "status",
+            "type": "text",
+            "props": {
+              "content": "Status: {{status}}"
+            }
+          }
+        ]
+      },
+      {
+        "id": "middle-section",
+        "type": "layout",
+        "props": {
+          "layout": {
+            "direction": "horizontal"
+          }
+        },
+        "children": [
+          {
+            "id": "left-panel",
+            "type": "layout",
+            "props": {
+              "layout": {
+                "direction": "vertical"
+              }
+            },
+            "children": [
+              {
+                "id": "left-panel-header",
+                "type": "text",
+                "props": {
+                  "content": "Navigation"
+                }
+              },
+              {
+                "id": "nav-1",
+                "type": "text",
+                "props": {
+                  "content": "> Dashboard"
+                }
+              },
+              {
+                "id": "nav-2",
+                "type": "text",
+                "props": {
+                  "content": "  Settings"
+                }
+              },
+              {
+                "id": "nav-3",
+                "type": "text",
+                "props": {
+                  "content": "  Users"
+                }
+              }
+            ]
+          },
+          {
+            "id": "center-panel",
+            "type": "layout",
+            "props": {
+              "layout": {
+                "direction": "vertical"
+              }
+            },
+            "children": [
+              {
+                "id": "center-header",
+                "type": "layout",
+                "props": {
+                  "layout": {
+                    "direction": "horizontal"
+                  }
+                },
+                "children": [
+                  {
+                    "id": "panel-title",
+                    "type": "text",
+                    "props": {
+                      "content": "Main Content"
+                    }
+                  },
+                  {
+                    "id": "toolbar",
+                    "type": "layout",
+                    "props": {
+                      "layout": {
+                        "direction": "horizontal"
+                      }
+                    },
+                    "children": [
+                      {
+                        "id": "btn-add",
+                        "type": "text",
+                        "props": {
+                          "content": "[+ Add]"
+                        }
+                      },
+                      {
+                        "id": "btn-edit",
+                        "type": "text",
+                        "props": {
+                          "content": "[Edit]"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "content-area",
+                "type": "layout",
+                "props": {
+                  "layout": {
+                    "direction": "vertical"
+                  }
+                },
+                "children": [
+                  {
+                    "id": "content-1",
+                    "type": "text",
+                    "props": {
+                      "content": "Lorem ipsum dolor sit amet"
+                    }
+                  },
+                  {
+                    "id": "content-2",
+                    "type": "text",
+                    "props": {
+                      "content": "consectetur adipiscing elit"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "right-panel",
+            "type": "layout",
+            "props": {
+              "layout": {
+                "direction": "vertical"
+              }
+            },
+            "children": [
+              {
+                "id": "right-header",
+                "type": "text",
+                "props": {
+                  "content": "Details"
+                }
+              },
+              {
+                "id": "detail-1",
+                "type": "text",
+                "props": {
+                  "content": "Item 1: Working"
+                }
+              },
+              {
+                "id": "detail-2",
+                "type": "text",
+                "props": {
+                  "content": "Item 2: Pending"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bottom-bar",
+        "type": "layout",
+        "props": {
+          "layout": {
+            "direction": "horizontal"
+          }
+        },
+        "children": [
+          {
+            "id": "footer-text",
+            "type": "text",
+            "props": {
+              "content": "Press 'q' to quit"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

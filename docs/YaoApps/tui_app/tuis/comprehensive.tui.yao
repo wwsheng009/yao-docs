@@ -1,0 +1,145 @@
+{
+  "name": "Yao TUI Runtime Demo",
+  "layout": {
+    "direction": "column",
+    "children": [
+      {
+        "type": "header",
+        "height": 3,
+        "props": {
+          "title": "🚀 Yao TUI Runtime - Comprehensive Demo",
+          "align": "center",
+          "style": {
+            "background": "#0066cc",
+            "color": "#ffffff",
+            "bold": true
+          }
+        }
+      },
+      {
+        "type": "row",
+        "height": "flex",
+        "children": [
+          {
+            "type": "column",
+            "width": 25,
+            "props": {
+              "style": {
+                "border": true
+              }
+            },
+            "children": [
+              {
+                "type": "text",
+                "props": {
+                  "content": " 📋 Components",
+                  "style": {
+                    "bold": true,
+                    "underline": true
+                  }
+                }
+              },
+              {
+                "type": "text",
+                "props": { "content": "" }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": " [1] Basic Layouts",
+                  "style": { "color": "yellow" }
+                }
+              },
+              {
+                "type": "text",
+                "props": { "content": " [2] Flex Alignment" }
+              },
+              {
+                "type": "text",
+                "props": { "content": " [3] Modal Demo" }
+              },
+              {
+                "type": "text",
+                "props": { "content": " [4] Tabs Demo" }
+              },
+              {
+                "type": "text",
+                "props": { "content": " [5] Event Test" }
+              },
+              {
+                "type": "text",
+                "props": { "content": " [6] Focus Test" }
+              },
+              {
+                "type": "flex",
+                "height": "flex"
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "Press 1-6 keys",
+                  "style": { "italic": true, "color": "cyan" }
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "or Tab to navigate",
+                  "style": { "italic": true, "color": "cyan" }
+                }
+              }
+            ]
+          },
+          {
+            "type": "column",
+            "width": "flex",
+            "id": "main-content",
+            "children": [
+              {
+                "type": "tabs",
+                "height": "flex",
+                "props": {
+                  "activeIndex": 0,
+                  "tabs": [
+                    {
+                      "id": "basic",
+                      "label": "Basic",
+                      "icon": "▪"
+                    },
+                    {
+                      "id": "alignment",
+                      "label": "Align",
+                      "icon": "≡"
+                    },
+                    {
+                      "id": "modal",
+                      "label": "Modal",
+                      "icon": "◇"
+                    },
+                    {
+                      "id": "tabs-demo",
+                      "label": "Tabs",
+                      "icon": "⇥"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "footer",
+        "height": 2,
+        "props": {
+          "content": "Use Tab/Shift+Tab to navigate | Enter to select | Esc to close | ↑↓←→ to move",
+          "align": "center",
+          "style": {
+            "background": "#333333",
+            "color": "#aaaaaa"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "name": "Grid Layout Demo",
+  "id": "grid-demo",
+  "data": {
+    "title": "Grid Layout Demo",
+    "cells": [
+      {"id": "1", "name": "Cell 1", "value": 10},
+      {"id": "2", "name": "Cell 2", "value": 20},
+      {"id": "3", "name": "Cell 3", "value": 30},
+      {"id": "4", "name": "Cell 4", "value": 40},
+      {"id": "5", "name": "Cell 5", "value": 50},
+      {"id": "6", "name": "Cell 6", "value": 60}
+    ]
+  },
+  "layout": {
+    "type": "grid",
+    "columns": 3,
+    "gap": 1,
+    "padding": [1, 1, 1, 1],
+    "children": [
+      {
+        "id": "header",
+        "type": "text",
+        "props": {
+          "content": "{{title}}"
+        }
+      },
+      {
+        "id": "grid-container",
+        "type": "grid",
+        "columns": 3,
+        "gap": 1,
+        "children": [
+          {
+            "id": "cell-1",
+            "type": "text",
+            "props": {
+              "content": "Cell 1"
+            }
+          },
+          {
+            "id": "cell-2",
+            "type": "text",
+            "props": {
+              "content": "Cell 2"
+            }
+          },
+          {
+            "id": "cell-3",
+            "type": "text",
+            "props": {
+              "content": "Cell 3"
+            }
+          },
+          {
+            "id": "cell-4",
+            "type": "text",
+            "props": {
+              "content": "Cell 4"
+            }
+          },
+          {
+            "id": "cell-5",
+            "type": "text",
+            "props": {
+              "content": "Cell 5"
+            }
+          },
+          {
+            "id": "cell-6",
+            "type": "text",
+            "props": {
+              "content": "Cell 6"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

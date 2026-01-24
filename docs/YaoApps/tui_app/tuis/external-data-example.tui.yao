@@ -1,0 +1,92 @@
+{
+  "name": "External Data Example",
+  "description": "Demonstrates passing external data to TUI",
+  "data": {
+    "title": "Default Title",
+    "subtitle": "This is the default subtitle",
+    "items": ["default1", "default2", "default3"],
+    "config": {
+      "backgroundColor": "default",
+      "textColor": "white"
+    }
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "style": "{{config.style}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{subtitle}}",
+          "align": "center"
+        }
+      },
+      {
+        "type": "separator",
+        "props": {
+          "title": "Configuration"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Background: {{config.backgroundColor}}"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Text Color: {{config.textColor}}"
+        }
+      },
+      {
+        "type": "separator",
+        "props": {
+          "title": "Items"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Total items: {{len(items)}}"
+        }
+      },
+      {
+        "type": "list",
+        "bind": "items",
+        "id": "itemList",
+        "props": {
+          "height": 10,
+          "width": 60,
+          "showTitle": true,
+          "title": "Item List"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "",
+          "align": "center"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press 'q' to quit",
+          "align": "center"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"},
+    "ctrl+c": {"process": "tui.quit"}
+  }
+}

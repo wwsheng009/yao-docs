@@ -1,0 +1,34 @@
+{
+  "name": "Flexbox Layout Demo",
+  "id": "flexbox-demo",
+  "data": {
+    "title": "Flexbox Layout Demo"
+  },
+  "layout": {
+    "direction": "vertical",
+    "padding": [1, 2, 1, 2],
+    "children": [
+      {
+        "id": "header",
+        "type": "text",
+        "props": {
+          "content": "{{title}}"
+        }
+      },
+      {
+        "id": "content",
+        "type": "text",
+        "props": {
+          "content": "This is a simple flexbox layout demo"
+        }
+      },
+      {
+        "id": "footer",
+        "type": "text",
+        "props": {
+          "content": "Press 'q' to quit"
+        }
+      }
+    ]
+  }
+}
