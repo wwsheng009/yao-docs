@@ -1,0 +1,126 @@
+{
+  "name": "Data Table with Template Variables",
+  "data": {
+    "pageTitle": "User Management",
+    "tableTitle": "All Users",
+    "headers": ["ID", "Name", "Email", "Role", "Status"],
+    "users": [
+      {"id": 1, "name": "Alice Johnson", "email": "alice@example.com", "role": "Admin", "status": "Active"},
+      {"id": 2, "name": "Bob Smith", "email": "bob@example.com", "role": "User", "status": "Active"},
+      {"id": 3, "name": "Carol Davis", "email": "carol@example.com", "role": "User", "status": "Inactive"},
+      {"id": 4, "name": "David Wilson", "email": "david@example.com", "role": "Editor", "status": "Active"}
+    ],
+    "totalUsers": 4,
+    "activeUsers": 3
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{pageTitle}}",
+          "align": "center",
+          "style": {
+            "background": "#226",
+            "color": "#fff"
+          }
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{tableTitle}} ({{activeUsers}}/{{totalUsers}} active)",
+          "align": "center",
+          "style": {"bold": true}
+        }
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "props": {"style": {"border": true}},
+        "children": [
+          {
+            "type": "text",
+            "width": 5,
+            "props": {"content": "{{headers[0]}}", "align": "center", "style": {"bold": true}}
+          },
+          {
+            "type": "text",
+            "width": 20,
+            "props": {"content": "{{headers[1]}}", "align": "center", "style": {"bold": true}}
+          },
+          {
+            "type": "text",
+            "width": 25,
+            "props": {"content": "{{headers[2]}}", "align": "center", "style": {"bold": true}}
+          },
+          {
+            "type": "text",
+            "width": 10,
+            "props": {"content": "{{headers[3]}}", "align": "center", "style": {"bold": true}}
+          },
+          {
+            "type": "text",
+            "width": 10,
+            "props": {"content": "{{headers[4]}}", "align": "center", "style": {"bold": true}}
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "─┬─────┬────────────────────┬─────────────────────────┬──────────┬──────────",
+          "style": {"color": "#888"}
+        }
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 5, "props": {"content": "{{users[0].id}}", "align": "center"}},
+          {"type": "text", "width": 20, "props": {"content": "{{users[0].name}}"}},
+          {"type": "text", "width": 25, "props": {"content": "{{users[0].email}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{users[0].role}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{users[0].status}}", "style": {"color": "#080"}}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 5, "props": {"content": "{{users[1].id}}", "align": "center"}},
+          {"type": "text", "width": 20, "props": {"content": "{{users[1].name}}"}},
+          {"type": "text", "width": 25, "props": {"content": "{{users[1].email}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{users[1].role}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{users[1].status}}", "style": {"color": "#080"}}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 5, "props": {"content": "{{users[2].id}}", "align": "center"}},
+          {"type": "text", "width": 20, "props": {"content": "{{users[2].name}}"}},
+          {"type": "text", "width": 25, "props": {"content": "{{users[2].email}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{users[2].role}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{users[2].status}}", "style": {"color": "#808"}}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 5, "props": {"content": "{{users[3].id}}", "align": "center"}},
+          {"type": "text", "width": 20, "props": {"content": "{{users[3].name}}"}},
+          {"type": "text", "width": 25, "props": {"content": "{{users[3].email}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{users[3].role}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{users[3].status}}", "style": {"color": "#080"}}}
+        ]
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"}
+  }
+}

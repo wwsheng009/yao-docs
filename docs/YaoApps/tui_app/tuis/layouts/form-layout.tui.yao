@@ -1,0 +1,76 @@
+{
+  "name": "Form Layout Demo",
+  "layout": {
+    "direction": "column",
+    "padding": [2, 4, 2, 4],
+    "children": [
+      {
+        "type": "text",
+        "props": {
+          "content": "User Registration",
+          "style": { "bold": true, "align": "center", "marginBottom": 2 }
+        }
+      },
+      {
+        "type": "column",
+        "props": { "gap": 1 },
+        "children": [
+          {
+            "type": "row",
+            "children": [
+              { "type": "text", "width": 15, "props": { "content": "Username:", "align": "right" } },
+              { "type": "column", "width": 1 },
+              { "type": "input", "width": "flex", "props": { "placeholder": "Enter username" } }
+            ]
+          },
+          {
+            "type": "row",
+            "children": [
+              { "type": "text", "width": 15, "props": { "content": "Email:", "align": "right" } },
+              { "type": "column", "width": 1 },
+              { "type": "input", "width": "flex", "props": { "placeholder": "Enter email address" } }
+            ]
+          },
+          {
+            "type": "row",
+            "children": [
+              { "type": "text", "width": 15, "props": { "content": "Password:", "align": "right" } },
+              { "type": "column", "width": 1 },
+              { "type": "input", "width": "flex", "props": { "placeholder": "********", "type": "password" } }
+            ]
+          },
+          {
+            "type": "row",
+            "children": [
+              { "type": "text", "width": 15, "props": { "content": "Role:", "align": "right" } },
+              { "type": "column", "width": 1 },
+              { "type": "column", "width": "flex", "children": [
+                  { "type": "text", "props": { "content": "[x] User  [ ] Admin  [ ] Guest" } }
+              ]}
+            ]
+          }
+        ]
+      },
+      {
+        "type": "flex",
+        "height": 1
+      },
+      {
+        "type": "row",
+        "props": { "justify": "center", "gap": 2 },
+        "children": [
+          {
+            "type": "button",
+            "width": 12,
+            "props": { "content": "Submit", "style": { "background": "#00AA00", "color": "#FFF" } }
+          },
+          {
+            "type": "button",
+            "width": 12,
+            "props": { "content": "Cancel", "style": { "background": "#AA0000", "color": "#FFF" } }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,384 @@
+{
+  "name": "Gemini Chat Interface",
+  "data": {
+    "appTitle": "Gemini",
+    "menuItems": ["Help", "Settings"],
+    "conversations": [
+      {"title": "Project Planning", "preview": "Let's plan the Q1 roadmap..."},
+      {"title": "Code Review", "preview": "Can you review my PR?"},
+      {"title": "Bug Discussion", "preview": "Issue with database connection..."}
+    ],
+    "messages": [
+      {
+        "section": "Today",
+        "sender": "You",
+        "avatar": "👤",
+        "content": "Can you help me understand the Yao TUI layout system?"
+      },
+      {
+        "sender": "Gemini",
+        "avatar": "💎",
+        "content": "Of course! The Yao TUI runtime uses a flexbox-inspired layout algorithm with three phases: Measure, Layout, and Render."
+      },
+      {
+        "sender": "You",
+        "avatar": "👤",
+        "content": "That sounds interesting. How do I create a sidebar?"
+      },
+      {
+        "section": "Yesterday",
+        "sender": "Gemini",
+        "avatar": "💎",
+        "content": "Use a row container with a fixed-width sidebar and flexGrow: 1 for the main content area."
+      },
+      {
+        "sender": "You",
+        "avatar": "👤",
+        "content": "Great! And what about nested layouts?"
+      },
+      {
+        "section": "Previous 7 days",
+        "sender": "Gemini",
+        "avatar": "💎",
+        "content": "Nested layouts work naturally. Just add children that are themselves containers with their own direction (row or column)."
+      }
+    ],
+    "inputPlaceholder": "Type a message...",
+    "sendButtonText": "Send"
+  },
+  "layout": {
+    "direction": "column",
+    "children": [
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "height": 3,
+        "props": {"style": {"borderBottom": true}},
+        "children": [
+          {
+            "type": "layout",
+            "direction": "horizontal",
+            "gap": 1,
+            "children": [
+              {
+                "type": "text",
+                "props": {
+                  "content": "{{appTitle}}",
+                  "style": {"bold": true, "color": "#4285f4"}
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout",
+            "direction": "horizontal",
+            "flexGrow": 1,
+            "alignItems": "center",
+            "justifyContent": "end",
+            "gap": 2,
+            "children": [
+              {
+                "type": "text",
+                "props": {"content": "Help", "style": {"color": "#666"}}
+              },
+              {
+                "type": "text",
+                "props": {"content": "Settings", "style": {"color": "#666"}}
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "flexGrow": 1,
+        "children": [
+          {
+            "type": "layout",
+            "direction": "column",
+            "width": 25,
+            "props": {"style": {"borderRight": true}},
+            "children": [
+              {
+                "type": "text",
+                "props": {
+                  "content": "Recent",
+                  "style": {"color": "#888", "bold": false}
+                }
+              },
+              {
+                "type": "layout",
+                "direction": "column",
+                "gap": 0,
+                "flexGrow": 1,
+                "padding": [1, 1, 1, 1],
+                "children": [
+                  {
+                    "type": "layout",
+                    "direction": "column",
+                    "padding": [1, 0, 1, 0],
+                    "gap": 0,
+                    "children": [
+                      {
+                        "type": "text",
+                        "props": {
+                          "content": "{{conversations[0].title}}",
+                          "style": {"bold": true}
+                        }
+                      },
+                      {
+                        "type": "text",
+                        "props": {
+                          "content": "{{conversations[0].preview}}",
+                          "style": {"color": "#666"}
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout",
+                    "direction": "column",
+                    "padding": [1, 0, 1, 0],
+                    "gap": 0,
+                    "children": [
+                      {
+                        "type": "text",
+                        "props": {
+                          "content": "{{conversations[1].title}}",
+                          "style": {"bold": true}
+                        }
+                      },
+                      {
+                        "type": "text",
+                        "props": {
+                          "content": "{{conversations[1].preview}}",
+                          "style": {"color": "#666"}
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout",
+                    "direction": "column",
+                    "padding": [1, 0, 1, 0],
+                    "gap": 0,
+                    "children": [
+                      {
+                        "type": "text",
+                        "props": {
+                          "content": "{{conversations[2].title}}",
+                          "style": {"bold": true}
+                        }
+                      },
+                      {
+                        "type": "text",
+                        "props": {
+                          "content": "{{conversations[2].preview}}",
+                          "style": {"color": "#666"}
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "layout",
+            "direction": "column",
+            "flexGrow": 1,
+            "padding": [1, 2, 1, 2],
+            "gap": 1,
+            "overflow": "scroll",
+            "children": [
+              {
+                "type": "text",
+                "props": {
+                  "content": "{{messages[0].section}}",
+                  "style": {"color": "#888", "bold": false}
+                }
+              },
+              {
+                "type": "layout",
+                "direction": "horizontal",
+                "gap": 1,
+                "children": [
+                  {
+                    "type": "text",
+                    "width": 3,
+                    "props": {
+                      "content": "{{messages[0].avatar}}",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "flexGrow": 1,
+                    "props": {
+                      "content": "{{messages[0].sender}}: {{messages[0].content}}"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "layout",
+                "direction": "horizontal",
+                "gap": 1,
+                "children": [
+                  {
+                    "type": "text",
+                    "width": 3,
+                    "props": {
+                      "content": "{{messages[1].avatar}}",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "flexGrow": 1,
+                    "props": {
+                      "content": "{{messages[1].sender}}: {{messages[1].content}}"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "layout",
+                "direction": "horizontal",
+                "gap": 1,
+                "children": [
+                  {
+                    "type": "text",
+                    "width": 3,
+                    "props": {
+                      "content": "{{messages[2].avatar}}",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "flexGrow": 1,
+                    "props": {
+                      "content": "{{messages[2].sender}}: {{messages[2].content}}"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "{{messages[3].section}}",
+                  "style": {"color": "#888", "bold": false}
+                }
+              },
+              {
+                "type": "layout",
+                "direction": "horizontal",
+                "gap": 1,
+                "children": [
+                  {
+                    "type": "text",
+                    "width": 3,
+                    "props": {
+                      "content": "{{messages[3].avatar}}",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "flexGrow": 1,
+                    "props": {
+                      "content": "{{messages[3].sender}}: {{messages[3].content}}"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "layout",
+                "direction": "horizontal",
+                "gap": 1,
+                "children": [
+                  {
+                    "type": "text",
+                    "width": 3,
+                    "props": {
+                      "content": "{{messages[4].avatar}}",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "flexGrow": 1,
+                    "props": {
+                      "content": "{{messages[4].sender}}: {{messages[4].content}}"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "{{messages[5].section}}",
+                  "style": {"color": "#888", "bold": false}
+                }
+              },
+              {
+                "type": "layout",
+                "direction": "horizontal",
+                "gap": 1,
+                "children": [
+                  {
+                    "type": "text",
+                    "width": 3,
+                    "props": {
+                      "content": "{{messages[5].avatar}}",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "flexGrow": 1,
+                    "props": {
+                      "content": "{{messages[5].sender}}: {{messages[5].content}}"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "height": 3,
+        "props": {"style": {"borderTop": true}},
+        "padding": [1, 1, 1, 1],
+        "gap": 1,
+        "children": [
+          {
+            "type": "text",
+            "flexGrow": 1,
+            "props": {
+              "content": "[{{inputPlaceholder}}]",
+              "style": {"color": "#666"}
+            }
+          },
+          {
+            "type": "text",
+            "props": {
+              "content": "[{{sendButtonText}}]",
+              "style": {"bold": true, "color": "#4285f4"}
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"},
+    "enter": {"process": "chat.send"},
+    "esc": {"process": "chat.cancel"}
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "name": "Responsive Layout (Grow/Shrink)",
+  "layout": {
+    "direction": "column",
+    "padding": [1, 2, 1, 2],
+    "children": [
+      {
+        "type": "text",
+        "props": { "content": "1. Flex Grow (Distribution of extra space)", "style": { "bold": true, "marginBottom": 1 } }
+      },
+      {
+        "type": "row",
+        "height": 3,
+        "props": { "gap": 1, "style": { "border": true } },
+        "children": [
+          {
+            "type": "text",
+            "width": 10,
+            "props": { "content": "Fixed(10)", "style": { "background": "#444" } }
+          },
+          {
+            "type": "column",
+            "props": {
+              "content": "Grow: 1\n(Gets 1 share)",
+              "style": { "background": "#005500", "grow": 1 }
+            },
+            "children": [
+              { "type": "text", "props": { "content": "Grow: 1\n(Gets 1 share)", "style": { "background": "#008800" } } }
+            ]
+          },
+          {
+            "type": "column",
+            "props": {
+              "content": "Grow: 2\n(Gets 2 shares)",
+              "style": { "background": "#008800", "grow": 2 }
+            },
+            "children": [
+              { "type": "text", "props": { "content": "Grow: 2\n(Gets 2 shares)", "style": { "background": "#00aa00" } } }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": { "content": "Resize window to see effect ^", "style": { "color": "#666", "marginBottom": 2 } }
+      },
+      {
+        "type": "text",
+        "props": { "content": "2. Flex Shrink (Handling insufficient space)", "style": { "bold": true, "marginBottom": 1 } }
+      },
+      {
+        "type": "row",
+        "height": 3,
+        "props": { "gap": 1, "style": { "border": true } },
+        "children": [
+          {
+            "type": "column",
+            "width": 20,
+            "props": {
+              "content": "No Shrink (Priority)",
+              "style": { "background": "#444", "shrink": 0 }
+            },
+            "children": [
+              { "type": "text", "props": { "content": "No Shrink (Priority)", "style": { "background": "#664444" } } }
+            ]
+          },
+          {
+            "type": "column",
+            "width": 40,
+            "props": {
+              "content": "Shrink: 1 (Standard)",
+              "style": { "background": "#550000", "shrink": 1 }
+            },
+            "children": [
+              { "type": "text", "props": { "content": "Shrink: 1 (Standard)", "style": { "background": "#770000" } } }
+            ]
+          },
+          {
+            "type": "column",
+            "width": 40,
+            "props": {
+              "content": "Shrink: 3 (Sacrifice)",
+              "style": { "background": "#880000", "shrink": 3 }
+            },
+            "children": [
+              { "type": "text", "props": { "content": "Shrink: 3 (Sacrifice)", "style": { "background": "#aa0000" } } }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": { "content": "Try shrinking terminal width < 100 cols ^", "style": { "color": "#666" } }
+      }
+    ]
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "name": "Task List with Template Data",
+  "data": {
+    "title": "My Tasks",
+    "subtitle": "Today's priorities",
+    "tasks": [
+      {"id": 1, "text": "Review pull requests", "done": true, "checkbox": "[x]", "textColor": "#666"},
+      {"id": 2, "text": "Write documentation", "done": false, "checkbox": "[ ]", "textColor": "#fff"},
+      {"id": 3, "text": "Fix navigation bug", "done": false, "checkbox": "[ ]", "textColor": "#fff"},
+      {"id": 4, "text": "Update dependencies", "done": false, "checkbox": "[ ]", "textColor": "#fff"},
+      {"id": 5, "text": "Team standup meeting", "done": true, "checkbox": "[x]", "textColor": "#666"}
+    ],
+    "completed": 2,
+    "total": 5
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "style": {
+            "background": "#224",
+            "color": "#fff",
+            "bold": true
+          }
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{subtitle}} - Progress: {{completed}}/{{total}}",
+          "align": "center",
+          "style": {"color": "#666"}
+        }
+      },
+      {
+        "type": "progress",
+        "props": {
+          "percent": 40,
+          "width": 40,
+          "style": {"color": "#080"}
+        }
+      },
+      {
+        "type": "text",
+        "props": {"content": ""}
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "text",
+            "width": 3,
+            "props": {"content": "{{tasks[0].checkbox}}"}
+          },
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {"content": "{{tasks[0].text}}", "style": {"color": "{{tasks[0].textColor}}"}}
+          }
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 3, "props": {"content": "{{tasks[1].checkbox}}"}},
+          {"type": "text", "width": "flex", "props": {"content": "{{tasks[1].text}}"}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 3, "props": {"content": "{{tasks[2].checkbox}}"}},
+          {"type": "text", "width": "flex", "props": {"content": "{{tasks[2].text}}"}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 3, "props": {"content": "{{tasks[3].checkbox}}"}},
+          {"type": "text", "width": "flex", "props": {"content": "{{tasks[3].text}}"}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "text",
+            "width": 3,
+            "props": {"content": "{{tasks[4].checkbox}}"}
+          },
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {"content": "{{tasks[4].text}}", "style": {"color": "{{tasks[4].textColor}}"}}
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": {"content": ""}
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Press [n] new | [d] delete | [Enter] toggle",
+          "align": "center",
+          "style": {"color": "#888"}
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"}
+  }
+}

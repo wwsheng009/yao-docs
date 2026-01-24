@@ -1,0 +1,75 @@
+{
+  "name": "Holy Grail Layout",
+  "layout": {
+    "direction": "column",
+    "children": [
+      {
+        "type": "header",
+        "height": 3,
+        "props": {
+          "title": "Header Area",
+          "align": "center",
+          "style": { "background": "#333", "color": "#FFF" }
+        }
+      },
+      {
+        "type": "row",
+        "height": "flex",
+        "children": [
+          {
+            "type": "column",
+            "width": 20,
+            "props": {
+              "style": { "background": "#222", "borderRight": true }
+            },
+            "children": [
+              { "type": "text", "props": { "content": "Nav 1" } },
+              { "type": "text", "props": { "content": "Nav 2" } },
+              { "type": "text", "props": { "content": "Nav 3" } }
+            ]
+          },
+          {
+            "type": "column",
+            "width": "flex",
+            "padding": [1, 2, 1, 2],
+            "children": [
+              {
+                "type": "text",
+                "props": {
+                  "content": "Main Content Area",
+                  "style": { "bold": true, "fontSize": 2 }
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "This area automatically grows to fill the remaining width and height between the navigation, sidebar, header, and footer.\n\nResize your terminal to see it adapt."
+                }
+              }
+            ]
+          },
+          {
+            "type": "column",
+            "width": 15,
+            "props": {
+              "style": { "background": "#2a2a2a", "borderLeft": true }
+            },
+            "children": [
+              { "type": "text", "props": { "content": "Ad 1", "align": "center" } },
+              { "type": "text", "props": { "content": "Ad 2", "align": "center" } }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "height": 2,
+        "props": {
+          "content": "Footer Content © 2024",
+          "align": "center",
+          "style": { "background": "#333", "color": "#888" }
+        }
+      }
+    ]
+  }
+}

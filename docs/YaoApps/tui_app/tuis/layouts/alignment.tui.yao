@@ -1,0 +1,82 @@
+{
+  "name": "Flex Alignment Demo",
+  "layout": {
+    "direction": "column",
+    "padding": [1, 2, 1, 2],
+    "children": [
+      {
+        "type": "text",
+        "props": { "content": "Justify: Start (Default)", "style": { "underline": true } }
+      },
+      {
+        "type": "row",
+        "height": 3,
+        "props": { "justify": "start" },
+        "children": [
+          { "type": "text", "props": { "content": "[BOX 1]", "style": {"background": "#F00"} } },
+          { "type": "text", "props": { "content": "[BOX 2]", "style": {"background": "#0F0"} } },
+          { "type": "text", "props": { "content": "[BOX 3]", "style": {"background": "#00F"} } }
+        ]
+      },
+      {
+        "type": "text",
+        "props": { "content": "Justify: Center", "style": { "underline": true } }
+      },
+      {
+        "type": "row",
+        "height": 3,
+        "props": { "justify": "center" },
+        "children": [
+          { "type": "text", "props": { "content": "[BOX 1]", "style": {"background": "#F00"} } },
+          { "type": "text", "props": { "content": "[BOX 2]", "style": {"background": "#0F0"} } },
+          { "type": "text", "props": { "content": "[BOX 3]", "style": {"background": "#00F"} } }
+        ]
+      },
+      {
+        "type": "text",
+        "props": { "content": "Justify: Space Between", "style": { "underline": true } }
+      },
+      {
+        "type": "row",
+        "height": 3,
+        "props": { "justify": "space-between" },
+        "children": [
+          { "type": "text", "props": { "content": "[BOX 1]", "style": {"background": "#F00"} } },
+          { "type": "text", "props": { "content": "[BOX 2]", "style": {"background": "#0F0"} } },
+          { "type": "text", "props": { "content": "[BOX 3]", "style": {"background": "#00F"} } }
+        ]
+      },
+      {
+        "type": "text",
+        "props": { "content": "Justify: Space Around", "style": { "underline": true } }
+      },
+      {
+        "type": "row",
+        "height": 3,
+        "props": { "justify": "space-around" },
+        "children": [
+          { "type": "text", "props": { "content": "[BOX 1]", "style": {"background": "#F00"} } },
+          { "type": "text", "props": { "content": "[BOX 2]", "style": {"background": "#0F0"} } },
+          { "type": "text", "props": { "content": "[BOX 3]", "style": {"background": "#00F"} } }
+        ]
+      },
+      {
+        "type": "text",
+        "props": { "content": "Align Items: Center (Vertical)", "style": { "underline": true } }
+      },
+      {
+        "type": "row",
+        "height": 5,
+        "props": {
+          "alignItems": "center",
+          "style": { "border": true }
+        },
+        "children": [
+          { "type": "text", "height": 1, "props": { "content": "Short", "style": {"background": "#F00"} } },
+          { "type": "text", "height": 3, "props": { "content": "Tall\nTall\nTall", "style": {"background": "#0F0"} } },
+          { "type": "text", "height": 1, "props": { "content": "Short", "style": {"background": "#00F"} } }
+        ]
+      }
+    ]
+  }
+}

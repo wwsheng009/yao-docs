@@ -1,0 +1,169 @@
+{
+  "name": "Card Grid with Template Data",
+  "data": {
+    "dashboardTitle": "Project Dashboard",
+    "cards": [
+      {
+        "title": "Revenue",
+        "value": "$45,231",
+        "change": "+12.5%",
+        "positive": true,
+        "icon": "💰",
+        "color": "#080"
+      },
+      {
+        "title": "Users",
+        "value": "2,847",
+        "change": "+8.2%",
+        "positive": true,
+        "icon": "👥",
+        "color": "#080"
+      },
+      {
+        "title": "Orders",
+        "value": "1,234",
+        "change": "-3.1%",
+        "positive": false,
+        "icon": "📦",
+        "color": "#800"
+      },
+      {
+        "title": "Satisfaction",
+        "value": "94%",
+        "change": "+2.4%",
+        "positive": true,
+        "icon": "⭐",
+        "color": "#080"
+      },
+      {
+        "title": "Performance",
+        "value": "847ms",
+        "change": "-15%",
+        "positive": true,
+        "icon": "⚡",
+        "color": "#080"
+      },
+      {
+        "title": "Errors",
+        "value": "0.02%",
+        "change": "+0.01%",
+        "positive": false,
+        "icon": "⚠️",
+        "color": "#800"
+      }
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "padding": [1, 2, 1, 2],
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{dashboardTitle}}",
+          "align": "center",
+          "style": {"bold": true, "underline": true}
+        }
+      },
+      {
+        "type": "text",
+        "props": {"content": ""}
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "layout",
+            "width": "flex",
+            "props": {"style": {"border": true}},
+            "children": [
+              {"type": "text", "props": {"content": "{{cards[0].icon}} {{cards[0].title}}", "style": {"bold": true}}},
+              {"type": "text", "props": {"content": "{{cards[0].value}}", "style": {"bold": true, "color": "#080"}}},
+              {"type": "text", "props": {"content": "{{cards[0].change}}", "style": {"color": "{{cards[0].color}}"}}}
+            ]
+          },
+          {"type": "text", "width": 2, "props": {"content": " "}},
+          {
+            "type": "layout",
+            "width": "flex",
+            "props": {"style": {"border": true}},
+            "children": [
+              {"type": "text", "props": {"content": "{{cards[1].icon}} {{cards[1].title}}", "style": {"bold": true}}},
+              {"type": "text", "props": {"content": "{{cards[1].value}}", "style": {"bold": true, "color": "#080"}}},
+              {"type": "text", "props": {"content": "{{cards[1].change}}", "style": {"color": "{{cards[1].color}}"}}}
+            ]
+          },
+          {"type": "text", "width": 2, "props": {"content": " "}},
+          {
+            "type": "layout",
+            "width": "flex",
+            "props": {"style": {"border": true}},
+            "children": [
+              {"type": "text", "props": {"content": "{{cards[2].icon}} {{cards[2].title}}", "style": {"bold": true}}},
+              {"type": "text", "props": {"content": "{{cards[2].value}}", "style": {"bold": true}}},
+              {"type": "text", "props": {"content": "{{cards[2].change}}", "style": {"color": "{{cards[2].color}}"}}}
+            ]
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": {"content": ""}
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "layout",
+            "width": "flex",
+            "props": {"style": {"border": true}},
+            "children": [
+              {"type": "text", "props": {"content": "{{cards[3].icon}} {{cards[3].title}}", "style": {"bold": true}}},
+              {"type": "text", "props": {"content": "{{cards[3].value}}", "style": {"bold": true, "color": "#080"}}},
+              {"type": "text", "props": {"content": "{{cards[3].change}}", "style": {"color": "{{cards[3].color}}"}}}
+            ]
+          },
+          {"type": "text", "width": 2, "props": {"content": " "}},
+          {
+            "type": "layout",
+            "width": "flex",
+            "props": {"style": {"border": true}},
+            "children": [
+              {"type": "text", "props": {"content": "{{cards[4].icon}} {{cards[4].title}}", "style": {"bold": true}}},
+              {"type": "text", "props": {"content": "{{cards[4].value}}", "style": {"bold": true, "color": "#080"}}},
+              {"type": "text", "props": {"content": "{{cards[4].change}}", "style": {"color": "{{cards[4].color}}"}}}
+            ]
+          },
+          {"type": "text", "width": 2, "props": {"content": " "}},
+          {
+            "type": "layout",
+            "width": "flex",
+            "props": {"style": {"border": true}},
+            "children": [
+              {"type": "text", "props": {"content": "{{cards[5].icon}} {{cards[5].title}}", "style": {"bold": true}}},
+              {"type": "text", "props": {"content": "{{cards[5].value}}", "style": {"bold": true}}},
+              {"type": "text", "props": {"content": "{{cards[5].change}}", "style": {"color": "{{cards[5].color}}"}}}
+            ]
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": {"content": "", "style": {"height": "flex"}}
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Last updated: Just now | Press r to refresh | q to quit",
+          "style": {"color": "#888"}
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"},
+    "r": {"process": "dashboard.refresh"}
+  }
+}

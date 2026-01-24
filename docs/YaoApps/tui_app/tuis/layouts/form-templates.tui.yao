@@ -1,0 +1,201 @@
+{
+  "name": "Form with Template Labels",
+  "data": {
+    "formTitle": "User Registration",
+    "formDescription": "Please fill in all required fields",
+    "fields": [
+      {"label": "Username", "placeholder": "Enter username", "required": true, "requiredMarker": "*"},
+      {"label": "Email", "placeholder": "user@example.com", "required": true, "requiredMarker": "*"},
+      {"label": "Password", "placeholder": "Min 8 characters", "required": true, "requiredMarker": "*"},
+      {"label": "Full Name", "placeholder": "John Doe", "required": false, "requiredMarker": ""},
+      {"label": "Bio", "placeholder": "Tell us about yourself", "required": false, "requiredMarker": ""}
+    ],
+    "buttonText": "Register",
+    "cancelText": "Cancel",
+    "requiredCount": 3
+  },
+  "layout": {
+    "direction": "vertical",
+    "padding": [2, 4, 2, 4],
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{formTitle}}",
+          "align": "center",
+          "style": {"bold": true, "underline": true}
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{formDescription}} ({{requiredCount}} required fields)",
+          "align": "center",
+          "style": {"color": "#888"}
+        }
+      },
+      {
+        "type": "text",
+        "props": {"content": ""}
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "text",
+            "width": 15,
+            "props": {
+              "content": "{{fields[0].label}}:",
+              "align": "right",
+              "style": {"bold": true}
+            }
+          },
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {
+              "content": "[ {{fields[0].placeholder}} ]",
+              "style": {"color": "#666"}
+            }
+          },
+          {"type": "text", "width": 2, "props": {"content": "{{fields[0].requiredMarker}}", "style": {"color": "#800"}}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "text",
+            "width": 15,
+            "props": {
+              "content": "{{fields[1].label}}:",
+              "align": "right",
+              "style": {"bold": true}
+            }
+          },
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {
+              "content": "[ {{fields[1].placeholder}} ]",
+              "style": {"color": "#666"}
+            }
+          },
+          {"type": "text", "width": 2, "props": {"content": "*", "style": {"color": "#800"}}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "text",
+            "width": 15,
+            "props": {
+              "content": "{{fields[2].label}}:",
+              "align": "right",
+              "style": {"bold": true}
+            }
+          },
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {
+              "content": "[ {{fields[2].placeholder}} ]",
+              "style": {"color": "#666"}
+            }
+          },
+          {"type": "text", "width": 2, "props": {"content": "*", "style": {"color": "#800"}}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "text",
+            "width": 15,
+            "props": {
+              "content": "{{fields[3].label}}:",
+              "align": "right",
+              "style": {"bold": true}
+            }
+          },
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {
+              "content": "[ {{fields[3].placeholder}} ]",
+              "style": {"color": "#666"}
+            }
+          },
+          {"type": "text", "width": 2, "props": {"content": ""}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {
+            "type": "text",
+            "width": 15,
+            "props": {
+              "content": "{{fields[4].label}}:",
+              "align": "right",
+              "style": {"bold": true}
+            }
+          },
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {
+              "content": "[ {{fields[4].placeholder}} ]",
+              "style": {"color": "#666"}
+            }
+          },
+          {"type": "text", "width": 2, "props": {"content": ""}}
+        ]
+      },
+      {
+        "type": "text",
+        "props": {"content": ""}
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 15, "props": {"content": ""}},
+          {
+            "type": "text",
+            "width": 10,
+            "props": {
+              "content": "[ {{buttonText}} ]",
+              "align": "center",
+              "style": {"background": "#080", "color": "#000", "bold": true}
+            }
+          },
+          {"type": "text", "width": 2, "props": {"content": " "}},
+          {
+            "type": "text",
+            "width": 10,
+            "props": {
+              "content": "[ {{cancelText}} ]",
+              "align": "center",
+              "style": {"color": "#888"}
+            }
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": {"content": "* Required fields", "style": {"color": "#888"}}
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"},
+    "enter": {"process": "form.submit"}
+  }
+}

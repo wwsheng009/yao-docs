@@ -1,0 +1,77 @@
+{
+  "name": "Absolute Layout (Layers)",
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "layout",
+        "height": "flex",
+        "width": "flex",
+        "props": { 
+          "style": { "position": "relative" } 
+        },
+        "children": [
+          {
+            "type": "text",
+            "props": { 
+              "content": "Background Content\n\nThis is the main layer. Elements below are absolutely positioned over this content.",
+              "style": { "color": "#555" }
+            }
+          },
+          {
+            "type": "layout",
+            "width": 40,
+            "height": 10,
+            "style": {
+              "position": "absolute",
+              "top": 4,
+              "left": 10
+            },
+            "props": {
+              "style": {
+                "border": true,
+                "background": "#222",
+                "zIndex": 10
+              }
+            },
+            "children": [
+              {
+                "type": "text",
+                "props": {
+                  "content": "Modal Dialog / Overlay",
+                  "style": { "bold": true, "align": "center", "background": "#444", "color": "#FFF" }
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "content": "\nThis component is positioned absolutely at (10, 4).\nIt overlays the content behind it.",
+                  "align": "center"
+                }
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "width": 20,
+            "height": 3,
+            "style": {
+              "position": "absolute",
+              "bottom": 1,
+              "right": 2
+            },
+            "props": {
+              "content": "Toast Notification!",
+              "style": {
+                "background": "#008800",
+                "color": "#FFF",
+                "align": "center",
+                "verticalAlign": "middle"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

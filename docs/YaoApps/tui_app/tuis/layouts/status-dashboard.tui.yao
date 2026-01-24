@@ -1,0 +1,158 @@
+{
+  "name": "Status Dashboard with Template Metrics",
+  "data": {
+    "title": "System Status",
+    "updated": "2024-01-15 14:32:00",
+    "services": [
+      {"name": "API Server", "status": "operational", "uptime": "99.9%", "response": "45ms"},
+      {"name": "Database", "status": "operational", "uptime": "99.8%", "response": "12ms"},
+      {"name": "Cache", "status": "degraded", "uptime": "95.2%", "response": "234ms"},
+      {"name": "Queue", "status": "operational", "uptime": "99.9%", "response": "8ms"},
+      {"name": "Storage", "status": "operational", "uptime": "100%", "response": "156ms"}
+    ],
+    "metrics": {
+      "cpu": 45,
+      "memory": 67,
+      "disk": 82,
+      "network": 23
+    },
+    "alerts": [
+      {"level": "warning", "message": "High cache latency detected"},
+      {"level": "info", "message": "Scheduled maintenance in 2 hours"}
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "padding": [1, 2, 1, 2],
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "align": "center",
+          "style": {"background": "#080", "color": "#000"}
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Updated: {{updated}}",
+          "align": "right",
+          "style": {"color": "#888"}
+        }
+      },
+      {
+        "type": "text",
+        "props": {"content": ""}
+      },
+      {
+        "type": "text",
+        "props": {"content": "System Resources", "style": {"bold": true, "underline": true}}
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "CPU: {{metrics.cpu}}% | Memory: {{metrics.memory}}% | Disk: {{metrics.disk}}% | Network: {{metrics.network}}%"
+        }
+      },
+      {
+        "type": "progress",
+        "props": {"percent": 45, "width": 20, "label": "CPU"}
+      },
+      {
+        "type": "progress",
+        "props": {"percent": 67, "width": 20, "label": "Memory"}
+      },
+      {
+        "type": "progress",
+        "props": {"percent": 82, "width": 20, "label": "Disk"}
+      },
+      {
+        "type": "text",
+        "props": {"content": ""}
+      },
+      {
+        "type": "text",
+        "props": {"content": "Services", "style": {"bold": true, "underline": true}}
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 20, "props": {"content": "{{services[0].name}}", "style": {"bold": true}}},
+          {"type": "text", "width": 15, "props": {"content": "{{services[0].status}}", "style": {"color": "#080"}}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[0].uptime}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[0].response}}"}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 20, "props": {"content": "{{services[1].name}}", "style": {"bold": true}}},
+          {"type": "text", "width": 15, "props": {"content": "{{services[1].status}}", "style": {"color": "#080"}}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[1].uptime}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[1].response}}"}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 20, "props": {"content": "{{services[2].name}}", "style": {"bold": true}}},
+          {"type": "text", "width": 15, "props": {"content": "{{services[2].status}}", "style": {"color": "#880"}}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[2].uptime}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[2].response}}"}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 20, "props": {"content": "{{services[3].name}}", "style": {"bold": true}}},
+          {"type": "text", "width": 15, "props": {"content": "{{services[3].status}}", "style": {"color": "#080"}}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[3].uptime}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[3].response}}"}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 20, "props": {"content": "{{services[4].name}}", "style": {"bold": true}}},
+          {"type": "text", "width": 15, "props": {"content": "{{services[4].status}}", "style": {"color": "#080"}}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[4].uptime}}"}},
+          {"type": "text", "width": 10, "props": {"content": "{{services[4].response}}"}}
+        ]
+      },
+      {
+        "type": "text",
+        "props": {"content": ""}
+      },
+      {
+        "type": "text",
+        "props": {"content": "Alerts", "style": {"bold": true, "underline": true}}
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 10, "props": {"content": "[{{alerts[0].level}}]", "style": {"color": "#880", "bold": true}}},
+          {"type": "text", "width": "flex", "props": {"content": "{{alerts[0].message}}"}}
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "children": [
+          {"type": "text", "width": 10, "props": {"content": "[{{alerts[1].level}}]", "style": {"color": "#468", "bold": true}}},
+          {"type": "text", "width": "flex", "props": {"content": "{{alerts[1].message}}"}}
+        ]
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"},
+    "r": {"process": "status.refresh"}
+  }
+}

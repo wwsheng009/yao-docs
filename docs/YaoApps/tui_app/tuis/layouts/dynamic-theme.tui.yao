@@ -1,0 +1,116 @@
+{
+  "name": "Dynamic Theme from Template Data",
+  "data": {
+    "appTitle": "Theme Preview",
+    "theme": {
+      "primary": "#135",
+      "secondary": "#246",
+      "accent": "#358",
+      "text": "#ccc",
+      "muted": "#666",
+      "success": "#080",
+      "warning": "#880",
+      "error": "#800"
+    },
+    "message": "This UI is fully styled via template variables!"
+  },
+  "layout": {
+    "direction": "vertical",
+    "padding": [1, 2, 1, 2],
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{appTitle}}",
+          "align": "center",
+          "style": {
+            "background": "{{theme.primary}}",
+            "color": "{{theme.text}}"
+          }
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "{{message}}",
+          "align": "center",
+          "style": {
+            "color": "{{theme.accent}}",
+            "bold": true
+          }
+        }
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "height": 5,
+        "padding": [1, 1, 1, 1],
+        "props": {
+          "style": {"border": true}
+        },
+        "children": [
+          {
+            "type": "layout",
+            "width": "flex",
+            "direction": "vertical",
+            "props": {"style": {"background": "{{theme.primary}}"}},
+            "children": [
+              {"type": "text", "props": {"content": "Primary", "align": "center", "style": {"bold": true}}}
+            ]
+          },
+          {
+            "type": "layout",
+            "width": "flex",
+            "direction": "vertical",
+            "props": {"style": {"background": "{{theme.secondary}}"}},
+            "children": [
+              {"type": "text", "props": {"content": "Secondary", "align": "center", "style": {"bold": true}}}
+            ]
+          },
+          {
+            "type": "layout",
+            "width": "flex",
+            "direction": "vertical",
+            "props": {"style": {"background": "{{theme.accent}}"}},
+            "children": [
+              {"type": "text", "props": {"content": "Accent", "align": "center", "style": {"bold": true}}}
+            ]
+          }
+        ]
+      },
+      {
+        "type": "layout",
+        "direction": "horizontal",
+        "padding": [1, 0, 1, 0],
+        "children": [
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {"content": "Success: OK", "style": {"color": "{{theme.success}}", "bold": true}}
+          },
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {"content": "Warning: Check", "style": {"color": "{{theme.warning}}", "bold": true}}
+          },
+          {
+            "type": "text",
+            "width": "flex",
+            "props": {"content": "Error: Fail", "style": {"color": "{{theme.error}}", "bold": true}}
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "Theme colors are defined in data.theme and applied via {{theme.primary}} syntax",
+          "align": "center",
+          "style": {"color": "{{theme.muted}}"}
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"}
+  }
+}

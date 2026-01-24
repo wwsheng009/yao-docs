@@ -1,0 +1,123 @@
+{
+  "name": "Dashboard Layout Demo",
+  "layout": {
+    "direction": "column",
+    "children": [
+      {
+        "type": "header",
+        "height": 3,
+        "props": {
+          "title": "System Dashboard",
+          "align": "center",
+          "style": {
+            "background": "#00aabb",
+            "color": "#ffffff"
+          }
+        }
+      },
+      {
+        "type": "row",
+        "height": "flex",
+        "children": [
+          {
+            "type": "column",
+            "width": 20,
+            "props": {
+              "style": {
+                "borderRight": true
+              }
+            },
+            "children": [
+              {
+                "type": "text",
+                "props": { "content": " [x] Overview" }
+              },
+              {
+                "type": "text",
+                "props": { "content": " [ ] Analytics" }
+              },
+              {
+                "type": "text",
+                "props": { "content": " [ ] Settings" }
+              },
+              {
+                "type": "flex",
+                "height": "flex"
+              },
+              {
+                "type": "text",
+                "props": { "content": "v1.0.0" }
+              }
+            ]
+          },
+          {
+            "type": "column",
+            "width": "flex",
+            "padding": [1, 2, 1, 2],
+            "children": [
+              {
+                "type": "text",
+                "props": {
+                  "content": "Welcome back, User!",
+                  "style": { "bold": true, "marginBottom": 1 }
+                }
+              },
+              {
+                "type": "row",
+                "height": "flex",
+                "children": [
+                  {
+                    "type": "column",
+                    "width": "flex",
+                    "props": {
+                      "style": { "border": true }
+                    },
+                    "children": [
+                      { "type": "text", "props": { "content": "Chart Area A" } }
+                    ]
+                  },
+                  {
+                    "type": "column",
+                    "width": 2
+                  },
+                  {
+                    "type": "column",
+                    "width": "flex",
+                    "props": {
+                      "style": { "border": true }
+                    },
+                    "children": [
+                      { "type": "text", "props": { "content": "Chart Area B" } }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "column",
+                "height": 10,
+                "props": {
+                   "style": { "marginTop": 1, "border": true }
+                },
+                "children": [
+                  { "type": "text", "props": { "content": "Recent Activity Log..." } }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "height": 1,
+        "props": {
+          "content": "Status: Online | Ping: 14ms",
+          "align": "right",
+          "style": {
+            "background": "#333333",
+            "color": "#aaaaaa"
+          }
+        }
+      }
+    ]
+  }
+}
