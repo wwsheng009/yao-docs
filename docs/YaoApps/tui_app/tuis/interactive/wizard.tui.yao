@@ -51,7 +51,7 @@
         "type": "form",
         "id": "wizardForm",
         "props": {
-          "fields": "{{currentStep === 1 ? wizardData.step1 : currentStep === 2 ? wizardData.step2 : wizardData.step3}}",
+          "fields": "{{currentStep == 1 ? wizardData.step1 : currentStep == 2 ? wizardData.step2 : wizardData.step3}}",
           "submitLabel": "Next",
           "cancelLabel": "Back"
         }

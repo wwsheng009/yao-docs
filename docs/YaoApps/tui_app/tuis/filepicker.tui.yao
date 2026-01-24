@@ -33,7 +33,7 @@
       {
         "type": "text",
         "props": {
-          "content": "Selected: {{selectedFile ? selectedFile : 'None'}}"
+          "content": "Selected: {{NotNil(selectedFile) ? selectedFile : 'None'}}"
         }
       },
       {

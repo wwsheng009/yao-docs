@@ -20,7 +20,7 @@
       {
         "type": "header",
         "props": {
-          "title": "{{title}} - {{mode === 'list' ? 'List View' : mode === 'add' ? 'Add Item' : 'Edit Item'}}",
+          "title": "{{title}} - {{mode == 'list' ? 'List View' : mode == 'add' ? 'Add Item' : 'Edit Item'}}",
           "align": "center"
         }
       },
@@ -45,7 +45,7 @@
       {
         "type": "text",
         "props": {
-          "content": "Total items: {{len(items)}} | Selected: {{selectedItem ? selectedItem.name : 'None'}}"
+          "content": "Total items: {{len(items)}} | Selected: {{NotNil(selectedItem) ? selectedItem.name : 'None'}}"
         }
       },
       {
