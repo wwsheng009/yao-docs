@@ -1,5 +1,6 @@
 {
   "name": "Input Component Test",
+  "useRuntime": false,
   "data": {
     "username": "",
     "email": "",
