@@ -38,7 +38,7 @@
 
 **根目录（13个）**
 
-1. ✅ `all-components.tui.yao` - 所有组件展示
+1. ✅ `all-component.tui.yao` - 所有组件展示
 2. ✅ `calculator.tui.yao` - 计算器（使用 `scripts/tui/calculator.ts`）
 3. ✅ `chat.tui.yao` - AI聊天（使用 `scripts/tui/chat.ts`）
 4. ✅ `counter.tui.yao` - 计数器（使用 `scripts/tui/counter.ts`）
@@ -247,7 +247,7 @@ yao tui hello && yao tui counter && yao tui menu
 
 ### 所有测试配置文件（36个）
 
-1. all-components.tui.yao
+1. all-component.tui.yao
 2. calculator.tui.yao
 3. chat.tui.yao
 4. counter.tui.yao

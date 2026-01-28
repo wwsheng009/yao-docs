@@ -72,7 +72,7 @@ func TestComponentRegistry(t *testing.T) {
 	}
 }
 
-// TestLoadAndBindComponents tests loading config and binding components.
+// TestLoadAndBindComponents tests loading config and binding component.
 func TestLoadAndBindComponents(t *testing.T) {
 	data, err := os.ReadFile("../demo/tuis/layouts/nested.tui.yao")
 	if err != nil {

@@ -1,0 +1,89 @@
+{
+  "name": "Document Table",
+  "data": {
+    "title": "TUI 文档统计表",
+    "subtitle": "显示各目录下的文档数量统计",
+    "rows": [
+      {"commit": "a1aecf7", "docType": "architecture/ 架构文档", "fileCount": 3},
+      {"commit": "83cf5e5", "docType": "design/ 设计文档", "fileCount": 26},
+      {"commit": "e8df39c", "docType": "guides/ 指南文档", "fileCount": 3},
+      {"commit": "b792415", "docType": "meta/ 元数据和进度文档", "fileCount": 4},
+      {"commit": "e275708", "docType": "messages/ 消息处理文档", "fileCount": 1},
+      {"commit": "2c24c21", "docType": "plan/ 计划文档", "fileCount": 2},
+      {"commit": "ddd465d", "docType": "refactor/ 和 refactoring/ 重构文档", "fileCount": 4},
+      {"commit": "5417295", "docType": "runtime/ 运行时文档", "fileCount": 5},
+      {"commit": "b707f96", "docType": "tasks/ 任务文档", "fileCount": 19},
+      {"commit": "454e7de", "docType": "temp/ 临时文档", "fileCount": 10},
+      {"commit": "b19403b", "docType": "根目录总结和索引文档", "fileCount": 13}
+    ]
+  },
+  "layout": {
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "header",
+        "props": {
+          "title": "{{title}}",
+          "subtitle": "{{subtitle}}",
+          "align": "center",
+          "color": "primary",
+          "background": "background",
+          "bold": true
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "📊 总计: {{len(rows)}} 个文档分类 | 📅 更新时间: 2024-01-24",
+          "color": "info",
+          "align": "center"
+        }
+      },
+      {
+        "type": "table",
+        "id": "docTable",
+        "bind": "rows",
+        "height": "flex",
+        "width": "flex",
+        "props": {
+          "columns": [
+            {"key": "commit", "title": "提交哈希", "width": 10},
+            {"key": "docType", "title": "文档类型", "width": 40},
+            {"key": "fileCount", "title": "文件数", "width": 10}
+          ],
+          "showBorder": false,
+          "focused": true,
+          "headerColor": "primary",
+          "headerBackground": "muted",
+          "headerBold": false,
+          "cellColor": "text",
+          "selectedColor": "text",
+          "selectedBackground": "info",
+          "selectedBold": true,
+          "borderColor": "muted"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": "────────────────────────────────────────────────────────────────",
+          "color": "muted"
+        }
+      },
+      {
+        "type": "text",
+        "props": {
+          "content": " ↑/↓: 选择行 | Enter: 确认 | q/Esc/Ctrl+C: 退出",
+          "color": "textmuted",
+          "align": "center"
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "q": {"process": "tui.quit"},
+    "esc": {"process": "tui.quit"},
+    "ctrl+c": {"process": "tui.quit"},
+    "enter": {"process": "tui.confirm"}
+  }
+}

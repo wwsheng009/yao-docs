@@ -140,7 +140,7 @@ import (
     "github.com/charmbracelet/bubbles/textinput"
     tea "github.com/charmbracelet/bubbletea"
     "github.com/charmbracelet/lipgloss"
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
 )
 
 type InputComponentWrapper struct {

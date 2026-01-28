@@ -12,10 +12,10 @@ import (
 	"strings"
 
 	"github.com/yaoapp/kun/log"
-	"github.com/yaoapp/yao/tui/core"
-	"github.com/yaoapp/yao/tui/dsl"
 	"github.com/yaoapp/yao/tui/runtime"
-	"github.com/yaoapp/yao/tui/ui/components"
+	"github.com/yaoapp/yao/tui/tui/component"
+	"github.com/yaoapp/yao/tui/tui/core"
+	"github.com/yaoapp/yao/tui/tui/dsl"
 )
 
 // ComponentFactory creates a component instance from DSL node configuration.
@@ -75,7 +75,7 @@ func (r *ComponentRegistry) ApplyTemplates(node *dsl.Node) *dsl.Node {
 	return &resolvedNode
 }
 
-// registerDefaultComponents registers built-in components.
+// registerDefaultComponents registers built-in component.
 func (r *ComponentRegistry) registerDefaultComponents() {
 	// Text component
 	r.Register("text", func(node *dsl.Node) core.ComponentInterface {
@@ -85,7 +85,7 @@ func (r *ComponentRegistry) registerDefaultComponents() {
 				content = c
 			}
 		}
-		return components.NewTextComponent(content)
+		return component.NewTextComponent(content)
 	})
 
 	// Header component (styled text)
@@ -96,7 +96,7 @@ func (r *ComponentRegistry) registerDefaultComponents() {
 				title = t
 			}
 		}
-		return components.NewTextComponent(title)
+		return component.NewTextComponent(title)
 	})
 
 	// Footer component (styled text)
@@ -107,7 +107,7 @@ func (r *ComponentRegistry) registerDefaultComponents() {
 				text = t
 			}
 		}
-		return components.NewTextComponent(text)
+		return component.NewTextComponent(text)
 	})
 
 	// Menu component (simple list for now)
@@ -142,7 +142,7 @@ func (r *ComponentRegistry) registerDefaultComponents() {
 				}
 			}
 		}
-		return components.NewTextComponent(items)
+		return component.NewTextComponent(items)
 	})
 
 	// Progress component
@@ -168,12 +168,12 @@ func (r *ComponentRegistry) registerDefaultComponents() {
 				}
 			}
 		}
-		return components.NewTextComponent(fmt.Sprintf("[%s] %d%%", bar, percent))
+		return component.NewTextComponent(fmt.Sprintf("[%s] %d%%", bar, percent))
 	})
 
 	// Layout container (no visual output, just container)
 	r.Register("layout", func(node *dsl.Node) core.ComponentInterface {
-		return components.NewTextComponent("") // Empty container
+		return component.NewTextComponent("") // Empty container
 	})
 }
 
@@ -198,7 +198,7 @@ func (r *ComponentRegistry) Create(node *dsl.Node) core.ComponentInterface {
 				content = c
 			}
 		}
-		return components.NewTextComponent(content)
+		return component.NewTextComponent(content)
 	}
 	return factory(resolvedNode)
 }
@@ -214,8 +214,8 @@ func (r *ComponentRegistry) BindComponents(dslCfg *dsl.Config, layoutRoot *runti
 	r.bindNodeComponentsRecursive(dslCfg.Layout, layoutRoot)
 }
 
-// bindNodeComponentsRecursive recursively binds components to all nodes.
-// This ensures all leaf nodes get components, even in deeply nested structures.
+// bindNodeComponentsRecursive recursively binds component to all nodes.
+// This ensures all leaf nodes get component, even in deeply nested structures.
 func (r *ComponentRegistry) bindNodeComponentsRecursive(dslNode *dsl.Node, layoutNode *runtime.LayoutNode) {
 	if layoutNode == nil || dslNode == nil {
 		return
@@ -238,7 +238,7 @@ func (r *ComponentRegistry) bindNodeComponentsRecursive(dslNode *dsl.Node, layou
 	}
 }
 
-// CreateLayoutTreeWithComponents creates a layout tree with bound components.
+// CreateLayoutTreeWithComponents creates a layout tree with bound component.
 // Applies template variable substitution using the config's data section.
 func (r *ComponentRegistry) CreateLayoutTreeWithComponents(dslCfg *dsl.Config) (*runtime.LayoutNode, error) {
 	// Set template data from config

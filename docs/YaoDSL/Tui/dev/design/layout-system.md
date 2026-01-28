@@ -209,7 +209,7 @@ The layout system integrates with existing TUI components:
 
 ```go
 import (
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
 )
 
 componentInstance := &core.ComponentInstance{

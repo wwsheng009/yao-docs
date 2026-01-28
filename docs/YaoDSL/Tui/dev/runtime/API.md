@@ -355,6 +355,15 @@ type ComponentInterface interface {
     View() string
     Render(config RenderConfig) (string, error)
 
+    // Size Notification
+    SetSize(width, height int)
+    // Called by Runtime before rendering to inform the component
+    // of the actual space allocated by the layout algorithm
+
+    // Layout Measurement
+    Measure(constraints BoxConstraints) Size
+    // Called during Measure phase to calculate ideal size
+
     // Lifecycle
     Init() tea.Cmd
     UpdateMsg(msg tea.Msg) (ComponentInterface, tea.Cmd, Response)
@@ -371,9 +380,6 @@ type ComponentInterface interface {
     IsFocusable() bool
     IsFocused() bool
     GetFocus() bool
-
-    // Layout
-    Measure(constraints BoxConstraints) Size
 }
 ```
 

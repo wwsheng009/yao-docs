@@ -81,7 +81,7 @@ package components
 import (
     tea "github.com/charmbracelet/bubbletea"
     "github.com/charmbracelet/lipgloss"
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
     "github.com/yaoapp/yao/tui/runtime"
 )
 
@@ -692,7 +692,7 @@ package main
 import (
     tea "github.com/charmbracelet/bubbletea"
     "github.com/charmbracelet/lipgloss"
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
     "github.com/yaoapp/yao/tui/runtime"
     "github.com/yaoapp/yao/tui/runtime/event"
     "github.com/yaoapp/yao/tui/runtime/focus"

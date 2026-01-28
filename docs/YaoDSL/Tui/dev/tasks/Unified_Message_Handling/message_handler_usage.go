@@ -3,7 +3,7 @@ package examples
 import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/yaoapp/yao/tui/core"
+	"github.com/yaoapp/yao/tui/tea/core"
 )
 
 // 示例：如何使用统一消息处理工具重构 input 组件

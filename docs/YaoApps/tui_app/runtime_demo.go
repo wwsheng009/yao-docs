@@ -9,7 +9,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/yaoapp/kun/log"
-	"github.com/yaoapp/yao/tui/core"
+	"github.com/yaoapp/yao/tui/tui/core"
 	"github.com/yaoapp/yao/tui/dsl"
 	"github.com/yaoapp/yao/tui/runtime"
 )

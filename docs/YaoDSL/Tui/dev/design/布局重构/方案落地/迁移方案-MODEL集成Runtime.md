@@ -57,7 +57,7 @@ package tui
 
 import (
     tea "github.com/charmbracelet/bubbletea"
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
     "github.com/yaoapp/yao/tui/runtime"
 )
 
@@ -143,7 +143,7 @@ type Model struct {
 package tui
 
 import (
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
     "github.com/yaoapp/yao/tui/runtime"
 )
 
@@ -277,7 +277,7 @@ package runtime
 
 import (
     "github.com/charmbracelet/lipgloss"
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
 )
 
 // ComponentWrapper 包装现有组件，使其兼容 Runtime
@@ -481,7 +481,7 @@ func (m *Model) renderWithRuntime() string {
 package runtime
 
 import (
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
 )
 
 // FocusIntegration 提供焦点管理功能给 Model 使用

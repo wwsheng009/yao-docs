@@ -1153,7 +1153,7 @@ package layout
 import (
     "testing"
 
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
 )
 
 // MockComponent 实现 Measurable 接口用于测试
@@ -1240,7 +1240,7 @@ package layout
 import (
     "testing"
 
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
 )
 
 func TestMeasureChildWidth(t *testing.T) {

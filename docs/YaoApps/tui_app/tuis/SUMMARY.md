@@ -216,7 +216,7 @@ tuis/
 - `layouts/grid.tui.yao`
 - `interactive/split-screen.tui.yao`
 - `advanced/dashboard.tui.yao`
-- `all-components.tui.yao`
+- `all-component.tui.yao`
 - `counter.tui.yao`（可选脚本）
 - `todo.tui.yao`（可选脚本）
 - `calculator.tui.yao`（可选脚本）

@@ -56,7 +56,7 @@
 | 场景               | 文件                         | 描述                    | 组件数量                  |
 | ------------------ | ---------------------------- | ----------------------- | ------------------------- |
 | **Dashboard**      | `advanced/dashboard.tui.yao` | 完整仪表板 - 统计+活动  | Header, Text, Table, Menu |
-| **All Components** | `all-components.tui.yao`     | 所有组件展示 - 组件合集 | 6+个组件                  |
+| **All Components** | `all-component.tui.yao`      | 所有组件展示 - 组件合集 | 6+个组件                  |
 
 ### 基础示例（5个）
 
@@ -214,7 +214,7 @@ yao tui advanced/events
 - [x] `chat.tui.yao` - AI流式
 - [x] `advanced/dashboard.tui.yao` - 仪表板
 - [x] `advanced/events.tui.yao` - 事件系统
-- [x] `all-components.tui.yao` - 组件集合
+- [x] `all-component.tui.yao` - 组件集合
 
 ## 脚本依赖
 
@@ -258,7 +258,7 @@ yao tui advanced/events
 - `layouts/grid.tui.yao`
 - `interactive/split-screen.tui.yao`
 - `advanced/dashboard.tui.yao`
-- `all-components.tui.yao`
+- `all-component.tui.yao`
 - `counter.tui.yao`（有脚本但可选）
 - `todo.tui.yao`（有脚本但可选）
 - `calculator.tui.yao`（有脚本但可选）

@@ -53,7 +53,7 @@ tuis/
 │   └── events.tui.yao       # 事件系统测试
 │
 ├── 组合测试
-│   ├── all-components.tui.yao # 所有组件展示
+│   ├── all-component.tui.yao # 所有组件展示
 │   └── calculator.tui.yao     # 计算器示例
 │
 ├── 基础示例
@@ -300,7 +300,7 @@ TUI 引擎会输出详细的调试日志，包括：
    - 理解分屏和面板管理
    - 练习复杂交互流程
 
-2. `advanced/events.tui.yao` → `all-components.tui.yao` → `calculator.tui.yao`
+2. `advanced/events.tui.yao` → `all-component.tui.yao` → `calculator.tui.yao`
    - 学习事件系统
    - 理解发布/订阅机制
    - 掌握跨组件通信

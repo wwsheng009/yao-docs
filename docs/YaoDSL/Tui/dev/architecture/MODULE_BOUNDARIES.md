@@ -362,7 +362,7 @@ package ui
 
 import (
     "github.com/yaoapp/yao/tui/runtime"
-    "github.com/yaoapp/yao/tui/core"
+    "github.com/yaoapp/yao/tui/tea/core"
 )
 
 type TextComponent struct {

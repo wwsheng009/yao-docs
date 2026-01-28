@@ -725,7 +725,7 @@ root (column)
 The layout system integrates with `tui/core` through:
 
 ```go
-import "github.com/yaoapp/yao/tui/core"
+import "github.com/yaoapp/yao/tui/tea/core"
 
 // Component integration
 type LayoutNode struct {

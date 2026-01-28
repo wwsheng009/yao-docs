@@ -4,7 +4,7 @@
     "appName": "TUI Application",
     "version": "1.0.0",
     "welcome": "Welcome to the TUI Component Showcase!",
-    "description": "This application demonstrates all available TUI components.",
+    "description": "This application demonstrates all available TUI component.",
     "users": [
       {
         "id": 1,
